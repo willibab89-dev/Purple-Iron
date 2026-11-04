@@ -24,4 +24,14 @@ ZoneMons1:;joenote - added lickitung & tweaked encounter tables
 		db 25,KANGASKHAN
 		db 30,UNIQUE_NIDOKING_UNIQUE2 ; rare unique species
 	ENDC
-	db $00
+	db $05
+	db 15,DRATINI
+	db 15,LAPRAS
+	db 15,PSYDUCK
+	db 15,SLOWPOKE
+	db 15,DRATINI
+	db 15,LAPRAS
+	db 15,PSYDUCK
+	db 15,SLOWPOKE
+	db 15,PSYDUCK
+	db 15,SLOWPOKE

@@ -20,4 +20,4 @@ Route21Mons:;joenote - added eevee and made adjustments to surfing encounters
 	db 20,TENTACOOL
 	db 30,TENTACRUEL	
 	db 35,TENTACRUEL
-	db 30,UNIQUE_TENTACOOL_BIG ; rare unique species
+	db 40,SEAKING

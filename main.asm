@@ -2160,3 +2160,5 @@ INCLUDE "engine/bg_map_attributes.asm"
 INCLUDE "engine/gamefreak.asm"	;gbcnote - moved here to make space
 
 INCLUDE "data/unique_pics.asm"
+
+INCLUDE "engine/unique_encounters.asm"

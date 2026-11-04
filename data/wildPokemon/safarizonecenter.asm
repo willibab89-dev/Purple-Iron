@@ -10,7 +10,7 @@ ZoneMonsCenter:;joenote - swapped pinser/scyther
 		db 31,NIDORINA
 		db 30,PARASECT
 		db 23,PINSIR
-		db 24,UNIQUE_NIDORANM_UNIQUE ; rare unique species
+		db 23,CHANSEY
 	ENDC
 	IF DEF(_BLUE)
 		db 22,NIDORAN_F
@@ -22,6 +22,16 @@ ZoneMonsCenter:;joenote - swapped pinser/scyther
 		db 31,NIDORINO
 		db 30,PARASECT
 		db 23,SCYTHER
-		db 24,UNIQUE_NIDORANM_UNIQUE ; rare unique species
+		db 23,CHANSEY
 	ENDC
-	db $00
+	db $05
+	db 15,DRATINI
+	db 15,LAPRAS
+	db 15,PSYDUCK
+	db 15,SLOWPOKE
+	db 15,DRATINI
+	db 15,LAPRAS
+	db 15,PSYDUCK
+	db 15,SLOWPOKE
+	db 15,PSYDUCK
+	db 15,SLOWPOKE

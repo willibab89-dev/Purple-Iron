@@ -10,7 +10,7 @@ IslandMonsB3:
 		db 31,HORSEA
 		db 29,SHELLDER
 		db 39,SEADRA
-		db 30,UNIQUE_OMANYTE_UNIQUE ; rare unique species
+		db 37,DEWGONG
 	ENDC
 	IF DEF(_BLUE)
 		db 31,PSYDUCK
@@ -22,6 +22,6 @@ IslandMonsB3:
 		db 31,KRABBY
 		db 29,STARYU
 		db 39,KINGLER
-		db 30,UNIQUE_OMANYTE_UNIQUE ; rare unique species
+		db 37,DEWGONG
 	ENDC
 	db $00

@@ -10,7 +10,7 @@ Route12Mons:;joenote - added farfetchd
 		db 27,PIDGEY
 		db 28,GLOOM
 		db 30,GLOOM
-		db 22,UNIQUE_GOLDEEN_FIGHTING ; rare unique species
+		db 22,FARFETCHD
 	ENDC
 	IF DEF(_BLUE)
 		db 24,BELLSPROUT
@@ -22,6 +22,6 @@ Route12Mons:;joenote - added farfetchd
 		db 27,PIDGEY
 		db 28,WEEPINBELL
 		db 30,WEEPINBELL
-		db 22,UNIQUE_GOLDEEN_FIGHTING ; rare unique species
+		db 22,FARFETCHD
 	ENDC
 	db $00

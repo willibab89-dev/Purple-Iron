@@ -10,7 +10,7 @@ Route4Mons:;joenote - added bubasaur
 		db 12,SPEAROW
 		db 8,EKANS
 		db 12,EKANS
-		db 10,UNIQUE_BULBASAUR_UNIQUE ; rare unique species
+		db 10,BULBASAUR
 	ENDC
 	IF DEF(_BLUE)
 		db 10,RATTATA
@@ -22,6 +22,6 @@ Route4Mons:;joenote - added bubasaur
 		db 12,SPEAROW
 		db 8,SANDSHREW
 		db 12,SANDSHREW
-		db 10,UNIQUE_BULBASAUR_UNIQUE ; rare unique species
+		db 10,BULBASAUR
 	ENDC
 	db $00

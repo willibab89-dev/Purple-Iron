@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 
 from pyboy import PyBoy
+from generate_unique_encounters import pools, render
 
 ROOT = Path(__file__).resolve().parents[1]
 SPECIES = json.loads((ROOT / "data/unique_species.json").read_text())
@@ -46,7 +47,8 @@ def validate(version):
         source = data("BaseStats", 28, (entry["base_dex"] - 1) * 28)
         assert clone[0] == entry["dex"]
         assert clone[1:6] == source[1:6], entry["symbol"]
-        assert clone[8:10] == source[8:10]
+        assert clone[8] == entry.get("catch_rate_override", source[8])
+        assert clone[9] == source[9]
         assert clone[15:] == source[15:]
         types = {"FIGHTING": 1, "POISON": 3, "ROCK": 5}
         expected_types = bytes([types[entry["type_override"]]] * 2) if entry["type_override"] else source[6:8]
@@ -163,9 +165,81 @@ def validate(version):
         assert not (game.register_file.F & 0x10), "save checksum failed"
         assert get("wPokedexOwned", 22) == owned
         assert get("wPokedexSeen", 22) == seen
+        assert (ROOT / "data/unique_encounters.asm").read_text() == render()
+        map_names = re.findall(r"^\s*mapconst\s+(\w+),", (ROOT / "constants/map_constants.asm").read_text(), re.M)
+        indexes = {entry["symbol"]: entry["index"] for entry in SPECIES}
+        habitat_pools = pools("_RED" if version == "pokered" else "_BLUE")
+        roll_bank, roll_address = syms["UniqueEncounterRoll100"]
+        roll_original = list(game.memory[roll_bank, roll_address:roll_address + 3])
+        # Exhaust all 100 possible rolls in every eligible map/terrain pool.
+        # Two overlapping variants must each occupy exactly one outcome.
+        for map_name, kind, variants in habitat_pools:
+            put("wCurMap", map_names.index(map_name))
+            for roll in range(100):
+                game.memory[roll_bank, roll_address:roll_address + 3] = [0x3e, roll, 0xc9]
+                call("ChooseUniqueEncounter", B=99, C=kind)
+                if roll < len(variants):
+                    level, species = variants[roll]
+                    assert game.register_file.F & 0x10
+                    assert (game.register_file.B, game.register_file.C) == (level, indexes[species])
+                else:
+                    assert not game.register_file.F & 0x10
+                    assert (game.register_file.B, game.register_file.C) == (99, kind)
+        # A matching map with an ineligible habitat must never change a mon.
+        put("wCurMap", map_names.index("VIRIDIAN_FOREST"))
+        call("ChooseUniqueEncounter", B=99, C=1)
+        assert not game.register_file.F & 0x10
+        assert (game.register_file.B, game.register_file.C) == (99, 1)
+        # Both real encounter wrappers must write the fields their callers use.
+        game.memory[roll_bank, roll_address:roll_address + 3] = [0x3e, 0, 0xc9]
+        tile = address("wTileMap") + 9 * 20 + 9
+        game.memory[tile] = 0
+        call("TryUniqueWildEncounter")
+        assert get("wcf91")[0] == indexes["UNIQUE_BULBASAUR_UNIQUE"]
+        assert get("wEnemyMonSpecies2")[0] == indexes["UNIQUE_BULBASAUR_UNIQUE"]
+        put("wCurMap", map_names.index("ROUTE_12"))
+        for rod, kind in ((0x4d, 2), (0x4e, 3)):
+            put("wcf91", rod)
+            put("wCurOpponent", 1)
+            expected = next(entries[0] for map_name, habitat, entries in habitat_pools if map_name == "ROUTE_12" and habitat == kind)
+            call("TryUniqueFishingEncounter")
+            assert get("wCurEnemyLVL")[0] == expected[0]
+            assert get("wCurOpponent")[0] == indexes[expected[1]]
+            assert get("wcf91")[0] == rod, "preserve the active rod item"
+        put("wcf91", 0x4c)
+        put("wCurOpponent", 133)  # original Magikarp internal ID
+        call("TryUniqueFishingEncounter")
+        assert get("wCurOpponent")[0] == 133
+        game.memory[roll_bank, roll_address:roll_address + 3] = roll_original
+        # Validate the real unbiased random reducer: each output has two
+        # accepted byte inputs, and a 200 input is rejected then retried.
+        random_bank, random_address = syms["Random"]
+        random_original = list(game.memory[random_bank, random_address:random_address + 6])
+        for byte in range(200):
+            game.memory[random_bank, random_address:random_address + 3] = [0x3e, byte, 0xc9]
+            call("UniqueEncounterRoll100")
+            assert game.register_file.A == byte % 100
+        # Incrementing test RNG emits 200..255, then 0; all high bytes must be rejected.
+        saved_scratch = game.memory[0xff80]
+        game.memory[0xff80] = 199
+        game.memory[random_bank, random_address:random_address + 6] = [0xf0, 0x80, 0x3c, 0xe0, 0x80, 0xc9]
+        call("UniqueEncounterRoll100")
+        assert game.register_file.A == 0 and game.memory[0xff80] == 0
+        game.memory[0xff80] = saved_scratch
+        game.memory[random_bank, random_address:random_address + 6] = random_original
+        # AREA must include precisely the new pools' maps, without duplicates.
+        expected_locations = {}
+        for map_name, kind, variants in habitat_pools:
+            for level, species in variants:
+                expected_locations.setdefault(species, set()).add(map_names.index(map_name))
+        for species, expected_maps in expected_locations.items():
+            put("wd11e", indexes[species])
+            call("FindWildLocationsOfMon")
+            raw = get("wBuffer", len(expected_maps) + 1)
+            assert raw[-1] == 255 and set(raw[:-1]) == expected_maps
     finally:
         game.stop(save=False)
-    print(f"{version}: 172 dex/header round-trips, 42 sprite decodes, 21 party additions, extended flags and SRAM save/load passed")
+    print(f"{version}: 172 dex/header round-trips, 42 sprite decodes, 21 party additions, expanded save/load; all 100 rolls in {len(habitat_pools)} encounter pools and AREA maps passed")
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ IslandMonsB4:
 		db 31,SLOWPOKE
 		db 29,SEEL
 		db 39,SLOWBRO
-		db 35,UNIQUE_BLASTOISE_UNIQUE ; rare unique species
+		db 32,GOLBAT
 	ENDC
 	IF DEF(_BLUE)
 		db 31,KRABBY
@@ -22,6 +22,6 @@ IslandMonsB4:
 		db 31,PSYDUCK
 		db 29,SEEL
 		db 39,GOLDUCK
-		db 35,UNIQUE_BLASTOISE_UNIQUE ; rare unique species
+		db 32,GOLBAT
 	ENDC
 	db $00

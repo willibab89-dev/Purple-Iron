@@ -2050,6 +2050,7 @@ RodResponse:
 	ld [wCurEnemyLVL], a
 	ld a, c ; species
 	ld [wCurOpponent], a
+	callba TryUniqueFishingEncounter
 
 .next
 	ld hl, wWalkBikeSurfState
@@ -3116,6 +3117,8 @@ ItemUseReloadOverworldData:
 ; creates a list at wBuffer of maps where the mon in [wd11e] can be found.
 ; this is used by the pokedex to display locations the mon can be found on the map.
 FindWildLocationsOfMon:
+	callba FindUniqueWildLocations
+	ret c
 	ld hl, WildDataPointers
 	ld de, wBuffer
 	ld c, $0

@@ -84,6 +84,7 @@ TryDoWildEncounter:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;joenote - expand the safari zone random encounters
 	callba GetRandMonSafari
+	callba TryUniqueWildEncounter
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;joenote - check for shiny DV attract conditions
 	callba ShinyAttractFunction

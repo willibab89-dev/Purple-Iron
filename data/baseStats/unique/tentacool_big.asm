@@ -6,7 +6,7 @@ db 70 ; base speed
 db 100 ; base special
 db WATER ; species type 1
 db POISON ; species type 2
-db 190 ; catch rate
+db 60 ; catch rate
 db 105 ; base exp yield
 INCBIN "pic/unique/tentacool_big.pic",0,1
 dw Unique20PicFront
