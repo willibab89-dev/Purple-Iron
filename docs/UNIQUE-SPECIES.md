@@ -12,7 +12,7 @@ Type overrides: Fighting Geodude and Fighting Goldeen are pure Fighting; Rock Ka
 
 Trainer variants are exclusive to the listed trainers. The requested habitats use a separate unbiased 1-in-100 roll per eligible variant, not the original 3/256 slot approximation. When habitats overlap, each variant keeps its own 1% share. The chance is per generated encounter/bite, not per step or rod cast. Ordinary encounter weights fill the remaining share.
 
-“Dark cave” is interpreted as Rock Tunnel, with Omanyte also kept in Safari Zone water. Cerulean means Cerulean City water, not Routes 24/25. New surfing pools in Cerulean City and the four Safari Zone areas use their existing local fishing species as ordinary encounters. Fishing variants use Good/Super Rod pools where eligible; Old Rod remains Magikarp-only. Land/surf and rod pools are checked separately, so Fighting Goldeen no longer appears in Route 12 grass. Tentacool and Geodude variants follow every matching original habitat; Kakuna follows the version-specific original land tables; Nidoran follows both genders' original land tables. Safari's postgame randomization runs before the unique roll so it does not reduce the new 1% chances. Repel still works normally.
+Unique Omanyte appears only on the two Rock Tunnel floors. Unique Squirtle appears only in grass on Routes 24/25. Cerulean City and Safari Zone surfing pools remain unchanged from the original version. Fishing variants use Good/Super Rod pools where eligible; Old Rod remains Magikarp-only. Land/surf and rod pools are checked separately, so Fighting Goldeen no longer appears in Route 12 grass. Tentacool and Geodude variants follow every matching original habitat; Kakuna follows the version-specific original land tables; Nidoran follows both genders' original land tables. Safari's postgame randomization runs before the unique roll so it does not reduce the new 1% chances. Repel still works normally.
 
 Unique Marowak and the second Nidoking retain their previous rarest-slot encounters (3/256, about 1.2%); their locations were not changed in this update.
 
@@ -32,10 +32,10 @@ Unique Marowak and the second Nidoking retain their previous rarest-slot encount
 | 163 | nidoking_unique | NIDOKING U | Giovanni, Viridian Gym (level 47) |
 | 164 | nidoking_unique2 | NIDOKING 2 | safarizone1 (level 30, grass/cave, rarest slot) |
 | 165 | nidoranm_unique | NIDORAN U | Every land table containing either Nidoran gender: 1% |
-| 166 | omanyte_unique | OMANYTE U | Safari Zone water (surfing/Good Rod/Super Rod) and both Rock Tunnel floors: 1% (level 20) |
+| 166 | omanyte_unique | OMANYTE U | Rock Tunnel, both floors: 1% land encounters (level 20) |
 | 167 | onix_brock | B.ONIX | Brock (level 15) |
 | 168 | raichu_unique | RAICHU U | Lt. Surge (level 25) |
-| 169 | squirtle_unique | SQUIRTLE U | Cerulean City water (surfing/Good Rod/Super Rod): 1% (level 10) |
+| 169 | squirtle_unique | SQUIRTLE U | Routes 24 and 25: 1% grass encounters (level 10) |
 | 170 | tangela_erika | E.TANGELA | Erika (level 29) |
 | 171 | tentacool_big | BIGTENTACL | Every habitat/rod pool containing normal Tentacool: 1%; catch rate 60 (normal 190) |
 | 172 | venusaur_erika | E.VENUSAUR | Erika (level 33) |

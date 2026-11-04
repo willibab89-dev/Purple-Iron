@@ -2,7 +2,7 @@ WildDataPointers:
 	dw NoMons      ; PALLET_TOWN
 	dw NoMons      ; VIRIDIAN_CITY
 	dw NoMons      ; PEWTER_CITY
-	dw CeruleanCityMons ; CERULEAN_CITY
+	dw NoMons      ; CERULEAN_CITY
 	dw NoMons      ; LAVENDER_TOWN
 	dw NoMons      ; VERMILION_CITY
 	dw NoMons      ; CELADON_CITY
@@ -319,5 +319,3 @@ INCLUDE "data/wildPokemon/victoryroad2.asm"
 INCLUDE "data/wildPokemon/victoryroad3.asm"
 INCLUDE "data/wildPokemon/victoryroad1.asm"
 INCLUDE "data/wildPokemon/diglettscave.asm"
-
-INCLUDE "data/wildPokemon/ceruleancity.asm"

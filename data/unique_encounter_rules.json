@@ -101,21 +101,6 @@
   {
     "species": "UNIQUE_OMANYTE_UNIQUE",
     "kinds": [
-      1,
-      2,
-      3
-    ],
-    "maps": [
-      "SAFARI_ZONE_EAST",
-      "SAFARI_ZONE_NORTH",
-      "SAFARI_ZONE_WEST",
-      "SAFARI_ZONE_CENTER"
-    ],
-    "level": 20
-  },
-  {
-    "species": "UNIQUE_OMANYTE_UNIQUE",
-    "kinds": [
       0
     ],
     "maps": [
@@ -127,12 +112,11 @@
   {
     "species": "UNIQUE_SQUIRTLE_UNIQUE",
     "kinds": [
-      1,
-      2,
-      3
+      0
     ],
     "maps": [
-      "CERULEAN_CITY"
+      "ROUTE_24",
+      "ROUTE_25"
     ],
     "level": 10
   }

@@ -192,7 +192,7 @@
     "display_name": "OMANYTE U",
     "front": "pic/unique/omanyte_unique.png",
     "type_override": null,
-    "availability": "Safari Zone water (surfing/Good Rod/Super Rod) and both Rock Tunnel floors: 1% (level 20)"
+    "availability": "Rock Tunnel, both floors: 1% land encounters (level 20)"
   },
   {
     "symbol": "UNIQUE_ONIX_BROCK",
@@ -231,7 +231,7 @@
     "display_name": "SQUIRTLE U",
     "front": "pic/unique/squirtle_unique.png",
     "type_override": null,
-    "availability": "Cerulean City water (surfing/Good Rod/Super Rod): 1% (level 10)"
+    "availability": "Routes 24 and 25: 1% grass encounters (level 10)"
   },
   {
     "symbol": "UNIQUE_TANGELA_ERIKA",

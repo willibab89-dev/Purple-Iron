@@ -169,6 +169,13 @@ def validate(version):
         map_names = re.findall(r"^\s*mapconst\s+(\w+),", (ROOT / "constants/map_constants.asm").read_text(), re.M)
         indexes = {entry["symbol"]: entry["index"] for entry in SPECIES}
         habitat_pools = pools("_RED" if version == "pokered" else "_BLUE")
+        for species, expected_habitats in (
+            ("UNIQUE_OMANYTE_UNIQUE", {("ROCK_TUNNEL_1", 0), ("ROCK_TUNNEL_2", 0)}),
+            ("UNIQUE_SQUIRTLE_UNIQUE", {("ROUTE_24", 0), ("ROUTE_25", 0)}),
+        ):
+            actual = {(map_name, kind) for map_name, kind, entries in habitat_pools
+                      if any(name == species for level, name in entries)}
+            assert actual == expected_habitats, (species, actual)
         roll_bank, roll_address = syms["UniqueEncounterRoll100"]
         roll_original = list(game.memory[roll_bank, roll_address:roll_address + 3])
         # Exhaust all 100 possible rolls in every eligible map/terrain pool.

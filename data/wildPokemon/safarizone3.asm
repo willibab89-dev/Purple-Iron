@@ -24,14 +24,4 @@ ZoneMons3:;joenote - added mr mime & tweaked encounter tables
 		db 26,TAUROS
 		db 28,KANGASKHAN
 	ENDC
-	db $05
-	db 15,DRATINI
-	db 15,LAPRAS
-	db 15,PSYDUCK
-	db 15,SLOWPOKE
-	db 15,DRATINI
-	db 15,LAPRAS
-	db 15,PSYDUCK
-	db 15,SLOWPOKE
-	db 15,PSYDUCK
-	db 15,SLOWPOKE
+	db $00

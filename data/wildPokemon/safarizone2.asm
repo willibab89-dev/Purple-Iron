@@ -14,15 +14,5 @@ ZoneMons2:;joenote - added jynx & tweaked encounter tables
 	db 32,VENOMOTH
 	db 27,JYNX
 	db 26,CHANSEY
-	db 28,TAUROS
-	db $05
-	db 15,DRATINI
-	db 15,LAPRAS
-	db 15,PSYDUCK
-	db 15,SLOWPOKE
-	db 15,DRATINI
-	db 15,LAPRAS
-	db 15,PSYDUCK
-	db 15,SLOWPOKE
-	db 15,PSYDUCK
-	db 15,SLOWPOKE
+	db 26,UNIQUE_CHANSEY_UNIQUE ; rare unique species
+	db $00
