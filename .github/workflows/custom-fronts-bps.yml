@@ -1,0 +1,57 @@
+name: Custom front sprite BPS patches
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master, main, audio_dev, custom-front-sprites]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  patches:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential bison flex pkg-config libpng-dev python3
+      - name: Build pinned tools and verified original ROMs
+        shell: bash
+        run: |
+          set -euo pipefail
+          fetch() {
+            git init "$2"
+            git -C "$2" remote add origin "https://github.com/$1.git"
+            git -C "$2" fetch --depth 1 origin "$3"
+            git -C "$2" checkout --detach FETCH_HEAD
+            test "$(git -C "$2" rev-parse HEAD)" = "$3"
+          }
+          fetch gbdev/rgbds "$RUNNER_TEMP/rgbds-old" 193cc06561775b9eaa5d63d19ffed8cdec9cb3d8
+          make -C "$RUNNER_TEMP/rgbds-old" -j2 YACC=bison CFLAGS='-O2 -fcommon' WARNFLAGS=-Wall PREFIX="$RUNNER_TEMP/old" install
+          fetch gbdev/rgbds "$RUNNER_TEMP/rgbds-modern" f7b8207322aa9e3714ef0d98d01989f320103026
+          make -C "$RUNNER_TEMP/rgbds-modern" -j2 PREFIX="$RUNNER_TEMP/modern" install
+          fetch pret/pokered "$RUNNER_TEMP/originals" 0dbf95cd12f5b1511c62ce69efe283000f780a8f
+          make -C "$RUNNER_TEMP/originals" -j2 RGBDS="$RUNNER_TEMP/modern/bin/" red blue
+          fetch Alcaro/Flips "$RUNNER_TEMP/flips" ff216a75df0987047a67d7923567dc4482ce07ac
+          make -C "$RUNNER_TEMP/flips" -j2 TARGET=cli
+      - name: Build custom ROMs and test patches
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$RUNNER_TEMP/old/bin:$PATH"
+          make -j2 red blue
+          python3 tools/package_bps.py --originals "$RUNNER_TEMP/originals" --output "$RUNNER_TEMP/patches" --flips "$RUNNER_TEMP/flips/flips"
+      - name: Upload patches and Windows guide only
+        uses: actions/upload-artifact@v4
+        with:
+          name: pokemon-custom-fronts-bps
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/patches/*.bps
+            ${{ runner.temp }}/patches/CHECKSUMS.txt
+            ${{ runner.temp }}/patches/WINDOWS-PATCHING.md
