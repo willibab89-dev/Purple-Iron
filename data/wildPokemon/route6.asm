@@ -10,7 +10,7 @@ Route6Mons:;joenote - added squirtle
 		db 16,PIDGEY
 		db 14,MANKEY
 		db 16,MANKEY
-		db 10,SQUIRTLE
+		db 12,UNIQUE_SQUIRTLE_UNIQUE ; rare unique species
 	ENDC
 	IF DEF(_BLUE)
 		db 13,BELLSPROUT
@@ -22,6 +22,6 @@ Route6Mons:;joenote - added squirtle
 		db 16,PIDGEY
 		db 14,MEOWTH
 		db 16,MEOWTH
-		db 10,SQUIRTLE
+		db 12,UNIQUE_SQUIRTLE_UNIQUE ; rare unique species
 	ENDC
 	db $00

@@ -39,6 +39,9 @@ def package(originals, targets, output, flips):
     (output / "CHECKSUMS.txt").write_text("\n".join(checksums), encoding="utf-8")
     guide = Path(__file__).resolve().parents[1] / "docs" / "WINDOWS-PATCHING.md"
     (output / "WINDOWS-PATCHING.md").write_bytes(guide.read_bytes())
+    unique_guide = guide.with_name("UNIQUE-SPECIES.md")
+    if unique_guide.is_file():
+        (output / unique_guide.name).write_bytes(unique_guide.read_bytes())
 
 
 if __name__ == "__main__":

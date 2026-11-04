@@ -10,7 +10,7 @@ ZoneMons1:;joenote - added lickitung & tweaked encounter tables
 		db 28,SCYTHER
 		db 22,LICKITUNG
 		db 25,KANGASKHAN
-		db 25,PARASECT
+		db 30,UNIQUE_NIDOKING_UNIQUE2 ; rare unique species
 	ENDC
 	IF DEF(_BLUE)
 		db 24,NIDORAN_F
@@ -22,6 +22,6 @@ ZoneMons1:;joenote - added lickitung & tweaked encounter tables
 		db 28,PINSIR
 		db 22,LICKITUNG
 		db 25,KANGASKHAN
-		db 25,PARASECT
+		db 30,UNIQUE_NIDOKING_UNIQUE2 ; rare unique species
 	ENDC
 	db $00

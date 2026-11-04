@@ -19,5 +19,5 @@ Route23Mons:
 	ENDC
 	db 43,DITTO
 	db 41,FEAROW
-	db 43,FEAROW
+	db 33,UNIQUE_DITTO_HAPPY ; rare unique species
 	db $00

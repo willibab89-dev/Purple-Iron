@@ -28,8 +28,20 @@ DirectorText:
 
 	; check pokédex
 	ld hl, wPokedexOwned
-	ld b, wPokedexOwnedEnd - wPokedexOwned
+	ld b, 18
 	call CountSetBits
+	ld a, [wPokedexOwned + 18]
+	and $3f ; original dex 145-150; Mew remains optional
+	ld c, a
+	ld b, 6
+.countOriginalTail
+	srl c
+	jr nc, .skipOriginalBit
+	ld hl, wNumSetBits
+	inc [hl]
+.skipOriginalBit
+	dec b
+	jr nz, .countOriginalTail
 	ld a, [wNumSetBits]
 	cp 150
 	jr nc, .CompletedDex

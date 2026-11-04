@@ -219,6 +219,9 @@ StorePKMNLevels:
 ;takes its atk dv in e
 ;symbol is returned in d --> ;$F5 for female and $EF for male
 DetermineMonGender:
+	ld a, d
+	call UniqueSpeciesToOriginal
+	ld d, a
 	xor a
 	ld b, a
 	ld hl, ListByGenderRatio
@@ -315,3 +318,49 @@ DetermineMonGender:
 ;	call ResetRandomShowItem
 ;	call ResetRandomHiddenItem
 ;	ret
+
+UniqueSpeciesSourceIDs:
+	db UNIQUE_BLASTOISE_UNIQUE, BLASTOISE
+	db UNIQUE_BULBASAUR_UNIQUE, BULBASAUR
+	db UNIQUE_CHANSEY_UNIQUE, CHANSEY
+	db UNIQUE_CHARMANDER_UNIQUE, CHARMANDER
+	db UNIQUE_DITTO_HAPPY, DITTO
+	db UNIQUE_GEODUDE_FIGHTING, GEODUDE
+	db UNIQUE_GOLDEEN_FIGHTING, GOLDEEN
+	db UNIQUE_GRIMER_POISON, GRIMER
+	db UNIQUE_IVYSAUR_ERIKA, IVYSAUR
+	db UNIQUE_KAKUNA_ROCK_TYPE, KAKUNA
+	db UNIQUE_MAROWAK_UNIQUE, MAROWAK
+	db UNIQUE_NIDOKING_UNIQUE, NIDOKING
+	db UNIQUE_NIDOKING_UNIQUE2, NIDOKING
+	db UNIQUE_NIDORANM_UNIQUE, NIDORAN_M
+	db UNIQUE_OMANYTE_UNIQUE, OMANYTE
+	db UNIQUE_ONIX_BROCK, ONIX
+	db UNIQUE_RAICHU_UNIQUE, RAICHU
+	db UNIQUE_SQUIRTLE_UNIQUE, SQUIRTLE
+	db UNIQUE_TANGELA_ERIKA, TANGELA
+	db UNIQUE_TENTACOOL_BIG, TENTACOOL
+	db UNIQUE_VENUSAUR_ERIKA, VENUSAUR
+
+; Return the source species in a, preserving other registers.
+UniqueSpeciesToOriginal:
+ push bc
+ push hl
+ ld b, a
+ ld hl, UniqueSpeciesSourceIDs
+ ld c, 21
+.loop
+ ld a, [hli]
+ cp b
+ jr z, .found
+ inc hl
+ dec c
+ jr nz, .loop
+ ld a, b
+ jr .done
+.found
+ ld a, [hl]
+.done
+ pop hl
+ pop bc
+ ret

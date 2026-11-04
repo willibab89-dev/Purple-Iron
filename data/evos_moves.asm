@@ -32,8 +32,8 @@ EvosMovesPointerTable:
 	dw BlastoiseEvosMoves
 	dw PinsirEvosMoves
 	dw TangelaEvosMoves
-	dw MissingNo1FEvosMoves
-	dw MissingNo20EvosMoves
+	dw BlastoiseEvosMoves ; UNIQUE_BLASTOISE_UNIQUE
+	dw BulbasaurEvosMoves ; UNIQUE_BULBASAUR_UNIQUE
 	dw GrowlitheEvosMoves
 	dw OnixEvosMoves
 	dw FearowEvosMoves
@@ -51,26 +51,26 @@ EvosMovesPointerTable:
 	dw PsyduckEvosMoves
 	dw DrowzeeEvosMoves
 	dw GolemEvosMoves
-	dw MissingNo32EvosMoves
+	dw ChanseyEvosMoves ; UNIQUE_CHANSEY_UNIQUE
 	dw MagmarEvosMoves
-	dw MissingNo34EvosMoves
+	dw CharmanderEvosMoves ; UNIQUE_CHARMANDER_UNIQUE
 	dw ElectabuzzEvosMoves
 	dw MagnetonEvosMoves
 	dw KoffingEvosMoves
-	dw MissingNo38EvosMoves
+	dw DittoEvosMoves ; UNIQUE_DITTO_HAPPY
 	dw MankeyEvosMoves
 	dw SeelEvosMoves
 	dw DiglettEvosMoves
 	dw TaurosEvosMoves
-	dw MissingNo3DEvosMoves
-	dw MissingNo3EEvosMoves
-	dw MissingNo3FEvosMoves
+	dw GeodudeEvosMoves ; UNIQUE_GEODUDE_FIGHTING
+	dw GoldeenEvosMoves ; UNIQUE_GOLDEEN_FIGHTING
+	dw GrimerEvosMoves ; UNIQUE_GRIMER_POISON
 	dw FarfetchdEvosMoves
 	dw VenonatEvosMoves
 	dw DragoniteEvosMoves
-	dw MissingNo43EvosMoves
-	dw MissingNo44EvosMoves
-	dw MissingNo45EvosMoves
+	dw IvysaurEvosMoves ; UNIQUE_IVYSAUR_ERIKA
+	dw KakunaEvosMoves ; UNIQUE_KAKUNA_ROCK_TYPE
+	dw MarowakEvosMoves ; UNIQUE_MAROWAK_UNIQUE
 	dw DoduoEvosMoves
 	dw PoliwagEvosMoves
 	dw JynxEvosMoves
@@ -80,23 +80,23 @@ EvosMovesPointerTable:
 	dw DittoEvosMoves
 	dw MeowthEvosMoves
 	dw KrabbyEvosMoves
-	dw MissingNo4FEvosMoves
-	dw MissingNo50EvosMoves
-	dw MissingNo51EvosMoves
+	dw NidokingEvosMoves ; UNIQUE_NIDOKING_UNIQUE
+	dw NidokingEvosMoves ; UNIQUE_NIDOKING_UNIQUE2
+	dw NidoranMEvosMoves ; UNIQUE_NIDORANM_UNIQUE
 	dw VulpixEvosMoves
 	dw NinetalesEvosMoves
 	dw PikachuEvosMoves
 	dw RaichuEvosMoves
-	dw MissingNo56EvosMoves
-	dw MissingNo57EvosMoves
+	dw OmanyteEvosMoves ; UNIQUE_OMANYTE_UNIQUE
+	dw OnixEvosMoves ; UNIQUE_ONIX_BROCK
 	dw DratiniEvosMoves
 	dw DragonairEvosMoves
 	dw KabutoEvosMoves
 	dw KabutopsEvosMoves
 	dw HorseaEvosMoves
 	dw SeadraEvosMoves
-	dw MissingNo5EEvosMoves
-	dw MissingNo5FEvosMoves
+	dw RaichuEvosMoves ; UNIQUE_RAICHU_UNIQUE
+	dw SquirtleEvosMoves ; UNIQUE_SQUIRTLE_UNIQUE
 	dw SandshrewEvosMoves
 	dw SandslashEvosMoves
 	dw OmanyteEvosMoves
@@ -116,14 +116,14 @@ EvosMovesPointerTable:
 	dw WeedleEvosMoves
 	dw KakunaEvosMoves
 	dw BeedrillEvosMoves
-	dw MissingNo73EvosMoves
+	dw TangelaEvosMoves ; UNIQUE_TANGELA_ERIKA
 	dw DodrioEvosMoves
 	dw PrimeapeEvosMoves
 	dw DugtrioEvosMoves
 	dw VenomothEvosMoves
 	dw DewgongEvosMoves
-	dw MissingNo79EvosMoves
-	dw MissingNo7AEvosMoves
+	dw TentacoolEvosMoves ; UNIQUE_TENTACOOL_BIG
+	dw VenusaurEvosMoves ; UNIQUE_VENUSAUR_ERIKA
 	dw CaterpieEvosMoves
 	dw MetapodEvosMoves
 	dw ButterfreeEvosMoves

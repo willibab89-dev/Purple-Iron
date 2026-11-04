@@ -9,5 +9,5 @@ TunnelMonsB1:;joenote - added cubone
 	db 15,CUBONE
 	db 17,MACHOP
 	db 13,ONIX
-	db 15,ONIX
+	db 16,UNIQUE_GEODUDE_FIGHTING ; rare unique species
 	db $00

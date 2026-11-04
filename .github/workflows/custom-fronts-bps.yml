@@ -1,9 +1,9 @@
-name: Custom front sprite BPS patches
+name: Unique species BPS patches
 
 on:
   workflow_dispatch:
   push:
-    branches: [master, main, audio_dev, custom-front-sprites]
+    branches: [master, main, audio_dev, custom-front-sprites, unique-species]
   pull_request:
 
 permissions:
@@ -45,13 +45,18 @@ jobs:
           export PATH="$RUNNER_TEMP/old/bin:$PATH"
           make -j2 red blue
           python3 tools/package_bps.py --originals "$RUNNER_TEMP/originals" --output "$RUNNER_TEMP/patches" --flips "$RUNNER_TEMP/flips/flips"
+      - name: Test the 172-species engine in PyBoy
+        run: |
+          python3 -m pip install pyboy==2.9.0
+          python3 tools/test_unique_species.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
-          name: pokemon-custom-fronts-bps
+          name: pokemon-unique-species-bps
           retention-days: 30
           if-no-files-found: error
           path: |
             ${{ runner.temp }}/patches/*.bps
             ${{ runner.temp }}/patches/CHECKSUMS.txt
             ${{ runner.temp }}/patches/WINDOWS-PATCHING.md
+            ${{ runner.temp }}/patches/UNIQUE-SPECIES.md

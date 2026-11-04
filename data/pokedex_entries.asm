@@ -29,8 +29,8 @@ PokedexEntryPointers:
 	dw BlastoiseDexEntry
 	dw PinsirDexEntry
 	dw TangelaDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw BlastoiseDexEntry ; UNIQUE_BLASTOISE_UNIQUE
+	dw BulbasaurDexEntry ; UNIQUE_BULBASAUR_UNIQUE
 	dw GrowlitheDexEntry
 	dw OnixDexEntry
 	dw FearowDexEntry
@@ -48,26 +48,26 @@ PokedexEntryPointers:
 	dw PsyduckDexEntry
 	dw DrowzeeDexEntry
 	dw GolemDexEntry
-	dw MissingNoDexEntry
+	dw ChanseyDexEntry ; UNIQUE_CHANSEY_UNIQUE
 	dw MagmarDexEntry
-	dw MissingNoDexEntry
+	dw CharmanderDexEntry ; UNIQUE_CHARMANDER_UNIQUE
 	dw ElectabuzzDexEntry
 	dw MagnetonDexEntry
 	dw KoffingDexEntry
-	dw MissingNoDexEntry
+	dw DittoDexEntry ; UNIQUE_DITTO_HAPPY
 	dw MankeyDexEntry
 	dw SeelDexEntry
 	dw DiglettDexEntry
 	dw TaurosDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw GeodudeDexEntry ; UNIQUE_GEODUDE_FIGHTING
+	dw GoldeenDexEntry ; UNIQUE_GOLDEEN_FIGHTING
+	dw GrimerDexEntry ; UNIQUE_GRIMER_POISON
 	dw FarfetchdDexEntry
 	dw VenonatDexEntry
 	dw DragoniteDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw IvysaurDexEntry ; UNIQUE_IVYSAUR_ERIKA
+	dw KakunaDexEntry ; UNIQUE_KAKUNA_ROCK_TYPE
+	dw MarowakDexEntry ; UNIQUE_MAROWAK_UNIQUE
 	dw DoduoDexEntry
 	dw PoliwagDexEntry
 	dw JynxDexEntry
@@ -77,23 +77,23 @@ PokedexEntryPointers:
 	dw DittoDexEntry
 	dw MeowthDexEntry
 	dw KrabbyDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw NidokingDexEntry ; UNIQUE_NIDOKING_UNIQUE
+	dw NidokingDexEntry ; UNIQUE_NIDOKING_UNIQUE2
+	dw NidoranMDexEntry ; UNIQUE_NIDORANM_UNIQUE
 	dw VulpixDexEntry
 	dw NinetalesDexEntry
 	dw PikachuDexEntry
 	dw RaichuDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw OmanyteDexEntry ; UNIQUE_OMANYTE_UNIQUE
+	dw OnixDexEntry ; UNIQUE_ONIX_BROCK
 	dw DratiniDexEntry
 	dw DragonairDexEntry
 	dw KabutoDexEntry
 	dw KabutopsDexEntry
 	dw HorseaDexEntry
 	dw SeadraDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw RaichuDexEntry ; UNIQUE_RAICHU_UNIQUE
+	dw SquirtleDexEntry ; UNIQUE_SQUIRTLE_UNIQUE
 	dw SandshrewDexEntry
 	dw SandslashDexEntry
 	dw OmanyteDexEntry
@@ -113,14 +113,14 @@ PokedexEntryPointers:
 	dw WeedleDexEntry
 	dw KakunaDexEntry
 	dw BeedrillDexEntry
-	dw MissingNoDexEntry
+	dw TangelaDexEntry ; UNIQUE_TANGELA_ERIKA
 	dw DodrioDexEntry
 	dw PrimeapeDexEntry
 	dw DugtrioDexEntry
 	dw VenomothDexEntry
 	dw DewgongDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw TentacoolDexEntry ; UNIQUE_TENTACOOL_BIG
+	dw VenusaurDexEntry ; UNIQUE_VENUSAUR_ERIKA
 	dw CaterpieDexEntry
 	dw MetapodDexEntry
 	dw ButterfreeDexEntry

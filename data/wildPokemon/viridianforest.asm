@@ -21,5 +21,5 @@ ForestMons:
 		db 3,WEEDLE
 	ENDC
 	db 3,PIKACHU
-	db 5,PIKACHU
+	db 6,UNIQUE_KAKUNA_ROCK_TYPE ; rare unique species
 	db $00

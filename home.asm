@@ -744,6 +744,16 @@ UncompressMonSprite::
 ; define (by index number) the bank that a pokemon's image is in
 	ld a, [wcf91] ; XXX name for this ram location
 	ld b, a
+	ld hl, UniqueSpeciesSpriteIDs
+	ld c, 21
+.uniqueSpriteLoop
+	ld a, [hli]
+	cp b
+	ld a, BANK(Unique1PicFront)
+	jr z, .GotBank
+	dec c
+	jr nz, .uniqueSpriteLoop
+	ld a, b
 	cp MEW
 	ld a, BANK(MewPicFront)
 	jr z, .GotBank
@@ -774,6 +784,9 @@ UncompressMonSprite::
 	ld a, BANK(VictreebelPicFront)
 .GotBank
 	jp UncompressSpriteData
+
+UniqueSpeciesSpriteIDs:
+	db UNIQUE_BLASTOISE_UNIQUE, UNIQUE_BULBASAUR_UNIQUE, UNIQUE_CHANSEY_UNIQUE, UNIQUE_CHARMANDER_UNIQUE, UNIQUE_DITTO_HAPPY, UNIQUE_GEODUDE_FIGHTING, UNIQUE_GOLDEEN_FIGHTING, UNIQUE_GRIMER_POISON, UNIQUE_IVYSAUR_ERIKA, UNIQUE_KAKUNA_ROCK_TYPE, UNIQUE_MAROWAK_UNIQUE, UNIQUE_NIDOKING_UNIQUE, UNIQUE_NIDOKING_UNIQUE2, UNIQUE_NIDORANM_UNIQUE, UNIQUE_OMANYTE_UNIQUE, UNIQUE_ONIX_BROCK, UNIQUE_RAICHU_UNIQUE, UNIQUE_SQUIRTLE_UNIQUE, UNIQUE_TANGELA_ERIKA, UNIQUE_TENTACOOL_BIG, UNIQUE_VENUSAUR_ERIKA
 
 ; de: destination location
 LoadMonFrontSprite::

@@ -10,7 +10,7 @@ Route24Mons:;joenote - added oddish/bellsprout
 		db 13,PIDGEY
 		db 8,ABRA
 		db 12,ABRA
-		db 12,BELLSPROUT
+		db 12,UNIQUE_CHARMANDER_UNIQUE ; rare unique species
 	ENDC
 	IF DEF(_BLUE)
 		db 7,CATERPIE
@@ -22,6 +22,6 @@ Route24Mons:;joenote - added oddish/bellsprout
 		db 13,PIDGEY
 		db 8,ABRA
 		db 12,ABRA
-		db 12,ODDISH
+		db 12,UNIQUE_CHARMANDER_UNIQUE ; rare unique species
 	ENDC
 	db $00

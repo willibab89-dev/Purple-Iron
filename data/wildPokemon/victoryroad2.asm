@@ -9,5 +9,5 @@ PlateauMons2:
 	db 41,MACHOKE
 	db 40,GOLBAT
 	db 40,MAROWAK
-	db 43,GRAVELER
+	db 40,UNIQUE_MAROWAK_UNIQUE ; rare unique species
 	db $00
