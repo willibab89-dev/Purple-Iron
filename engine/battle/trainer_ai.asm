@@ -395,10 +395,11 @@ AIMoveChoiceModification1:
 	cp LEECH_SEED_EFFECT
 	jr z, .checkseed
 	jr .endstacking
-.checkfocus	;check status, and heavily discourage if bit is set
-	ld a, [wEnemyBattleStatus2]
-	bit GETTING_PUMPED, a
-	jp nz, .heavydiscourage
+.checkfocus ; Focus Energy can stack until x4
+	ld a, [wEnemyBattleStatus3]
+	and FOCUS_BOOST_MASK
+	cp FOCUS_BOOST_MASK
+	jp z, .heavydiscourage
 	jr .endstacking
 .checkscreen ;check status, and heavily discourage if bit is set
 	ld a, [wEnemyBattleStatus3]
@@ -1510,10 +1511,11 @@ AIUseGuardSpec:
 	ld a, GUARD_SPEC
 	jp AIPrintItemUse
 
-AIUseDireHit: 
+AIUseDireHit:
+	ld de, wEnemyBattleStatus2
+	callba RaiseFocusEnergyBoost
+	ret nc
 	call AIPlayRestoringSFX
-	ld hl, wEnemyBattleStatus2
-	set 2, [hl]
 	ld a, DIRE_HIT
 	jp AIPrintItemUse
 

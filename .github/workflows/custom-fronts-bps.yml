@@ -45,10 +45,11 @@ jobs:
           export PATH="$RUNNER_TEMP/old/bin:$PATH"
           make -j2 red blue
           python3 tools/package_bps.py --originals "$RUNNER_TEMP/originals" --output "$RUNNER_TEMP/patches" --flips "$RUNNER_TEMP/flips/flips"
-      - name: Test the 172-species engine in PyBoy
+      - name: Test species, encounters and critical hits in PyBoy
         run: |
           python3 -m pip install pyboy==2.9.0
           python3 tools/test_unique_species.py
+          python3 tools/test_critical_hits.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:

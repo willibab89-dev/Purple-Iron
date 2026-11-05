@@ -2162,3 +2162,5 @@ INCLUDE "engine/gamefreak.asm"	;gbcnote - moved here to make space
 INCLUDE "data/unique_pics.asm"
 
 INCLUDE "engine/unique_encounters.asm"
+
+INCLUDE "engine/battle/critical_boost.asm"

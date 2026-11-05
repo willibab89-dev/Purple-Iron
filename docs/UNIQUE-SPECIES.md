@@ -40,6 +40,23 @@ Unique Marowak and the second Nidoking retain their previous rarest-slot encount
 | 171 | tentacool_big | BIGTENTACL | Every habitat/rod pool containing normal Tentacool: 1%; catch rate 60 (normal 190) |
 | 172 | venusaur_erika | E.VENUSAUR | Erika (level 33) |
 
+## Critical-hit balance
+
+Normal critical chance is unchanged: `floor(base Speed / 2) / 256`. Karate Chop, Razor Leaf, Crabhammer and Slash now multiply that threshold by 2 instead of 8. Focus Energy and Dire Hit share a counter: first successful use gives x2, second gives x3, third gives x4. Mixing the move and item advances the same counter. Further Focus Energy uses fail; a capped Dire Hit has no effect and is not consumed. The enemy uses the same rules, and its AI only treats Focus Energy as capped at x4.
+
+The focus multiplier stacks multiplicatively with a high-crit move, for a maximum combined x8. The existing 255/256 (about 99.6%) probability cap remains: a fast Pokémon with both boosts can still reach that cap. No new cap on actual probability is imposed.
+
+| Base Speed 100 | Normal move | High-crit move |
+| --- | --- | --- |
+| No focus | 50/256 (19.5%) | 100/256 (39.1%) |
+| One use (x2) | 100/256 (39.1%) | 200/256 (78.1%) |
+| Two uses (x3) | 150/256 (58.6%) | 255/256 (99.6%) |
+| Three uses (x4) | 200/256 (78.1%) | 255/256 (99.6%) |
+
+Switching, replacement after fainting, starting a new battle, and Haze reset the shared boost. The counter uses previously unused volatile battle-status bits, so this update adds no WRAM bytes or save-layout changes. Status moves and fixed-damage moves still cannot critically hit. Critical damage itself is unchanged.
+
+Run `python3 tools/test_critical_hits.py` with PyBoy installed. It checks 10,240 thresholds per ROM across every base Speed value, both sides, all four high-crit moves and all focus stages; exhausts the RNG range for representative normal/high-crit attacks; and tests mixed move/item uses, cap behavior, Haze, initialization and the actual send-out reset instructions. Text and audio endpoints are stubbed in memory for these engine tests; ROM files are not modified by the test harness.
+
 ## Build and validation
 
 Build with the project's pinned RGBDS 0.3.3 toolchain and `make -j2 red blue`. Both ROMs remain 1 MiB. New front and original back graphics are stored together in bank $32; only the new species use this bank lookup. Source PNGs are retained unchanged in `pic/unique/source/`; the import PNGs composite transparency over white and pad Geodude from 46×46 to 48×48 without scaling its pixels.

@@ -30,3 +30,8 @@ BADLY_POISONED      EQU 0
 HAS_LIGHT_SCREEN_UP EQU 1
 HAS_REFLECT_UP      EQU 2
 TRANSFORMED         EQU 3
+
+; Successful Focus Energy/Dire Hit uses, 0..3, in unused status-3 bits.
+; The crit multiplier is 1 + this count (1x, 2x, 3x, 4x).
+FOCUS_BOOST_MASK EQU %00110000
+FOCUS_BOOST_STEP EQU %00010000

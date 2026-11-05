@@ -1777,6 +1777,7 @@ wPlayerBattleStatus3:: ; d064
 ; bit 1 - light screen
 ; bit 2 - reflect
 ; bit 3 - transformed
+; bits 4-5 - Focus Energy/Dire Hit uses (0..3, giving x1..x4)
 	ds 1
 
 wEnemyStatsToDouble:: ; d065

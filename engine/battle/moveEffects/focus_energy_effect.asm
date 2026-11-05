@@ -5,9 +5,10 @@ FocusEnergyEffect_:
 	jr z, .notEnemy
 	ld hl, wEnemyBattleStatus2
 .notEnemy
-	bit GETTING_PUMPED, [hl] ; is mon already using focus energy?
-	jr nz, .alreadyUsing
-	set GETTING_PUMPED, [hl] ; mon is now using focus energy
+	ld d, h
+	ld e, l
+	callba RaiseFocusEnergyBoost
+	jr nc, .alreadyUsing ; fail only when already at x4
 	callab PlayCurrentMoveAnimation
 	ld hl, GettingPumpedText
 	jp PrintText

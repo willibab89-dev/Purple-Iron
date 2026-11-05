@@ -1780,8 +1780,9 @@ ItemUseDireHit:
 	ld a, [wIsInBattle]
 	and a
 	jp z, ItemUseNotTime
-	ld hl, wPlayerBattleStatus2
-	set GETTING_PUMPED, [hl] ; Focus Energy bit
+	ld de, wPlayerBattleStatus2
+	callba RaiseFocusEnergyBoost
+	jp nc, ItemUseNoEffect ; capped: do not consume the item or turn
 	jp PrintItemUseTextAndRemoveItem
 
 ItemUseXStat:

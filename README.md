@@ -216,7 +216,7 @@ Girl Trainer
 
 	
 - Move fixes
-  - dire hit/focus energy now quadruples crit rate instead of quarters
+  - Dire Hit/Focus Energy fixes the original quarter-rate bug; this version stacks their shared crit boost through ×2, ×3 and ×4
   - sleep now normal-chance hits a pkmn recharging from hyperbeam, but has no effect if it's already status-effected
   - the fly/dig invulnerability bit is cleared when a pkmn hurts itself from confusion or is fully paralyzed
   - psywave damage is always min 1 be it an opponent or yourself (prevents desync)

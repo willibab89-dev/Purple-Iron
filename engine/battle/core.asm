@@ -5022,8 +5022,8 @@ CriticalHitTest:
 	ld de, wEnemyBattleStatus2
 .calcCriticalHitProbability
 ;normal hit is (base speed) / 2
-;focus energy is 2*(base speed) for a 4x crit rate
-;high crit move is 4*(base speed) for a 8x crit rate
+;Focus Energy/Dire Hit multiplies the base threshold by 2, 3, or 4.
+;High-crit moves multiply that threshold by 2, including when focused.
 ;;;;;;;;;;;;
 ;joenote - do not do a critical hit if a special damage move is being used (dragon rage, seismic toss, etc)
 	cp SPECIAL_DAMAGE_EFFECT
@@ -5038,11 +5038,19 @@ CriticalHitTest:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	bit GETTING_PUMPED, a        ; test for focus energy
 	jr z, .noFocusEnergyUsed	 ;if getting pumped bit not set, then focus energy not used
-	;else focus energy was used
-	sla b						 ;*2 for focus energy (effective +2x crit rate)
+	inc de ; corresponding BattleStatus3
+	ld a, [de]
+	and FOCUS_BOOST_MASK
+	jr z, .noFocusEnergyUsed
+	swap a ; number of extra base thresholds to add (1..3)
+	ld h, a
+	ld a, b
+.focusMultiply
+	add b
 	jr c, .capcritical
-	sla b						 ;*2 again for focus energy (effective +4x crit rate)
-	jr c, .capcritical
+	dec h
+	jr nz, .focusMultiply
+	ld b, a
 .noFocusEnergyUsed
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld hl, HighCriticalMoves     ; table of high critical hit moves
@@ -5054,11 +5062,7 @@ CriticalHitTest:
 	jr nz, .Loop                 ; check the next move in HighCriticalMoves
 	jr .finishcalc         		 ; continue as a normal move
 .HighCritical
-	sla b                        ; *2 for high critical hit moves (effective +2x crit rate)
-	jr c, .capcritical
-	sla b                        ; *2 again for high critical hit moves (effective +4x crit rate)
-	jr c, .capcritical
-	sla b                        ; *2 again for high critical hit moves (effective +8x crit rate)
+	sla b ; high-crit moves have a x2 multiplier
 	jr nc, .finishcalc
 .capcritical
 	ld b, $ff					 ; cap at 255/256

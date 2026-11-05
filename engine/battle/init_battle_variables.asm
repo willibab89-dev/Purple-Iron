@@ -4,6 +4,10 @@ InitBattleVariables:
 	xor a
 	ld [wActionResultOrTookBattleTurn], a
 	ld [wBattleResult], a
+	ld [wPlayerBattleStatus2], a
+	ld [wPlayerBattleStatus3], a
+	ld [wEnemyBattleStatus2], a
+	ld [wEnemyBattleStatus3], a
 	ld hl, wPartyAndBillsPCSavedMenuItem
 	ld [hli], a
 	ld [hli], a
