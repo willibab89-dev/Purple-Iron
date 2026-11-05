@@ -216,6 +216,7 @@ Girl Trainer
 
 	
 - Move fixes
+  - Frozen Pokémon have a 20% natural thaw chance before attempting a move, and can act on the turn they thaw
   - Dire Hit/Focus Energy fixes the original quarter-rate bug; this version stacks their shared crit boost through ×2, ×3 and ×4
   - sleep now normal-chance hits a pkmn recharging from hyperbeam, but has no effect if it's already status-effected
   - the fly/dig invulnerability bit is cleared when a pkmn hurts itself from confusion or is fully paralyzed

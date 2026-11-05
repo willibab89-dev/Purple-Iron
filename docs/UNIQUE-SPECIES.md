@@ -40,6 +40,16 @@ Unique Marowak and the second Nidoking retain their previous rarest-slot encount
 | 171 | tentacool_big | BIGTENTACL | Every habitat/rod pool containing normal Tentacool: 1%; catch rate 60 (normal 190) |
 | 172 | venusaur_erika | E.VENUSAUR | Erika (level 33) |
 
+## Freeze and natural thawing
+
+Frozen Pokémon now have an exact 20% chance to thaw immediately before an attempted move, on both sides of battle. A successful thaw prints “thawed out!” and permits the selected move that turn, unless another condition such as flinching, trapping or recharge prevents it. Frozen Pokémon can select a fresh move before the roll; they do not reuse the preceding turn's move. Cancelling the move menu does not grant extra rolls. Using an item or switching does not make an action-time thaw roll.
+
+Thawing clears the active Pokémon's freeze flag and its corresponding party slot. Wild opponents do not write to trainer-party data. Switching itself still does not cure freeze. Existing freezing chances, Ice-type protection, status exclusivity, healing items, Haze and Fire-based thawing are unchanged. No new counters or save-layout changes are needed.
+
+The roll uses battle RNG, including the shared link-battle RNG, with rejection sampling (50 successful outcomes out of 250) rather than an approximation to 20%. Link play between different ROM revisions remains unsupported.
+
+`python3 tools/test_freeze.py` checks both ROMs: all 250 accepted RNG outcomes for each side, rejection of 250–255, same-turn eligibility, other action blockers, correct party-slot synchronization, wild-party guards, preservation of PP/charging state when still frozen, and actual player/enemy move-selection paths. Text/UI endpoints are stubbed in memory during these automated engine tests.
+
 ## Critical-hit balance
 
 Normal critical chance is unchanged: `floor(base Speed / 2) / 256`. Karate Chop, Razor Leaf, Crabhammer and Slash now multiply that threshold by 2 instead of 8. Focus Energy and Dire Hit share a counter: first successful use gives x2, second gives x3, third gives x4. Mixing the move and item advances the same counter. Further Focus Energy uses fail; a capped Dire Hit has no effect and is not consumed. The enemy uses the same rules, and its AI only treats Focus Energy as capped at x4.

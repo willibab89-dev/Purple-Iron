@@ -444,10 +444,7 @@ MainInBattleLoop:
 	ld a, [wEscapedFromBattle]
 	and a
 	ret nz ; return if pokedoll was used to escape from battle
-	ld a, [wBattleMonStatus]
-	;and (1 << FRZ) | SLP ; is mon frozen or asleep?
-	and (1 << FRZ)  ; is mon frozen?	;joedebug - sleep won't waste turn
-	jr nz, .selectEnemyMove ; if so, jump
+	; Frozen mons select a move in case they thaw before acting.
 	ld a, [wPlayerBattleStatus1]
 	and (1 << STORING_ENERGY) | (1 << USING_TRAPPING_MOVE) ; check player is using Bide or using a multi-turn attack like wrap
 	jr nz, .selectEnemyMove ; if so, jump
@@ -3201,13 +3198,7 @@ SelectEnemyMove:
 	ld a, [hl]
 	and (1 << CHARGING_UP) | (1 << THRASHING_ABOUT) ; using a charging move or thrash/petal dance
 	ret nz
-	ld a, [wEnemyMonStatus]
-	;and SLP | 1 << FRZ ; sleeping or frozen
-	and (1 << FRZ)	;joedebug - sleep won't waste turn
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	call nz, NoAttackAICall	;joenote - get ai routines. flag register is preserved
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	ret nz
+	; Choose normally while frozen; the action-time check may thaw the mon.
 	ld a, [wEnemyBattleStatus1]
 	and (1 << USING_TRAPPING_MOVE) | (1 << STORING_ENERGY) ; using a trapping move like wrap or bide
 	ret nz
@@ -3660,8 +3651,11 @@ CheckPlayerStatusConditions:
 	jp .returnToHL
 
 .FrozenCheck
+	ld hl, wBattleMonStatus
 	bit FRZ, [hl] ; frozen?
 	jr z, .HeldInPlaceCheck
+	callba TryNaturalThaw
+	jr c, .HeldInPlaceCheck
 	ld hl, IsFrozenText
 	call PrintText
 	xor a
@@ -6444,8 +6438,11 @@ CheckEnemyStatusConditions:
 	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
 	jp .enemyReturnToHL
 .checkIfFrozen
+	ld hl, wEnemyMonStatus
 	bit FRZ, [hl]
 	jr z, .checkIfTrapped
+	callba TryNaturalThaw
+	jr c, .checkIfTrapped
 	ld hl, IsFrozenText
 	call PrintText
 	xor a
@@ -9666,4 +9663,13 @@ BC999cap:
 	ld c, a ;and store it as the low byte
 	;now registers b & c together contain $03E7 for a capped stat value of 999
 .donecapping
+	ret
+
+; Exact 20%: reject 250..255, then accept 0..49 of the 250 outcomes.
+; Keep this small RNG entry in the battle bank to use link-safe BattleRandom.
+NaturalThawRoll:
+	call BattleRandom
+	cp 250
+	jr nc, NaturalThawRoll
+	cp 50
 	ret

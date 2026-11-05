@@ -1227,6 +1227,11 @@ _WokeUpText::
 	line "woke up!"
 	prompt
 
+_NaturallyThawedText::
+	text "<USER>"
+	line "thawed out!"
+	prompt
+
 _IsFrozenText::
 	text "<USER>"
 	line "is frozen solid!"
