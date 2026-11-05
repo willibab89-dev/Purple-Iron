@@ -1,5 +1,7 @@
 # Unique species version: 172 Pokémon
 
+See `MOVE-PATCH-1.md` for the delivered first move-overhaul patch and deferred designs.
+
 This branch adds 21 separate species at Pokédex numbers 152–172. The 151 original species and their custom front sprites remain available. Fossil and ghost display IDs and the existing special MissingNo battle are preserved.
 
 **Start a new save.** Expanding both Pokédex bitfields from 19 to 22 bytes changes the save layout. Do not reuse saves from the 151-species version. Keep that version and its saves separately. Link trading/battling with the old version is untested and unsupported for these new species.

@@ -1,4 +1,4 @@
-name: Unique species BPS patches
+name: Move overhaul — patch 1
 
 on:
   workflow_dispatch:
@@ -51,10 +51,11 @@ jobs:
           python3 tools/test_unique_species.py
           python3 tools/test_critical_hits.py
           python3 tools/test_freeze.py
+          python3 tools/test_move_patch_1.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
-          name: pokemon-unique-species-bps
+          name: pokemon-move-patch-1-bps
           retention-days: 30
           if-no-files-found: error
           path: |
@@ -62,3 +63,4 @@ jobs:
             ${{ runner.temp }}/patches/CHECKSUMS.txt
             ${{ runner.temp }}/patches/WINDOWS-PATCHING.md
             ${{ runner.temp }}/patches/UNIQUE-SPECIES.md
+            ${{ runner.temp }}/patches/MOVE-PATCH-1.md

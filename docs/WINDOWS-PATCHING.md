@@ -1,12 +1,12 @@
 # Download and play on Windows
 
 1. Sign in to GitHub and open this repository's **Actions** tab.
-2. Open a successful **Unique species BPS patches** run for the branch or commit you want. Under **Artifacts**, click **pokemon-unique-species-bps** to download the ZIP, then extract it.
+2. Open a successful **Move overhaul — patch 1** run for the branch or commit you want. Under **Artifacts**, click **pokemon-move-patch-1-bps** to download the ZIP, then extract it.
 3. Obtain Floating IPS (Flips) from its official project: https://github.com/Alcaro/Flips/releases
 4. Open Flips and select **Apply Patch**. Choose `pokered-custom-fronts.bps` or `pokeblue-custom-fronts.bps`, then select your matching original ROM. Save the result under a new filename.
 5. Open the patched ROM in your Game Boy emulator.
 
-**This 172-species version requires a new save.** See `UNIQUE-SPECIES.md` for trainer assignments, wild locations and evolution behavior.
+**Upgrading from the original 151-species version requires a new save.** Saves from the previous 172-species build retain their layout; heal at a Pokémon Center after updating to refresh PP. See `UNIQUE-SPECIES.md` for trainer assignments, wild locations and evolution behavior.
 
 Use the unmodified English USA/Europe Red or Blue release. Japanese, translated, already patched and other modified ROMs are incompatible. Keep your original ROM and save file backed up.
 

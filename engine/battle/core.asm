@@ -5077,6 +5077,8 @@ HighCriticalMoves:
 	db RAZOR_LEAF
 	db CRABHAMMER
 	db SLASH
+	db DOUBLESLAP
+	db DRAGON_RAGE
 	db $FF
 
 
