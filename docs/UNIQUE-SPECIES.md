@@ -1,18 +1,10 @@
-Latest cumulative move changes: see MOVE-PATCH-5.md (21 new moves and four existing redesigns).
-
-Latest cumulative move changes: see MOVE-PATCH-4.md (16 new moves and five existing redesigns).
-
-Latest cumulative move additions: see MOVE-PATCH-3.md (ten new moves and their learnsets).
-
-Latest cumulative move changes: see MOVE-PATCH-2.md (22 additional move redesigns).
-
 # Unique species version: 172 Pokémon
 
-See `MOVE-PATCH-1.md` for the delivered first move-overhaul patch and deferred designs.
+See `MOVE-PATCH-5.md` for the latest cumulative move changes and remaining work. Earlier patch notes are retained for reference.
 
 This branch adds 21 separate species at Pokédex numbers 152–172. The 151 original species and their custom front sprites remain available. Fossil and ghost display IDs and the existing special MissingNo battle are preserved.
 
-**Start a new save.** Expanding both Pokédex bitfields from 19 to 22 bytes changes the save layout. Do not reuse saves from the 151-species version. Keep that version and its saves separately. Link trading/battling with the old version is untested and unsupported for these new species.
+**A new save is required only when upgrading from the old 151-species version.** The 172-species layout uses 22-byte Pokédex bitfields. Saves from previous 172-species patches remain compatible. Keep a backup; link battles require matching ROM revisions.
 
 Each new species copies the source's stats, starting/level-up/TM/HM moves, growth, experience yield, cry, Pokédex description, palette, party icon, back sprite and evolution destinations. Evolutions still lead to the original species (for example, unique Bulbasaur evolves into the original Ivysaur). These are new species IDs, not replacements or a new evolution family. Display names are shortened to fit the game's 10-character limit; the filenames below identify the full variant.
 
