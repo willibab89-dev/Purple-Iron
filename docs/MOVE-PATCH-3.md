@@ -111,4 +111,4 @@ Both ROMs build and are checked in PyBoy. Tests cover new records/names and all 
 
 ## Remaining work
 
-44 planned new moves and the previously listed 18 existing move redesigns remain pending. Automatic transformation, custom trapping/residuals, forced switching, conditional damage/crit, hybrid damage stats and the other later-patch designs are not introduced here. Punishment's future cap remains 160. See MOVE-PATCH-2-PLAN.md for accepted defaults and the design reference for the full target list.
+At patch 3, 44 planned new moves and 19 existing move redesigns remained pending. Earlier summaries omitted Tri Attack from that count; see MOVE-PATCH-4.md for the current remaining list. Automatic transformation, custom trapping/residuals, forced switching, conditional damage/crit, hybrid damage stats and the other later-patch designs are not introduced here. Punishment's future cap remains 160. See MOVE-PATCH-2-PLAN.md for accepted defaults and the design reference for the full target list.

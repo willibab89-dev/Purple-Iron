@@ -9,6 +9,10 @@ from test_move_patch_1 import EFFECTS, TYPES, CHARMAP
 
 PLAN = json.loads((ROOT / 'data/move_patch_3.json').read_text())
 NEW = PLAN['new_moves']
+PATCH4 = json.loads((ROOT / 'data/move_patch_4.json').read_text())
+ALL_NEW = NEW + PATCH4['new_moves']
+ALL_ADDITIONS = PLAN['learnset_additions'] + PATCH4['learnset_additions']
+MAX_MOVE = max(d['id'] for d in ALL_NEW)
 
 
 def constants(path):
@@ -39,8 +43,8 @@ def validate(version):
         expected = bytes([d['id'], EFFECTS[d['effect']], d['power'], TYPES[d['type']], d['accuracy']*255//100, d['pp']])
         assert data('Moves', 6, (d['id']-1)*6) == expected
         assert MOVES[d['symbol']] == d['id']
-    animation_map = list(range(1,166))+[MOVES[x['animation']] for x in NEW]
-    assert list(data('MoveAnimationMap', 175)) == animation_map
+    animation_map = list(range(1,166))+[MOVES[x['animation']] for x in ALL_NEW]
+    assert list(data('MoveAnimationMap', MAX_MOVE)) == animation_map
     raw_names = data('MoveNames', 2400).split(b'\x50')
     for d in NEW: assert raw_names[d['id']-1]+b'\x50' == encode(d['name'])
     game = PyBoy(str(ROOT / (version+'.gbc')), window='null', sound_emulated=False)
@@ -86,7 +90,7 @@ def validate(version):
         return actor,'Player' if turn else 'Enemy'
     try:
         # All move names through the real home-bank lookup, retaining move IDs.
-        for i in range(1,176):
+        for i in range(1,MAX_MOVE+1):
             put('wd11e',i);call('GetMoveName')
             expected=raw_names[i-1]+b'\x50'
             assert bytes(game.memory[addr('wcd6d'):addr('wcd6d')+len(expected)])==expected,i
@@ -108,7 +112,7 @@ def validate(version):
         # Every mapped ID including zero/invalid inputs; raw IDs are separate.
         for i in range(256):
             put('wAnimationID',i);call('MapMoveAnimation')
-            assert get('wAnimationID')==(animation_map[i-1] if 1<=i<=175 else 0)
+            assert get('wAnimationID')==(animation_map[i-1] if 1<=i<=MAX_MOVE else 0)
         for n in ('MoveAnimation','Delay3','Func_78e98','DelayFrames','PrintText'):
             patch(n,[0xc9])
         for turn in (0,1):
@@ -134,7 +138,7 @@ def validate(version):
                 # First RNG byte is candidate, then a valid new move (Giga Drain).
                 patch('BattleRandom',[0xfa,addr('wUnusedD119')&255,addr('wUnusedD119')>>8,0xf5,0x3e,166,0xea,addr('wUnusedD119')&255,addr('wUnusedD119')>>8,0xf1,0xc9])
                 call('MetronomePickMove')
-                expected=candidate if 1<=candidate<=175 and candidate not in (118,165) else 166
+                expected=candidate if 1<=candidate<=MAX_MOVE and candidate not in (118,165) else 166
                 actor='Enemy' if turn else 'Player'
                 assert get(f'w{actor}SelectedMove')==expected,(turn,candidate)
                 assert get(f'w{actor}MoveNum')==expected
@@ -154,7 +158,7 @@ def validate(version):
             pos+=1;actual=[]
             while game.memory[evo_bank,pos]:
                 actual.append((game.memory[evo_bank,pos],game.memory[evo_bank,pos+1]));pos+=2
-            extra=[(x['level'],MOVES[x['move']]) for x in PLAN['learnset_additions'] if x['species']==species]
+            extra=[(x['level'],MOVES[x['move']]) for x in ALL_ADDITIONS if x['species']==species]
             expected=sorted([(level,MOVES[move]) for level,move in old]+extra)
             assert actual==expected,(species,actual,expected)
             assert len(actual)+4<48 # existing relearner buffer capacity

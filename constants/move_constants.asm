@@ -220,5 +220,22 @@ const_value = 166
 	const ICE_ARMOR
 	const ROOST
 
+	const FACADE
+	const FLAIL
+	const BRINE
+	const INCINERATE
+	const VENOSHOCK
+	const POLLUTION
+	const PUNISHMENT
+	const SHOCK_WAVE
+	const POISON_TAIL
+	const FROST_BREATH
+	const ICE_SHARD
+	const PIERCE
+	const STONE_PRESS
+	const PSYSHOCK
+	const SNIPE_SHOT
+	const AERIAL_ACE
+
 MAX_MOVE_ID EQU const_value + -1
 NUM_ATTACKS EQU MAX_MOVE_ID + -1 ; selectable moves, excluding Struggle

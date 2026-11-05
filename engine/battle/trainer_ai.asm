@@ -321,6 +321,9 @@ AIMoveChoiceModification1:
 	ld a, [wPlayerMovePower]	;all regular damage moves have a power of at least 10
 	cp 10
 	jr c, .nodefupmove
+	ld a, [wPlayerMoveNum]
+	cp PSYSHOCK
+	jr z, .nodefupmove ; Psychic typing, but Defense actually protects here
 	ld a, [wPlayerMoveType]	;physical move types are numbers $00 to $08 while special is $14 to $1A
 	cp $14
 	jp nc, .heavydiscourage	;at this point, heavy discourage defense-boosting because player is using a special move of 10+ power
@@ -973,6 +976,7 @@ ReadMove:
 	call AddNTimes
 	ld de, wEnemyMoveNum
 	call CopyData
+	callab ConditionalAIPower
 	pop bc
 	pop de
 	pop hl

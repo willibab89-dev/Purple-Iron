@@ -86,6 +86,8 @@ def validate(version):
         # Every record is exactly baseline + the 22 approved replacements.
         changes_by_id = {x['id']: x['after'] for x in PLAN['changes']}
         assert len(changes_by_id) == 22
+        patch4 = json.loads((ROOT / 'data/move_patch_4.json').read_text())
+        changes_by_id.update({entry['id']: entry['after'] for entry in patch4['existing_changes']})
         bank, base = syms['Moves']
         for old in PLAN['baseline']:
             d = changes_by_id.get(old['id'], old)
