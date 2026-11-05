@@ -1,6 +1,6 @@
 # Move overhaul design reference
 
-This is the user-provided target design, not a list of implemented changes. See MOVE-PATCH-1.md for delivered changes and deferred work. Blank entries mean no change.
+This is the user-provided target design, not a list of implemented changes. See MOVE-PATCH-1.md for delivered changes and deferred work. Blank entries mean no change. Later accepted defaults and clarifications are recorded in MOVE-PATCH-2-PLAN.md, including Punishment's 160-power cap.
 
 **MOVE CHANGES**:
 

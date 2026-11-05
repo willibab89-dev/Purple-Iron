@@ -1,3 +1,5 @@
+Latest cumulative move changes: see MOVE-PATCH-2.md (22 additional move redesigns).
+
 # Unique species version: 172 Pokémon
 
 See `MOVE-PATCH-1.md` for the delivered first move-overhaul patch and deferred designs.

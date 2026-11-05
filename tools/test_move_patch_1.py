@@ -19,6 +19,8 @@ def validate(version):
         offset = bank * 0x4000 + address - 0x4000 if bank else address
         return rom[offset:offset + size]
     changes = {entry['id']: entry for entry in PLAN['changes']}
+    patch2 = json.loads((ROOT / 'data/move_patch_2.json').read_text())
+    cumulative = {entry['id']: entry['after'] for entry in patch2['changes']}
     assert len(changes) == 56
     expected, names = [], bytearray()
     for baseline in PLAN['baseline']:
@@ -26,6 +28,7 @@ def validate(version):
         if entry:
             assert entry['before'] == {k: baseline[k] for k in entry['before']}
         target = entry['after'] if entry else baseline
+        target = {**target, **cumulative.get(baseline['id'], {})}
         expected.append(bytes([baseline['id'], EFFECTS[target['effect']], target['power'], TYPES[target['type']], target['accuracy'] * 255 // 100, target['pp']]))
         names.extend(CHARMAP[c] for c in target['name'] + '@')
     assert len(expected) == 165

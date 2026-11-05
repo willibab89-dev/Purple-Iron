@@ -138,6 +138,21 @@ AIMoveChoiceModification1:
 	ret z ; no more moves in move set
 	inc de
 	call ReadMove
+	ld a, [wEnemyMoveEffect]
+	cp COMPOUND_STATUS_EFFECT
+	jr nz, .notCompoundStatus
+	push hl
+	push bc
+	push de
+	callab CustomAIStatusScore
+	pop de
+	pop bc
+	pop hl
+	ld a, [wCustomRandomValue]
+	and a
+	jp nz, .heavydiscourage
+	jp .nextMove
+.notCompoundStatus
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;joenote - do not use effects that end battle because this is a trainer battle and they do not work
 	ld a, [wEnemyMoveEffect]	;load the move effect
@@ -563,6 +578,8 @@ AIMoveChoiceModification2:
 	inc de
 	call ReadMove
 	ld a, [wEnemyMoveEffect]
+	cp COMPOUND_STATUS_EFFECT
+	jr z, .preferMove
 	cp ATTACK_UP1_EFFECT
 	jr c, .nextMove
 	cp BIDE_EFFECT

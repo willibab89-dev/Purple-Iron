@@ -3341,6 +3341,17 @@ ds 1
 ; deee
 
 
+; Transient battle scratch; outside saved box/party data.
+wCustomTargetHadSub:: ds 1
+wCustomSide:: ds 1
+wCustomStat:: ds 1
+wCustomDelta:: ds 1
+wCustomChanged:: ds 1
+wCustomMove:: ds 1
+wCustomSavedTurn:: ds 1
+wCustomChance:: ds 1
+wCustomRandomValue:: ds 1
+
 SECTION "Stack", WRAM0[$df00]
 	ds $ff
 wStack:: ; dfff

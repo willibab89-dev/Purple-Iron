@@ -2,6 +2,7 @@ BattleCore:
 
 ; These are move effects (second value from the Moves table in bank $E).
 ResidualEffects1:
+	db COMPOUND_STATUS_EFFECT
 ; most non-side effects
 	db CONVERSION_EFFECT
 	db HAZE_EFFECT
@@ -59,6 +60,7 @@ ResidualEffects2:
 	db EVASION_DOWN2_EFFECT
 	db -1
 AlwaysHappenSideEffects:
+	db ATTACK_AND_SELF_DROP_EFFECT
 ; Attacks that aren't finished after they faint the opponent.
 	db DRAIN_HP_EFFECT
 	db EXPLODE_EFFECT
@@ -73,6 +75,7 @@ AlwaysHappenSideEffects:
 	db HYPER_BEAM_EFFECT	;joenote - make hyperbeam recharge if knock out enemy
 	db -1
 SpecialEffects:
+	db ATTACK_AND_SELF_DROP_EFFECT
 ; Effects from arrays 2, 4, and 5B, minus Twineedle and Rage.
 ; Includes all effects that do not need to be called at the end of
 ; ExecutePlayerMove (or ExecuteEnemyMove), because they have already been handled
@@ -3504,6 +3507,7 @@ MirrorMoveCheck:
 	;jr z, .notDone
 	jp ExecutePlayerMoveDone ; otherwise, we're done if the move missed
 .moveDidNotMiss
+	callab CaptureCustomTargetSubstitute
 	call ApplyAttackToEnemyPokemon
 	call PrintCriticalOHKOText
 	callab DisplayEffectiveness
@@ -5487,6 +5491,8 @@ AttackSubstitute:
 	jr z, .skipnullify
 	cp RECOIL_EFFECT
 	jr z, .skipnullify
+	cp ATTACK_AND_SELF_DROP_EFFECT
+	jr z, .skipnullify
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	xor a
 	ld [hl], a ; zero the effect of the attacker's move
@@ -6345,6 +6351,7 @@ EnemyCheckIfMirrorMoveEffect:
 	jr z, .handleExplosionMiss
 	jp ExecuteEnemyMoveDone
 .moveDidNotMiss
+	callab CaptureCustomTargetSubstitute
 	call ApplyAttackToPlayerPokemon
 	call PrintCriticalOHKOText
 	callab DisplayEffectiveness
@@ -7889,110 +7896,18 @@ JumpMoveEffect:
 	ret
 
 _JumpMoveEffect:
-	ld a, [H_WHOSETURN]
-	and a
-	ld a, [wPlayerMoveEffect]
-	jr z, .next1
-	ld a, [wEnemyMoveEffect]
-.next1
-	dec a ; subtract 1, there is no special effect for 00
-	add a ; x2, 16bit pointers
-	ld hl, MoveEffectPointerTable
-	ld b, 0
-	ld c, a
-	add hl, bc
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	jp hl ; jump to special effect handler
+	jpab DispatchMoveEffect
 
-MoveEffectPointerTable:
-	 dw SleepEffect               ; unused effect
-	 dw PoisonEffect              ; POISON_SIDE_EFFECT1
-	 dw DrainHPEffect             ; DRAIN_HP_EFFECT
-	 dw FreezeBurnParalyzeEffect  ; BURN_SIDE_EFFECT1
-	 dw FreezeBurnParalyzeEffect  ; FREEZE_SIDE_EFFECT
-	 dw FreezeBurnParalyzeEffect  ; PARALYZE_SIDE_EFFECT1
-	 dw ExplodeEffect             ; EXPLODE_EFFECT
-	 dw DrainHPEffect             ; DREAM_EATER_EFFECT
-	 dw $0000                     ; MIRROR_MOVE_EFFECT
-	 dw StatModifierUpEffect      ; ATTACK_UP1_EFFECT
-	 dw StatModifierUpEffect      ; DEFENSE_UP1_EFFECT
-	 dw StatModifierUpEffect      ; SPEED_UP1_EFFECT
-	 dw StatModifierUpEffect      ; SPECIAL_UP1_EFFECT
-	 dw StatModifierUpEffect      ; ACCURACY_UP1_EFFECT
-	 dw StatModifierUpEffect      ; EVASION_UP1_EFFECT
-	 dw PayDayEffect              ; PAY_DAY_EFFECT
-	 dw $0000                     ; SWIFT_EFFECT
-	 dw StatModifierDownEffect    ; ATTACK_DOWN1_EFFECT
-	 dw StatModifierDownEffect    ; DEFENSE_DOWN1_EFFECT
-	 dw StatModifierDownEffect    ; SPEED_DOWN1_EFFECT
-	 dw StatModifierDownEffect    ; SPECIAL_DOWN1_EFFECT
-	 dw StatModifierDownEffect    ; ACCURACY_DOWN1_EFFECT
-	 dw StatModifierDownEffect    ; EVASION_DOWN1_EFFECT
-	 dw ConversionEffect          ; CONVERSION_EFFECT
-	 dw HazeEffect                ; HAZE_EFFECT
-	 dw BideEffect                ; BIDE_EFFECT
-	 dw ThrashPetalDanceEffect    ; THRASH_PETAL_DANCE_EFFECT
-	 dw SwitchAndTeleportEffect   ; SWITCH_AND_TELEPORT_EFFECT
-	 dw TwoToFiveAttacksEffect    ; TWO_TO_FIVE_ATTACKS_EFFECT
-	 dw TwoToFiveAttacksEffect    ; unused effect
-	 dw FlinchSideEffect           ; FLINCH_SIDE_EFFECT1
-	 dw SleepEffect               ; SLEEP_EFFECT
-	 dw PoisonEffect              ; POISON_SIDE_EFFECT2
-	 dw FreezeBurnParalyzeEffect  ; BURN_SIDE_EFFECT2
-	 dw FreezeBurnParalyzeEffect  ; unused effect
-	 dw FreezeBurnParalyzeEffect  ; PARALYZE_SIDE_EFFECT2
-	 dw FlinchSideEffect           ; FLINCH_SIDE_EFFECT2
-	 dw OneHitKOEffect            ; OHKO_EFFECT
-	 dw ChargeEffect              ; CHARGE_EFFECT
-	 dw $0000                     ; SUPER_FANG_EFFECT
-	 dw $0000                     ; SPECIAL_DAMAGE_EFFECT
-	 dw TrappingEffect            ; TRAPPING_EFFECT
-	 dw ChargeEffect              ; FLY_EFFECT
-	 dw TwoToFiveAttacksEffect    ; ATTACK_TWICE_EFFECT
-	 dw $0000                     ; JUMP_KICK_EFFECT
-	 dw MistEffect                ; MIST_EFFECT
-	 dw FocusEnergyEffect         ; FOCUS_ENERGY_EFFECT
-	 dw RecoilEffect              ; RECOIL_EFFECT
-	 dw ConfusionEffect           ; CONFUSION_EFFECT
-	 dw StatModifierUpEffect      ; ATTACK_UP2_EFFECT
-	 dw StatModifierUpEffect      ; DEFENSE_UP2_EFFECT
-	 dw StatModifierUpEffect      ; SPEED_UP2_EFFECT
-	 dw StatModifierUpEffect      ; SPECIAL_UP2_EFFECT
-	 dw StatModifierUpEffect      ; ACCURACY_UP2_EFFECT
-	 dw StatModifierUpEffect      ; EVASION_UP2_EFFECT
-	 dw HealEffect                ; HEAL_EFFECT
-	 dw TransformEffect           ; TRANSFORM_EFFECT
-	 dw StatModifierDownEffect    ; ATTACK_DOWN2_EFFECT
-	 dw StatModifierDownEffect    ; DEFENSE_DOWN2_EFFECT
-	 dw StatModifierDownEffect    ; SPEED_DOWN2_EFFECT
-	 dw StatModifierDownEffect    ; SPECIAL_DOWN2_EFFECT
-	 dw StatModifierDownEffect    ; ACCURACY_DOWN2_EFFECT
-	 dw StatModifierDownEffect    ; EVASION_DOWN2_EFFECT
-	 dw ReflectLightScreenEffect  ; LIGHT_SCREEN_EFFECT
-	 dw ReflectLightScreenEffect  ; REFLECT_EFFECT
-	 dw PoisonEffect              ; POISON_EFFECT
-	 dw ParalyzeEffect            ; PARALYZE_EFFECT
-	 dw StatModifierDownEffect    ; ATTACK_DOWN_SIDE_EFFECT
-	 dw StatModifierDownEffect    ; DEFENSE_DOWN_SIDE_EFFECT
-	 dw StatModifierDownEffect    ; SPEED_DOWN_SIDE_EFFECT
-	 dw StatModifierDownEffect    ; SPECIAL_DOWN_SIDE_EFFECT
-	 dw StatModifierDownEffect    ; unused effect
-	 dw StatModifierDownEffect    ; unused effect
-	 dw StatModifierDownEffect    ; unused effect
-	 dw StatModifierDownEffect    ; unused effect
-	 dw ConfusionSideEffect       ; CONFUSION_SIDE_EFFECT
-	 dw TwoToFiveAttacksEffect    ; TWINEEDLE_EFFECT
-	 dw $0000                     ; unused effect
-	 dw SubstituteEffect          ; SUBSTITUTE_EFFECT
-	 dw HyperBeamEffect           ; HYPER_BEAM_EFFECT
-	 dw RageEffect                ; RAGE_EFFECT
-	 dw MimicEffect               ; MIMIC_EFFECT
-	 dw $0000                     ; METRONOME_EFFECT
-	 dw LeechSeedEffect           ; LEECH_SEED_EFFECT
-	 dw SplashEffect              ; SPLASH_EFFECT
-	 dw DisableEffect             ; DISABLE_EFFECT
+CustomRandomInBattleBank:
+	call BattleRandom
+	ld [wCustomRandomValue], a
+	ret
+
+CustomPrintStatName:
+	ld a, [wCustomStat]
+	inc a
+	ld b, a
+	jp PrintStatText
 
 SleepEffect:
 	ld de, wEnemyMonStatus

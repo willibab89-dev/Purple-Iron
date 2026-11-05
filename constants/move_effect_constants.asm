@@ -92,6 +92,10 @@ const_value = 0
 	const SPLASH_EFFECT              ; $55
 	const DISABLE_EFFECT             ; $56
 
+	const ATTACK_AND_STAT_EFFECT     ; $57
+	const COMPOUND_STATUS_EFFECT     ; $58
+	const ATTACK_AND_SELF_DROP_EFFECT ; $59
+
 ; fixed damage constants
 SONICBOOM_DAMAGE   EQU 20
 DRAGON_RAGE_DAMAGE EQU 40
