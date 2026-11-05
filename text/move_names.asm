@@ -165,3 +165,14 @@ MoveNames::
 	db "SUBSTITUTE@"
 	db "STRUGGLE@"
 
+	db "GIGA DRAIN@"
+	db "SYNTHESIS@"
+	db "MEGAHORN@"
+	db "X-SCISSOR@"
+	db "ASTONISH@"
+	db "DRAIN PUNCH@"
+	db "STONE EDGE@"
+	db "ROCK POLISH@"
+	db "ICE ARMOR@"
+	db "ROOST@"
+MoveNamesEnd:

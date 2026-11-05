@@ -2,7 +2,7 @@ Moves:
 ; Characteristics of each move.
 
 move: macro
-	db \1 ; animation (interchangeable with move id)
+	db \1 ; actual move ID; move-only presentation resolves its animation separately
 	db \2 ; effect
 	db \3 ; power
 	db \4 ; type
@@ -176,3 +176,16 @@ MoveEnd:
 	move SLASH,        NO_ADDITIONAL_EFFECT,        70, NORMAL,   100, 20
 	move SUBSTITUTE,   SUBSTITUTE_EFFECT,            0, NORMAL,   100, 10
 	move STRUGGLE,     RECOIL_EFFECT,               50, BIRD,   100, 10	;joenote - changed from normal to BIRD type (acts as typless)
+
+; Patch 3: move IDs are independent of their animation mapping.
+	move GIGA_DRAIN,   DRAIN_HP_EFFECT,             80, GRASS,   100, 10
+	move SYNTHESIS,    HEAL_EFFECT,                  0, GRASS,   100, 10
+	move MEGAHORN,     NO_ADDITIONAL_EFFECT,       100, BUG,      85, 10
+	move X_SCISSOR,    NO_ADDITIONAL_EFFECT,        65, BUG,      95, 15
+	move ASTONISH,     FLINCH_SIDE_EFFECT2,         30, GHOST,   100, 20
+	move DRAIN_PUNCH,  DRAIN_HP_EFFECT,             60, FIGHTING,100, 10
+	move STONE_EDGE,   NO_ADDITIONAL_EFFECT,        75, ROCK,     85, 15
+	move ROCK_POLISH,  SPEED_UP2_EFFECT,             0, ROCK,    100, 15
+	move ICE_ARMOR,    DEFENSE_UP2_EFFECT,           0, ICE,     100, 10
+	move ROOST,        HEAL_EFFECT,                  0, FLYING,  100, 10
+MovesEnd:

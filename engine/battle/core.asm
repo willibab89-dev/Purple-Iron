@@ -3453,7 +3453,7 @@ playPlayerMoveAnimation:
 	pop af
 	ld [wAnimationType], a
 	ld a, [wPlayerMoveNum]
-	call PlayMoveAnimation
+	call PlayMappedMoveAnimation
 	call HandleExplodingAnimation
 	call DrawPlayerHUDAndHPBar
 	ld a, [wPlayerBattleStatus2]
@@ -5077,6 +5077,8 @@ CriticalHitTest:
 
 ; high critical hit moves
 HighCriticalMoves:
+	db X_SCISSOR
+	db STONE_EDGE
 	db KARATE_CHOP
 	db RAZOR_LEAF
 	db CRABHAMMER
@@ -5634,8 +5636,10 @@ MetronomePickMove:
 	call BattleRandom
 	and a
 	jr z, .pickMoveLoop
-	cp NUM_ATTACKS + 1 ; max normal move number + 1 (this is Struggle's move number)
+	cp MAX_MOVE_ID + 1 ; includes appended moves; Struggle remains ID 165
 	jr nc, .pickMoveLoop
+	cp STRUGGLE
+	jr z, .pickMoveLoop
 	cp METRONOME
 	jr z, .pickMoveLoop
 	ld [hl], a
@@ -6297,7 +6301,7 @@ playEnemyMoveAnimation:
 	pop af
 	ld [wAnimationType], a
 	ld a, [wEnemyMoveNum]
-	call PlayMoveAnimation
+	call PlayMappedMoveAnimation
 	call HandleExplodingAnimation
 	call DrawEnemyHUDAndHPBar
 	ld a, [wEnemyBattleStatus2]
@@ -7575,6 +7579,16 @@ HandleExplodingAnimation:
 	ret nz
 	ld a, 5
 	ld [wAnimationType], a
+
+PlayMappedMoveAnimation:
+	ld [wAnimationID], a
+	push hl
+	push bc
+	callab MapMoveAnimation
+	pop bc
+	pop hl
+	ld a, [wAnimationID]
+	jp PlayMoveAnimation
 
 PlayMoveAnimation:
 	ld [wAnimationID], a
@@ -9465,6 +9479,15 @@ PlayCurrentMoveAnimation2:
 	and a
 	ret z
 
+PlayMappedBattleAnimation2:
+	ld [wAnimationID], a
+	push hl
+	push bc
+	callab MapMoveAnimation
+	pop bc
+	pop hl
+	ld a, [wAnimationID]
+
 PlayBattleAnimation2:
 ; play animation ID at a and animation type 6 or 3
 	ld [wAnimationID], a
@@ -9490,6 +9513,15 @@ PlayCurrentMoveAnimation:
 .notEnemyTurn
 	and a
 	ret z
+
+PlayMappedBattleAnimation:
+	ld [wAnimationID], a
+	push hl
+	push bc
+	callab MapMoveAnimation
+	pop bc
+	pop hl
+	jp PlayBattleAnimationGotID
 
 PlayBattleAnimation:
 ; play animation ID at a and predefined animation type

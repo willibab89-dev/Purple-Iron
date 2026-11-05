@@ -1,0 +1,4157 @@
+{
+  "baseline_commit": "91334bd",
+  "new_moves": [
+    {
+      "id": 166,
+      "symbol": "GIGA_DRAIN",
+      "name": "GIGA DRAIN",
+      "effect": "DRAIN_HP_EFFECT",
+      "power": 80,
+      "type": "GRASS",
+      "accuracy": 100,
+      "pp": 10,
+      "animation": "MEGA_DRAIN",
+      "high_crit": false
+    },
+    {
+      "id": 167,
+      "symbol": "SYNTHESIS",
+      "name": "SYNTHESIS",
+      "effect": "HEAL_EFFECT",
+      "power": 0,
+      "type": "GRASS",
+      "accuracy": 100,
+      "pp": 10,
+      "animation": "RECOVER",
+      "high_crit": false
+    },
+    {
+      "id": 168,
+      "symbol": "MEGAHORN",
+      "name": "MEGAHORN",
+      "effect": "NO_ADDITIONAL_EFFECT",
+      "power": 100,
+      "type": "BUG",
+      "accuracy": 85,
+      "pp": 10,
+      "animation": "HORN_ATTACK",
+      "high_crit": false
+    },
+    {
+      "id": 169,
+      "symbol": "X_SCISSOR",
+      "name": "X-SCISSOR",
+      "effect": "NO_ADDITIONAL_EFFECT",
+      "power": 65,
+      "type": "BUG",
+      "accuracy": 95,
+      "pp": 15,
+      "animation": "SLASH",
+      "high_crit": true
+    },
+    {
+      "id": 170,
+      "symbol": "ASTONISH",
+      "name": "ASTONISH",
+      "effect": "FLINCH_SIDE_EFFECT2",
+      "power": 30,
+      "type": "GHOST",
+      "accuracy": 100,
+      "pp": 20,
+      "animation": "LICK",
+      "high_crit": false
+    },
+    {
+      "id": 171,
+      "symbol": "DRAIN_PUNCH",
+      "name": "DRAIN PUNCH",
+      "effect": "DRAIN_HP_EFFECT",
+      "power": 60,
+      "type": "FIGHTING",
+      "accuracy": 100,
+      "pp": 10,
+      "animation": "MEGA_PUNCH",
+      "high_crit": false
+    },
+    {
+      "id": 172,
+      "symbol": "STONE_EDGE",
+      "name": "STONE EDGE",
+      "effect": "NO_ADDITIONAL_EFFECT",
+      "power": 75,
+      "type": "ROCK",
+      "accuracy": 85,
+      "pp": 15,
+      "animation": "ROCK_THROW",
+      "high_crit": true
+    },
+    {
+      "id": 173,
+      "symbol": "ROCK_POLISH",
+      "name": "ROCK POLISH",
+      "effect": "SPEED_UP2_EFFECT",
+      "power": 0,
+      "type": "ROCK",
+      "accuracy": 100,
+      "pp": 15,
+      "animation": "AGILITY",
+      "high_crit": false
+    },
+    {
+      "id": 174,
+      "symbol": "ICE_ARMOR",
+      "name": "ICE ARMOR",
+      "effect": "DEFENSE_UP2_EFFECT",
+      "power": 0,
+      "type": "ICE",
+      "accuracy": 100,
+      "pp": 10,
+      "animation": "BARRIER",
+      "high_crit": false
+    },
+    {
+      "id": 175,
+      "symbol": "ROOST",
+      "name": "ROOST",
+      "effect": "HEAL_EFFECT",
+      "power": 0,
+      "type": "FLYING",
+      "accuracy": 100,
+      "pp": 10,
+      "animation": "RECOVER",
+      "high_crit": false
+    }
+  ],
+  "learnset_baseline": {
+    "Rhydon": [
+      [
+        30,
+        "STOMP"
+      ],
+      [
+        35,
+        "TAIL_WHIP"
+      ],
+      [
+        40,
+        "FURY_ATTACK"
+      ],
+      [
+        48,
+        "HORN_DRILL"
+      ],
+      [
+        55,
+        "LEER"
+      ],
+      [
+        64,
+        "TAKE_DOWN"
+      ]
+    ],
+    "Kangaskhan": [
+      [
+        26,
+        "BITE"
+      ],
+      [
+        31,
+        "TAIL_WHIP"
+      ],
+      [
+        36,
+        "MEGA_PUNCH"
+      ],
+      [
+        41,
+        "LEER"
+      ],
+      [
+        46,
+        "DIZZY_PUNCH"
+      ]
+    ],
+    "NidoranM": [
+      [
+        8,
+        "HORN_ATTACK"
+      ],
+      [
+        12,
+        "DOUBLE_KICK"
+      ],
+      [
+        17,
+        "POISON_STING"
+      ],
+      [
+        23,
+        "FOCUS_ENERGY"
+      ],
+      [
+        30,
+        "FURY_ATTACK"
+      ],
+      [
+        38,
+        "HORN_DRILL"
+      ]
+    ],
+    "Clefairy": [
+      [
+        13,
+        "SING"
+      ],
+      [
+        18,
+        "DOUBLESLAP"
+      ],
+      [
+        24,
+        "MINIMIZE"
+      ],
+      [
+        31,
+        "METRONOME"
+      ],
+      [
+        39,
+        "DEFENSE_CURL"
+      ],
+      [
+        48,
+        "LIGHT_SCREEN"
+      ]
+    ],
+    "Spearow": [
+      [
+        9,
+        "LEER"
+      ],
+      [
+        15,
+        "FURY_ATTACK"
+      ],
+      [
+        22,
+        "MIRROR_MOVE"
+      ],
+      [
+        29,
+        "DRILL_PECK"
+      ],
+      [
+        36,
+        "AGILITY"
+      ]
+    ],
+    "Voltorb": [
+      [
+        17,
+        "SONICBOOM"
+      ],
+      [
+        22,
+        "SELFDESTRUCT"
+      ],
+      [
+        29,
+        "LIGHT_SCREEN"
+      ],
+      [
+        36,
+        "SWIFT"
+      ],
+      [
+        43,
+        "EXPLOSION"
+      ]
+    ],
+    "Nidoking": [
+      [
+        8,
+        "HORN_ATTACK"
+      ],
+      [
+        12,
+        "DOUBLE_KICK"
+      ],
+      [
+        19,
+        "POISON_STING"
+      ],
+      [
+        23,
+        "THRASH"
+      ]
+    ],
+    "Slowbro": [
+      [
+        18,
+        "DISABLE"
+      ],
+      [
+        22,
+        "HEADBUTT"
+      ],
+      [
+        27,
+        "GROWL"
+      ],
+      [
+        33,
+        "WATER_GUN"
+      ],
+      [
+        37,
+        "WITHDRAW"
+      ],
+      [
+        44,
+        "AMNESIA"
+      ],
+      [
+        55,
+        "PSYCHIC_M"
+      ]
+    ],
+    "Ivysaur": [
+      [
+        7,
+        "LEECH_SEED"
+      ],
+      [
+        13,
+        "VINE_WHIP"
+      ],
+      [
+        22,
+        "POISONPOWDER"
+      ],
+      [
+        30,
+        "RAZOR_LEAF"
+      ],
+      [
+        38,
+        "GROWTH"
+      ],
+      [
+        46,
+        "SLEEP_POWDER"
+      ],
+      [
+        54,
+        "SOLARBEAM"
+      ]
+    ],
+    "Exeggutor": [
+      [
+        25,
+        "REFLECT"
+      ],
+      [
+        28,
+        "STOMP"
+      ],
+      [
+        42,
+        "SOLARBEAM"
+      ],
+      [
+        48,
+        "SLEEP_POWDER"
+      ]
+    ],
+    "Lickitung": [
+      [
+        7,
+        "STOMP"
+      ],
+      [
+        15,
+        "DISABLE"
+      ],
+      [
+        23,
+        "DEFENSE_CURL"
+      ],
+      [
+        31,
+        "SLAM"
+      ],
+      [
+        39,
+        "SCREECH"
+      ]
+    ],
+    "Exeggcute": [
+      [
+        25,
+        "REFLECT"
+      ],
+      [
+        28,
+        "LEECH_SEED"
+      ],
+      [
+        32,
+        "STUN_SPORE"
+      ],
+      [
+        37,
+        "POISONPOWDER"
+      ],
+      [
+        42,
+        "SOLARBEAM"
+      ],
+      [
+        48,
+        "SLEEP_POWDER"
+      ]
+    ],
+    "Grimer": [
+      [
+        30,
+        "POISON_GAS"
+      ],
+      [
+        33,
+        "MINIMIZE"
+      ],
+      [
+        37,
+        "SLUDGE"
+      ],
+      [
+        42,
+        "HARDEN"
+      ],
+      [
+        48,
+        "SCREECH"
+      ],
+      [
+        55,
+        "ACID_ARMOR"
+      ]
+    ],
+    "Gengar": [
+      [
+        29,
+        "HYPNOSIS"
+      ],
+      [
+        38,
+        "DREAM_EATER"
+      ]
+    ],
+    "NidoranF": [
+      [
+        8,
+        "SCRATCH"
+      ],
+      [
+        12,
+        "DOUBLE_KICK"
+      ],
+      [
+        17,
+        "POISON_STING"
+      ],
+      [
+        23,
+        "TAIL_WHIP"
+      ],
+      [
+        30,
+        "BITE"
+      ],
+      [
+        38,
+        "FURY_SWIPES"
+      ]
+    ],
+    "Nidoqueen": [
+      [
+        8,
+        "SCRATCH"
+      ],
+      [
+        12,
+        "DOUBLE_KICK"
+      ],
+      [
+        19,
+        "POISON_STING"
+      ],
+      [
+        23,
+        "BODY_SLAM"
+      ]
+    ],
+    "Cubone": [
+      [
+        13,
+        "TAIL_WHIP"
+      ],
+      [
+        16,
+        "HEADBUTT"
+      ],
+      [
+        25,
+        "LEER"
+      ],
+      [
+        31,
+        "FOCUS_ENERGY"
+      ],
+      [
+        38,
+        "THRASH"
+      ],
+      [
+        43,
+        "BONEMERANG"
+      ],
+      [
+        46,
+        "RAGE"
+      ]
+    ],
+    "Rhyhorn": [
+      [
+        30,
+        "STOMP"
+      ],
+      [
+        35,
+        "TAIL_WHIP"
+      ],
+      [
+        40,
+        "FURY_ATTACK"
+      ],
+      [
+        45,
+        "HORN_DRILL"
+      ],
+      [
+        50,
+        "LEER"
+      ],
+      [
+        55,
+        "TAKE_DOWN"
+      ]
+    ],
+    "Lapras": [
+      [
+        16,
+        "SING"
+      ],
+      [
+        20,
+        "MIST"
+      ],
+      [
+        25,
+        "BODY_SLAM"
+      ],
+      [
+        31,
+        "CONFUSE_RAY"
+      ],
+      [
+        38,
+        "ICE_BEAM"
+      ],
+      [
+        46,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Arcanine": [
+      [
+        20,
+        "EMBER"
+      ],
+      [
+        30,
+        "LEER"
+      ],
+      [
+        40,
+        "TAKE_DOWN"
+      ],
+      [
+        50,
+        "FLAMETHROWER"
+      ]
+    ],
+    "Mew": [
+      [
+        10,
+        "TRANSFORM"
+      ],
+      [
+        20,
+        "MEGA_PUNCH"
+      ],
+      [
+        30,
+        "METRONOME"
+      ],
+      [
+        40,
+        "PSYCHIC_M"
+      ]
+    ],
+    "Gyarados": [
+      [
+        20,
+        "BITE"
+      ],
+      [
+        25,
+        "DRAGON_RAGE"
+      ],
+      [
+        32,
+        "LEER"
+      ],
+      [
+        41,
+        "HYDRO_PUMP"
+      ],
+      [
+        52,
+        "HYPER_BEAM"
+      ]
+    ],
+    "Shellder": [
+      [
+        18,
+        "SUPERSONIC"
+      ],
+      [
+        23,
+        "CLAMP"
+      ],
+      [
+        30,
+        "AURORA_BEAM"
+      ],
+      [
+        39,
+        "LEER"
+      ],
+      [
+        50,
+        "ICE_BEAM"
+      ]
+    ],
+    "Tentacool": [
+      [
+        7,
+        "SUPERSONIC"
+      ],
+      [
+        13,
+        "WRAP"
+      ],
+      [
+        18,
+        "POISON_STING"
+      ],
+      [
+        22,
+        "WATER_GUN"
+      ],
+      [
+        27,
+        "CONSTRICT"
+      ],
+      [
+        33,
+        "BARRIER"
+      ],
+      [
+        40,
+        "SCREECH"
+      ],
+      [
+        48,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Gastly": [
+      [
+        27,
+        "HYPNOSIS"
+      ],
+      [
+        35,
+        "DREAM_EATER"
+      ]
+    ],
+    "Scyther": [
+      [
+        17,
+        "LEER"
+      ],
+      [
+        20,
+        "FOCUS_ENERGY"
+      ],
+      [
+        24,
+        "DOUBLE_TEAM"
+      ],
+      [
+        29,
+        "SLASH"
+      ],
+      [
+        35,
+        "SWORDS_DANCE"
+      ],
+      [
+        42,
+        "AGILITY"
+      ],
+      [
+        50,
+        "WING_ATTACK"
+      ]
+    ],
+    "Staryu": [
+      [
+        17,
+        "WATER_GUN"
+      ],
+      [
+        22,
+        "HARDEN"
+      ],
+      [
+        27,
+        "RECOVER"
+      ],
+      [
+        32,
+        "SWIFT"
+      ],
+      [
+        37,
+        "MINIMIZE"
+      ],
+      [
+        42,
+        "LIGHT_SCREEN"
+      ],
+      [
+        47,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Blastoise": [
+      [
+        8,
+        "BUBBLE"
+      ],
+      [
+        15,
+        "WATER_GUN"
+      ],
+      [
+        24,
+        "BITE"
+      ],
+      [
+        31,
+        "WITHDRAW"
+      ],
+      [
+        42,
+        "SKULL_BASH"
+      ],
+      [
+        52,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Pinsir": [
+      [
+        21,
+        "BIND"
+      ],
+      [
+        25,
+        "SEISMIC_TOSS"
+      ],
+      [
+        30,
+        "GUILLOTINE"
+      ],
+      [
+        36,
+        "FOCUS_ENERGY"
+      ],
+      [
+        43,
+        "HARDEN"
+      ],
+      [
+        49,
+        "SLASH"
+      ],
+      [
+        54,
+        "SWORDS_DANCE"
+      ]
+    ],
+    "Tangela": [
+      [
+        27,
+        "ABSORB"
+      ],
+      [
+        29,
+        "VINE_WHIP"
+      ],
+      [
+        32,
+        "POISONPOWDER"
+      ],
+      [
+        36,
+        "STUN_SPORE"
+      ],
+      [
+        39,
+        "SLEEP_POWDER"
+      ],
+      [
+        45,
+        "SLAM"
+      ],
+      [
+        49,
+        "GROWTH"
+      ]
+    ],
+    "MissingNo1F": [],
+    "MissingNo20": [],
+    "Growlithe": [
+      [
+        18,
+        "EMBER"
+      ],
+      [
+        23,
+        "LEER"
+      ],
+      [
+        30,
+        "TAKE_DOWN"
+      ],
+      [
+        39,
+        "AGILITY"
+      ],
+      [
+        50,
+        "FLAMETHROWER"
+      ]
+    ],
+    "Onix": [
+      [
+        15,
+        "BIND"
+      ],
+      [
+        19,
+        "ROCK_THROW"
+      ],
+      [
+        25,
+        "RAGE"
+      ],
+      [
+        33,
+        "SLAM"
+      ],
+      [
+        43,
+        "HARDEN"
+      ]
+    ],
+    "Fearow": [
+      [
+        9,
+        "LEER"
+      ],
+      [
+        15,
+        "FURY_ATTACK"
+      ],
+      [
+        25,
+        "MIRROR_MOVE"
+      ],
+      [
+        34,
+        "DRILL_PECK"
+      ],
+      [
+        43,
+        "AGILITY"
+      ]
+    ],
+    "Pidgey": [
+      [
+        5,
+        "SAND_ATTACK"
+      ],
+      [
+        12,
+        "QUICK_ATTACK"
+      ],
+      [
+        19,
+        "WHIRLWIND"
+      ],
+      [
+        28,
+        "WING_ATTACK"
+      ],
+      [
+        36,
+        "AGILITY"
+      ],
+      [
+        44,
+        "MIRROR_MOVE"
+      ]
+    ],
+    "Slowpoke": [
+      [
+        18,
+        "DISABLE"
+      ],
+      [
+        22,
+        "HEADBUTT"
+      ],
+      [
+        27,
+        "GROWL"
+      ],
+      [
+        33,
+        "WATER_GUN"
+      ],
+      [
+        40,
+        "AMNESIA"
+      ],
+      [
+        48,
+        "PSYCHIC_M"
+      ]
+    ],
+    "Kadabra": [
+      [
+        16,
+        "CONFUSION"
+      ],
+      [
+        20,
+        "DISABLE"
+      ],
+      [
+        27,
+        "PSYBEAM"
+      ],
+      [
+        31,
+        "RECOVER"
+      ],
+      [
+        38,
+        "PSYCHIC_M"
+      ],
+      [
+        42,
+        "REFLECT"
+      ]
+    ],
+    "Graveler": [
+      [
+        11,
+        "DEFENSE_CURL"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        21,
+        "SELFDESTRUCT"
+      ],
+      [
+        29,
+        "HARDEN"
+      ],
+      [
+        36,
+        "EARTHQUAKE"
+      ],
+      [
+        43,
+        "EXPLOSION"
+      ]
+    ],
+    "Chansey": [
+      [
+        12,
+        "TAIL_WHIP"
+      ],
+      [
+        24,
+        "SING"
+      ],
+      [
+        30,
+        "GROWL"
+      ],
+      [
+        38,
+        "MINIMIZE"
+      ],
+      [
+        44,
+        "DEFENSE_CURL"
+      ],
+      [
+        48,
+        "LIGHT_SCREEN"
+      ],
+      [
+        54,
+        "DOUBLE_EDGE"
+      ]
+    ],
+    "Machoke": [
+      [
+        20,
+        "LOW_KICK"
+      ],
+      [
+        25,
+        "LEER"
+      ],
+      [
+        36,
+        "FOCUS_ENERGY"
+      ],
+      [
+        44,
+        "SEISMIC_TOSS"
+      ],
+      [
+        52,
+        "SUBMISSION"
+      ]
+    ],
+    "MrMime": [
+      [
+        15,
+        "CONFUSION"
+      ],
+      [
+        23,
+        "LIGHT_SCREEN"
+      ],
+      [
+        31,
+        "DOUBLESLAP"
+      ],
+      [
+        39,
+        "MEDITATE"
+      ],
+      [
+        47,
+        "SUBSTITUTE"
+      ]
+    ],
+    "Hitmonlee": [
+      [
+        33,
+        "ROLLING_KICK"
+      ],
+      [
+        38,
+        "JUMP_KICK"
+      ],
+      [
+        43,
+        "FOCUS_ENERGY"
+      ],
+      [
+        48,
+        "HI_JUMP_KICK"
+      ],
+      [
+        53,
+        "MEGA_KICK"
+      ]
+    ],
+    "Hitmonchan": [
+      [
+        33,
+        "FIRE_PUNCH"
+      ],
+      [
+        38,
+        "ICE_PUNCH"
+      ],
+      [
+        43,
+        "THUNDERPUNCH"
+      ],
+      [
+        48,
+        "MEGA_PUNCH"
+      ],
+      [
+        53,
+        "COUNTER"
+      ]
+    ],
+    "Arbok": [
+      [
+        10,
+        "POISON_STING"
+      ],
+      [
+        17,
+        "BITE"
+      ],
+      [
+        27,
+        "GLARE"
+      ],
+      [
+        36,
+        "SCREECH"
+      ],
+      [
+        47,
+        "ACID"
+      ]
+    ],
+    "Parasect": [
+      [
+        13,
+        "STUN_SPORE"
+      ],
+      [
+        20,
+        "LEECH_LIFE"
+      ],
+      [
+        30,
+        "SPORE"
+      ],
+      [
+        39,
+        "SLASH"
+      ],
+      [
+        48,
+        "GROWTH"
+      ]
+    ],
+    "Psyduck": [
+      [
+        28,
+        "TAIL_WHIP"
+      ],
+      [
+        31,
+        "DISABLE"
+      ],
+      [
+        36,
+        "CONFUSION"
+      ],
+      [
+        43,
+        "FURY_SWIPES"
+      ],
+      [
+        52,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Drowzee": [
+      [
+        12,
+        "DISABLE"
+      ],
+      [
+        17,
+        "CONFUSION"
+      ],
+      [
+        24,
+        "HEADBUTT"
+      ],
+      [
+        29,
+        "POISON_GAS"
+      ],
+      [
+        32,
+        "PSYCHIC_M"
+      ],
+      [
+        37,
+        "MEDITATE"
+      ]
+    ],
+    "Golem": [
+      [
+        11,
+        "DEFENSE_CURL"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        21,
+        "SELFDESTRUCT"
+      ],
+      [
+        29,
+        "HARDEN"
+      ],
+      [
+        36,
+        "EARTHQUAKE"
+      ],
+      [
+        43,
+        "EXPLOSION"
+      ]
+    ],
+    "MissingNo32": [],
+    "Magmar": [
+      [
+        36,
+        "LEER"
+      ],
+      [
+        39,
+        "CONFUSE_RAY"
+      ],
+      [
+        43,
+        "FIRE_PUNCH"
+      ],
+      [
+        48,
+        "SMOKESCREEN"
+      ],
+      [
+        52,
+        "SMOG"
+      ],
+      [
+        55,
+        "FLAMETHROWER"
+      ]
+    ],
+    "MissingNo34": [],
+    "Electabuzz": [
+      [
+        34,
+        "THUNDERSHOCK"
+      ],
+      [
+        37,
+        "SCREECH"
+      ],
+      [
+        42,
+        "THUNDERPUNCH"
+      ],
+      [
+        49,
+        "LIGHT_SCREEN"
+      ],
+      [
+        54,
+        "THUNDER"
+      ]
+    ],
+    "Magneton": [
+      [
+        21,
+        "SONICBOOM"
+      ],
+      [
+        25,
+        "THUNDERSHOCK"
+      ],
+      [
+        29,
+        "SUPERSONIC"
+      ],
+      [
+        38,
+        "THUNDER_WAVE"
+      ],
+      [
+        46,
+        "SWIFT"
+      ],
+      [
+        54,
+        "SCREECH"
+      ]
+    ],
+    "Koffing": [
+      [
+        32,
+        "SLUDGE"
+      ],
+      [
+        37,
+        "SMOKESCREEN"
+      ],
+      [
+        40,
+        "SELFDESTRUCT"
+      ],
+      [
+        45,
+        "HAZE"
+      ],
+      [
+        48,
+        "EXPLOSION"
+      ]
+    ],
+    "MissingNo38": [],
+    "Mankey": [
+      [
+        9,
+        "LOW_KICK"
+      ],
+      [
+        15,
+        "KARATE_CHOP"
+      ],
+      [
+        21,
+        "FURY_SWIPES"
+      ],
+      [
+        27,
+        "FOCUS_ENERGY"
+      ],
+      [
+        33,
+        "SEISMIC_TOSS"
+      ],
+      [
+        39,
+        "THRASH"
+      ],
+      [
+        45,
+        "SCREECH"
+      ]
+    ],
+    "Seel": [
+      [
+        30,
+        "GROWL"
+      ],
+      [
+        35,
+        "AURORA_BEAM"
+      ],
+      [
+        40,
+        "REST"
+      ],
+      [
+        45,
+        "TAKE_DOWN"
+      ],
+      [
+        50,
+        "ICE_BEAM"
+      ]
+    ],
+    "Diglett": [
+      [
+        15,
+        "GROWL"
+      ],
+      [
+        19,
+        "DIG"
+      ],
+      [
+        24,
+        "SAND_ATTACK"
+      ],
+      [
+        31,
+        "SLASH"
+      ],
+      [
+        40,
+        "EARTHQUAKE"
+      ]
+    ],
+    "Tauros": [
+      [
+        21,
+        "STOMP"
+      ],
+      [
+        28,
+        "TAIL_WHIP"
+      ],
+      [
+        35,
+        "LEER"
+      ],
+      [
+        44,
+        "RAGE"
+      ],
+      [
+        51,
+        "TAKE_DOWN"
+      ]
+    ],
+    "MissingNo3D": [],
+    "MissingNo3E": [],
+    "MissingNo3F": [],
+    "Farfetchd": [
+      [
+        7,
+        "LEER"
+      ],
+      [
+        15,
+        "FURY_ATTACK"
+      ],
+      [
+        23,
+        "SWORDS_DANCE"
+      ],
+      [
+        31,
+        "AGILITY"
+      ],
+      [
+        39,
+        "SLASH"
+      ]
+    ],
+    "Venonat": [
+      [
+        11,
+        "SUPERSONIC"
+      ],
+      [
+        19,
+        "CONFUSION"
+      ],
+      [
+        24,
+        "POISONPOWDER"
+      ],
+      [
+        27,
+        "LEECH_LIFE"
+      ],
+      [
+        30,
+        "STUN_SPORE"
+      ],
+      [
+        35,
+        "PSYBEAM"
+      ],
+      [
+        38,
+        "SLEEP_POWDER"
+      ],
+      [
+        43,
+        "PSYCHIC_M"
+      ]
+    ],
+    "Dragonite": [
+      [
+        10,
+        "THUNDER_WAVE"
+      ],
+      [
+        20,
+        "AGILITY"
+      ],
+      [
+        35,
+        "SLAM"
+      ],
+      [
+        45,
+        "DRAGON_RAGE"
+      ],
+      [
+        60,
+        "HYPER_BEAM"
+      ]
+    ],
+    "MissingNo43": [],
+    "MissingNo44": [],
+    "MissingNo45": [],
+    "Doduo": [
+      [
+        20,
+        "GROWL"
+      ],
+      [
+        24,
+        "FURY_ATTACK"
+      ],
+      [
+        30,
+        "DRILL_PECK"
+      ],
+      [
+        36,
+        "RAGE"
+      ],
+      [
+        40,
+        "TRI_ATTACK"
+      ],
+      [
+        44,
+        "AGILITY"
+      ]
+    ],
+    "Poliwag": [
+      [
+        16,
+        "HYPNOSIS"
+      ],
+      [
+        19,
+        "WATER_GUN"
+      ],
+      [
+        25,
+        "DOUBLESLAP"
+      ],
+      [
+        31,
+        "BODY_SLAM"
+      ],
+      [
+        38,
+        "AMNESIA"
+      ],
+      [
+        45,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Jynx": [
+      [
+        18,
+        "LICK"
+      ],
+      [
+        23,
+        "DOUBLESLAP"
+      ],
+      [
+        31,
+        "ICE_PUNCH"
+      ],
+      [
+        39,
+        "BODY_SLAM"
+      ],
+      [
+        47,
+        "THRASH"
+      ],
+      [
+        58,
+        "BLIZZARD"
+      ]
+    ],
+    "Moltres": [
+      [
+        51,
+        "LEER"
+      ],
+      [
+        55,
+        "AGILITY"
+      ],
+      [
+        60,
+        "SKY_ATTACK"
+      ]
+    ],
+    "Articuno": [
+      [
+        51,
+        "BLIZZARD"
+      ],
+      [
+        55,
+        "AGILITY"
+      ],
+      [
+        60,
+        "MIST"
+      ]
+    ],
+    "Zapdos": [
+      [
+        51,
+        "THUNDER"
+      ],
+      [
+        55,
+        "AGILITY"
+      ],
+      [
+        60,
+        "LIGHT_SCREEN"
+      ]
+    ],
+    "Ditto": [],
+    "Meowth": [
+      [
+        12,
+        "BITE"
+      ],
+      [
+        17,
+        "PAY_DAY"
+      ],
+      [
+        24,
+        "SCREECH"
+      ],
+      [
+        33,
+        "FURY_SWIPES"
+      ],
+      [
+        44,
+        "SLASH"
+      ]
+    ],
+    "Krabby": [
+      [
+        20,
+        "VICEGRIP"
+      ],
+      [
+        25,
+        "GUILLOTINE"
+      ],
+      [
+        30,
+        "STOMP"
+      ],
+      [
+        35,
+        "CRABHAMMER"
+      ],
+      [
+        40,
+        "HARDEN"
+      ]
+    ],
+    "MissingNo4F": [],
+    "MissingNo50": [],
+    "MissingNo51": [],
+    "Vulpix": [
+      [
+        16,
+        "QUICK_ATTACK"
+      ],
+      [
+        21,
+        "ROAR"
+      ],
+      [
+        28,
+        "CONFUSE_RAY"
+      ],
+      [
+        35,
+        "FLAMETHROWER"
+      ],
+      [
+        42,
+        "FIRE_SPIN"
+      ]
+    ],
+    "Ninetales": [
+      [
+        20,
+        "QUICK_ATTACK"
+      ],
+      [
+        28,
+        "CONFUSE_RAY"
+      ],
+      [
+        36,
+        "FLAMETHROWER"
+      ],
+      [
+        44,
+        "FIRE_SPIN"
+      ]
+    ],
+    "Pikachu": [
+      [
+        6,
+        "TAIL_WHIP"
+      ],
+      [
+        8,
+        "THUNDER_WAVE"
+      ],
+      [
+        11,
+        "QUICK_ATTACK"
+      ],
+      [
+        15,
+        "DOUBLE_TEAM"
+      ],
+      [
+        20,
+        "SLAM"
+      ],
+      [
+        26,
+        "THUNDERBOLT"
+      ],
+      [
+        29,
+        "SWIFT"
+      ],
+      [
+        33,
+        "AGILITY"
+      ],
+      [
+        41,
+        "THUNDER"
+      ],
+      [
+        50,
+        "LIGHT_SCREEN"
+      ]
+    ],
+    "Raichu": [
+      [
+        11,
+        "TAIL_WHIP"
+      ],
+      [
+        13,
+        "THUNDER_WAVE"
+      ],
+      [
+        25,
+        "SLAM"
+      ],
+      [
+        31,
+        "THUNDERBOLT"
+      ],
+      [
+        46,
+        "THUNDER"
+      ],
+      [
+        55,
+        "LIGHT_SCREEN"
+      ]
+    ],
+    "MissingNo56": [],
+    "MissingNo57": [],
+    "Dratini": [
+      [
+        10,
+        "THUNDER_WAVE"
+      ],
+      [
+        20,
+        "AGILITY"
+      ],
+      [
+        30,
+        "SLAM"
+      ],
+      [
+        40,
+        "DRAGON_RAGE"
+      ],
+      [
+        50,
+        "HYPER_BEAM"
+      ]
+    ],
+    "Dragonair": [
+      [
+        10,
+        "THUNDER_WAVE"
+      ],
+      [
+        20,
+        "AGILITY"
+      ],
+      [
+        35,
+        "SLAM"
+      ],
+      [
+        45,
+        "DRAGON_RAGE"
+      ],
+      [
+        55,
+        "HYPER_BEAM"
+      ]
+    ],
+    "Kabuto": [
+      [
+        34,
+        "ABSORB"
+      ],
+      [
+        39,
+        "SLASH"
+      ],
+      [
+        44,
+        "LEER"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Kabutops": [
+      [
+        34,
+        "ABSORB"
+      ],
+      [
+        39,
+        "SLASH"
+      ],
+      [
+        46,
+        "LEER"
+      ],
+      [
+        53,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Horsea": [
+      [
+        19,
+        "SMOKESCREEN"
+      ],
+      [
+        24,
+        "LEER"
+      ],
+      [
+        30,
+        "WATER_GUN"
+      ],
+      [
+        37,
+        "AGILITY"
+      ],
+      [
+        45,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Seadra": [
+      [
+        19,
+        "SMOKESCREEN"
+      ],
+      [
+        24,
+        "LEER"
+      ],
+      [
+        30,
+        "WATER_GUN"
+      ],
+      [
+        41,
+        "AGILITY"
+      ],
+      [
+        52,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "MissingNo5E": [],
+    "MissingNo5F": [],
+    "Sandshrew": [
+      [
+        10,
+        "SAND_ATTACK"
+      ],
+      [
+        17,
+        "SLASH"
+      ],
+      [
+        24,
+        "POISON_STING"
+      ],
+      [
+        31,
+        "SWIFT"
+      ],
+      [
+        38,
+        "FURY_SWIPES"
+      ]
+    ],
+    "Sandslash": [
+      [
+        10,
+        "SAND_ATTACK"
+      ],
+      [
+        17,
+        "SLASH"
+      ],
+      [
+        27,
+        "POISON_STING"
+      ],
+      [
+        36,
+        "SWIFT"
+      ],
+      [
+        47,
+        "FURY_SWIPES"
+      ]
+    ],
+    "Omanyte": [
+      [
+        34,
+        "HORN_ATTACK"
+      ],
+      [
+        39,
+        "LEER"
+      ],
+      [
+        46,
+        "SPIKE_CANNON"
+      ],
+      [
+        53,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Omastar": [
+      [
+        34,
+        "HORN_ATTACK"
+      ],
+      [
+        39,
+        "LEER"
+      ],
+      [
+        44,
+        "SPIKE_CANNON"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Jigglypuff": [
+      [
+        9,
+        "POUND"
+      ],
+      [
+        14,
+        "DISABLE"
+      ],
+      [
+        19,
+        "DEFENSE_CURL"
+      ],
+      [
+        24,
+        "DOUBLESLAP"
+      ],
+      [
+        29,
+        "REST"
+      ],
+      [
+        34,
+        "BODY_SLAM"
+      ],
+      [
+        39,
+        "DOUBLE_EDGE"
+      ]
+    ],
+    "Wigglytuff": [
+      [
+        9,
+        "POUND"
+      ],
+      [
+        14,
+        "DISABLE"
+      ],
+      [
+        19,
+        "DEFENSE_CURL"
+      ],
+      [
+        24,
+        "SING"
+      ],
+      [
+        29,
+        "DOUBLESLAP"
+      ],
+      [
+        34,
+        "DISABLE"
+      ],
+      [
+        39,
+        "BODY_SLAM"
+      ]
+    ],
+    "Eevee": [
+      [
+        8,
+        "TAIL_WHIP"
+      ],
+      [
+        16,
+        "GROWL"
+      ],
+      [
+        23,
+        "QUICK_ATTACK"
+      ],
+      [
+        30,
+        "BITE"
+      ],
+      [
+        36,
+        "FOCUS_ENERGY"
+      ],
+      [
+        42,
+        "TAKE_DOWN"
+      ]
+    ],
+    "Flareon": [
+      [
+        8,
+        "TAIL_WHIP"
+      ],
+      [
+        16,
+        "EMBER"
+      ],
+      [
+        23,
+        "QUICK_ATTACK"
+      ],
+      [
+        30,
+        "BITE"
+      ],
+      [
+        36,
+        "FIRE_SPIN"
+      ],
+      [
+        42,
+        "SMOG"
+      ],
+      [
+        47,
+        "LEER"
+      ],
+      [
+        48,
+        "RAGE"
+      ],
+      [
+        52,
+        "FLAMETHROWER"
+      ]
+    ],
+    "Jolteon": [
+      [
+        8,
+        "TAIL_WHIP"
+      ],
+      [
+        16,
+        "THUNDERSHOCK"
+      ],
+      [
+        23,
+        "QUICK_ATTACK"
+      ],
+      [
+        30,
+        "DOUBLE_KICK"
+      ],
+      [
+        36,
+        "PIN_MISSILE"
+      ],
+      [
+        42,
+        "THUNDER_WAVE"
+      ],
+      [
+        47,
+        "AGILITY"
+      ],
+      [
+        52,
+        "THUNDER"
+      ]
+    ],
+    "Vaporeon": [
+      [
+        8,
+        "TAIL_WHIP"
+      ],
+      [
+        16,
+        "WATER_GUN"
+      ],
+      [
+        23,
+        "QUICK_ATTACK"
+      ],
+      [
+        30,
+        "BITE"
+      ],
+      [
+        36,
+        "AURORA_BEAM"
+      ],
+      [
+        42,
+        "HAZE"
+      ],
+      [
+        47,
+        "ACID_ARMOR"
+      ],
+      [
+        48,
+        "MIST"
+      ],
+      [
+        52,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Machop": [
+      [
+        20,
+        "LOW_KICK"
+      ],
+      [
+        25,
+        "LEER"
+      ],
+      [
+        32,
+        "FOCUS_ENERGY"
+      ],
+      [
+        39,
+        "SEISMIC_TOSS"
+      ],
+      [
+        46,
+        "SUBMISSION"
+      ]
+    ],
+    "Zubat": [
+      [
+        10,
+        "SUPERSONIC"
+      ],
+      [
+        15,
+        "BITE"
+      ],
+      [
+        21,
+        "CONFUSE_RAY"
+      ],
+      [
+        28,
+        "WING_ATTACK"
+      ],
+      [
+        36,
+        "HAZE"
+      ]
+    ],
+    "Ekans": [
+      [
+        10,
+        "POISON_STING"
+      ],
+      [
+        17,
+        "BITE"
+      ],
+      [
+        24,
+        "GLARE"
+      ],
+      [
+        31,
+        "SCREECH"
+      ],
+      [
+        38,
+        "ACID"
+      ]
+    ],
+    "Paras": [
+      [
+        13,
+        "STUN_SPORE"
+      ],
+      [
+        20,
+        "LEECH_LIFE"
+      ],
+      [
+        27,
+        "SPORE"
+      ],
+      [
+        34,
+        "SLASH"
+      ],
+      [
+        41,
+        "GROWTH"
+      ]
+    ],
+    "Poliwhirl": [
+      [
+        16,
+        "HYPNOSIS"
+      ],
+      [
+        19,
+        "WATER_GUN"
+      ],
+      [
+        26,
+        "DOUBLESLAP"
+      ],
+      [
+        33,
+        "BODY_SLAM"
+      ],
+      [
+        41,
+        "AMNESIA"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Poliwrath": [
+      [
+        16,
+        "HYPNOSIS"
+      ],
+      [
+        19,
+        "WATER_GUN"
+      ],
+      [
+        27,
+        "DOUBLESLAP"
+      ],
+      [
+        35,
+        "BODY_SLAM"
+      ],
+      [
+        53,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Weedle": [],
+    "Kakuna": [
+      [
+        7,
+        "HARDEN"
+      ]
+    ],
+    "Beedrill": [
+      [
+        12,
+        "FURY_ATTACK"
+      ],
+      [
+        16,
+        "FOCUS_ENERGY"
+      ],
+      [
+        20,
+        "TWINEEDLE"
+      ],
+      [
+        25,
+        "RAGE"
+      ],
+      [
+        30,
+        "PIN_MISSILE"
+      ],
+      [
+        35,
+        "AGILITY"
+      ]
+    ],
+    "MissingNo73": [],
+    "Dodrio": [
+      [
+        20,
+        "GROWL"
+      ],
+      [
+        24,
+        "FURY_ATTACK"
+      ],
+      [
+        30,
+        "DRILL_PECK"
+      ],
+      [
+        39,
+        "RAGE"
+      ],
+      [
+        45,
+        "TRI_ATTACK"
+      ],
+      [
+        51,
+        "AGILITY"
+      ]
+    ],
+    "Primeape": [
+      [
+        9,
+        "LOW_KICK"
+      ],
+      [
+        15,
+        "KARATE_CHOP"
+      ],
+      [
+        21,
+        "FURY_SWIPES"
+      ],
+      [
+        27,
+        "FOCUS_ENERGY"
+      ],
+      [
+        28,
+        "RAGE"
+      ],
+      [
+        37,
+        "SEISMIC_TOSS"
+      ],
+      [
+        45,
+        "SCREECH"
+      ],
+      [
+        46,
+        "THRASH"
+      ]
+    ],
+    "Dugtrio": [
+      [
+        15,
+        "GROWL"
+      ],
+      [
+        19,
+        "DIG"
+      ],
+      [
+        24,
+        "SAND_ATTACK"
+      ],
+      [
+        35,
+        "SLASH"
+      ],
+      [
+        47,
+        "EARTHQUAKE"
+      ]
+    ],
+    "Venomoth": [
+      [
+        11,
+        "SUPERSONIC"
+      ],
+      [
+        19,
+        "CONFUSION"
+      ],
+      [
+        24,
+        "POISONPOWDER"
+      ],
+      [
+        27,
+        "LEECH_LIFE"
+      ],
+      [
+        30,
+        "STUN_SPORE"
+      ],
+      [
+        38,
+        "PSYBEAM"
+      ],
+      [
+        43,
+        "SLEEP_POWDER"
+      ],
+      [
+        50,
+        "PSYCHIC_M"
+      ]
+    ],
+    "Dewgong": [
+      [
+        30,
+        "GROWL"
+      ],
+      [
+        35,
+        "AURORA_BEAM"
+      ],
+      [
+        44,
+        "REST"
+      ],
+      [
+        50,
+        "TAKE_DOWN"
+      ],
+      [
+        56,
+        "ICE_BEAM"
+      ]
+    ],
+    "MissingNo79": [],
+    "MissingNo7A": [],
+    "Caterpie": [],
+    "Metapod": [
+      [
+        7,
+        "HARDEN"
+      ]
+    ],
+    "Butterfree": [
+      [
+        12,
+        "CONFUSION"
+      ],
+      [
+        15,
+        "POISONPOWDER"
+      ],
+      [
+        16,
+        "STUN_SPORE"
+      ],
+      [
+        17,
+        "SLEEP_POWDER"
+      ],
+      [
+        21,
+        "SUPERSONIC"
+      ],
+      [
+        26,
+        "WHIRLWIND"
+      ],
+      [
+        28,
+        "GUST"
+      ],
+      [
+        32,
+        "PSYBEAM"
+      ]
+    ],
+    "Machamp": [
+      [
+        20,
+        "LOW_KICK"
+      ],
+      [
+        25,
+        "LEER"
+      ],
+      [
+        36,
+        "FOCUS_ENERGY"
+      ],
+      [
+        44,
+        "SEISMIC_TOSS"
+      ],
+      [
+        52,
+        "SUBMISSION"
+      ]
+    ],
+    "MissingNo7F": [],
+    "Golduck": [
+      [
+        28,
+        "TAIL_WHIP"
+      ],
+      [
+        31,
+        "DISABLE"
+      ],
+      [
+        39,
+        "CONFUSION"
+      ],
+      [
+        48,
+        "FURY_SWIPES"
+      ],
+      [
+        59,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Hypno": [
+      [
+        12,
+        "DISABLE"
+      ],
+      [
+        17,
+        "CONFUSION"
+      ],
+      [
+        24,
+        "HEADBUTT"
+      ],
+      [
+        33,
+        "POISON_GAS"
+      ],
+      [
+        37,
+        "PSYCHIC_M"
+      ],
+      [
+        43,
+        "MEDITATE"
+      ]
+    ],
+    "Golbat": [
+      [
+        10,
+        "SUPERSONIC"
+      ],
+      [
+        15,
+        "BITE"
+      ],
+      [
+        21,
+        "CONFUSE_RAY"
+      ],
+      [
+        32,
+        "WING_ATTACK"
+      ],
+      [
+        43,
+        "HAZE"
+      ]
+    ],
+    "Mewtwo": [
+      [
+        63,
+        "BARRIER"
+      ],
+      [
+        66,
+        "PSYCHIC_M"
+      ],
+      [
+        70,
+        "RECOVER"
+      ],
+      [
+        75,
+        "MIST"
+      ],
+      [
+        81,
+        "AMNESIA"
+      ]
+    ],
+    "Snorlax": [
+      [
+        35,
+        "BODY_SLAM"
+      ],
+      [
+        41,
+        "HARDEN"
+      ],
+      [
+        48,
+        "DOUBLE_EDGE"
+      ],
+      [
+        56,
+        "HYPER_BEAM"
+      ]
+    ],
+    "Magikarp": [
+      [
+        15,
+        "TACKLE"
+      ]
+    ],
+    "MissingNo86": [],
+    "MissingNo87": [],
+    "Muk": [
+      [
+        30,
+        "POISON_GAS"
+      ],
+      [
+        33,
+        "MINIMIZE"
+      ],
+      [
+        37,
+        "SLUDGE"
+      ],
+      [
+        45,
+        "HARDEN"
+      ],
+      [
+        53,
+        "SCREECH"
+      ],
+      [
+        60,
+        "ACID_ARMOR"
+      ]
+    ],
+    "MissingNo8A": [],
+    "Kingler": [
+      [
+        20,
+        "VICEGRIP"
+      ],
+      [
+        25,
+        "GUILLOTINE"
+      ],
+      [
+        34,
+        "STOMP"
+      ],
+      [
+        42,
+        "CRABHAMMER"
+      ],
+      [
+        49,
+        "HARDEN"
+      ]
+    ],
+    "Cloyster": [
+      [
+        18,
+        "SUPERSONIC"
+      ],
+      [
+        23,
+        "CLAMP"
+      ],
+      [
+        30,
+        "AURORA_BEAM"
+      ],
+      [
+        50,
+        "SPIKE_CANNON"
+      ]
+    ],
+    "MissingNo8C": [],
+    "Electrode": [
+      [
+        17,
+        "SONICBOOM"
+      ],
+      [
+        22,
+        "SELFDESTRUCT"
+      ],
+      [
+        29,
+        "LIGHT_SCREEN"
+      ],
+      [
+        40,
+        "SWIFT"
+      ],
+      [
+        50,
+        "EXPLOSION"
+      ]
+    ],
+    "Clefable": [
+      [
+        13,
+        "SING"
+      ],
+      [
+        18,
+        "DOUBLESLAP"
+      ],
+      [
+        24,
+        "MINIMIZE"
+      ],
+      [
+        31,
+        "METRONOME"
+      ]
+    ],
+    "Weezing": [
+      [
+        32,
+        "SLUDGE"
+      ],
+      [
+        39,
+        "SMOKESCREEN"
+      ],
+      [
+        43,
+        "SELFDESTRUCT"
+      ],
+      [
+        49,
+        "HAZE"
+      ],
+      [
+        53,
+        "EXPLOSION"
+      ]
+    ],
+    "Persian": [
+      [
+        12,
+        "BITE"
+      ],
+      [
+        17,
+        "PAY_DAY"
+      ],
+      [
+        24,
+        "SCREECH"
+      ],
+      [
+        37,
+        "FURY_SWIPES"
+      ],
+      [
+        51,
+        "SLASH"
+      ]
+    ],
+    "Marowak": [
+      [
+        13,
+        "TAIL_WHIP"
+      ],
+      [
+        16,
+        "HEADBUTT"
+      ],
+      [
+        25,
+        "LEER"
+      ],
+      [
+        33,
+        "FOCUS_ENERGY"
+      ],
+      [
+        41,
+        "THRASH"
+      ],
+      [
+        48,
+        "BONEMERANG"
+      ],
+      [
+        55,
+        "RAGE"
+      ]
+    ],
+    "MissingNo92": [],
+    "Haunter": [
+      [
+        29,
+        "HYPNOSIS"
+      ],
+      [
+        38,
+        "DREAM_EATER"
+      ]
+    ],
+    "Abra": [],
+    "Alakazam": [
+      [
+        16,
+        "CONFUSION"
+      ],
+      [
+        20,
+        "DISABLE"
+      ],
+      [
+        27,
+        "PSYBEAM"
+      ],
+      [
+        31,
+        "RECOVER"
+      ],
+      [
+        38,
+        "PSYCHIC_M"
+      ],
+      [
+        42,
+        "REFLECT"
+      ]
+    ],
+    "Pidgeotto": [
+      [
+        5,
+        "SAND_ATTACK"
+      ],
+      [
+        12,
+        "QUICK_ATTACK"
+      ],
+      [
+        21,
+        "WHIRLWIND"
+      ],
+      [
+        31,
+        "WING_ATTACK"
+      ],
+      [
+        40,
+        "AGILITY"
+      ],
+      [
+        49,
+        "MIRROR_MOVE"
+      ]
+    ],
+    "Pidgeot": [
+      [
+        5,
+        "SAND_ATTACK"
+      ],
+      [
+        12,
+        "QUICK_ATTACK"
+      ],
+      [
+        21,
+        "WHIRLWIND"
+      ],
+      [
+        31,
+        "WING_ATTACK"
+      ],
+      [
+        44,
+        "AGILITY"
+      ],
+      [
+        54,
+        "MIRROR_MOVE"
+      ]
+    ],
+    "Starmie": [
+      [
+        21,
+        "WATER_GUN"
+      ],
+      [
+        26,
+        "HARDEN"
+      ],
+      [
+        31,
+        "RECOVER"
+      ],
+      [
+        36,
+        "SWIFT"
+      ],
+      [
+        46,
+        "LIGHT_SCREEN"
+      ],
+      [
+        51,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Bulbasaur": [
+      [
+        7,
+        "LEECH_SEED"
+      ],
+      [
+        13,
+        "VINE_WHIP"
+      ],
+      [
+        20,
+        "POISONPOWDER"
+      ],
+      [
+        27,
+        "RAZOR_LEAF"
+      ],
+      [
+        34,
+        "GROWTH"
+      ],
+      [
+        41,
+        "SLEEP_POWDER"
+      ],
+      [
+        48,
+        "SOLARBEAM"
+      ]
+    ],
+    "Venusaur": [
+      [
+        7,
+        "LEECH_SEED"
+      ],
+      [
+        13,
+        "VINE_WHIP"
+      ],
+      [
+        22,
+        "POISONPOWDER"
+      ],
+      [
+        30,
+        "RAZOR_LEAF"
+      ],
+      [
+        43,
+        "GROWTH"
+      ],
+      [
+        55,
+        "SLEEP_POWDER"
+      ],
+      [
+        65,
+        "SOLARBEAM"
+      ]
+    ],
+    "Tentacruel": [
+      [
+        7,
+        "SUPERSONIC"
+      ],
+      [
+        13,
+        "WRAP"
+      ],
+      [
+        18,
+        "POISON_STING"
+      ],
+      [
+        22,
+        "WATER_GUN"
+      ],
+      [
+        27,
+        "CONSTRICT"
+      ],
+      [
+        35,
+        "BARRIER"
+      ],
+      [
+        43,
+        "SCREECH"
+      ],
+      [
+        50,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "MissingNo9C": [],
+    "Goldeen": [
+      [
+        19,
+        "SUPERSONIC"
+      ],
+      [
+        24,
+        "HORN_ATTACK"
+      ],
+      [
+        30,
+        "FURY_ATTACK"
+      ],
+      [
+        37,
+        "WATERFALL"
+      ],
+      [
+        45,
+        "HORN_DRILL"
+      ],
+      [
+        54,
+        "AGILITY"
+      ]
+    ],
+    "Seaking": [
+      [
+        19,
+        "SUPERSONIC"
+      ],
+      [
+        24,
+        "HORN_ATTACK"
+      ],
+      [
+        30,
+        "FURY_ATTACK"
+      ],
+      [
+        39,
+        "WATERFALL"
+      ],
+      [
+        48,
+        "HORN_DRILL"
+      ],
+      [
+        54,
+        "AGILITY"
+      ]
+    ],
+    "MissingNo9F": [],
+    "MissingNoA0": [],
+    "MissingNoA1": [],
+    "MissingNoA2": [],
+    "Ponyta": [
+      [
+        30,
+        "TAIL_WHIP"
+      ],
+      [
+        32,
+        "STOMP"
+      ],
+      [
+        35,
+        "GROWL"
+      ],
+      [
+        39,
+        "FIRE_SPIN"
+      ],
+      [
+        43,
+        "TAKE_DOWN"
+      ],
+      [
+        48,
+        "AGILITY"
+      ]
+    ],
+    "Rapidash": [
+      [
+        30,
+        "TAIL_WHIP"
+      ],
+      [
+        32,
+        "STOMP"
+      ],
+      [
+        35,
+        "GROWL"
+      ],
+      [
+        39,
+        "FIRE_SPIN"
+      ],
+      [
+        47,
+        "TAKE_DOWN"
+      ],
+      [
+        55,
+        "AGILITY"
+      ]
+    ],
+    "Rattata": [
+      [
+        7,
+        "QUICK_ATTACK"
+      ],
+      [
+        14,
+        "HYPER_FANG"
+      ],
+      [
+        23,
+        "FOCUS_ENERGY"
+      ],
+      [
+        34,
+        "SUPER_FANG"
+      ]
+    ],
+    "Raticate": [
+      [
+        7,
+        "QUICK_ATTACK"
+      ],
+      [
+        14,
+        "HYPER_FANG"
+      ],
+      [
+        27,
+        "FOCUS_ENERGY"
+      ],
+      [
+        41,
+        "SUPER_FANG"
+      ]
+    ],
+    "Nidorino": [
+      [
+        8,
+        "HORN_ATTACK"
+      ],
+      [
+        12,
+        "DOUBLE_KICK"
+      ],
+      [
+        19,
+        "POISON_STING"
+      ],
+      [
+        27,
+        "FOCUS_ENERGY"
+      ],
+      [
+        36,
+        "FURY_ATTACK"
+      ],
+      [
+        46,
+        "HORN_DRILL"
+      ]
+    ],
+    "Nidorina": [
+      [
+        8,
+        "SCRATCH"
+      ],
+      [
+        12,
+        "DOUBLE_KICK"
+      ],
+      [
+        19,
+        "POISON_STING"
+      ],
+      [
+        27,
+        "TAIL_WHIP"
+      ],
+      [
+        36,
+        "BITE"
+      ],
+      [
+        46,
+        "FURY_SWIPES"
+      ]
+    ],
+    "Geodude": [
+      [
+        11,
+        "DEFENSE_CURL"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        21,
+        "SELFDESTRUCT"
+      ],
+      [
+        26,
+        "HARDEN"
+      ],
+      [
+        31,
+        "EARTHQUAKE"
+      ],
+      [
+        36,
+        "EXPLOSION"
+      ]
+    ],
+    "Porygon": [
+      [
+        23,
+        "PSYBEAM"
+      ],
+      [
+        28,
+        "RECOVER"
+      ],
+      [
+        35,
+        "AGILITY"
+      ],
+      [
+        42,
+        "TRI_ATTACK"
+      ]
+    ],
+    "Aerodactyl": [
+      [
+        33,
+        "SUPERSONIC"
+      ],
+      [
+        38,
+        "BITE"
+      ],
+      [
+        45,
+        "TAKE_DOWN"
+      ],
+      [
+        54,
+        "HYPER_BEAM"
+      ]
+    ],
+    "MissingNoAC": [],
+    "Magnemite": [
+      [
+        21,
+        "SONICBOOM"
+      ],
+      [
+        25,
+        "THUNDERSHOCK"
+      ],
+      [
+        29,
+        "SUPERSONIC"
+      ],
+      [
+        35,
+        "THUNDER_WAVE"
+      ],
+      [
+        41,
+        "SWIFT"
+      ],
+      [
+        47,
+        "SCREECH"
+      ]
+    ],
+    "MissingNoAE": [],
+    "MissingNoAF": [],
+    "Charmander": [
+      [
+        9,
+        "EMBER"
+      ],
+      [
+        15,
+        "LEER"
+      ],
+      [
+        22,
+        "RAGE"
+      ],
+      [
+        30,
+        "SLASH"
+      ],
+      [
+        38,
+        "FLAMETHROWER"
+      ],
+      [
+        46,
+        "FIRE_SPIN"
+      ]
+    ],
+    "Squirtle": [
+      [
+        8,
+        "BUBBLE"
+      ],
+      [
+        15,
+        "WATER_GUN"
+      ],
+      [
+        22,
+        "BITE"
+      ],
+      [
+        28,
+        "WITHDRAW"
+      ],
+      [
+        35,
+        "SKULL_BASH"
+      ],
+      [
+        42,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Charmeleon": [
+      [
+        9,
+        "EMBER"
+      ],
+      [
+        15,
+        "LEER"
+      ],
+      [
+        24,
+        "RAGE"
+      ],
+      [
+        33,
+        "SLASH"
+      ],
+      [
+        42,
+        "FLAMETHROWER"
+      ],
+      [
+        56,
+        "FIRE_SPIN"
+      ]
+    ],
+    "Wartortle": [
+      [
+        8,
+        "BUBBLE"
+      ],
+      [
+        15,
+        "WATER_GUN"
+      ],
+      [
+        24,
+        "BITE"
+      ],
+      [
+        31,
+        "WITHDRAW"
+      ],
+      [
+        39,
+        "SKULL_BASH"
+      ],
+      [
+        47,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "Charizard": [
+      [
+        9,
+        "EMBER"
+      ],
+      [
+        15,
+        "LEER"
+      ],
+      [
+        24,
+        "RAGE"
+      ],
+      [
+        36,
+        "SLASH"
+      ],
+      [
+        46,
+        "FLAMETHROWER"
+      ],
+      [
+        55,
+        "FIRE_SPIN"
+      ]
+    ],
+    "MissingNoB5": [],
+    "FossilKabutops": [],
+    "FossilAerodactyl": [],
+    "MonGhost": [],
+    "Oddish": [
+      [
+        15,
+        "POISONPOWDER"
+      ],
+      [
+        17,
+        "STUN_SPORE"
+      ],
+      [
+        19,
+        "SLEEP_POWDER"
+      ],
+      [
+        24,
+        "ACID"
+      ],
+      [
+        33,
+        "PETAL_DANCE"
+      ],
+      [
+        46,
+        "SOLARBEAM"
+      ]
+    ],
+    "Gloom": [
+      [
+        15,
+        "POISONPOWDER"
+      ],
+      [
+        17,
+        "STUN_SPORE"
+      ],
+      [
+        19,
+        "SLEEP_POWDER"
+      ],
+      [
+        28,
+        "ACID"
+      ],
+      [
+        38,
+        "PETAL_DANCE"
+      ],
+      [
+        52,
+        "SOLARBEAM"
+      ]
+    ],
+    "Vileplume": [
+      [
+        15,
+        "POISONPOWDER"
+      ],
+      [
+        17,
+        "STUN_SPORE"
+      ],
+      [
+        19,
+        "SLEEP_POWDER"
+      ],
+      [
+        30,
+        "ACID"
+      ],
+      [
+        40,
+        "PETAL_DANCE"
+      ]
+    ],
+    "Bellsprout": [
+      [
+        13,
+        "WRAP"
+      ],
+      [
+        15,
+        "POISONPOWDER"
+      ],
+      [
+        18,
+        "SLEEP_POWDER"
+      ],
+      [
+        21,
+        "STUN_SPORE"
+      ],
+      [
+        26,
+        "ACID"
+      ],
+      [
+        33,
+        "RAZOR_LEAF"
+      ],
+      [
+        42,
+        "SLAM"
+      ]
+    ],
+    "Weepinbell": [
+      [
+        13,
+        "WRAP"
+      ],
+      [
+        15,
+        "POISONPOWDER"
+      ],
+      [
+        18,
+        "SLEEP_POWDER"
+      ],
+      [
+        23,
+        "STUN_SPORE"
+      ],
+      [
+        29,
+        "ACID"
+      ],
+      [
+        38,
+        "RAZOR_LEAF"
+      ],
+      [
+        49,
+        "SLAM"
+      ]
+    ],
+    "Victreebel": [
+      [
+        13,
+        "WRAP"
+      ],
+      [
+        18,
+        "POISONPOWDER"
+      ],
+      [
+        23,
+        "SLEEP_POWDER"
+      ],
+      [
+        30,
+        "STUN_SPORE"
+      ],
+      [
+        37,
+        "ACID"
+      ],
+      [
+        44,
+        "RAZOR_LEAF"
+      ]
+    ]
+  },
+  "learnset_additions": [
+    {
+      "species": "Aerodactyl",
+      "level": 25,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Aerodactyl",
+      "level": 40,
+      "move": "ROOST"
+    },
+    {
+      "species": "Aerodactyl",
+      "level": 48,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Articuno",
+      "level": 40,
+      "move": "ICE_ARMOR"
+    },
+    {
+      "species": "Articuno",
+      "level": 50,
+      "move": "ROOST"
+    },
+    {
+      "species": "Beedrill",
+      "level": 48,
+      "move": "MEGAHORN"
+    },
+    {
+      "species": "Bellsprout",
+      "level": 28,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Bellsprout",
+      "level": 40,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Bulbasaur",
+      "level": 25,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Bulbasaur",
+      "level": 42,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Cloyster",
+      "level": 34,
+      "move": "ICE_ARMOR"
+    },
+    {
+      "species": "Cubone",
+      "level": 17,
+      "move": "ASTONISH"
+    },
+    {
+      "species": "Dewgong",
+      "level": 32,
+      "move": "ICE_ARMOR"
+    },
+    {
+      "species": "Dodrio",
+      "level": 32,
+      "move": "ROOST"
+    },
+    {
+      "species": "Doduo",
+      "level": 28,
+      "move": "ROOST"
+    },
+    {
+      "species": "Drowzee",
+      "level": 13,
+      "move": "ASTONISH"
+    },
+    {
+      "species": "Exeggcute",
+      "level": 35,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Exeggcute",
+      "level": 43,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Exeggutor",
+      "level": 39,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Exeggutor",
+      "level": 46,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Farfetchd",
+      "level": 28,
+      "move": "ROOST"
+    },
+    {
+      "species": "Fearow",
+      "level": 30,
+      "move": "ROOST"
+    },
+    {
+      "species": "Gastly",
+      "level": 12,
+      "move": "ASTONISH"
+    },
+    {
+      "species": "Gengar",
+      "level": 12,
+      "move": "ASTONISH"
+    },
+    {
+      "species": "Geodude",
+      "level": 22,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Geodude",
+      "level": 40,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Gloom",
+      "level": 32,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Gloom",
+      "level": 44,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Golbat",
+      "level": 34,
+      "move": "ROOST"
+    },
+    {
+      "species": "Golem",
+      "level": 26,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Golem",
+      "level": 48,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Graveler",
+      "level": 26,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Graveler",
+      "level": 44,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Haunter",
+      "level": 12,
+      "move": "ASTONISH"
+    },
+    {
+      "species": "Hitmonchan",
+      "level": 35,
+      "move": "DRAIN_PUNCH"
+    },
+    {
+      "species": "Hypno",
+      "level": 13,
+      "move": "ASTONISH"
+    },
+    {
+      "species": "Ivysaur",
+      "level": 29,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Ivysaur",
+      "level": 47,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Jynx",
+      "level": 35,
+      "move": "ICE_ARMOR"
+    },
+    {
+      "species": "Kabuto",
+      "level": 28,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Kabuto",
+      "level": 50,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Kabutops",
+      "level": 32,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Kabutops",
+      "level": 42,
+      "move": "X_SCISSOR"
+    },
+    {
+      "species": "Kabutops",
+      "level": 47,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Kingler",
+      "level": 39,
+      "move": "X_SCISSOR"
+    },
+    {
+      "species": "Krabby",
+      "level": 36,
+      "move": "X_SCISSOR"
+    },
+    {
+      "species": "Lapras",
+      "level": 28,
+      "move": "ICE_ARMOR"
+    },
+    {
+      "species": "Lickitung",
+      "level": 18,
+      "move": "ASTONISH"
+    },
+    {
+      "species": "Machamp",
+      "level": 40,
+      "move": "DRAIN_PUNCH"
+    },
+    {
+      "species": "Machoke",
+      "level": 37,
+      "move": "DRAIN_PUNCH"
+    },
+    {
+      "species": "Machop",
+      "level": 33,
+      "move": "DRAIN_PUNCH"
+    },
+    {
+      "species": "Marowak",
+      "level": 17,
+      "move": "ASTONISH"
+    },
+    {
+      "species": "Moltres",
+      "level": 50,
+      "move": "ROOST"
+    },
+    {
+      "species": "Nidoking",
+      "level": 55,
+      "move": "MEGAHORN"
+    },
+    {
+      "species": "Oddish",
+      "level": 28,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Oddish",
+      "level": 40,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Omanyte",
+      "level": 28,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Omanyte",
+      "level": 50,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Omastar",
+      "level": 32,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Omastar",
+      "level": 46,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Onix",
+      "level": 26,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Onix",
+      "level": 44,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Paras",
+      "level": 30,
+      "move": "X_SCISSOR"
+    },
+    {
+      "species": "Paras",
+      "level": 38,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Parasect",
+      "level": 34,
+      "move": "X_SCISSOR"
+    },
+    {
+      "species": "Parasect",
+      "level": 42,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Pidgeot",
+      "level": 33,
+      "move": "ROOST"
+    },
+    {
+      "species": "Pidgeotto",
+      "level": 29,
+      "move": "ROOST"
+    },
+    {
+      "species": "Pidgey",
+      "level": 25,
+      "move": "ROOST"
+    },
+    {
+      "species": "Pinsir",
+      "level": 34,
+      "move": "X_SCISSOR"
+    },
+    {
+      "species": "Pinsir",
+      "level": 48,
+      "move": "MEGAHORN"
+    },
+    {
+      "species": "Poliwrath",
+      "level": 38,
+      "move": "DRAIN_PUNCH"
+    },
+    {
+      "species": "Primeape",
+      "level": 42,
+      "move": "DRAIN_PUNCH"
+    },
+    {
+      "species": "Rhydon",
+      "level": 34,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Rhydon",
+      "level": 47,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Rhydon",
+      "level": 59,
+      "move": "MEGAHORN"
+    },
+    {
+      "species": "Rhyhorn",
+      "level": 31,
+      "move": "ROCK_POLISH"
+    },
+    {
+      "species": "Rhyhorn",
+      "level": 43,
+      "move": "STONE_EDGE"
+    },
+    {
+      "species": "Rhyhorn",
+      "level": 53,
+      "move": "MEGAHORN"
+    },
+    {
+      "species": "Scyther",
+      "level": 36,
+      "move": "X_SCISSOR"
+    },
+    {
+      "species": "Seaking",
+      "level": 46,
+      "move": "MEGAHORN"
+    },
+    {
+      "species": "Seel",
+      "level": 32,
+      "move": "ICE_ARMOR"
+    },
+    {
+      "species": "Spearow",
+      "level": 26,
+      "move": "ROOST"
+    },
+    {
+      "species": "Tangela",
+      "level": 33,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Tangela",
+      "level": 42,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Venusaur",
+      "level": 33,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Venusaur",
+      "level": 50,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Victreebel",
+      "level": 36,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Victreebel",
+      "level": 45,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Vileplume",
+      "level": 36,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Vileplume",
+      "level": 44,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Weepinbell",
+      "level": 32,
+      "move": "SYNTHESIS"
+    },
+    {
+      "species": "Weepinbell",
+      "level": 44,
+      "move": "GIGA_DRAIN"
+    },
+    {
+      "species": "Zapdos",
+      "level": 50,
+      "move": "ROOST"
+    },
+    {
+      "species": "Zubat",
+      "level": 30,
+      "move": "ROOST"
+    }
+  ]
+}

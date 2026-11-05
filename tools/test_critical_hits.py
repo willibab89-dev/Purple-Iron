@@ -137,7 +137,7 @@ def validate(version):
         # suite tests against all 172 actual headers. No on-disk ROM is edited.
         patch("GetMonHeader", [0xc9])
         patch("BattleRandom", [0x3e, 0, 0xc9])
-        moves = ((33, False), (2, True), (75, True), (152, True), (163, True), (3, True), (82, True))
+        moves = ((33, False), (2, True), (75, True), (152, True), (163, True), (3, True), (82, True), (169, True), (172, True))
         cases = 0
         for side, turn in (("Player", 0), ("Enemy", 1)):
             game.memory[0xfff3] = turn

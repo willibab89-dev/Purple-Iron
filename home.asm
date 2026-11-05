@@ -3422,18 +3422,12 @@ GetName::
 ; returns pointer to name in de
 	ld a, [wd0b5]
 	ld [wd11e], a
-	; TM names are separate from item names.
-	; BUG: This applies to all names instead of just items.
-	cp HM_01
-	;jp nc, GetMachineName	;joenote - function removed. Handle list-based tm & hm names here.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;joenote - do some stuff if the item is a machine
-	jr c, .notMachine
-	sub $C3	;need to shift things because tm and hm constants are offset by +$C3 from the first item constant
-	ld [wd0b5], a
-	ld a, TMHM_NAME	
-	ld [wNameListType], a
-.notMachine
+	; Machine classification applies only to item names, never high move IDs.
+	push hl
+	push bc
+	callab ClassifyMachineName
+	pop bc
+	pop hl
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld a, [H_LOADEDROMBANK]
 	push af
@@ -3498,9 +3492,9 @@ GetName::
 ;	ld a, d
 ;	ld [wUnusedCF8D + 1], a
 
-	ld a, [wd11e]
-	cp HM_01
-	jr c, .notMachine2
+	ld a, [wNameListType]
+	cp TMHM_NAME
+	jr nz, .notMachine2
 	ld a, ITEM_NAME	;this needs to be reset because machines can be in the same listings as items	
 	ld [wNameListType], a
 .notMachine2

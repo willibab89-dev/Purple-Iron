@@ -2168,3 +2168,5 @@ INCLUDE "engine/battle/critical_boost.asm"
 INCLUDE "engine/battle/freeze.asm"
 
 INCLUDE "engine/battle/compound_effects.asm"
+
+INCLUDE "engine/battle/move_animation_map.asm"

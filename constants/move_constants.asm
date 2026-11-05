@@ -165,11 +165,9 @@ const_value = 1
 	const SLASH        ; a3
 	const SUBSTITUTE   ; a4
 
-NUM_ATTACKS EQU const_value + -1
-
 	const STRUGGLE
 
-	; Moves do double duty as animation identifiers.
+	; Legacy animation IDs retain their original values independently of new moves.
 
 	const SHOWPIC_ANIM
 	const STATUS_AFFECTED_ANIM
@@ -208,3 +206,19 @@ NUM_ATTACKS EQU const_value + -1
 	const HIDEPIC_ANIM ; monster disappears
 	const ROCK_ANIM ; throw rock
 	const BAIT_ANIM ; throw bait
+
+; New moves append after Struggle; never renumber legacy moves/animations.
+const_value = 166
+	const GIGA_DRAIN
+	const SYNTHESIS
+	const MEGAHORN
+	const X_SCISSOR
+	const ASTONISH
+	const DRAIN_PUNCH
+	const STONE_EDGE
+	const ROCK_POLISH
+	const ICE_ARMOR
+	const ROOST
+
+MAX_MOVE_ID EQU const_value + -1
+NUM_ATTACKS EQU MAX_MOVE_ID + -1 ; selectable moves, excluding Struggle

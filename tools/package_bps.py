@@ -42,7 +42,7 @@ def package(originals, targets, output, flips):
     unique_guide = guide.with_name("UNIQUE-SPECIES.md")
     if unique_guide.is_file():
         (output / unique_guide.name).write_bytes(unique_guide.read_bytes())
-    for name in ("MOVE-PATCH-1.md", "MOVE-PATCH-2.md", "MOVE-PATCH-2-PLAN.md"):
+    for name in ("MOVE-PATCH-1.md", "MOVE-PATCH-2.md", "MOVE-PATCH-2-PLAN.md", "MOVE-PATCH-3.md"):
         patch_guide = guide.with_name(name)
         if patch_guide.is_file():
             (output / patch_guide.name).write_bytes(patch_guide.read_bytes())
