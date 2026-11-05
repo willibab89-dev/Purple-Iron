@@ -3352,6 +3352,10 @@ wCustomSavedTurn:: ds 1
 wCustomChance:: ds 1
 wCustomRandomValue:: ds 1
 
+; Last received physical hit this turn, outside saved data.
+wCounterDamage:: ds 2
+wCounterRecipient:: ds 1
+
 SECTION "Stack", WRAM0[$df00]
 	ds $ff
 wStack:: ; dfff

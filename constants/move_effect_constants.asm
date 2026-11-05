@@ -96,6 +96,10 @@ const_value = 0
 	const COMPOUND_STATUS_EFFECT     ; $58
 	const ATTACK_AND_SELF_DROP_EFFECT ; $59
 
+	const UTILITY_STATUS_EFFECT ; $5A
+	const UTILITY_HIT_EFFECT    ; $5B
+	const UTILITY_SELF_EFFECT   ; $5C
+
 ; fixed damage constants
 SONICBOOM_DAMAGE   EQU 20
 DRAGON_RAGE_DAMAGE EQU 40

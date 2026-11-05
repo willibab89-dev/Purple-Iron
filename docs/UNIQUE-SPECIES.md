@@ -1,3 +1,5 @@
+Latest cumulative move changes: see MOVE-PATCH-5.md (21 new moves and four existing redesigns).
+
 Latest cumulative move changes: see MOVE-PATCH-4.md (16 new moves and five existing redesigns).
 
 Latest cumulative move additions: see MOVE-PATCH-3.md (ten new moves and their learnsets).

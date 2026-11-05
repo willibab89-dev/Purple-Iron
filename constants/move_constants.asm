@@ -237,5 +237,27 @@ const_value = 166
 	const SNIPE_SHOT
 	const AERIAL_ACE
 
+	const TONGUE_LASH
+	const STOCKPILE
+	const LUNGE
+	const SHELL_BREAK
+	const WAILING_CRY
+	const PSYCH_UP
+	const MIND_BREAK
+	const BULK_UP
+	const BRICK_BREAK
+	const ROCK_TOMB
+	const WILL_O_WISP
+	const FLAME_CHARGE
+	const CAUTERIZE
+	const SCALD
+	const CHARGE
+	const ICY_WIND
+	const FLASH_FREEZE
+	const GALE_WIND
+	const COIL
+	const POISON_FANG
+	const DRAGON_DANCE
+
 MAX_MOVE_ID EQU const_value + -1
 NUM_ATTACKS EQU MAX_MOVE_ID + -1 ; selectable moves, excluding Struggle

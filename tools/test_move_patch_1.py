@@ -23,6 +23,8 @@ def validate(version):
     cumulative = {entry['id']: entry['after'] for entry in patch2['changes']}
     patch4 = json.loads((ROOT / 'data/move_patch_4.json').read_text())
     cumulative.update({entry['id']: entry['after'] for entry in patch4['existing_changes']})
+    patch5 = json.loads((ROOT / 'data/move_patch_5.json').read_text())
+    cumulative.update({entry['id']: entry['after'] for entry in patch5['existing_changes']})
     assert len(changes) == 56
     expected, names = [], bytearray()
     for baseline in PLAN['baseline']:

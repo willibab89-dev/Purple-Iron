@@ -89,6 +89,8 @@ def validate(version):
         patch4 = json.loads((ROOT / 'data/move_patch_4.json').read_text())
         changes_by_id.update({entry['id']: entry['after'] for entry in patch4['existing_changes']})
         bank, base = syms['Moves']
+        patch5 = json.loads((ROOT / 'data/move_patch_5.json').read_text())
+        changes_by_id.update({entry['id']: entry['after'] for entry in patch5['existing_changes']})
         for old in PLAN['baseline']:
             d = changes_by_id.get(old['id'], old)
             expected = [old['id'], EFFECTS[d['effect']], d['power'], TYPES[d['type']], d['accuracy']*255//100, d['pp']]

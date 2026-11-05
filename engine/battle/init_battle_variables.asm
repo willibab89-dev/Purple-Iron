@@ -1,4 +1,5 @@
 InitBattleVariables:
+	callab ClearCounterRecord
 	ld a, [hTilesetType]
 	ld [wSavedTilesetType], a
 	xor a

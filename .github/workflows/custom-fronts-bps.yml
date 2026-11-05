@@ -1,4 +1,4 @@
-name: Move overhaul — patch 4
+name: Move overhaul — patch 5
 
 on:
   workflow_dispatch:
@@ -45,7 +45,7 @@ jobs:
           export PATH="$RUNNER_TEMP/old/bin:$PATH"
           make -j2 red blue
           python3 tools/package_bps.py --originals "$RUNNER_TEMP/originals" --output "$RUNNER_TEMP/patches" --flips "$RUNNER_TEMP/flips/flips"
-      - name: Test species, encounters, critical hits and freeze in PyBoy
+      - name: Test species, moves and battle mechanics in PyBoy
         run: |
           python3 -m pip install pyboy==2.9.0
           python3 tools/test_unique_species.py
@@ -55,10 +55,11 @@ jobs:
           python3 tools/test_move_patch_2.py
           python3 tools/test_move_patch_3.py
           python3 tools/test_move_patch_4.py
+          python3 tools/test_move_patch_5.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
-          name: pokemon-move-patch-4-bps
+          name: pokemon-move-patch-5-bps
           retention-days: 30
           if-no-files-found: error
           path: |
@@ -71,3 +72,4 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-PATCH-2-PLAN.md
             ${{ runner.temp }}/patches/MOVE-PATCH-3.md
             ${{ runner.temp }}/patches/MOVE-PATCH-4.md
+            ${{ runner.temp }}/patches/MOVE-PATCH-5.md

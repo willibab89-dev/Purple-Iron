@@ -69,6 +69,8 @@ IsConditionalDamageMove:
 	and a
 	ret
 ConditionalDamageMoves:
+	db EGG_BOMB, 100, NORMAL
+	db BRICK_BREAK, 70, FIGHTING
 	db STOMP, 65, NORMAL
 	db TAKE_DOWN, 60, NORMAL
 	db DRILL_PECK, 80, FLYING
@@ -367,6 +369,19 @@ ConditionalDefense:
 	xor 1
 	call ConditionalBadgeBoost
 .screenCheck
+	ld a, [wCustomMove]
+	cp EGG_BOMB
+	jr z, .screenBreak
+	cp BRICK_BREAK
+	jr nz, .ordinaryScreen
+.screenBreak
+	push hl
+	call ConditionalTargetStatus1
+	inc hl ; status2 follows status1
+	bit HAS_SUBSTITUTE_UP, [hl]
+	pop hl
+	ret z ; intact screen is ignored only if the hit can actually remove it
+.ordinaryScreen
 	push hl
 	call ConditionalTargetStatus3
 	ld a, [wCustomDelta]

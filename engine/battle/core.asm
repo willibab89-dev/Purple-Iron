@@ -2,6 +2,7 @@ BattleCore:
 
 ; These are move effects (second value from the Moves table in bank $E).
 ResidualEffects1:
+	db UTILITY_STATUS_EFFECT
 	db COMPOUND_STATUS_EFFECT
 ; most non-side effects
 	db CONVERSION_EFFECT
@@ -60,6 +61,7 @@ ResidualEffects2:
 	db EVASION_DOWN2_EFFECT
 	db -1
 AlwaysHappenSideEffects:
+	db UTILITY_SELF_EFFECT
 	db ATTACK_AND_SELF_DROP_EFFECT
 ; Attacks that aren't finished after they faint the opponent.
 	db DRAIN_HP_EFFECT
@@ -75,6 +77,7 @@ AlwaysHappenSideEffects:
 	db HYPER_BEAM_EFFECT	;joenote - make hyperbeam recharge if knock out enemy
 	db -1
 SpecialEffects:
+	db UTILITY_SELF_EFFECT
 	db ATTACK_AND_SELF_DROP_EFFECT
 ; Effects from arrays 2, 4, and 5B, minus Twineedle and Rage.
 ; Includes all effects that do not need to be called at the end of
@@ -385,6 +388,7 @@ EnemyRanText:
 	db "@"
 
 MainInBattleLoop:
+	callab ClearCounterRecord
 ;joenote - zero the damage from last round if not using a trapping move
 	ld a, [wEnemyBattleStatus1]
 	bit USING_TRAPPING_MOVE, a
@@ -1817,6 +1821,7 @@ GotAwayText:
 
 ; copies from party data to battle mon data when sending out a new player mon
 LoadBattleMonFromParty:
+	callab ClearCounterRecord
 	ld a, [wWhichPokemon]
 	ld bc, wPartyMon2 - wPartyMon1
 	ld hl, wPartyMon1Species
@@ -3509,6 +3514,7 @@ MirrorMoveCheck:
 .moveDidNotMiss
 	callab CaptureCustomTargetSubstitute
 	call ApplyAttackToEnemyPokemon
+	callab RecordCounterHit
 	call PrintCriticalOHKOText
 	callab DisplayEffectiveness
 	ld a, 1
@@ -4796,82 +4802,7 @@ HighCriticalMoves:
 ;joenote
 ; function to determine if Counter hits and if so, how much damage it does
 HandleCounterMove:
-; The variables checked by Counter are updated whenever the cursor points to a new move in the battle selection menu.
-; This is irrelevant for the opponent's side outside of link battles, since the move selection is controlled by the AI.
-; However, in the scenario where the player switches out and the opponent uses Counter,
-; the outcome may be affected by the player's actions in the move selection menu prior to switching the Pokemon.
-; This might also lead to desync glitches in link battles.
-
-	ld a, [H_WHOSETURN] ; whose turn
-	and a
-; player's turn
-	ld hl, wEnemySelectedMove
-	ld de, wEnemyMovePower
-	ld a, [wPlayerSelectedMove]
-	jr z, .next
-; enemy's turn
-	ld hl, wPlayerSelectedMove
-	ld de, wPlayerMovePower
-	ld a, [wEnemySelectedMove]
-.next
-	cp COUNTER
-	ret nz ; return if not using Counter
-	ld a, $01
-	ld [wMoveMissed], a ; initialize the move missed variable to true (it is set to false below if the move hits)
-	ld a, [hl]
-	cp COUNTER
-	ret z ; miss if the opponent's last selected move is Counter.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;joenote - If this bit is set, the opponent either hurt itself in confusion or took crash damage.
-;			Make Counter miss and reset the bit.
-	ld a, [wUnusedC000]
-	bit 7, a	;check a for Counter miss bit
-	res 7, a ; resets the bit (does not affect flags)
-	ld [wUnusedC000], a
-	ret nz	;return if bit is set causing Counter to miss.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	ld a, [de]
-	and a
-	ret z ; miss if the opponent's last selected move's Base Power is 0.
-; check if the move the target last selected was Normal or Fighting type
-	inc de
-	ld a, [de]
-;;;;;;;;;joenote - counter will work on BIRD type since it's now typeless for STRUGGLE instead of normal type
-	and a ; normal type
-	jr z, .counterableType
-	cp FIGHTING
-	jr z, .counterableType
-	cp BIRD
-	jr z, .counterableType
-;;;;;;;;;
-; if the move wasn't a valid counterable type, miss
-	xor a
-	ret
-.counterableType
-	ld hl, wDamage
-	ld a, [hli]
-	or [hl]
-	ret z ; If we made it here, Counter still misses if the last move used in battle did no damage to its target.
-	      ; wDamage is shared by both players, so Counter may strike back damage dealt by the Counter user itself
-	      ; if the conditions meet, even though 99% of the times damage will come from the target.
-; if it did damage, double it
-	ld a, [hl]
-	add a
-	ldd [hl], a
-	ld a, [hl]
-	adc a
-	ld [hl], a
-	jr nc, .noCarry
-; damage is capped at 0xFFFF
-	ld a, $ff
-	ld [hli], a
-	ld [hl], a
-.noCarry
-	xor a
-	ld [wMoveMissed], a
-	call MoveHitTest ; do the normal move hit test in addition to Counter's special rules
-	xor a
-	ret
+	jpab UtilityCounter
 
 ApplyAttackToEnemyPokemon:
 	ld a, [wPlayerMoveEffect]
@@ -4925,7 +4856,11 @@ ApplyAttackToEnemyPokemon:
 	ld b, a
 	srl a
 	add b
-	ld b, a ; b = level * 1.5
+	cp 2
+	jr nc, .psywaveRange
+	ld a, 2
+.psywaveRange
+	ld b, a ; minimum upper bound avoids a level-1 rejection loop
 ; loop until a random number in the range [1, b) is found
 .loop
 	call BattleRandom
@@ -5047,7 +4982,11 @@ ApplyAttackToPlayerPokemon:
 	ld b, a
 	srl a
 	add b
-	ld b, a ; b = attacker's level * 1.5
+	cp 2
+	jr nc, .psywaveRange
+	ld a, 2
+.psywaveRange
+	ld b, a ; match the player's safe positive-damage range
 ; loop until a random number in the range [0, b) is found
 ; this differs from the range when the player attacks, which is [1, b)
 ; it's possible for the enemy to do 0 damage with Psywave, but the player always does at least 1 damage
@@ -5199,6 +5138,8 @@ AttackSubstitute:
 	cp RECOIL_EFFECT
 	jr z, .skipnullify
 	cp ATTACK_AND_SELF_DROP_EFFECT
+	jr z, .skipnullify
+	cp UTILITY_SELF_EFFECT
 	jr z, .skipnullify
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	xor a
@@ -6068,6 +6009,7 @@ EnemyCheckIfMirrorMoveEffect:
 .moveDidNotMiss
 	callab CaptureCustomTargetSubstitute
 	call ApplyAttackToPlayerPokemon
+	callab RecordCounterHit
 	call PrintCriticalOHKOText
 	callab DisplayEffectiveness
 	callab PlayerBideAccum
@@ -6467,6 +6409,7 @@ GetCurrentMove:
 	jp CopyStringToCF4B
 
 LoadEnemyMonData:
+	callab ClearCounterRecord
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, LoadEnemyMonFromParty	;if link battle, then get out of this function to a different one

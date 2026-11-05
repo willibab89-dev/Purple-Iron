@@ -139,6 +139,21 @@ AIMoveChoiceModification1:
 	inc de
 	call ReadMove
 	ld a, [wEnemyMoveEffect]
+	cp UTILITY_STATUS_EFFECT
+	jr nz, .checkCompoundStatus
+	push hl
+	push bc
+	push de
+	callab UtilityAIStatusScore
+	pop de
+	pop bc
+	pop hl
+	ld a, [wCustomRandomValue]
+	and a
+	jp nz, .heavydiscourage
+	jp .nextMove
+.checkCompoundStatus
+	ld a, [wEnemyMoveEffect]
 	cp COMPOUND_STATUS_EFFECT
 	jr nz, .notCompoundStatus
 	push hl
@@ -228,13 +243,12 @@ AIMoveChoiceModification1:
 	and a
 	jp z, .heavydiscourage	;heavily discourage counter if enemy is using zero-power move
 	ld a, [wPlayerMoveType]
-	cp NORMAL
-	jr z, .countercheck_end	; continue on if countering a normal move
-	cp FIGHTING
-	jr z, .countercheck_end	; continue on if countering a fighting move
-	cp BIRD
-	jr z, .countercheck_end	; continue on if countering STRUGGLE or other typeless move
-	jp .heavydiscourage	;else heavily discourage since the player move type is not applicable to counter
+	cp FIRE
+	jp nc, .heavydiscourage
+	ld a, [wPlayerMoveNum]
+	cp COUNTER
+	jp z, .heavydiscourage
+
 .countercheck_end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -498,6 +512,7 @@ AIMoveChoiceModification1:
 	jp .nextMove
 
 EffectsToNotDissuade:
+	db UTILITY_STATUS_EFFECT
 	db CONFUSION_EFFECT
 	db LEECH_SEED_EFFECT
 	db DISABLE_EFFECT

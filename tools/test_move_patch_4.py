@@ -62,6 +62,8 @@ def validate(version):
         assert hashlib.sha256((ROOT/'engine/battle/legacy_damage_vars.asm').read_bytes()).hexdigest()==PLAN['legacy_damage_source_sha256']
         # Full move-table delta, including unchanged legacy moves/new patch-3 IDs.
         bank,start=syms['Moves'];updates={x['id']:x['after'] for x in PLAN['existing_changes']}
+        patch5=json.loads((ROOT/'data/move_patch_5.json').read_text())
+        updates.update({x['id']:x['after'] for x in patch5['existing_changes']})
         entries=[updates.get(x['id'],x) for x in PLAN['baseline_moves']]+PLAN['new_moves']
         assert len(entries)==191
         for d in entries:

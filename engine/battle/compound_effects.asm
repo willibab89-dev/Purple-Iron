@@ -5,6 +5,12 @@ SECTION "Compound move effects", ROMX, BANK[$34]
 DispatchMoveEffect:
 	call CustomActorMove
 	ld a, [de]
+	cp UTILITY_STATUS_EFFECT
+	jp z, UtilityStatusEffect
+	cp UTILITY_HIT_EFFECT
+	jp z, UtilityHitEffect
+	cp UTILITY_SELF_EFFECT
+	jp z, UtilitySelfEffect
 	cp ATTACK_AND_STAT_EFFECT
 	jp z, CustomAttackEffect
 	cp COMPOUND_STATUS_EFFECT
@@ -135,6 +141,12 @@ CustomAttackEffect:
 
 ; move, stat (0..5; 6 = confusion), signed stage change, probability/256
 CustomAttackTable:
+	db TONGUE_LASH, 3, -1, 255
+	db LUNGE, 0, -1, 255
+	db SHELL_BREAK, 1, -1, 255
+	db WAILING_CRY, 3, -1, 255
+	db ROCK_TOMB, 2, -1, 255
+	db ICY_WIND, 2, -1, 255
 	db SLAM,         1, -1, 255
 	db BIND,         2, -1, 255
 	db CONSTRICT,    2, -1, 255
@@ -211,6 +223,10 @@ CustomStatusEffect:
 	ret
 
 CustomStatusTable:
+	db STOCKPILE, 1, 1, 3, 1
+	db BULK_UP, 0, 1, 1, 1
+	db CHARGE, 3, 1, 4, 1
+	db DRAGON_DANCE, 0, 1, 2, 1
 	db GROWTH,   3,  1, 1,  1
 	db KINESIS,  4, -1, 0, -1
 	db MEDITATE, 0,  1, 2,  1
