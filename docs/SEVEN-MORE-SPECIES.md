@@ -1,6 +1,6 @@
 # Seven more species: 183 total
 
-This cumulative Red/Blue patch adds Baltoy, Claydol, Crobat, Dittwo, Larvitar, Pupitar and Tyranitar from the second `newmons.zip` (14 PNGs). All previous sprites, species, moves, encounters, crit/freeze behavior and TMs remain included. The earlier proposed type changes to original Kanto species are still proposals and are not included here.
+This cumulative Red/Blue patch adds Baltoy, Claydol, Crobat, Dittwo, Larvitar, Pupitar and Tyranitar from the second `newmons.zip` (14 PNGs). All previous sprites, species, moves, encounters, crit/freeze behavior and TMs remain included. The subsequent original-species type changes are now included; see [TYPE-CHANGES.md](TYPE-CHANGES.md).
 
 ## Start a new game
 

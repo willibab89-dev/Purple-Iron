@@ -13,6 +13,7 @@ from generate_unique_encounters import pools
 
 PLAN=json.loads((ROOT/'data/backsprite_import.json').read_text())
 NEW=json.loads((ROOT/'data/new_species.json').read_text())
+TYPE_CHANGES={e['dex']:e for e in json.loads((ROOT/'data/type_changes.json').read_text())}
 
 
 def gb_bytes(path):
@@ -43,6 +44,10 @@ def validate(version):
     assert addr('wPokedexSeen')-addr('wPokedexOwned')==23
     for i,old in enumerate(PLAN['previous_headers']):
         before=bytes.fromhex(old);now=headers[i*28:(i+1)*28]
+        if i+1 in TYPE_CHANGES:
+            change=TYPE_CHANGES[i+1]
+            assert before[6:8]==bytes(TYPES[t] for t in change['before'])
+            before=before[:6]+bytes(TYPES[t] for t in change['after'])+before[8:]
         assert before[:11]+before[15:]==now[:11]+now[15:],i+1
     for d in NEW:
         h=headers[(d['dex']-1)*28:d['dex']*28]
@@ -82,6 +87,7 @@ def validate(version):
         for index,dex in enumerate(order,1):
             if not dex:continue
             put('wd0b5',index);call('GetMonHeader');put('wBattleMonSpecies2',index);put('wSpriteFlipped',0)
+            if dex in TYPE_CHANGES:assert get('wMonHType1',2)==bytes(TYPES[t] for t in TYPE_CHANGES[dex]['after'])
             game.memory[0x0000]=10;game.memory[0x4000]=0
             game.memory[addr('sHallOfFame'):addr('sHallOfFame')+32]=[0x5a]*32
             # Graphic routing must not corrupt move-effect scratch while an animation loads it.

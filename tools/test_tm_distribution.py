@@ -3,6 +3,8 @@
 import json
 from pyboy import PyBoy
 from test_unique_species import ROOT, symbols
+from test_move_patch_1 import TYPES
+TYPE_CHANGES={e["dex"]:e for e in json.loads((ROOT/"data/type_changes.json").read_text())}
 
 PLAN = json.loads((ROOT / 'data/tm_distribution.json').read_text())
 
@@ -20,6 +22,8 @@ def validate(version):
     for entry, old_hex in zip(PLAN['entries'], PLAN['baseline_headers']):
         old = bytes.fromhex(old_hex)
         expected = old[:20] + bytes(entry['tm_bytes']) + old[27:]
+        if entry['dex'] in TYPE_CHANGES:
+            expected=expected[:6]+bytes(TYPES[t] for t in TYPE_CHANGES[entry['dex']]['after'])+expected[8:]
         actual = headers[(entry['dex'] - 1) * 28:entry['dex'] * 28]
         assert actual == expected, entry['name']
         assert (set(entry['new']) ^ set(entry['old'])) <= reviewed, entry['name']

@@ -1,4 +1,4 @@
-name: "Seven more Pokemon: 183 species"
+name: "Kanto type changes: 183 species"
 
 on:
   workflow_dispatch:
@@ -86,3 +86,4 @@ jobs:
             ${{ runner.temp }}/patches/NEW-TMS.md
             ${{ runner.temp }}/patches/BACKSPRITES-AND-NEW-SPECIES.md
             ${{ runner.temp }}/patches/SEVEN-MORE-SPECIES.md
+            ${{ runner.temp }}/patches/TYPE-CHANGES.md

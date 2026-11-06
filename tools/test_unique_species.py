@@ -12,6 +12,7 @@ from pyboy import PyBoy
 from generate_unique_encounters import pools, render
 
 ROOT = Path(__file__).resolve().parents[1]
+TYPES = {name: int(value, 16) for name, value in re.findall(r'^(\w+)\s+EQU \$([\dA-F]+)', (ROOT / "constants/type_constants.asm").read_text(), re.M)}
 SPECIES = json.loads((ROOT / "data/unique_species.json").read_text())
 
 
@@ -56,8 +57,9 @@ def validate(version):
         tm_plan = json.loads((ROOT / 'data/tm_distribution.json').read_text())
         expected_tm = next(e['tm_bytes'] for e in tm_plan['entries'] if e['dex'] == entry['dex'])
         assert clone[20:27] == bytes(expected_tm), entry['symbol']
-        types = {"FIGHTING": 1, "POISON": 3, "ROCK": 5}
-        expected_types = bytes([types[entry["type_override"]]] * 2) if entry["type_override"] else source[6:8]
+        types = TYPES
+        original_types = next((bytes(TYPES[t] for t in e["before"]) for e in json.loads((ROOT/"data/type_changes.json").read_text()) if e["dex"]==entry["base_dex"]), source[6:8])
+        expected_types = bytes([types[entry["type_override"]]] * 2) if entry["type_override"] else original_types
         assert clone[6:8] == expected_types
         for table, width in (("EvosMovesPointerTable", 2), ("PokedexEntryPointers", 2), ("CryData", 3)):
             assert data(table, width, (entry["index"] - 1) * width) == data(table, width, (entry["base_index"] - 1) * width)
