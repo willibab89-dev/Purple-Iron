@@ -107,3 +107,6 @@ ItemNames:
 	db "TM58 WILWISP@"
 	db "TM59 SCALD@"
 	db "TM60 CURSE@"
+	db "TM61 LECHLIF@"
+	db "TM62 PSNTAIL@"
+	db "TM63 AGILITY@"

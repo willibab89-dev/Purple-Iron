@@ -1,8 +1,8 @@
 db DEX_ARBOK ; pokedex id
-db 60 ; base hp
+db 70 ; base hp
 db 85 ; base attack
 db 69 ; base defense
-db 80 ; base speed
+db 95 ; base speed
 db 65 ; base special
 db POISON ; species type 1
 db POISON ; species type 2
@@ -12,16 +12,16 @@ INCBIN ARBOK_FR,0,1 ; 77, sprite dimensions
 dw ArbokPicFront
 dw ArbokPicBack
 ; attacks known at lvl 0
-db WRAP
 db LEER
 db POISON_STING
+db WRAP
 db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 6,8
-	tmlearn 15
+	tmlearn 0
 	tmlearn 20,21
-	tmlearn 26,27,28
+	tmlearn 27
 	tmlearn 40
 	tmlearn 44,48
 	tmlearn 50,54

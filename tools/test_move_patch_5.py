@@ -2,7 +2,7 @@
 """Exercise utility/status rules, actual Counter records, learning and save compatibility."""
 import json
 from pyboy import PyBoy
-from test_unique_species import ROOT,symbols
+from test_unique_species import ROOT,symbols,TUNING
 from test_move_patch_1 import EFFECTS,TYPES
 from test_move_patch_3 import MOVES
 
@@ -233,7 +233,7 @@ def validate(version):
         actor,target,ap,tp=init('SCALD',0);put(tp+'Status',32);effect();assert get(tp+'Status')==32
         # Every new learning entry, its PP, and high-ID party save/load.
         patch('GetPredefRegisters',[0xc9]);b,table=syms['EvosMovesPointerTable'];db,da=syms['PokedexOrder'];ids={}
-        for addition in PLAN['learnset_additions']:
+        for addition in [x for x in PLAN['learnset_additions'] if x['species'].lower() not in TUNING]:
             species=addition['species'];level=addition['level'];move=MOVES[addition['move']]
             if species not in ids:
                 pointer=addr(species+'EvosMoves')

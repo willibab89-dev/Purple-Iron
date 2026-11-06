@@ -2,7 +2,7 @@
 """Exercise priority, timed Rage, fixed Bide, charge effects and multi-strike paths."""
 import json
 from pyboy import PyBoy
-from test_unique_species import ROOT,symbols
+from test_unique_species import ROOT,symbols,TUNING
 from test_move_patch_1 import EFFECTS,TYPES
 from test_move_patch_3 import MOVES
 
@@ -164,7 +164,7 @@ def validate(version):
             assert not(get(f'w{target}BattleStatus1')&8)
         # Learn/relearn every addition and preserve all four new IDs/PP in saves.
         patch('GetPredefRegisters',[0xc9]);bank,table=syms['EvosMovesPointerTable'];db,da=syms['PokedexOrder'];ids={}
-        for addition in PLAN['learnset_additions']:
+        for addition in [x for x in PLAN['learnset_additions'] if x['species'].lower() not in TUNING]:
             name=addition['species'];level=addition['level'];move=MOVES[addition['move']]
             if name not in ids:
                 pointer=addr(name+'EvosMoves')

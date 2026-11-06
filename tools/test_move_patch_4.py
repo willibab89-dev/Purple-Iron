@@ -3,7 +3,7 @@
 import hashlib
 import json
 from pyboy import PyBoy
-from test_unique_species import ROOT, symbols
+from test_unique_species import ROOT, symbols, TUNING
 from test_move_patch_1 import EFFECTS, TYPES
 from test_move_patch_3 import MOVES
 
@@ -243,7 +243,7 @@ def validate(version):
         bank,table=syms['EvosMovesPointerTable']
         dex_bank,dex_addr=syms['PokedexOrder']
         species_ids={}
-        for addition in PLAN['learnset_additions']:
+        for addition in [x for x in PLAN['learnset_additions'] if x['species'].lower() not in TUNING]:
             species=addition['species'];level=addition['level'];move=MOVES[addition['move']]
             if species not in species_ids:
                 pointer=addr(species+'EvosMoves')

@@ -21,8 +21,8 @@ ExtraTMCompatibilityTable:
 	db $02, $00 ; 20: raticate
 	db $13, $00 ; 21: spearow
 	db $13, $00 ; 22: fearow
-	db $08, $00 ; 23: ekans
-	db $08, $00 ; 24: arbok
+	db $08, $0c ; 23: ekans
+	db $08, $0c ; 24: arbok
 	db $00, $00 ; 25: pikachu
 	db $00, $00 ; 26: raichu
 	db $50, $00 ; 27: sandshrew
@@ -81,7 +81,7 @@ ExtraTMCompatibilityTable:
 	db $04, $00 ; 80: slowbro
 	db $00, $00 ; 81: magnemite
 	db $00, $00 ; 82: magneton
-	db $13, $00 ; 83: farfetchd
+	db $13, $10 ; 83: farfetchd
 	db $13, $00 ; 84: doduo
 	db $13, $00 ; 85: dodrio
 	db $04, $00 ; 86: seel
@@ -149,7 +149,7 @@ ExtraTMCompatibilityTable:
 	db $00, $00 ; 148: dragonair
 	db $11, $00 ; 149: dragonite
 	db $00, $00 ; 150: mewtwo
-	db $ff, $03 ; 151: mew
+	db $ff, $1f ; 151: mew
 	db $04, $01 ; 152: blastoise_unique
 	db $08, $00 ; 153: bulbasaur_unique
 	db $00, $00 ; 154: chansey_unique
@@ -175,11 +175,11 @@ ExtraTMCompatibilityTable:
 	db $0c, $00 ; 174: toxapex
 	db $62, $00 ; 175: miltank
 	db $d2, $02 ; 176: sableye
-	db 0, 0 ; 177: baltoy
-	db 0, 0 ; 178: claydol
-	db 0, 0 ; 179: crobat
-	db 0, 0 ; 180: dittwo
-	db 0, 0 ; 181: larvitar
-	db 0, 0 ; 182: pupitar
-	db 0, 0 ; 183: tyranitar
+	db $00, $00 ; 177: baltoy
+	db $00, $00 ; 178: claydol
+	db $00, $00 ; 179: crobat
+	db $00, $00 ; 180: dittwo
+	db $00, $00 ; 181: larvitar
+	db $00, $00 ; 182: pupitar
+	db $00, $00 ; 183: tyranitar
 ExtraTMCompatibilityTableEnd:

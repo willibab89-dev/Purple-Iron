@@ -15,7 +15,7 @@ CanLearnTM:
 	jr z, .TMfoundLoop
 	inc c
 	ld a, c
-	cp 65
+	cp 55 + NUM_EXTRA_TMS
 	jr c, .findTMloop
 	pop hl
 	ld c, 0

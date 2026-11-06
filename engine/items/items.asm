@@ -125,6 +125,9 @@ ItemUsePtrTable:
 	dw ItemUseTMHM ; TM_58
 	dw ItemUseTMHM ; TM_59
 	dw ItemUseTMHM ; TM_60
+	dw ItemUseTMHM ; TM_61
+	dw ItemUseTMHM ; TM_62
+	dw ItemUseTMHM ; TM_63
 
 ItemUseBall:
 

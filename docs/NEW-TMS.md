@@ -1,3 +1,5 @@
+> The current build also includes TM61–63. See [SPECIES-TUNING-1.md](SPECIES-TUNING-1.md) for the additions and first four species revisions.
+
 # Ten new TMs: TM51–TM60
 
 Cumulative Red/Blue BPS patches include all custom front sprites, 21 unique species and encounters, crit/freeze changes, the completed move overhaul and the thematic distribution of existing TMs. This patch adds ten TM items and their approved compatibility, and stocks them in shops throughout Kanto. The game now has 60 TMs and the original five HMs.

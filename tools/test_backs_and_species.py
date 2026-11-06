@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 from PIL import Image
 from pyboy import PyBoy
-from test_unique_species import ROOT, symbols
+from test_unique_species import ROOT, symbols, TUNING
 from test_move_patch_3 import MOVES
 from test_move_patch_1 import TYPES
 from generate_unique_encounters import pools
@@ -48,6 +48,10 @@ def validate(version):
             change=TYPE_CHANGES[i+1]
             assert before[6:8]==bytes(TYPES[t] for t in change['before'])
             before=before[:6]+bytes(TYPES[t] for t in change['after'])+before[8:]
+        tuning=next((d for d in TUNING.values() if d['dex']==i+1),None)
+        if tuning:
+            starts=bytes([MOVES[m] for m in tuning['start']]+[0]*(4-len(tuning['start'])))
+            before=before[:1]+bytes(tuning['stats'])+before[6:15]+starts+before[19:20]+bytes(next(e['tm_bytes'] for e in json.loads((ROOT/'data/tm_distribution.json').read_text())['entries'] if e['dex']==i+1))+before[27:]
         assert before[:11]+before[15:]==now[:11]+now[15:],i+1
     for d in NEW:
         h=headers[(d['dex']-1)*28:d['dex']*28]
@@ -145,6 +149,22 @@ def validate(version):
         assert game.memory[addr('wPartyMon1')]==NEW[-1]['index']
         for name,level,target in [('Baltoy',36,146),('Larvitar',30,161),('Pupitar',55,162),('Golbat',40,156)]:
             assert data(name+'EvosMoves',4)==bytes([1,level,target,0])
+        for name,d in TUNING.items():
+            index=order.index(d['dex'])+1
+            put('wPartyCount',0);put('wCurEnemyLVL',60);put('wcf91',index);call('AddPartyMon')
+            known=list(d['start'])
+            for level,move in d['learn']:
+                if move not in known:known=(known+[move])[-4:]
+            expected=[MOVES[move] for move in known]+[0]*(4-len(known))
+            assert get('wPartyMon1Moves',4)==bytes(expected),name
+            assert get('wPartyMon1PP',4)==bytes(data('Moves',219*6)[(move-1)*6+5] if move else 0 for move in expected),name
+            b,pointer=syms[d['title']+'EvosMoves']
+            pos=pointer
+            while game.memory[b,pos]:pos+=1
+            pos+=1;actual=[]
+            while game.memory[b,pos]:
+                actual.append([game.memory[b,pos],game.memory[b,pos+1]]);pos+=2
+            assert actual==[[level,MOVES[move]] for level,move in d['learn']],name
         # Evolution record is a real level-38 evolution to Toxapex.
         assert data('MareanieEvosMoves',4)==bytes([1,38,134,0])
         expected={'MAREANIE':5,'MILTANK':2,'SABLEYE':2,'BALTOY':2,'LARVITAR':2,'DITTWO':1}

@@ -5,7 +5,7 @@ SECTION "Additional TM support", ROMX, BANK[$34]
 DecodeMachineItem:
 	ld a, [wcf91]
 	sub FIRST_EXTRA_TM
-	cp 10
+	cp NUM_EXTRA_TMS
 	jr nc, .legacy
 	add 56
 	ld [wd11e], a
@@ -42,7 +42,7 @@ ExtraTMCompatibility:
 	jr z, .found
 	inc c
 	ld a, c
-	cp 10
+	cp NUM_EXTRA_TMS
 	jr c, .find
 	jr .done
 .found
@@ -88,6 +88,7 @@ ExtraTMCompatibility:
 ExtraTMMoves:
 	db ROOST,FACADE,BRINE,VENOSHOCK,AERIAL_ACE
 	db BULK_UP,ROCK_TOMB,WILL_O_WISP,SCALD,CURSE
+	db LEECH_LIFE,POISON_TAIL,AGILITY
 INCLUDE "data/extra_tm_compatibility.asm"
 
 INCLUDE "text/tmhm_names.asm"

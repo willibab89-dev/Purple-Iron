@@ -2,7 +2,7 @@
 """Exercise priority, timed Rage, fixed Bide, charge effects and multi-strike paths."""
 import json
 from pyboy import PyBoy
-from test_unique_species import ROOT,symbols
+from test_unique_species import ROOT,symbols,TUNING
 from test_move_patch_1 import EFFECTS,TYPES
 from test_move_patch_3 import MOVES
 
@@ -192,7 +192,7 @@ def validate(version):
         # Every added entry learns/relearns with its correct PP.
         patch('GetPredefRegisters',[0xc9])
         bank=syms['EvosMovesPointerTable'][0];start=syms['EvosMovesPointerTable'][1]
-        for d in PLAN['learnset_additions']:
+        for d in [x for x in PLAN['learnset_additions'] if x['species'].lower() not in TUNING]:
             pointer=syms[d['species']+'EvosMoves'][1]
             species=next(i+1 for i in range(190) if game.memory[bank,start+i*2]+256*game.memory[bank,start+i*2+1]==pointer)
             move=MOVES[d['move']];level=d['level']

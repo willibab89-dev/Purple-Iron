@@ -29,7 +29,7 @@ def validate(version):
             else:
                 result.append(CHARMAP[s[0]]); s = s[1:]
         return bytes(result) + bytes([CHARMAP['@']])
-    assert data('TechnicalMachines', 65) == bytes(MOVES[x] for x in PLAN['old_machine_moves']) + bytes(d['move_id'] for d in PLAN['new_tms'])
+    assert data('TechnicalMachines', 55 + len(PLAN['new_tms'])) == bytes(MOVES[x] for x in PLAN['old_machine_moves']) + bytes(d['move_id'] for d in PLAN['new_tms'])
     oldnames = re.findall(r'^\s*db "([^"@]+)@"', PLAN['baseline_item_names'], re.M)
     assert len(oldnames) == 97
     expected_names = b''.join(encoded(n) for n in oldnames + [d['name'] for d in PLAN['new_tms']])
@@ -37,11 +37,13 @@ def validate(version):
     def bcd(n): return bytes.fromhex(f'{n:06d}')
     oldprices = [int(n) for n in re.findall(r'^\s*money\s+(\d+)', PLAN['baseline_item_prices'], re.M)]
     assert len(oldprices) == 97
-    assert data('ItemPrices', 107 * 3) == b''.join(bcd(n) for n in oldprices + [d['price'] for d in PLAN['new_tms']])
+    assert data('ItemPrices', (97 + len(PLAN['new_tms'])) * 3) == b''.join(bcd(n) for n in oldprices + [d['price'] for d in PLAN['new_tms']])
     masks = b''.join(e['mask'].to_bytes(2, 'little') for e in PLAN['entries'])
     assert data('ExtraTMCompatibilityTable', 2 * len(PLAN['entries'])) == masks
     byname = {e['name']: set(e['tms']) for e in PLAN['entries']}
-    assert byname['mew'] == set(range(51, 61))
+    assert byname['mew'] == set(range(51, 64))
+    for number,allowed in [(61,{'ekans','arbok','mew'}),(62,{'ekans','arbok','mew'}),(63,{'farfetchd','mew'})]:
+        assert {name for name,tms in byname.items() if number in tms}==allowed
     for baby, adult in (('charmander','charizard'),('dragonair','dragonite'),('caterpie','butterfree'),('venonat','venomoth')):
         assert 51 not in byname[baby] and 51 in byname[adult]
     assert 51 in byname['doduo']
@@ -111,7 +113,7 @@ def validate(version):
         for item, internal, hm in items:
             put('wcf91', item); call('DecodeMachineItem')
             assert get('wd11e') == internal and bool(game.register_file.F & 16) == hm, item
-            call('TMToMove'); assert get('wd11e') == data('TechnicalMachines', 65)[internal - 1]
+            call('TMToMove'); assert get('wd11e') == data('TechnicalMachines', 55 + len(PLAN['new_tms']))[internal - 1]
             put('wd11e', item); put('wNameListType', 2); call('GetItemName')
             name = legacy_names[item - 196] if item >= 196 else next(d['name'] for d in PLAN['new_tms'] if d['item_id'] == item)
             assert bytes(game.memory[addr('wcd6d'):addr('wcd6d') + len(name) + 1]) == encoded(name), item
@@ -134,12 +136,12 @@ def validate(version):
         for d in PLAN['new_tms']:
             put('wcf91', d['item_id']); put('wItemQuantity', 2)
             call('AddItemToInventory', HL=addr('wNumBagItems')); assert game.register_file.F & 16
-        assert get('wNumBagItems') == 10
-        bag = bytes(game.memory[addr('wNumBagItems'):addr('wNumBagItems') + 22])
+        assert get('wNumBagItems') == len(PLAN['new_tms'])
+        bag = bytes(game.memory[addr('wNumBagItems'):addr('wNumBagItems') + 2 + 2*len(PLAN['new_tms'])])
         call('SaveSAVtoSRAM0'); call('SaveSAVtoSRAM2')
-        game.memory[addr('wNumBagItems'):addr('wNumBagItems') + 22] = [0] * 22
+        game.memory[addr('wNumBagItems'):addr('wNumBagItems') + 2 + 2*len(PLAN['new_tms'])] = [0] * (2 + 2*len(PLAN['new_tms']))
         call('LoadSAV0'); call('LoadSAV2'); assert not(game.register_file.F & 16)
-        assert bytes(game.memory[addr('wNumBagItems'):addr('wNumBagItems') + 22]) == bag
+        assert bytes(game.memory[addr('wNumBagItems'):addr('wNumBagItems') + 2 + 2*len(PLAN['new_tms'])]) == bag
         # Teach through the real item dispatch/eligibility/LearnMove/consumption
         # paths. Only presentation and player selections are replaced.
         for n in ('PrintText', 'DisplayTextBoxID', 'SaveScreenTilesToBuffer1', 'GetPartyMonName', 'PlaySound',
@@ -175,7 +177,7 @@ def validate(version):
             assert game.memory[addr('wBagItems') + i * 2 + 1] == 1
             put('wIsInBattle', 0)
             selection['species'] = order.index(151) + 1
-        print(f'{version}: {len(PLAN['entries']) * 10} eligibility cases; all 65 machine mappings; new names/prices/key flags; shop limits; bag saves; ten real teaching/consumption and refusal paths passed')
+        print(f'{version}: {len(PLAN['entries']) * len(PLAN['new_tms'])} eligibility cases; all 68 machine mappings; new names/prices/key flags; shop limits; bag saves; thirteen real teaching/consumption and refusal paths passed')
     finally:
         game.stop(save=False)
 

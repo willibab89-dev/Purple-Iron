@@ -4,7 +4,7 @@ import json
 import re
 from collections import Counter
 from pyboy import PyBoy
-from test_unique_species import ROOT, symbols
+from test_unique_species import ROOT, symbols, TUNING
 from test_move_patch_1 import EFFECTS, TYPES, CHARMAP
 
 PLAN = json.loads((ROOT / 'data/move_patch_3.json').read_text())
@@ -162,6 +162,10 @@ def validate(version):
             pos+=1;actual=[]
             while game.memory[evo_bank,pos]:
                 actual.append((game.memory[evo_bank,pos],game.memory[evo_bank,pos+1]));pos+=2
+            if species.lower() in TUNING:
+                expected=[(level,MOVES[move]) for level,move in TUNING[species.lower()]['learn']]
+                assert actual==expected,(species,actual,expected)
+                continue
             extra=[(x['level'],MOVES[x['move']]) for x in ALL_ADDITIONS if x['species']==species]
             expected=sorted([(level,MOVES[move]) for level,move in old]+extra)
             assert actual==expected,(species,actual,expected)
@@ -173,7 +177,7 @@ def validate(version):
                 assert species in species_ids,species
         # Wild/daycare generation and relearner expose every new learnset entry.
         patch('GetPredefRegisters',[0xc9])
-        for addition in PLAN['learnset_additions']:
+        for addition in [x for x in PLAN['learnset_additions'] if x['species'].lower() not in TUNING]:
             species,level=addition['species'],addition['level'];species_id=species_ids[species];move=MOVES[addition['move']]
             put('wcf91',species_id);put('wCurEnemyLVL',level);put('wLearningMovesFromDayCare',1);put('wDayCareStartLevel',level-1)
             game.memory[addr('wPartyMon1Moves'):addr('wPartyMon1Moves')+4]=[0]*4

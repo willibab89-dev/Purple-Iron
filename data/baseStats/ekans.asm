@@ -1,8 +1,8 @@
 db DEX_EKANS ; pokedex id
-db 35 ; base hp
+db 40 ; base hp
 db 60 ; base attack
 db 44 ; base defense
-db 55 ; base speed
+db 70 ; base speed
 db 40 ; base special
 db POISON ; species type 1
 db POISON ; species type 2
@@ -12,8 +12,8 @@ INCBIN EKANS_FR,0,1 ; 55, sprite dimensions
 dw EkansPicFront
 dw EkansPicBack
 ; attacks known at lvl 0
-db WRAP
 db LEER
+db POISON_STING
 db 0
 db 0
 db 0 ; growth rate
@@ -21,7 +21,7 @@ db 0 ; growth rate
 	tmlearn 6,8
 	tmlearn 0
 	tmlearn 20,21
-	tmlearn 26,27,28
+	tmlearn 27
 	tmlearn 40
 	tmlearn 44,48
 	tmlearn 50,54

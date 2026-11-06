@@ -705,15 +705,11 @@ OnixEvosMoves:
 	db 0
 ; Learnset
 	db 15, BIND
-	db 19, ROCK_THROW
-	db 20, ROCK_TOMB
+	db 19, ROCK_TOMB
 	db 25, RAGE
-	db 26, ROCK_POLISH
-	db 30, COIL
 	db 33, SLAM
-	db 34, STONE_PRESS
-	db 43, HARDEN
-	db 44, STONE_EDGE
+	db 43, STONE_PRESS
+	db 50, COIL
 	db 0
 
 FearowEvosMoves:
@@ -874,13 +870,10 @@ ArbokEvosMoves:
 ; Learnset
 	db 10, POISON_STING
 	db 17, BITE
-	db 26, POISON_TAIL
 	db 27, GLARE
-	db 28, COIL
-	db 32, VENOSHOCK
-	db 36, SCREECH
-	db 38, POISON_FANG
-	db 47, ACID
+	db 36, POISON_FANG
+	db 47, SCREECH
+	db 54, COIL
 	db 0
 
 ParasectEvosMoves:
@@ -1108,13 +1101,11 @@ FarfetchdEvosMoves:
 	db 0
 ; Learnset
 	db 7, LEER
-	db 15, FURY_ATTACK
-	db 23, SWORDS_DANCE
-	db 28, ROOST
-	db 31, AGILITY
-	db 32, AERIAL_ACE
-	db 38, GALE_WIND
-	db 39, SLASH
+	db 15, LUNGE
+	db 23, SLASH
+	db 31, FOCUS_ENERGY
+	db 39, X_SCISSOR
+	db 45, SKY_ATTACK
 	db 0
 
 VenonatEvosMoves:
@@ -1686,13 +1677,9 @@ EkansEvosMoves:
 ; Learnset
 	db 10, POISON_STING
 	db 17, BITE
-	db 22, POISON_TAIL
 	db 24, GLARE
-	db 25, COIL
-	db 28, VENOSHOCK
-	db 31, SCREECH
-	db 34, POISON_FANG
-	db 38, ACID
+	db 31, POISON_FANG
+	db 38, SCREECH
 	db 0
 
 ParasEvosMoves:

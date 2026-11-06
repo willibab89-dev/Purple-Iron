@@ -13,6 +13,7 @@ from generate_unique_encounters import pools, render
 
 ROOT = Path(__file__).resolve().parents[1]
 TYPES = {name: int(value, 16) for name, value in re.findall(r'^(\w+)\s+EQU \$([\dA-F]+)', (ROOT / "constants/type_constants.asm").read_text(), re.M)}
+TUNING = {e["name"]:e for e in json.loads((ROOT/"data/species_tuning.json").read_text())}
 SPECIES = json.loads((ROOT / "data/unique_species.json").read_text())
 
 
@@ -26,6 +27,7 @@ def symbols(path):
 
 
 def validate(version):
+    from test_move_patch_3 import MOVES
     rom_path = ROOT / (version + ".gbc")
     rom = rom_path.read_bytes()
     syms = symbols(ROOT / (version + ".sym"))
@@ -47,10 +49,10 @@ def validate(version):
         clone = data("BaseStats", 28, (entry["dex"] - 1) * 28)
         source = data("BaseStats", 28, (entry["base_dex"] - 1) * 28)
         assert clone[0] == entry["dex"]
-        assert clone[1:6] == source[1:6], entry["symbol"]
+        assert clone[1:6] == next((bytes(d["before_stats"]) for d in TUNING.values() if d["dex"]==entry["base_dex"]), source[1:6]), entry["symbol"]
         assert clone[8] == entry.get("catch_rate_override", source[8])
         assert clone[9] == source[9]
-        assert clone[15:20] == source[15:20]
+        assert clone[15:20] == next((bytes([MOVES[m] if m!="0" else 0 for m in d["before_start"]])+source[19:20] for d in TUNING.values() if d["dex"]==entry["base_dex"]), source[15:20])
         assert clone[27:] == source[27:]
         # Thematic TM rules allow the Rock-type Kakuna variant to differ
         # from its Poison-type source; validate all variant masks explicitly.

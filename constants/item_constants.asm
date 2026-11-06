@@ -112,8 +112,13 @@ SAFARI_ROCK           EQU $16 ; overload
 	const TM_59 ; $6A
 	const TM_60 ; $6B
 
+	const TM_61 ; $6C
+	const TM_62 ; $6D
+	const TM_63 ; $6E
+
 FIRST_EXTRA_TM EQU TM_51
-LAST_EXTRA_TM EQU TM_60
+LAST_EXTRA_TM EQU TM_63
+NUM_EXTRA_TMS EQU LAST_EXTRA_TM - FIRST_EXTRA_TM + 1
 
 const_value = $C4
 

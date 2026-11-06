@@ -66,4 +66,7 @@ ExtraTechnicalMachines:
 	db WILL_O_WISP
 	db SCALD
 	db CURSE
+	db LEECH_LIFE
+	db POISON_TAIL
+	db AGILITY
 TechnicalMachinesEnd:

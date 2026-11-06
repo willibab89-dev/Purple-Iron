@@ -1,9 +1,9 @@
 db DEX_ONIX ; pokedex id
-db 35 ; base hp
-db 45 ; base attack
-db 160 ; base defense
+db 60 ; base hp
+db 75 ; base attack
+db 130 ; base defense
 db 70 ; base speed
-db 30 ; base special
+db 55 ; base special
 db ROCK ; species type 1
 db GROUND ; species type 2
 db 45 ; catch rate
@@ -12,8 +12,8 @@ INCBIN ONIX_FR,0,1 ; 77, sprite dimensions
 dw OnixPicFront
 dw OnixPicBack
 ; attacks known at lvl 0
-db TACKLE
 db SCREECH
+db TACKLE
 db 0
 db 0
 db 0 ; growth rate

@@ -1,8 +1,8 @@
 db DEX_FARFETCHD ; pokedex id
-db 52 ; base hp
-db 65 ; base attack
+db 62 ; base hp
+db 85 ; base attack
 db 55 ; base defense
-db 60 ; base speed
+db 87 ; base speed
 db 58 ; base special
 db NORMAL ; species type 1
 db FLYING ; species type 2
@@ -12,8 +12,8 @@ INCBIN FARFETCHD_FR,0,1 ; 66, sprite dimensions
 dw FarfetchdPicFront
 dw FarfetchdPicBack
 ; attacks known at lvl 0
-db SAND_ATTACK
 db PECK
+db SAND_ATTACK
 db 0
 db 0
 db 0 ; growth rate

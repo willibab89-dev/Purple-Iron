@@ -100,6 +100,36 @@
       "price": 10000,
       "shop": "LavenderCashierText",
       "name": "TM60 CURSE"
+    },
+    {
+      "number": 61,
+      "item_id": 108,
+      "internal_number": 66,
+      "move": "LEECH_LIFE",
+      "move_id": 141,
+      "price": 4000,
+      "shop": "FuchsiaCashierText",
+      "name": "TM61 LECHLIF"
+    },
+    {
+      "number": 62,
+      "item_id": 109,
+      "internal_number": 67,
+      "move": "POISON_TAIL",
+      "move_id": 184,
+      "price": 6000,
+      "shop": "FuchsiaCashierText",
+      "name": "TM62 PSNTAIL"
+    },
+    {
+      "number": 63,
+      "item_id": 110,
+      "internal_number": 68,
+      "move": "AGILITY",
+      "move_id": 97,
+      "price": 9000,
+      "shop": "VermilionCashierText",
+      "name": "TM63 AGILITY"
     }
   ],
   "entries": [
@@ -310,18 +340,22 @@
       "name": "ekans",
       "source": "ekans",
       "tms": [
-        54
+        54,
+        61,
+        62
       ],
-      "mask": 8
+      "mask": 3080
     },
     {
       "dex": 24,
       "name": "arbok",
       "source": "arbok",
       "tms": [
-        54
+        54,
+        61,
+        62
       ],
-      "mask": 8
+      "mask": 3080
     },
     {
       "dex": 25,
@@ -860,9 +894,10 @@
       "tms": [
         51,
         52,
-        55
+        55,
+        63
       ],
-      "mask": 19
+      "mask": 4115
     },
     {
       "dex": 84,
@@ -1492,9 +1527,12 @@
         57,
         58,
         59,
-        60
+        60,
+        61,
+        62,
+        63
       ],
-      "mask": 1023
+      "mask": 8191
     },
     {
       "dex": 152,

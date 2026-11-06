@@ -19,7 +19,7 @@ CeruleanCashierText::
 
 ; Vermilion
 VermilionCashierText::
-	TX_MART POKE_BALL, SUPER_POTION, ICE_HEAL, AWAKENING, PARLYZ_HEAL, REPEL, TM_11, TM_12, TM_45, TM_52, TM_56
+	TX_MART POKE_BALL, SUPER_POTION, ICE_HEAL, AWAKENING, PARLYZ_HEAL, REPEL, TM_11, TM_12, TM_45, TM_52, TM_56, TM_63
 
 ; Lavender
 LavenderCashierText::
@@ -47,7 +47,7 @@ CeladonMart5Clerk2Text::
 
 ; Fuchsia
 FuchsiaCashierText::
-	TX_MART ULTRA_BALL, GREAT_BALL, SUPER_POTION, REVIVE, FULL_HEAL, SUPER_REPEL, TM_30, TM_31, TM_46, TM_49, TM_50, TM_54
+	TX_MART ULTRA_BALL, GREAT_BALL, SUPER_POTION, REVIVE, FULL_HEAL, SUPER_REPEL, TM_30, TM_31, TM_46, TM_49, TM_50, TM_54, TM_61, TM_62
 
 ; unused? joenote - repurposing for a new vendor on celadon dept store floor 3
 CeladonMart3ClerkText::
