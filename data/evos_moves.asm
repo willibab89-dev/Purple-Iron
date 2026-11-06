@@ -322,6 +322,8 @@ IvysaurEvosMoves:
 	db 22, POISONPOWDER
 	db 29, SYNTHESIS
 	db 30, RAZOR_LEAF
+
+	db 34, INGRAIN
 	db 38, GROWTH
 	db 46, SLEEP_POWDER
 	db 47, GIGA_DRAIN
@@ -335,6 +337,8 @@ ExeggutorEvosMoves:
 	db 25, REFLECT
 	db 28, STOMP
 	db 36, PSYSHOCK
+
+	db 38, INGRAIN
 	db 39, SYNTHESIS
 	db 40, MIND_BREAK
 	db 42, SOLARBEAM
@@ -364,6 +368,8 @@ ExeggcuteEvosMoves:
 ; Learnset
 	db 25, REFLECT
 	db 28, LEECH_SEED
+
+	db 30, INGRAIN
 	db 32, STUN_SPORE
 	db 33, PSYSHOCK
 	db 35, SYNTHESIS
@@ -400,6 +406,10 @@ GengarEvosMoves:
 	db 38, DREAM_EATER
 	db 39, WILL_O_WISP
 	db 40, PUNISHMENT
+
+	db 41, CURSE
+
+	db 44, SHADOW_LEECH
 	db 0
 
 ;joenote-modified the moveliest of nidoqueen line to be like yellow
@@ -441,6 +451,8 @@ CuboneEvosMoves:
 	db 17, ASTONISH
 	db 24, WAILING_CRY
 	db 25, LEER
+
+	db 28, CURSE
 	db 31, FOCUS_ENERGY
 	db 38, THRASH
 	db 43, BONEMERANG
@@ -570,6 +582,10 @@ GastlyEvosMoves:
 	db 27, HYPNOSIS
 	db 30, WILL_O_WISP
 	db 32, PUNISHMENT
+
+	db 33, CURSE
+
+	db 34, SHADOW_LEECH
 	db 35, DREAM_EATER
 	db 0
 
@@ -645,6 +661,8 @@ TangelaEvosMoves:
 ; Learnset	joenote-modified for yellow
 	db 27, ABSORB
 	db 29, VINE_WHIP
+
+	db 30, INGRAIN
 	db 32, POISONPOWDER
 	db 33, SYNTHESIS
 	db 36, STUN_SPORE
@@ -875,6 +893,10 @@ ParasectEvosMoves:
 	db 30, SPORE
 	db 32, AMBUSH
 	db 34, X_SCISSOR
+
+	db 35, INGRAIN
+
+	db 36, SHADOW_LEECH
 	db 38, SHELL_BREAK
 	db 39, SLASH
 	db 42, GIGA_DRAIN
@@ -1651,6 +1673,8 @@ ZubatEvosMoves:
 	db 28, WING_ATTACK
 	db 29, VENOSHOCK
 	db 30, ROOST
+
+	db 31, SHADOW_LEECH
 	db 34, POISON_FANG
 	db 36, HAZE
 	db 0
@@ -1682,6 +1706,10 @@ ParasEvosMoves:
 	db 27, SPORE
 	db 28, AMBUSH
 	db 30, X_SCISSOR
+
+	db 31, INGRAIN
+
+	db 32, SHADOW_LEECH
 	db 34, SLASH
 	db 35, SHELL_BREAK
 	db 38, GIGA_DRAIN
@@ -1936,6 +1964,8 @@ GolbatEvosMoves:
 	db 32, WING_ATTACK
 	db 33, VENOSHOCK
 	db 34, ROOST
+
+	db 35, SHADOW_LEECH
 	db 38, POISON_FANG
 	db 43, HAZE
 	db 0
@@ -2103,6 +2133,8 @@ MarowakEvosMoves:
 	db 17, ASTONISH
 	db 25, LEER
 	db 28, WAILING_CRY
+
+	db 32, CURSE
 	db 33, FOCUS_ENERGY
 	db 41, THRASH
 	db 48, BONEMERANG
@@ -2126,7 +2158,11 @@ HaunterEvosMoves:
 	db 30, WAILING_CRY
 	db 34, WILL_O_WISP
 	db 36, PUNISHMENT
+
+	db 37, CURSE
 	db 38, DREAM_EATER
+
+	db 40, SHADOW_LEECH
 	db 0
 
 AbraEvosMoves:
@@ -2207,6 +2243,8 @@ BulbasaurEvosMoves:
 	db 20, POISONPOWDER
 	db 25, SYNTHESIS
 	db 27, RAZOR_LEAF
+
+	db 30, INGRAIN
 	db 34, GROWTH
 	db 41, SLEEP_POWDER
 	db 42, GIGA_DRAIN
@@ -2222,6 +2260,8 @@ VenusaurEvosMoves:
 	db 22, POISONPOWDER
 	db 30, RAZOR_LEAF
 	db 33, SYNTHESIS
+
+	db 38, INGRAIN
 	db 43, GROWTH
 	db 50, GIGA_DRAIN
 	db 55, SLEEP_POWDER
@@ -2586,6 +2626,8 @@ OddishEvosMoves:
 	db 19, SLEEP_POWDER
 	db 24, ACID
 	db 28, SYNTHESIS
+
+	db 30, INGRAIN
 	db 33, PETAL_DANCE
 	db 40, GIGA_DRAIN
 	db 46, SOLARBEAM
@@ -2601,6 +2643,8 @@ GloomEvosMoves:
 	db 19, SLEEP_POWDER
 	db 28, ACID
 	db 32, SYNTHESIS
+
+	db 34, INGRAIN
 	db 38, PETAL_DANCE
 	db 44, GIGA_DRAIN
 	db 52, SOLARBEAM
@@ -2616,6 +2660,8 @@ VileplumeEvosMoves:
 	db 19, SLEEP_POWDER
 	db 30, ACID
 	db 36, SYNTHESIS
+
+	db 38, INGRAIN
 	db 40, PETAL_DANCE
 	db 44, GIGA_DRAIN
 	db 0
@@ -2631,6 +2677,8 @@ BellsproutEvosMoves:
 	db 21, STUN_SPORE
 	db 26, ACID
 	db 28, SYNTHESIS
+
+	db 30, INGRAIN
 	db 33, RAZOR_LEAF
 	db 40, GIGA_DRAIN
 	db 42, SLAM
@@ -2647,6 +2695,8 @@ WeepinbellEvosMoves:
 	db 23, STUN_SPORE
 	db 29, ACID
 	db 32, SYNTHESIS
+
+	db 34, INGRAIN
 	db 38, RAZOR_LEAF
 	db 44, GIGA_DRAIN
 	db 49, SLAM
@@ -2663,6 +2713,8 @@ VictreebelEvosMoves:
 	db 30, STUN_SPORE
 	db 36, SYNTHESIS
 	db 37, ACID
+
+	db 38, INGRAIN
 	db 44, RAZOR_LEAF
 	db 45, GIGA_DRAIN
 	db 0

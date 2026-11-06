@@ -12,8 +12,9 @@ NEW = PLAN['new_moves']
 PATCH4 = json.loads((ROOT / 'data/move_patch_4.json').read_text())
 PATCH5 = json.loads((ROOT / 'data/move_patch_5.json').read_text())
 PATCH6 = json.loads((ROOT / 'data/move_patch_6.json').read_text())
-ALL_NEW = NEW + PATCH4['new_moves'] + PATCH5['new_moves'] + PATCH6['new_moves']
-ALL_ADDITIONS = PLAN['learnset_additions'] + PATCH4['learnset_additions'] + PATCH5['learnset_additions'] + PATCH6['learnset_additions']
+PATCH7 = json.loads((ROOT / 'data/move_patch_7.json').read_text())
+ALL_NEW = NEW + PATCH4['new_moves'] + PATCH5['new_moves'] + PATCH6['new_moves'] + PATCH7['new_moves']
+ALL_ADDITIONS = PLAN['learnset_additions'] + PATCH4['learnset_additions'] + PATCH5['learnset_additions'] + PATCH6['learnset_additions'] + PATCH7['learnset_additions']
 MAX_MOVE = max(d['id'] for d in ALL_NEW)
 
 

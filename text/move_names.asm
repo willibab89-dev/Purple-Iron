@@ -217,3 +217,6 @@ MoveNames::
 	db "THUNDERCLAP@"
 	db "ICICLE SPEAR@"
 MoveNamesEnd:
+	db "INGRAIN@"
+	db "CURSE@"
+	db "SHADOW LEECH@"

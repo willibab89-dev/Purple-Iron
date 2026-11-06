@@ -214,7 +214,15 @@ wFrequencyModifier:: ; c0f1
 wTempoModifier:: ; c0f2
 	ds 1
 
-	ds 13
+; Former padding, not touched by the audio engine or saved to SRAM.
+; Each side: flags (rooted, cursed, fresh Wrap), Fire Spin ticks,
+; Wrap ticks remaining, cached Wrap damage (big endian).
+wResidualStates::
+wPlayerResidual:: ds 5
+wEnemyResidual:: ds 5
+wResidualSavedTurn:: ds 1
+wResidualSavedEffect:: ds 1
+wResidualRoundDone:: ds 1
 
 
 SECTION "Sprite State Data", WRAM0[$c100]

@@ -100,6 +100,9 @@ const_value = 0
 	const UTILITY_HIT_EFFECT    ; $5B
 	const UTILITY_SELF_EFFECT   ; $5C
 
+	const RESIDUAL_STATUS_EFFECT
+	const RESIDUAL_HIT_EFFECT
+
 ; fixed damage constants
 SONICBOOM_DAMAGE   EQU 20
 DRAGON_RAGE_DAMAGE EQU 40

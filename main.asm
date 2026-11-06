@@ -2176,3 +2176,4 @@ INCLUDE "engine/battle/conditional_damage.asm"
 INCLUDE "engine/battle/utility_effects.asm"
 
 INCLUDE "engine/battle/sequence_moves.asm"
+INCLUDE "engine/battle/residual_moves.asm"

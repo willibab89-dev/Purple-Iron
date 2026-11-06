@@ -243,6 +243,9 @@ MoveAnimationMap:
 	db QUICK_ATTACK ; AQUA_JET
 	db THUNDERSHOCK ; THUNDERCLAP
 	db PIN_MISSILE ; ICICLE_SPEAR
+	db GROWTH ; INGRAIN
+	db CONFUSE_RAY ; CURSE
+	db LEECH_LIFE ; SHADOW_LEECH
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

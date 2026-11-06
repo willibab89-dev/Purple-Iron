@@ -342,6 +342,12 @@ UtilityInflictStatus:
 	ret nz
 	jr .types
 .poisonStatus
+	push bc
+	push hl
+	call ResidualTargetCursed
+	pop hl
+	pop bc
+	ret nz
 	ld a, b
 	and a
 	jr z, .types

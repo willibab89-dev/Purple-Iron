@@ -139,6 +139,21 @@ AIMoveChoiceModification1:
 	inc de
 	call ReadMove
 	ld a, [wEnemyMoveEffect]
+	cp RESIDUAL_STATUS_EFFECT
+	jr nz, .checkUtilityStatus
+	push hl
+	push bc
+	push de
+	callab ResidualAIStatusScore
+	pop de
+	pop bc
+	pop hl
+	ld a, [wCustomRandomValue]
+	and a
+	jp nz, .heavydiscourage
+	jp .nextMove
+.checkUtilityStatus
+	ld a, [wEnemyMoveEffect]
 	cp UTILITY_STATUS_EFFECT
 	jr nz, .checkCompoundStatus
 	push hl
@@ -1436,6 +1451,8 @@ AIPrintItemUseAndUpdateHPBar:
 	jp DecrementAICount
 
 AISwitchIfEnoughMons:
+	callab ResidualEnemySwitchBlocked
+	ret nz
 ; enemy trainer switches if there are 2 or more unfainted mons in party
 	ld a, [wEnemyPartyCount]
 	ld c, a

@@ -1,4 +1,4 @@
-name: Move overhaul — patch 6
+name: Move overhaul — patch 7
 
 on:
   workflow_dispatch:
@@ -57,10 +57,11 @@ jobs:
           python3 tools/test_move_patch_4.py
           python3 tools/test_move_patch_5.py
           python3 tools/test_move_patch_6.py
+          python3 tools/test_move_patch_7.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
-          name: pokemon-move-patch-6-bps
+          name: pokemon-move-patch-7-bps
           retention-days: 30
           if-no-files-found: error
           path: |
@@ -75,3 +76,4 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-PATCH-4.md
             ${{ runner.temp }}/patches/MOVE-PATCH-5.md
             ${{ runner.temp }}/patches/MOVE-PATCH-6.md
+            ${{ runner.temp }}/patches/MOVE-PATCH-7.md

@@ -5,6 +5,12 @@ SECTION "Compound move effects", ROMX, BANK[$34]
 DispatchMoveEffect:
 	call CustomActorMove
 	ld a, [de]
+	cp RESIDUAL_STATUS_EFFECT
+	jp z, ResidualStatusEffect
+	cp RESIDUAL_HIT_EFFECT
+	jp z, ResidualHitEffect
+	call CustomActorMove
+	ld a, [de]
 	cp UTILITY_STATUS_EFFECT
 	jp z, UtilityStatusEffect
 	cp UTILITY_HIT_EFFECT

@@ -1,4 +1,6 @@
 DrainHPEffect_:
+	callab ResidualFullDrain
+	jr nz, .getAttackerHP
 	ld hl, wDamage
 	ld a, [hl]
 	srl a ; divide damage by 2

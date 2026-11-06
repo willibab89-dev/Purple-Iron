@@ -1,5 +1,7 @@
 # Purple-Iron: planning handoff after move patch 6
 
+**Update:** residual move patch 7 now implements Ingrain, Curse, Shadow Leech, Wrap and Fire Spin, and adds 26 learning entries. Read [MOVE-PATCH-7.md](MOVE-PATCH-7.md) alongside this historical snapshot. There are now 219 move records; only Roar, Whirlwind and automatic Transform remain unfinished.
+
 Snapshot: commit `56e3b5d`, branch `unique-species`, repository `willibab89-dev/Purple-Iron`, 6 November 2026. Based on Shin Pokémon Red/Blue. This describes the actual implemented game through patch 6, rather than every idea discussed earlier.
 
 ## Prompt for the new chat

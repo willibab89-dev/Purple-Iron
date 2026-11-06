@@ -70,6 +70,8 @@ def validate(version):
         b,start=syms['Moves'];updates={x['id']:x['after'] for x in PLAN['existing_changes']}
         patch6=json.loads((ROOT/'data/move_patch_6.json').read_text())
         updates.update({x['id']:x['after'] for x in patch6['existing_changes']})
+        patch7=json.loads((ROOT/'data/move_patch_7.json').read_text())
+        updates.update({x['id']:x['after'] for x in patch7['existing_changes']})
         entries=[updates.get(x['id'],x) for x in PLAN['baseline_moves']]+PLAN['new_moves'];assert len(entries)==212
         for d in entries:
             expected=[d['id'],EFFECTS[d['effect']],d['power'],TYPES[d['type']],d['accuracy']*255//100,d['pp']]

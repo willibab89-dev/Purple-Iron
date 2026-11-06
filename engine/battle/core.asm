@@ -2,6 +2,7 @@ BattleCore:
 
 ; These are move effects (second value from the Moves table in bank $E).
 ResidualEffects1:
+	db RESIDUAL_STATUS_EFFECT
 	db UTILITY_STATUS_EFFECT
 	db COMPOUND_STATUS_EFFECT
 ; most non-side effects
@@ -574,8 +575,7 @@ MainInBattleLoop:
 	call HandlePoisonBurnLeechSeed
 	jp z, HandlePlayerMonFainted
 	call DrawHUDsAndHPBars
-	call CheckNumAttacksLeft
-	jp MainInBattleLoop
+	jp ResidualRoundComplete
 .playerMovesFirst	;joenote - reorganizing this so enemy AI item use and switching has priority over player moves
 ;#1 - handle enemy switching or using an item
 	ld a, $1
@@ -613,10 +613,21 @@ MainInBattleLoop:
 	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
+	jp ResidualRoundComplete
+
+ResidualRoundComplete:
+	callab ResidualEndRound
+	ld hl, wBattleMonHP
+	ld a, [hli]
+	or [hl]
+	jp z, HandlePlayerMonFainted
+	ld hl, wEnemyMonHP
+	ld a, [hli]
+	or [hl]
+	jp z, HandleEnemyMonFainted
 	call CheckNumAttacksLeft
 	jp MainInBattleLoop
 
-	
 HandlePoisonBurnLeechSeed:
 	ld hl, wBattleMonHP
 	ld de, wBattleMonStatus
@@ -863,6 +874,8 @@ CheckNumAttacksLeft:
 	ret
 
 HandleEnemyMonFainted:
+	callab ResidualClearEnemy
+	callab ResidualEndRound
 	xor a
 	ld [wInHandlePlayerMonFainted], a
 	call FaintEnemyPokemon
@@ -1170,6 +1183,8 @@ PlayBattleVictoryMusic:
 	jp Delay3
 
 HandlePlayerMonFainted:
+	callab ResidualClearPlayer
+	callab ResidualEndRound
 	ld a, 1
 	ld [wInHandlePlayerMonFainted], a
 	call RemoveFaintedPlayerMon
@@ -1816,6 +1831,7 @@ GotAwayText:
 
 ; copies from party data to battle mon data when sending out a new player mon
 LoadBattleMonFromParty:
+	callab ResidualClearPlayer
 	callab ClearCounterRecord
 	ld a, [wWhichPokemon]
 	ld bc, wPartyMon2 - wPartyMon1
@@ -2616,6 +2632,8 @@ PartyMenuOrRockOrRun:
 	call PrintText
 	jp .partyMonDeselected
 .notAlreadyOut
+	callab ResidualPlayerSwitchBlocked
+	jp nz, .partyMonDeselected
 	call HasMonFainted
 	jp z, .partyMonDeselected ; can't switch to fainted mon
 	ld a, $1
@@ -6400,6 +6418,7 @@ GetCurrentMove:
 	jp CopyStringToCF4B
 
 LoadEnemyMonData:
+	callab ResidualClearEnemy
 	callab ClearCounterRecord
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -7634,6 +7653,8 @@ AlreadyAsleepText:
 	db "@"
 
 PoisonEffect:
+	callab ResidualTargetCursed
+	ret nz
 	ld hl, wEnemyMonStatus
 	ld de, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]

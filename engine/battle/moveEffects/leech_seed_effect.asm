@@ -1,4 +1,6 @@
 LeechSeedEffect_:
+	callab ResidualTargetCursed
+	jp nz, .moveMissed
 	callab MoveHitTest
 	ld a, [wMoveMissed]
 	and a

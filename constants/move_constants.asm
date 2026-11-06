@@ -264,5 +264,9 @@ const_value = 166
 	const THUNDERCLAP
 	const ICICLE_SPEAR
 
+	const INGRAIN
+	const CURSE
+	const SHADOW_LEECH
+
 MAX_MOVE_ID EQU const_value + -1
 NUM_ATTACKS EQU MAX_MOVE_ID + -1 ; selectable moves, excluding Struggle
