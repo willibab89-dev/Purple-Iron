@@ -71,7 +71,8 @@ def pools(version):
                 if "sources" in rule and not matches:
                     continue
                 level = rule.get("level", int((matches or originals)[0][0]))
-                variants.append((level, rule["species"]))
+                variants.extend([(level, rule["species"])] * rule.get("percent", 1))
+            assert len(variants) <= 100, (map_name, kind)
             if variants:
                 result.append((map_name, kind, variants))
     return result

@@ -1,4 +1,4 @@
-name: Ten new TMs and shops
+name: Back sprites and four new Pokemon
 
 on:
   workflow_dispatch:
@@ -47,7 +47,7 @@ jobs:
           python3 tools/package_bps.py --originals "$RUNNER_TEMP/originals" --output "$RUNNER_TEMP/patches" --flips "$RUNNER_TEMP/flips/flips"
       - name: Test species, moves and battle mechanics in PyBoy
         run: |
-          python3 -m pip install pyboy==2.9.0
+          python3 -m pip install pyboy==2.9.0 Pillow==11.3.0
           python3 tools/test_unique_species.py
           python3 tools/test_critical_hits.py
           python3 tools/test_freeze.py
@@ -61,10 +61,11 @@ jobs:
           python3 tools/test_move_patch_8.py
           python3 tools/test_tm_distribution.py
           python3 tools/test_new_tms.py
+          python3 tools/test_backs_and_species.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
-          name: pokemon-new-tms-bps
+          name: pokemon-backs-and-new-species-bps
           retention-days: 30
           if-no-files-found: error
           path: |
@@ -83,3 +84,4 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-PATCH-8.md
             ${{ runner.temp }}/patches/TM-DISTRIBUTION.md
             ${{ runner.temp }}/patches/NEW-TMS.md
+            ${{ runner.temp }}/patches/BACKSPRITES-AND-NEW-SPECIES.md

@@ -35,7 +35,7 @@ def validate(version):
         return rom[start:start + size]
 
     dex_order = data("PokedexOrder", 190)
-    assert sorted(n for n in dex_order if n) == list(range(1, 173))
+    assert sorted(n for n in dex_order if n) == list(range(1, 177))
     assert len(rom) == 1024 * 1024
     assert (sum(rom) - rom[0x14e] - rom[0x14f]) & 65535 == int.from_bytes(rom[0x14e:0x150], "big")
     header_sum = 0
@@ -132,6 +132,10 @@ def validate(version):
                 routed = get("sSpriteBuffer1", 784)
                 assert game.memory[guard:guard + 32] == [0x5a] * 32
                 bank, pointer = syms[entry["label"] + "Pic" + suffix]
+                if suffix == "Back":
+                    stream = data("CustomBackStreams", 190 * 3, (index - 1) * 3)
+                    if stream[0]:
+                        bank, pointer = stream[0], stream[1] + 256 * stream[2]
                 put("wSpriteInputPtr", pointer & 255)
                 game.memory[address("wSpriteInputPtr") + 1] = pointer >> 8
                 call("UncompressSpriteData", A=bank)
@@ -174,6 +178,7 @@ def validate(version):
         assert (ROOT / "data/unique_encounters.asm").read_text() == render()
         map_names = re.findall(r"^\s*mapconst\s+(\w+),", (ROOT / "constants/map_constants.asm").read_text(), re.M)
         indexes = {entry["symbol"]: entry["index"] for entry in SPECIES}
+        indexes.update({entry["symbol"]: entry["index"] for entry in json.loads((ROOT / "data/new_species.json").read_text())})
         habitat_pools = pools("_RED" if version == "pokered" else "_BLUE")
         for species, expected_habitats in (
             ("UNIQUE_OMANYTE_UNIQUE", {("ROCK_TUNNEL_1", 0), ("ROCK_TUNNEL_2", 0)}),
@@ -252,7 +257,7 @@ def validate(version):
             assert raw[-1] == 255 and set(raw[:-1]) == expected_maps
     finally:
         game.stop(save=False)
-    print(f"{version}: 172 dex/header round-trips, 42 sprite decodes, 21 party additions, expanded save/load; all 100 rolls in {len(habitat_pools)} encounter pools and AREA maps passed")
+    print(f"{version}: 176 dex/header round-trips, 42 sprite decodes, 21 party additions, expanded save/load; all 100 rolls in {len(habitat_pools)} encounter pools and AREA maps passed")
 
 
 if __name__ == "__main__":

@@ -1688,6 +1688,50 @@
         54
       ],
       "mask": 8
+    },
+    {
+      "dex": 173,
+      "name": "mareanie",
+      "source": "mareanie",
+      "tms": [
+        53,
+        54
+      ],
+      "mask": 12
+    },
+    {
+      "dex": 174,
+      "name": "toxapex",
+      "source": "toxapex",
+      "tms": [
+        53,
+        54
+      ],
+      "mask": 12
+    },
+    {
+      "dex": 175,
+      "name": "miltank",
+      "source": "miltank",
+      "tms": [
+        52,
+        56,
+        57
+      ],
+      "mask": 98
+    },
+    {
+      "dex": 176,
+      "name": "sableye",
+      "source": "sableye",
+      "tms": [
+        52,
+        55,
+        57,
+        58,
+        60
+      ],
+      "mask": 722
     }
   ],
   "old_machine_moves": [

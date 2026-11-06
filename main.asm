@@ -2179,3 +2179,7 @@ INCLUDE "engine/battle/sequence_moves.asm"
 INCLUDE "engine/battle/residual_moves.asm"
 INCLUDE "engine/battle/entry_switch_moves.asm"
 INCLUDE "engine/items/extra_tms.asm"
+
+INCLUDE "engine/battle/imported_sprites.asm"
+INCLUDE "data/imported_back_pics.asm"
+INCLUDE "data/new_species_pics.asm"

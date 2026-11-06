@@ -39,7 +39,7 @@ def validate(version):
     assert len(oldprices) == 97
     assert data('ItemPrices', 107 * 3) == b''.join(bcd(n) for n in oldprices + [d['price'] for d in PLAN['new_tms']])
     masks = b''.join(e['mask'].to_bytes(2, 'little') for e in PLAN['entries'])
-    assert data('ExtraTMCompatibilityTable', 344) == masks
+    assert data('ExtraTMCompatibilityTable', 2 * len(PLAN['entries'])) == masks
     byname = {e['name']: set(e['tms']) for e in PLAN['entries']}
     assert byname['mew'] == set(range(51, 61))
     for baby, adult in (('charmander','charizard'),('dragonair','dragonite'),('caterpie','butterfree'),('venonat','venomoth')):
@@ -175,7 +175,7 @@ def validate(version):
             assert game.memory[addr('wBagItems') + i * 2 + 1] == 1
             put('wIsInBattle', 0)
             selection['species'] = order.index(151) + 1
-        print(f'{version}: 1,720 eligibility cases; all 65 machine mappings; new names/prices/key flags; shop limits; bag saves; ten real teaching/consumption and refusal paths passed')
+        print(f'{version}: {len(PLAN['entries']) * 10} eligibility cases; all 65 machine mappings; new names/prices/key flags; shop limits; bag saves; ten real teaching/consumption and refusal paths passed')
     finally:
         game.stop(save=False)
 

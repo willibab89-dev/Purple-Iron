@@ -125,17 +125,17 @@ PokedexEntryPointers:
 	dw MetapodDexEntry
 	dw ButterfreeDexEntry
 	dw MachampDexEntry
-	dw MissingNoDexEntry
+	dw MareanieDexEntry
 	dw GolduckDexEntry
 	dw HypnoDexEntry
 	dw GolbatDexEntry
 	dw MewtwoDexEntry
 	dw SnorlaxDexEntry
 	dw MagikarpDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw ToxapexDexEntry
+	dw MiltankDexEntry
 	dw MukDexEntry
-	dw MissingNoDexEntry
+	dw SableyeDexEntry
 	dw KinglerDexEntry
 	dw CloysterDexEntry
 	dw MissingNoDexEntry
@@ -1257,3 +1257,31 @@ MissingNoDexEntry:
 	db 10 ; 1.0 m
 	db 100 ; 10.0 kg
 	db 0,"コメント さくせいちゅう@" ; コメント作成中 (Comment to be written)
+
+MareanieDexEntry:
+	db "BRUTALSTAR@"
+	db 1, 4
+	dw 176
+	TX_FAR _MareanieDexEntry
+	db "@"
+
+ToxapexDexEntry:
+	db "BRUTALSTAR@"
+	db 2, 4
+	dw 320
+	TX_FAR _ToxapexDexEntry
+	db "@"
+
+MiltankDexEntry:
+	db "MILK COW@"
+	db 3, 11
+	dw 1664
+	TX_FAR _MiltankDexEntry
+	db "@"
+
+SableyeDexEntry:
+	db "DARKNESS@"
+	db 1, 8
+	dw 243
+	TX_FAR _SableyeDexEntry
+	db "@"

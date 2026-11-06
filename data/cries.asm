@@ -126,17 +126,17 @@ CryData:
 	db $1C, $CC, $01; Metapod
 	db $16, $77, $40; Butterfree
 	db $1F, $08, $C0; Machamp
-	db $11, $20, $10; MissingNo.
+	db $1A, $00, $80; MAREANIE
 	db $21, $FF, $40; Golduck
 	db $0D, $EE, $40; Hypno
 	db $1D, $FA, $80; Golbat
 	db $1E, $99, $FF; Mewtwo
 	db $05, $55, $01; Snorlax
 	db $17, $80, $00; Magikarp
-	db $00, $00, $00; MissingNo.
-	db $00, $00, $00; MissingNo.
+	db $1A, $EE, $FF; TOXAPEX
+	db $1D, $11, $40; MILTANK
 	db $07, $EF, $FF; Muk
-	db $0F, $40, $80; MissingNo.
+	db $1C, $00, $80; Gastly
 	db $20, $EE, $E0; Kingler
 	db $18, $6F, $E0; Cloyster
 	db $00, $00, $00; MissingNo.

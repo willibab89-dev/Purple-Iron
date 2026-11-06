@@ -128,17 +128,17 @@ EvosMovesPointerTable:
 	dw MetapodEvosMoves
 	dw ButterfreeEvosMoves
 	dw MachampEvosMoves
-	dw MissingNo7FEvosMoves
+	dw MareanieEvosMoves
 	dw GolduckEvosMoves
 	dw HypnoEvosMoves
 	dw GolbatEvosMoves
 	dw MewtwoEvosMoves
 	dw SnorlaxEvosMoves
 	dw MagikarpEvosMoves
-	dw MissingNo86EvosMoves
-	dw MissingNo87EvosMoves
+	dw ToxapexEvosMoves
+	dw MiltankEvosMoves
 	dw MukEvosMoves
-	dw MissingNo8AEvosMoves
+	dw SableyeEvosMoves
 	dw KinglerEvosMoves
 	dw CloysterEvosMoves
 	dw MissingNo8CEvosMoves
@@ -2717,4 +2717,58 @@ VictreebelEvosMoves:
 	db 38, INGRAIN
 	db 44, RAZOR_LEAF
 	db 45, GIGA_DRAIN
+	db 0
+
+MareanieEvosMoves:
+	db EV_LEVEL, 38, TOXAPEX
+	db 0
+	db 8, WATER_GUN
+	db 12, BITE
+	db 16, PIN_MISSILE
+	db 20, POISON_FANG
+	db 26, TOXIC
+	db 30, VENOSHOCK
+	db 34, BRINE
+	db 38, RECOVER
+	db 44, POISON_TAIL
+	db 0
+
+ToxapexEvosMoves:
+	db 0
+	db 12, BITE
+	db 16, PIN_MISSILE
+	db 20, POISON_FANG
+	db 24, BRINE
+	db 28, TOXIC
+	db 32, VENOSHOCK
+	db 36, STOCKPILE
+	db 40, RECOVER
+	db 44, POISON_TAIL
+	db 48, ACID_ARMOR
+	db 52, HYDRO_PUMP
+	db 0
+
+MiltankEvosMoves:
+	db 0
+	db 8, STOMP
+	db 15, BIDE
+	db 22, BODY_SLAM
+	db 28, FACADE
+	db 34, BULK_UP
+	db 40, DOUBLE_EDGE
+	db 46, RECOVER
+	db 52, EARTHQUAKE
+	db 0
+
+SableyeEvosMoves:
+	db 0
+	db 8, LICK
+	db 14, NIGHT_SHADE
+	db 18, CONFUSE_RAY
+	db 24, SHADOW_LEECH
+	db 30, CURSE
+	db 34, PUNISHMENT
+	db 42, RECOVER
+	db 48, SLASH
+	db 54, PSYCH_UP
 	db 0

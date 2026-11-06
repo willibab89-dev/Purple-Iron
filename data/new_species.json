@@ -1,0 +1,397 @@
+[
+  {
+    "name": "mareanie",
+    "symbol": "MAREANIE",
+    "old": "MISSINGNO_7F",
+    "index": 127,
+    "dex": 173,
+    "stats": [
+      50,
+      53,
+      62,
+      45,
+      48
+    ],
+    "types": [
+      "POISON",
+      "WATER"
+    ],
+    "catch": 190,
+    "xp": 61,
+    "growth": 0,
+    "cry": "TENTACOOL",
+    "palette": "PAL_PURPLEMON",
+    "start": [
+      "POISON_STING",
+      "PECK"
+    ],
+    "tms": [
+      6,
+      11,
+      12,
+      34,
+      44,
+      50,
+      53
+    ],
+    "extra": [
+      53,
+      54
+    ],
+    "evo": [
+      "EV_LEVEL, 38, TOXAPEX"
+    ],
+    "learn": [
+      [
+        8,
+        "WATER_GUN"
+      ],
+      [
+        12,
+        "BITE"
+      ],
+      [
+        16,
+        "PIN_MISSILE"
+      ],
+      [
+        20,
+        "POISON_FANG"
+      ],
+      [
+        26,
+        "TOXIC"
+      ],
+      [
+        30,
+        "VENOSHOCK"
+      ],
+      [
+        34,
+        "BRINE"
+      ],
+      [
+        38,
+        "RECOVER"
+      ],
+      [
+        44,
+        "POISON_TAIL"
+      ]
+    ],
+    "height": [
+      1,
+      4
+    ],
+    "weight": 176,
+    "category": "BRUTALSTAR",
+    "text": [
+      "Poisonous spikes",
+      "cover its body.",
+      "It hunts among",
+      "coastal rocks and",
+      "grips prey with",
+      "its sharp claws."
+    ]
+  },
+  {
+    "name": "toxapex",
+    "symbol": "TOXAPEX",
+    "old": "MISSINGNO_86",
+    "index": 134,
+    "dex": 174,
+    "stats": [
+      50,
+      63,
+      152,
+      35,
+      100
+    ],
+    "types": [
+      "POISON",
+      "WATER"
+    ],
+    "catch": 75,
+    "xp": 173,
+    "growth": 0,
+    "cry": "TENTACRUEL",
+    "palette": "PAL_PURPLEMON",
+    "start": [
+      "POISON_STING",
+      "PECK",
+      "HARDEN",
+      "WATER_GUN"
+    ],
+    "tms": [
+      6,
+      11,
+      12,
+      34,
+      44,
+      50,
+      53
+    ],
+    "extra": [
+      53,
+      54
+    ],
+    "evo": [],
+    "learn": [
+      [
+        12,
+        "BITE"
+      ],
+      [
+        16,
+        "PIN_MISSILE"
+      ],
+      [
+        20,
+        "POISON_FANG"
+      ],
+      [
+        24,
+        "BRINE"
+      ],
+      [
+        28,
+        "TOXIC"
+      ],
+      [
+        32,
+        "VENOSHOCK"
+      ],
+      [
+        36,
+        "STOCKPILE"
+      ],
+      [
+        40,
+        "RECOVER"
+      ],
+      [
+        44,
+        "POISON_TAIL"
+      ],
+      [
+        48,
+        "ACID_ARMOR"
+      ],
+      [
+        52,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "height": [
+      2,
+      4
+    ],
+    "weight": 320,
+    "category": "BRUTALSTAR",
+    "text": [
+      "It forms a shelter",
+      "with its tough",
+      "poisonous limbs.",
+      "It waits for prey",
+      "to wander within",
+      "reach of its claws"
+    ]
+  },
+  {
+    "name": "miltank",
+    "symbol": "MILTANK",
+    "old": "MISSINGNO_87",
+    "index": 135,
+    "dex": 175,
+    "stats": [
+      95,
+      80,
+      105,
+      100,
+      55
+    ],
+    "types": [
+      "NORMAL",
+      "NORMAL"
+    ],
+    "catch": 45,
+    "xp": 172,
+    "growth": 5,
+    "cry": "TAUROS",
+    "palette": "PAL_PINKMON",
+    "start": [
+      "TACKLE",
+      "GROWL",
+      "DEFENSE_CURL"
+    ],
+    "tms": [
+      1,
+      5,
+      8,
+      9,
+      10,
+      15,
+      20,
+      26,
+      32,
+      34,
+      40,
+      44,
+      48,
+      54
+    ],
+    "extra": [
+      52,
+      56,
+      57
+    ],
+    "evo": [],
+    "learn": [
+      [
+        8,
+        "STOMP"
+      ],
+      [
+        15,
+        "BIDE"
+      ],
+      [
+        22,
+        "BODY_SLAM"
+      ],
+      [
+        28,
+        "FACADE"
+      ],
+      [
+        34,
+        "BULK_UP"
+      ],
+      [
+        40,
+        "DOUBLE_EDGE"
+      ],
+      [
+        46,
+        "RECOVER"
+      ],
+      [
+        52,
+        "EARTHQUAKE"
+      ]
+    ],
+    "height": [
+      3,
+      11
+    ],
+    "weight": 1664,
+    "category": "MILK COW",
+    "text": [
+      "Its rich milk is",
+      "shared with tired",
+      "hungry POKEMON.",
+      "A powerful body",
+      "lets it charge and",
+      "defend its herd."
+    ]
+  },
+  {
+    "name": "sableye",
+    "symbol": "SABLEYE",
+    "old": "MISSINGNO_8A",
+    "index": 137,
+    "dex": 176,
+    "stats": [
+      50,
+      75,
+      75,
+      50,
+      65
+    ],
+    "types": [
+      "GHOST",
+      "GHOST"
+    ],
+    "catch": 45,
+    "xp": 133,
+    "growth": 3,
+    "cry": "GASTLY",
+    "palette": "PAL_PURPLEMON",
+    "start": [
+      "SCRATCH",
+      "LEER",
+      "ASTONISH"
+    ],
+    "tms": [
+      1,
+      28,
+      31,
+      32,
+      39,
+      44,
+      48,
+      50,
+      54
+    ],
+    "extra": [
+      52,
+      55,
+      57,
+      58,
+      60
+    ],
+    "evo": [],
+    "learn": [
+      [
+        8,
+        "LICK"
+      ],
+      [
+        14,
+        "NIGHT_SHADE"
+      ],
+      [
+        18,
+        "CONFUSE_RAY"
+      ],
+      [
+        24,
+        "SHADOW_LEECH"
+      ],
+      [
+        30,
+        "CURSE"
+      ],
+      [
+        34,
+        "PUNISHMENT"
+      ],
+      [
+        42,
+        "RECOVER"
+      ],
+      [
+        48,
+        "SLASH"
+      ],
+      [
+        54,
+        "PSYCH_UP"
+      ]
+    ],
+    "height": [
+      1,
+      8
+    ],
+    "weight": 243,
+    "category": "DARKNESS",
+    "text": [
+      "It searches caves",
+      "for gems to eat.",
+      "Its shining eyes",
+      "glitter eerily in",
+      "the darkness when",
+      "it spots a jewel."
+    ]
+  }
+]

@@ -14,7 +14,7 @@ def validate(version):
         bank, address = syms[label]
         offset = bank * 0x4000 + address - 0x4000 if bank else address
         return rom[offset:offset + size]
-    headers = data('BaseStats', 28 * 172)
+    headers = data('BaseStats', 28 * len(PLAN['entries']))
     reviewed = set(PLAN['reviewed_tms'])
     assert reviewed == {6, 9, 10, 20, 31, 32, 34, 50}
     for entry, old_hex in zip(PLAN['entries'], PLAN['baseline_headers']):
@@ -28,7 +28,7 @@ def validate(version):
     entries = {e['name']: e for e in PLAN['entries']}
     assert set(range(1, 56)) <= set(entries['mew']['new'])
     for entry in PLAN['entries']:
-        if entry['dex'] > 151 and entry['name'] != 'kakuna_rock_type':
+        if 151 < entry['dex'] <= 172 and entry['name'] != 'kakuna_rock_type':
             assert entry['new'] == entries[entry['source']]['new'], entry['name']
     assert 6 in entries['kakuna']['new'] and 6 not in entries['kakuna_rock_type']['new']
     assert 6 in entries['paras']['new'] and 6 in entries['parasect']['new']
@@ -64,7 +64,7 @@ def validate(version):
                 call('CanLearnTM')
                 assert bool(game.register_file.C) == (tm in entry['new']), (entry['name'], tm)
                 calls += 1
-        print(f'{version}: all 172 headers bounded to eight TM bits; Rest/HMs/other TMs preserved; {calls} real compatibility checks passed')
+        print(f'{version}: all {len(PLAN['entries'])} headers bounded to eight TM bits; Rest/HMs/other TMs preserved; {calls} real compatibility checks passed')
     finally:
         game.stop(save=False)
 

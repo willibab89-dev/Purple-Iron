@@ -1,7 +1,7 @@
 # Download and play on Windows
 
 1. Sign in to GitHub and open this repository's **Actions** tab.
-2. Open the successful run for the desired commit on branch **unique-species**. Under **Artifacts**, click **pokemon-new-tms-bps** to download the ZIP, then extract it.
+2. Open the successful run for the desired commit on branch **unique-species**. Under **Artifacts**, click **pokemon-backs-and-new-species-bps** to download the ZIP, then extract it.
 3. Obtain Floating IPS (Flips) from its official project: https://github.com/Alcaro/Flips/releases
 4. Open Flips and select **Apply Patch**. Choose `pokered-custom-fronts.bps` or `pokeblue-custom-fronts.bps`, then select your matching original ROM. Save the result under a new filename.
 5. Open the patched ROM in your Game Boy emulator.

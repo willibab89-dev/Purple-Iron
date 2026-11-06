@@ -1,10 +1,10 @@
-# Unique species version: 172 Pokémon
+# Current version: 176 Pokémon
 
-See `NEW-TMS.md` for TM51–TM60 and shops, `TM-DISTRIBUTION.md` for thematic TM01–TM50 access and `MOVE-PATCH-8.md` for the completed move overhaul. Earlier patch notes are retained for reference.
+See `BACKSPRITES-AND-NEW-SPECIES.md` for the new backs and dex 173–176, `NEW-TMS.md` for TM51–TM60 and shops, `TM-DISTRIBUTION.md` for thematic TM01–TM50 access and `MOVE-PATCH-8.md` for the completed move overhaul. Earlier patch notes are retained for reference.
 
 This branch adds 21 separate species at Pokédex numbers 152–172. The 151 original species and their custom front sprites remain available. Fossil and ghost display IDs and the existing special MissingNo battle are preserved.
 
-**A new save is required only when upgrading from the old 151-species version.** The 172-species layout uses 22-byte Pokédex bitfields. Saves from previous 172-species patches remain compatible. Keep a backup; link battles require matching ROM revisions.
+**A new save is required only when upgrading from the old 151-species version.** The 172–176-species layout uses the same 22-byte Pokédex bitfields. Saves from previous 172-species patches remain compatible. Keep a backup; link battles require matching ROM revisions.
 
 Each new species copies the source's stats, starting/level-up moves, growth, experience yield, cry, Pokédex description, palette, party icon, back sprite and evolution destinations. Evolutions still lead to the original species (for example, unique Bulbasaur evolves into the original Ivysaur). These are new species IDs, not replacements or a new evolution family. Display names are shortened to fit the game's 10-character limit; the filenames below identify the full variant.
 
@@ -73,7 +73,7 @@ Run `python3 tools/test_critical_hits.py` with PyBoy installed. It checks 10,240
 
 ## Build and validation
 
-Build with the project's pinned RGBDS 0.3.3 toolchain and `make -j2 red blue`. Both ROMs remain 1 MiB. New front and original back graphics are stored together in bank $32; only the new species use this bank lookup. Source PNGs are retained unchanged in `pic/unique/source/`; the import PNGs composite transparency over white and pad Geodude from 46×46 to 48×48 without scaling its pixels.
+Build with the project's pinned RGBDS 0.3.3 toolchain and `make -j2 red blue`. Both ROMs remain 1 MiB. Unique fronts and legacy back streams remain in bank $32; active backs now use the imported stream table described in `BACKSPRITES-AND-NEW-SPECIES.md`. Source PNGs are retained unchanged in `pic/unique/source/`; the import PNGs composite transparency over white and pad Geodude from 46×46 to 48×48 without scaling its pixels.
 
 Run `python3 tools/test_unique_species.py` with `pyboy==2.9.0` installed. The suite checks all species' index/dex round-trips and loaded headers, cloned data and type overrides, routed front/back decompression against direct decoding, Hall of Fame buffer guards, adding every new species to a party, and expanded Pokédex flag writes and SRAM save/load. It runs on both ROMs. These are automated engine tests, not a full manual playthrough or link compatibility test.
 

@@ -54,7 +54,7 @@ ExtraTMCompatibility:
 	ld a, [wd11e]
 	and a
 	jr z, .done
-	cp 173
+	cp NUM_POKEMON + 1
 	jr nc, .done
 	dec a
 	ld c, a

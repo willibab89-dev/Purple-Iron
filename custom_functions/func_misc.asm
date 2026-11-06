@@ -220,6 +220,26 @@ StorePKMNLevels:
 ;symbol is returned in d --> ;$F5 for female and $EF for male
 DetermineMonGender:
 	ld a, d
+	cp MILTANK
+	jr nz, .notMiltank
+	ld d, $F5
+	ret
+.notMiltank
+	cp MAREANIE
+	jr z, .newHalf
+	cp TOXAPEX
+	jr z, .newHalf
+	cp SABLEYE
+	jr nz, .originalSpecies
+.newHalf
+	ld a, e
+	cp 8
+	ld d, $EF
+	ret nc
+	ld d, $F5
+	ret
+.originalSpecies
+	ld a, d
 	call UniqueSpeciesToOriginal
 	ld d, a
 	xor a

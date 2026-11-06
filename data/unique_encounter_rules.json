@@ -119,5 +119,41 @@
       "ROUTE_25"
     ],
     "level": 10
+  },
+  {
+    "species": "MAREANIE",
+    "kinds": [
+      3
+    ],
+    "maps": [
+      "ROUTE_19",
+      "ROUTE_20"
+    ],
+    "level": 25,
+    "percent": 5
+  },
+  {
+    "species": "MILTANK",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_14",
+      "ROUTE_15"
+    ],
+    "level": 28,
+    "percent": 2
+  },
+  {
+    "species": "SABLEYE",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROCK_TUNNEL_1",
+      "ROCK_TUNNEL_2"
+    ],
+    "level": 18,
+    "percent": 2
   }
 ]

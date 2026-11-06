@@ -126,17 +126,17 @@ const_value = 1
 	const METAPOD      ; $7C
 	const BUTTERFREE   ; $7D
 	const MACHAMP      ; $7E
-	const MISSINGNO_7F ; $7F
+	const MAREANIE ; $7F
 	const GOLDUCK      ; $80
 	const HYPNO        ; $81
 	const GOLBAT       ; $82
 	const MEWTWO       ; $83
 	const SNORLAX      ; $84
 	const MAGIKARP     ; $85
-	const MISSINGNO_86 ; $86
-	const MISSINGNO_87 ; $87
+	const TOXAPEX ; $86
+	const MILTANK ; $87
 	const MUK          ; $88
-	const MISSINGNO_8A ; $8A
+	const SABLEYE ; $89 (formerly mislabeled MissingNo slot)
 	const KINGLER      ; $8A
 	const CLOYSTER     ; $8B
 	const MISSINGNO_8C ; $8C
