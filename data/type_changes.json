@@ -1,0 +1,134 @@
+[
+  {
+    "name": "grimer",
+    "dex": 88,
+    "before": [
+      "POISON",
+      "POISON"
+    ],
+    "after": [
+      "GROUND",
+      "POISON"
+    ]
+  },
+  {
+    "name": "muk",
+    "dex": 89,
+    "before": [
+      "POISON",
+      "POISON"
+    ],
+    "after": [
+      "GROUND",
+      "POISON"
+    ]
+  },
+  {
+    "name": "ninetales",
+    "dex": 38,
+    "before": [
+      "FIRE",
+      "FIRE"
+    ],
+    "after": [
+      "FIRE",
+      "GHOST"
+    ]
+  },
+  {
+    "name": "drowzee",
+    "dex": 96,
+    "before": [
+      "PSYCHIC",
+      "PSYCHIC"
+    ],
+    "after": [
+      "PSYCHIC",
+      "GROUND"
+    ]
+  },
+  {
+    "name": "hypno",
+    "dex": 97,
+    "before": [
+      "PSYCHIC",
+      "PSYCHIC"
+    ],
+    "after": [
+      "PSYCHIC",
+      "GROUND"
+    ]
+  },
+  {
+    "name": "golduck",
+    "dex": 55,
+    "before": [
+      "WATER",
+      "WATER"
+    ],
+    "after": [
+      "WATER",
+      "PSYCHIC"
+    ]
+  },
+  {
+    "name": "marowak",
+    "dex": 105,
+    "before": [
+      "GROUND",
+      "GROUND"
+    ],
+    "after": [
+      "GROUND",
+      "GHOST"
+    ]
+  },
+  {
+    "name": "parasect",
+    "dex": 47,
+    "before": [
+      "BUG",
+      "GRASS"
+    ],
+    "after": [
+      "BUG",
+      "GHOST"
+    ]
+  },
+  {
+    "name": "electabuzz",
+    "dex": 125,
+    "before": [
+      "ELECTRIC",
+      "ELECTRIC"
+    ],
+    "after": [
+      "ELECTRIC",
+      "FIGHTING"
+    ]
+  },
+  {
+    "name": "rhyhorn",
+    "dex": 111,
+    "before": [
+      "GROUND",
+      "ROCK"
+    ],
+    "after": [
+      "GROUND",
+      "GROUND"
+    ]
+  },
+  {
+    "name": "rhydon",
+    "dex": 112,
+    "before": [
+      "GROUND",
+      "ROCK"
+    ],
+    "after": [
+      "GROUND",
+      "GROUND"
+    ]
+  }
+]
