@@ -1314,5 +1314,418 @@
       "QUICK_ATTACK",
       "0"
     ]
+  },
+  {
+    "name": "rattata",
+    "title": "Rattata",
+    "dex": 19,
+    "stats": [
+      30,
+      56,
+      35,
+      72,
+      25
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        7,
+        "QUICK_ATTACK"
+      ],
+      [
+        14,
+        "HYPER_FANG"
+      ],
+      [
+        18,
+        "FOCUS_ENERGY"
+      ],
+      [
+        23,
+        "FLAIL"
+      ],
+      [
+        29,
+        "SUPER_FANG"
+      ],
+      [
+        35,
+        "FACADE"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      13,
+      14,
+      24,
+      25
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      30,
+      56,
+      35,
+      72,
+      25
+    ],
+    "before_start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "raticate",
+    "title": "Raticate",
+    "dex": 20,
+    "stats": [
+      65,
+      81,
+      60,
+      97,
+      50
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "QUICK_ATTACK"
+    ],
+    "learn": [
+      [
+        7,
+        "QUICK_ATTACK"
+      ],
+      [
+        14,
+        "HYPER_FANG"
+      ],
+      [
+        18,
+        "FOCUS_ENERGY"
+      ],
+      [
+        25,
+        "FLAIL"
+      ],
+      [
+        32,
+        "SUPER_FANG"
+      ],
+      [
+        39,
+        "FACADE"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      24,
+      25
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      55,
+      81,
+      60,
+      97,
+      50
+    ],
+    "before_start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "QUICK_ATTACK",
+      "0"
+    ]
+  },
+  {
+    "name": "spearow",
+    "title": "Spearow",
+    "dex": 21,
+    "stats": [
+      40,
+      60,
+      30,
+      70,
+      31
+    ],
+    "start": [
+      "PECK",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        7,
+        "LEER"
+      ],
+      [
+        12,
+        "FURY_ATTACK"
+      ],
+      [
+        17,
+        "FOCUS_ENERGY"
+      ],
+      [
+        23,
+        "DRILL_PECK"
+      ],
+      [
+        29,
+        "GLARE"
+      ],
+      [
+        35,
+        "PIERCE"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      43
+    ],
+    "add": [],
+    "before_stats": [
+      40,
+      60,
+      30,
+      70,
+      31
+    ],
+    "before_start": [
+      "PECK",
+      "GROWL",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "fearow",
+    "title": "Fearow",
+    "dex": 22,
+    "stats": [
+      65,
+      90,
+      65,
+      100,
+      61
+    ],
+    "start": [
+      "PECK",
+      "GROWL",
+      "LEER"
+    ],
+    "learn": [
+      [
+        7,
+        "LEER"
+      ],
+      [
+        12,
+        "FURY_ATTACK"
+      ],
+      [
+        17,
+        "FOCUS_ENERGY"
+      ],
+      [
+        25,
+        "DRILL_PECK"
+      ],
+      [
+        32,
+        "GLARE"
+      ],
+      [
+        39,
+        "PIERCE"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      15,
+      43
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      90,
+      65,
+      100,
+      61
+    ],
+    "before_start": [
+      "PECK",
+      "GROWL",
+      "LEER",
+      "0"
+    ]
+  },
+  {
+    "name": "pikachu",
+    "title": "Pikachu",
+    "dex": 25,
+    "stats": [
+      35,
+      55,
+      30,
+      90,
+      50
+    ],
+    "start": [
+      "THUNDERSHOCK",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        6,
+        "TAIL_WHIP"
+      ],
+      [
+        8,
+        "THUNDER_WAVE"
+      ],
+      [
+        11,
+        "QUICK_ATTACK"
+      ],
+      [
+        15,
+        "DOUBLE_TEAM"
+      ],
+      [
+        20,
+        "SHOCK_WAVE"
+      ],
+      [
+        25,
+        "CHARGE"
+      ],
+      [
+        29,
+        "SLAM"
+      ],
+      [
+        34,
+        "THUNDERCLAP"
+      ],
+      [
+        40,
+        "LIGHT_SCREEN"
+      ],
+      [
+        46,
+        "THUNDER"
+      ]
+    ],
+    "remove": [
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      35,
+      55,
+      30,
+      90,
+      50
+    ],
+    "before_start": [
+      "THUNDERSHOCK",
+      "GROWL",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "raichu",
+    "title": "Raichu",
+    "dex": 26,
+    "stats": [
+      60,
+      90,
+      55,
+      110,
+      90
+    ],
+    "start": [
+      "THUNDERSHOCK",
+      "GROWL",
+      "TAIL_WHIP",
+      "THUNDER_WAVE"
+    ],
+    "learn": [
+      [
+        6,
+        "TAIL_WHIP"
+      ],
+      [
+        8,
+        "THUNDER_WAVE"
+      ],
+      [
+        11,
+        "QUICK_ATTACK"
+      ],
+      [
+        15,
+        "DOUBLE_TEAM"
+      ],
+      [
+        22,
+        "SHOCK_WAVE"
+      ],
+      [
+        27,
+        "CHARGE"
+      ],
+      [
+        31,
+        "SLAM"
+      ],
+      [
+        37,
+        "THUNDERCLAP"
+      ],
+      [
+        43,
+        "LIGHT_SCREEN"
+      ],
+      [
+        50,
+        "THUNDER"
+      ]
+    ],
+    "remove": [
+      15,
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      90,
+      55,
+      100,
+      90
+    ],
+    "before_start": [
+      "GROWL",
+      "THUNDERSHOCK",
+      "0",
+      "0"
+    ]
   }
 ]

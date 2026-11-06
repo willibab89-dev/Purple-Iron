@@ -322,22 +322,22 @@
       "name": "spearow",
       "source": "spearow",
       "tms": [
-        51,
         52,
-        55
+        55,
+        63
       ],
-      "mask": 19
+      "mask": 4114
     },
     {
       "dex": 22,
       "name": "fearow",
       "source": "fearow",
       "tms": [
-        51,
         52,
-        55
+        55,
+        63
       ],
-      "mask": 19
+      "mask": 4114
     },
     {
       "dex": 23,
@@ -365,15 +365,21 @@
       "dex": 25,
       "name": "pikachu",
       "source": "pikachu",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52,
+        63
+      ],
+      "mask": 4098
     },
     {
       "dex": 26,
       "name": "raichu",
       "source": "raichu",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52,
+        63
+      ],
+      "mask": 4098
     },
     {
       "dex": 27,

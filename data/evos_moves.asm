@@ -258,14 +258,12 @@ SpearowEvosMoves:
 	db EV_LEVEL, 20, FEAROW
 	db 0
 ; Learnset
-	db 9, LEER
-	db 15, FURY_ATTACK
-	db 22, MIRROR_MOVE
-	db 26, ROOST
-	db 29, DRILL_PECK
-	db 32, AERIAL_ACE
-	db 34, PIERCE
-	db 36, AGILITY
+	db 7, LEER
+	db 12, FURY_ATTACK
+	db 17, FOCUS_ENERGY
+	db 23, DRILL_PECK
+	db 29, GLARE
+	db 35, PIERCE
 	db 0
 
 VoltorbEvosMoves:
@@ -711,15 +709,12 @@ FearowEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 9, LEER
-	db 15, FURY_ATTACK
-	db 25, MIRROR_MOVE
-	db 30, ROOST
-	db 34, DRILL_PECK
-	db 36, AERIAL_ACE
-	db 38, PIERCE
-	db 40, GALE_WIND
-	db 43, AGILITY
+	db 7, LEER
+	db 12, FURY_ATTACK
+	db 17, FOCUS_ENERGY
+	db 25, DRILL_PECK
+	db 32, GLARE
+	db 39, PIERCE
 	db 0
 
 PidgeyEvosMoves:
@@ -1338,30 +1333,28 @@ PikachuEvosMoves:
 	db 8, THUNDER_WAVE
 	db 11, QUICK_ATTACK
 	db 15, DOUBLE_TEAM
-	db 20, SLAM
-	db 22, CHARGE
-	db 26, THUNDERBOLT
-	db 29, SWIFT
-	db 30, SHOCK_WAVE
-	db 33, AGILITY
-	db 38, THUNDERCLAP
-	db 41, THUNDER
-	db 50, LIGHT_SCREEN
+	db 20, SHOCK_WAVE
+	db 25, CHARGE
+	db 29, SLAM
+	db 34, THUNDERCLAP
+	db 40, LIGHT_SCREEN
+	db 46, THUNDER
 	db 0
 
 RaichuEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset;joenote-modified just for fun
-	db 11, TAIL_WHIP
-	db 13, THUNDER_WAVE
-	db 25, SLAM
-	db 26, CHARGE
-	db 31, THUNDERBOLT
-	db 34, SHOCK_WAVE
-	db 42, THUNDERCLAP
-	db 46, THUNDER
-	db 55, LIGHT_SCREEN
+	db 6, TAIL_WHIP
+	db 8, THUNDER_WAVE
+	db 11, QUICK_ATTACK
+	db 15, DOUBLE_TEAM
+	db 22, SHOCK_WAVE
+	db 27, CHARGE
+	db 31, SLAM
+	db 37, THUNDERCLAP
+	db 43, LIGHT_SCREEN
+	db 50, THUNDER
 	db 0
 
 MissingNo56EvosMoves:
@@ -2362,10 +2355,10 @@ RattataEvosMoves:
 ; Learnset
 	db 7, QUICK_ATTACK
 	db 14, HYPER_FANG
-	db 16, FLAIL
-	db 23, FOCUS_ENERGY
-	db 28, FACADE
-	db 34, SUPER_FANG
+	db 18, FOCUS_ENERGY
+	db 23, FLAIL
+	db 29, SUPER_FANG
+	db 35, FACADE
 	db 0
 
 RaticateEvosMoves:
@@ -2374,10 +2367,10 @@ RaticateEvosMoves:
 ; Learnset
 	db 7, QUICK_ATTACK
 	db 14, HYPER_FANG
-	db 20, FLAIL
-	db 27, FOCUS_ENERGY
-	db 32, FACADE
-	db 41, SUPER_FANG
+	db 18, FOCUS_ENERGY
+	db 25, FLAIL
+	db 32, SUPER_FANG
+	db 39, FACADE
 	db 0
 
 NidorinoEvosMoves:

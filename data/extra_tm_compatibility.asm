@@ -19,12 +19,12 @@ ExtraTMCompatibilityTable:
 	db $11, $10 ; 18: pidgeot
 	db $02, $00 ; 19: rattata
 	db $02, $00 ; 20: raticate
-	db $13, $00 ; 21: spearow
-	db $13, $00 ; 22: fearow
+	db $12, $10 ; 21: spearow
+	db $12, $10 ; 22: fearow
 	db $08, $0c ; 23: ekans
 	db $08, $0c ; 24: arbok
-	db $00, $00 ; 25: pikachu
-	db $00, $00 ; 26: raichu
+	db $02, $10 ; 25: pikachu
+	db $02, $10 ; 26: raichu
 	db $50, $00 ; 27: sandshrew
 	db $50, $00 ; 28: sandslash
 	db $08, $00 ; 29: nidoranf

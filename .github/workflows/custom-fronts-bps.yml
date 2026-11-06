@@ -1,4 +1,4 @@
-name: "Early bugs and Pidgey family redesigns"
+name: "Rattata, Fearow and Raichu family redesigns"
 
 on:
   workflow_dispatch:
@@ -90,3 +90,4 @@ jobs:
             ${{ runner.temp }}/patches/SPECIES-TUNING-1.md
             ${{ runner.temp }}/patches/STARTER-REDESIGNS.md
             ${{ runner.temp }}/patches/EARLY-BUGS-AND-BIRDS.md
+            ${{ runner.temp }}/patches/RATTATA-FEAROW-RAICHU.md

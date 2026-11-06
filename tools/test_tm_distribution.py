@@ -31,7 +31,7 @@ def validate(version):
             expected=expected[:1]+bytes(tuning['stats'])+expected[6:15]+starts+expected[19:]
         actual = headers[(entry['dex'] - 1) * 28:entry['dex'] * 28]
         assert actual == expected, entry['name']
-        assert (set(entry['new']) ^ set(entry['old'])) <= reviewed | set(tuning['remove'] if tuning else []), entry['name']
+        assert (set(entry['new']) ^ set(entry['old'])) <= reviewed | set(tuning['remove'] if tuning else []) | set(tuning.get('add', []) if tuning else []), entry['name']
         assert (44 in entry['new']) == (44 in entry['old']), entry['name']
         assert {n for n in entry['new'] if n > 50} == {n for n in entry['old'] if n > 50}
     entries = {e['name']: e for e in PLAN['entries']}
@@ -68,7 +68,7 @@ def validate(version):
             index = order.index(entry['dex']) + 1
             # All nine reviewed/preserved TMs plus the five HMs through the
             # game's actual CanLearnTM/GetMonHeader/FlagAction path.
-            for tm in sorted(reviewed | {44} | set(range(51, 56)) | set(TUNING.get(entry['name'], {}).get('remove', []))):
+            for tm in sorted(reviewed | {44} | set(range(51, 56)) | set(TUNING.get(entry['name'], {}).get('remove', [])) | set(TUNING.get(entry['name'], {}).get('add', []))):
                 game.memory[addr('wcf91')] = index
                 game.memory[addr('wMoveNum')] = machines[tm - 1]
                 call('CanLearnTM')

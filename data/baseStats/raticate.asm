@@ -1,5 +1,5 @@
 db DEX_RATICATE ; pokedex id
-db 55 ; base hp
+db 65 ; base hp
 db 81 ; base attack
 db 60 ; base defense
 db 97 ; base speed
@@ -19,9 +19,9 @@ db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 8
-	tmlearn 11,12,13,14,15
-	tmlearn 24
-	tmlearn 25,28,32
+	tmlearn 10
+	tmlearn 0
+	tmlearn 28,32
 	tmlearn 39,40
 	tmlearn 44
 	tmlearn 0
