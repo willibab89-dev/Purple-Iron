@@ -1,6 +1,6 @@
 db DEX_CHARIZARD ; pokedex id
 db 78 ; base hp
-db 84 ; base attack
+db 94 ; base attack
 db 78 ; base defense
 db 100 ; base speed
 db 85 ; base special
@@ -21,7 +21,7 @@ db 3 ; growth rate
 	tmlearn 1,3,5,8
 	tmlearn 15
 	tmlearn 17,18,19,20,23
-	tmlearn 26,27,28,32
+	tmlearn 32
 	tmlearn 33,38,39,40
 	tmlearn 44
 	tmlearn 51,52,54

@@ -68,7 +68,7 @@ def validate(version):
             index = order.index(entry['dex']) + 1
             # All nine reviewed/preserved TMs plus the five HMs through the
             # game's actual CanLearnTM/GetMonHeader/FlagAction path.
-            for tm in sorted(reviewed | {44} | set(range(51, 56))):
+            for tm in sorted(reviewed | {44} | set(range(51, 56)) | set(TUNING.get(entry['name'], {}).get('remove', []))):
                 game.memory[addr('wcf91')] = index
                 game.memory[addr('wMoveNum')] = machines[tm - 1]
                 call('CanLearnTM')

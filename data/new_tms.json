@@ -179,11 +179,9 @@
       "name": "charizard",
       "source": "charizard",
       "tms": [
-        51,
-        55,
-        58
+        55
       ],
-      "mask": 145
+      "mask": 16
     },
     {
       "dex": 7,

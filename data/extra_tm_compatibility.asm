@@ -4,7 +4,7 @@ ExtraTMCompatibilityTable:
 	db $08, $00 ; 3: venusaur
 	db $00, $00 ; 4: charmander
 	db $00, $00 ; 5: charmeleon
-	db $91, $00 ; 6: charizard
+	db $10, $00 ; 6: charizard
 	db $04, $01 ; 7: squirtle
 	db $04, $01 ; 8: wartortle
 	db $04, $01 ; 9: blastoise

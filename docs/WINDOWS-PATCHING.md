@@ -6,7 +6,7 @@
 4. Open Flips and select **Apply Patch**. Choose `pokered-custom-fronts.bps` or `pokeblue-custom-fronts.bps`, then select your matching original ROM. Save the result under a new filename.
 5. Open the patched ROM in your Game Boy emulator.
 
-**Earlier 151/172/176-species saves require a fresh start.** Saves from the preceding 183-species build remain compatible with this type update. See `SEVEN-MORE-SPECIES.md` for locations and `SPECIES-TUNING-1.md` for the latest stat, learnset and TM changes.
+**Earlier 151/172/176-species saves require a fresh start.** Saves from the preceding 183-species build remain compatible with this type update. See `SEVEN-MORE-SPECIES.md` for locations and `STARTER-REDESIGNS.md` for the latest starter changes (`SPECIES-TUNING-1.md` covers the first four reviews).
 
 Use the unmodified English USA/Europe Red or Blue release. Japanese, translated, already patched and other modified ROMs are incompatible. Keep your original ROM and save file backed up.
 

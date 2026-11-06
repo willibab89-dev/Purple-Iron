@@ -44,8 +44,11 @@ def validate(version):
     assert byname['mew'] == set(range(51, 64))
     for number,allowed in [(61,{'ekans','arbok','mew'}),(62,{'ekans','arbok','mew'}),(63,{'farfetchd','mew'})]:
         assert {name for name,tms in byname.items() if number in tms}==allowed
-    for baby, adult in (('charmander','charizard'),('dragonair','dragonite'),('caterpie','butterfree'),('venonat','venomoth')):
+    for baby, adult in (('dragonair','dragonite'),('caterpie','butterfree'),('venonat','venomoth')):
         assert 51 not in byname[baby] and 51 in byname[adult]
+    for mon in ('charmander','charmeleon','charizard'):
+        assert 51 not in byname[mon] and 58 not in byname[mon]
+    assert 55 in byname['charizard']
     assert 51 in byname['doduo']
     assert 55 not in byname['kabuto'] and 55 in byname['kabutops']
     assert 53 not in byname['magikarp']

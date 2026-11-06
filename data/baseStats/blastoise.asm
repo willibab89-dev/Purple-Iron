@@ -1,5 +1,5 @@
 db DEX_BLASTOISE ; pokedex id
-db 79 ; base hp
+db 89 ; base hp
 db 83 ; base attack
 db 100 ; base defense
 db 78 ; base speed
@@ -21,7 +21,7 @@ db 3 ; growth rate
 	tmlearn 1,5,8
 	tmlearn 9,11,12,13,14,15
 	tmlearn 17,18,19
-	tmlearn 26,27,28
+	tmlearn 0
 	tmlearn 33,34,40
 	tmlearn 44
 	tmlearn 53,54

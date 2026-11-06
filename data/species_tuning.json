@@ -233,5 +233,614 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "bulbasaur",
+    "title": "Bulbasaur",
+    "dex": 1,
+    "stats": [
+      45,
+      49,
+      49,
+      45,
+      65
+    ],
+    "start": [
+      "TACKLE",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        7,
+        "LEECH_SEED"
+      ],
+      [
+        10,
+        "VINE_WHIP"
+      ],
+      [
+        13,
+        "POISONPOWDER"
+      ],
+      [
+        19,
+        "RAZOR_LEAF"
+      ],
+      [
+        23,
+        "GROWTH"
+      ],
+      [
+        27,
+        "SLEEP_POWDER"
+      ],
+      [
+        30,
+        "SYNTHESIS"
+      ],
+      [
+        43,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [],
+    "before_start": [
+      "TACKLE",
+      "GROWL",
+      "0",
+      "0"
+    ],
+    "before_stats": [
+      45,
+      49,
+      49,
+      45,
+      65
+    ]
+  },
+  {
+    "name": "ivysaur",
+    "title": "Ivysaur",
+    "dex": 2,
+    "stats": [
+      60,
+      62,
+      63,
+      60,
+      80
+    ],
+    "start": [
+      "TACKLE",
+      "GROWL",
+      "LEECH_SEED"
+    ],
+    "learn": [
+      [
+        7,
+        "LEECH_SEED"
+      ],
+      [
+        10,
+        "VINE_WHIP"
+      ],
+      [
+        13,
+        "POISONPOWDER"
+      ],
+      [
+        20,
+        "RAZOR_LEAF"
+      ],
+      [
+        24,
+        "GROWTH"
+      ],
+      [
+        28,
+        "SLEEP_POWDER"
+      ],
+      [
+        31,
+        "SYNTHESIS"
+      ],
+      [
+        49,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [],
+    "before_start": [
+      "TACKLE",
+      "GROWL",
+      "LEECH_SEED",
+      "0"
+    ],
+    "before_stats": [
+      60,
+      62,
+      63,
+      60,
+      80
+    ]
+  },
+  {
+    "name": "venusaur",
+    "title": "Venusaur",
+    "dex": 3,
+    "stats": [
+      80,
+      82,
+      83,
+      80,
+      100
+    ],
+    "start": [
+      "TACKLE",
+      "GROWL",
+      "LEECH_SEED",
+      "VINE_WHIP"
+    ],
+    "learn": [
+      [
+        7,
+        "LEECH_SEED"
+      ],
+      [
+        10,
+        "VINE_WHIP"
+      ],
+      [
+        13,
+        "POISONPOWDER"
+      ],
+      [
+        20,
+        "RAZOR_LEAF"
+      ],
+      [
+        24,
+        "GROWTH"
+      ],
+      [
+        28,
+        "SLEEP_POWDER"
+      ],
+      [
+        31,
+        "SYNTHESIS"
+      ],
+      [
+        35,
+        "SLUDGE"
+      ],
+      [
+        46,
+        "PETAL_DANCE"
+      ],
+      [
+        58,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [],
+    "before_start": [
+      "TACKLE",
+      "GROWL",
+      "LEECH_SEED",
+      "VINE_WHIP"
+    ],
+    "before_stats": [
+      80,
+      82,
+      83,
+      80,
+      100
+    ]
+  },
+  {
+    "name": "charmander",
+    "title": "Charmander",
+    "dex": 4,
+    "stats": [
+      39,
+      52,
+      43,
+      65,
+      50
+    ],
+    "start": [
+      "SCRATCH",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        7,
+        "EMBER"
+      ],
+      [
+        13,
+        "LEER"
+      ],
+      [
+        19,
+        "FLAME_CHARGE"
+      ],
+      [
+        24,
+        "RAGE"
+      ],
+      [
+        28,
+        "INCINERATE"
+      ],
+      [
+        33,
+        "SLASH"
+      ],
+      [
+        38,
+        "FLAMETHROWER"
+      ],
+      [
+        44,
+        "FIRE_SPIN"
+      ]
+    ],
+    "remove": [
+      26,
+      27,
+      28
+    ],
+    "before_start": [
+      "SCRATCH",
+      "GROWL",
+      "0",
+      "0"
+    ],
+    "before_stats": [
+      39,
+      52,
+      43,
+      65,
+      50
+    ]
+  },
+  {
+    "name": "charmeleon",
+    "title": "Charmeleon",
+    "dex": 5,
+    "stats": [
+      58,
+      64,
+      58,
+      80,
+      65
+    ],
+    "start": [
+      "SCRATCH",
+      "GROWL",
+      "EMBER"
+    ],
+    "learn": [
+      [
+        7,
+        "EMBER"
+      ],
+      [
+        13,
+        "LEER"
+      ],
+      [
+        20,
+        "FLAME_CHARGE"
+      ],
+      [
+        25,
+        "RAGE"
+      ],
+      [
+        30,
+        "INCINERATE"
+      ],
+      [
+        34,
+        "SLASH"
+      ],
+      [
+        42,
+        "FLAMETHROWER"
+      ],
+      [
+        48,
+        "FIRE_SPIN"
+      ]
+    ],
+    "remove": [
+      26,
+      27,
+      28
+    ],
+    "before_start": [
+      "SCRATCH",
+      "GROWL",
+      "EMBER",
+      "0"
+    ],
+    "before_stats": [
+      58,
+      64,
+      58,
+      80,
+      65
+    ]
+  },
+  {
+    "name": "charizard",
+    "title": "Charizard",
+    "dex": 6,
+    "stats": [
+      78,
+      94,
+      78,
+      100,
+      85
+    ],
+    "start": [
+      "SCRATCH",
+      "GROWL",
+      "EMBER",
+      "LEER"
+    ],
+    "learn": [
+      [
+        7,
+        "EMBER"
+      ],
+      [
+        13,
+        "LEER"
+      ],
+      [
+        20,
+        "FLAME_CHARGE"
+      ],
+      [
+        25,
+        "RAGE"
+      ],
+      [
+        30,
+        "INCINERATE"
+      ],
+      [
+        34,
+        "SLASH"
+      ],
+      [
+        37,
+        "WING_ATTACK"
+      ],
+      [
+        42,
+        "FLAMETHROWER"
+      ],
+      [
+        48,
+        "FIRE_SPIN"
+      ],
+      [
+        54,
+        "DRAGON_DANCE"
+      ]
+    ],
+    "remove": [
+      26,
+      27,
+      28
+    ],
+    "before_start": [
+      "SCRATCH",
+      "GROWL",
+      "EMBER",
+      "LEER"
+    ],
+    "before_stats": [
+      78,
+      84,
+      78,
+      100,
+      85
+    ]
+  },
+  {
+    "name": "squirtle",
+    "title": "Squirtle",
+    "dex": 7,
+    "stats": [
+      44,
+      48,
+      65,
+      43,
+      50
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        7,
+        "BUBBLE"
+      ],
+      [
+        12,
+        "WATER_GUN"
+      ],
+      [
+        17,
+        "WITHDRAW"
+      ],
+      [
+        22,
+        "BITE"
+      ],
+      [
+        27,
+        "SKULL_BASH"
+      ],
+      [
+        43,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      26,
+      27,
+      28
+    ],
+    "before_start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "0",
+      "0"
+    ],
+    "before_stats": [
+      44,
+      48,
+      65,
+      43,
+      50
+    ]
+  },
+  {
+    "name": "wartortle",
+    "title": "Wartortle",
+    "dex": 8,
+    "stats": [
+      59,
+      63,
+      80,
+      58,
+      65
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "BUBBLE"
+    ],
+    "learn": [
+      [
+        7,
+        "BUBBLE"
+      ],
+      [
+        12,
+        "WATER_GUN"
+      ],
+      [
+        18,
+        "WITHDRAW"
+      ],
+      [
+        23,
+        "BITE"
+      ],
+      [
+        30,
+        "SKULL_BASH"
+      ],
+      [
+        48,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      26,
+      27,
+      28
+    ],
+    "before_start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "BUBBLE",
+      "0"
+    ],
+    "before_stats": [
+      59,
+      63,
+      80,
+      58,
+      65
+    ]
+  },
+  {
+    "name": "blastoise",
+    "title": "Blastoise",
+    "dex": 9,
+    "stats": [
+      89,
+      83,
+      100,
+      78,
+      85
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "BUBBLE",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        7,
+        "BUBBLE"
+      ],
+      [
+        12,
+        "WATER_GUN"
+      ],
+      [
+        18,
+        "WITHDRAW"
+      ],
+      [
+        23,
+        "BITE"
+      ],
+      [
+        30,
+        "SKULL_BASH"
+      ],
+      [
+        37,
+        "SNIPE_SHOT"
+      ],
+      [
+        45,
+        "SPIKE_CANNON"
+      ],
+      [
+        54,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      26,
+      27,
+      28
+    ],
+    "before_start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "BUBBLE",
+      "WATER_GUN"
+    ],
+    "before_stats": [
+      79,
+      83,
+      100,
+      78,
+      85
+    ]
   }
 ]
