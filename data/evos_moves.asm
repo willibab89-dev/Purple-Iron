@@ -479,6 +479,7 @@ LaprasEvosMoves:
 	db 31, CONFUSE_RAY
 	db 34, SCALD
 	db 38, ICE_BEAM
+	db 39, ICICLE_SPEAR
 	db 40, FROST_BREATH
 	db 44, DRAGON_DANCE
 	db 46, HYDRO_PUMP
@@ -536,6 +537,7 @@ ShellderEvosMoves:
 	db 24, ICE_SHARD
 	db 28, BRINE
 	db 30, AURORA_BEAM
+	db 32, ICICLE_SPEAR
 	db 39, LEER
 	db 50, ICE_BEAM
 	db 0
@@ -583,6 +585,7 @@ ScytherEvosMoves:
 	db 32, AERIAL_ACE
 	db 35, SWORDS_DANCE
 	db 36, X_SCISSOR
+	db 38, AMBUSH
 	db 42, AGILITY
 	db 50, WING_ATTACK
 	db 0
@@ -608,6 +611,7 @@ BlastoiseEvosMoves:
 	db 8, BUBBLE
 	db 15, WATER_GUN
 	db 24, BITE
+	db 30, AQUA_JET
 	db 31, WITHDRAW
 	db 38, BRINE
 	db 42, SKULL_BASH
@@ -627,6 +631,7 @@ PinsirEvosMoves:
 	db 34, X_SCISSOR
 	db 36, FOCUS_ENERGY
 	db 37, SHELL_BREAK
+	db 38, AMBUSH
 	db 40, PIERCE
 	db 43, HARDEN
 	db 48, MEGAHORN
@@ -868,6 +873,7 @@ ParasectEvosMoves:
 	db 20, LEECH_LIFE
 	db 28, LUNGE
 	db 30, SPORE
+	db 32, AMBUSH
 	db 34, X_SCISSOR
 	db 38, SHELL_BREAK
 	db 39, SLASH
@@ -958,6 +964,7 @@ ElectabuzzEvosMoves:
 	db 32, SHOCK_WAVE
 	db 34, THUNDERSHOCK
 	db 37, SCREECH
+	db 40, THUNDERCLAP
 	db 42, THUNDERPUNCH
 	db 49, LIGHT_SCREEN
 	db 54, THUNDER
@@ -1024,6 +1031,7 @@ SeelEvosMoves:
 	db 28, BRINE
 	db 30, GROWL
 	db 32, ICE_ARMOR
+	db 34, ICICLE_SPEAR
 	db 35, AURORA_BEAM
 	db 38, FROST_BREATH
 	db 40, REST
@@ -1097,6 +1105,7 @@ VenonatEvosMoves:
 	db 24, POISONPOWDER
 	db 25, LUNGE
 	db 27, LEECH_LIFE
+	db 28, AMBUSH
 	db 30, STUN_SPORE
 	db 35, PSYBEAM
 	db 38, SLEEP_POWDER
@@ -1157,6 +1166,7 @@ PoliwagEvosMoves:
 ; Learnset
 	db 16, HYPNOSIS
 	db 19, WATER_GUN
+	db 22, AQUA_JET
 	db 25, DOUBLESLAP
 	db 28, SCALD
 	db 31, BODY_SLAM
@@ -1204,6 +1214,7 @@ ArticunoEvosMoves:
 	db 25, ICY_WIND
 	db 30, ICE_SHARD
 	db 40, ICE_ARMOR
+	db 42, ICICLE_SPEAR
 	db 45, FROST_BREATH
 	db 48, GALE_WIND
 	db 50, ROOST
@@ -1219,6 +1230,7 @@ ZapdosEvosMoves:
 ; Learnset
 	db 35, CHARGE
 	db 40, SHOCK_WAVE
+	db 45, THUNDERCLAP
 	db 48, GALE_WIND
 	db 50, ROOST
 	db 51, THUNDER
@@ -1324,6 +1336,7 @@ PikachuEvosMoves:
 	db 29, SWIFT
 	db 30, SHOCK_WAVE
 	db 33, AGILITY
+	db 38, THUNDERCLAP
 	db 41, THUNDER
 	db 50, LIGHT_SCREEN
 	db 0
@@ -1338,6 +1351,7 @@ RaichuEvosMoves:
 	db 26, CHARGE
 	db 31, THUNDERBOLT
 	db 34, SHOCK_WAVE
+	db 42, THUNDERCLAP
 	db 46, THUNDER
 	db 55, LIGHT_SCREEN
 	db 0
@@ -1388,6 +1402,7 @@ KabutoEvosMoves:
 	db 0
 ; Learnset
 	db 24, ROCK_TOMB
+	db 26, AQUA_JET
 	db 28, ROCK_POLISH
 	db 29, SHELL_BREAK
 	db 34, ABSORB
@@ -1403,6 +1418,7 @@ KabutopsEvosMoves:
 	db 0
 ; Learnset
 	db 28, ROCK_TOMB
+	db 30, AQUA_JET
 	db 32, ROCK_POLISH
 	db 33, SHELL_BREAK
 	db 34, ABSORB
@@ -1420,6 +1436,7 @@ HorseaEvosMoves:
 	db 0
 ; Learnset
 	db 19, SMOKESCREEN
+	db 22, AQUA_JET
 	db 24, LEER
 	db 30, WATER_GUN
 	db 31, BRINE
@@ -1434,6 +1451,7 @@ SeadraEvosMoves:
 ; Learnset
 	db 19, SMOKESCREEN
 	db 24, LEER
+	db 26, AQUA_JET
 	db 30, WATER_GUN
 	db 34, BRINE
 	db 41, AGILITY
@@ -1584,6 +1602,7 @@ JolteonEvosMoves:
 	db 32, SHOCK_WAVE
 	db 36, PIN_MISSILE
 	db 37, FACADE
+	db 40, THUNDERCLAP
 	db 42, THUNDER_WAVE
 	db 47, AGILITY
 	db 52, THUNDER
@@ -1661,6 +1680,7 @@ ParasEvosMoves:
 	db 20, LEECH_LIFE
 	db 24, LUNGE
 	db 27, SPORE
+	db 28, AMBUSH
 	db 30, X_SCISSOR
 	db 34, SLASH
 	db 35, SHELL_BREAK
@@ -1676,6 +1696,7 @@ PoliwhirlEvosMoves:
 	db 16, HYPNOSIS
 	db 19, WATER_GUN
 	db 26, DOUBLESLAP
+	db 27, AQUA_JET
 	db 32, SCALD
 	db 33, BODY_SLAM
 	db 41, AMNESIA
@@ -1690,6 +1711,7 @@ PoliwrathEvosMoves:
 	db 16, HYPNOSIS
 	db 19, WATER_GUN
 	db 27, DOUBLESLAP
+	db 30, AQUA_JET
 	db 32, BULK_UP
 	db 35, BODY_SLAM
 	db 36, SCALD
@@ -1725,6 +1747,7 @@ BeedrillEvosMoves:
 	db 30, PIN_MISSILE
 	db 34, PIERCE
 	db 35, AGILITY
+	db 38, AMBUSH
 	db 48, MEGAHORN
 	db 0
 
@@ -1789,6 +1812,7 @@ VenomothEvosMoves:
 	db 27, LEECH_LIFE
 	db 28, LUNGE
 	db 30, STUN_SPORE
+	db 32, AMBUSH
 	db 38, PSYBEAM
 	db 43, SLEEP_POWDER
 	db 50, PSYCHIC_M
@@ -1804,6 +1828,7 @@ DewgongEvosMoves:
 	db 32, ICE_ARMOR
 	db 33, BRINE
 	db 35, AURORA_BEAM
+	db 38, ICICLE_SPEAR
 	db 42, FROST_BREATH
 	db 44, REST
 	db 48, FLASH_FREEZE
@@ -2009,6 +2034,7 @@ CloysterEvosMoves:
 	db 30, AURORA_BEAM
 	db 32, BRINE
 	db 34, ICE_ARMOR
+	db 36, ICICLE_SPEAR
 	db 48, FLASH_FREEZE
 	db 50, SPIKE_CANNON
 	db 0
@@ -2231,6 +2257,7 @@ GoldeenEvosMoves:
 	db 0
 ; Learnset
 	db 19, SUPERSONIC
+	db 22, AQUA_JET
 	db 24, HORN_ATTACK
 	db 25, FLAIL
 	db 30, FURY_ATTACK
@@ -2246,6 +2273,7 @@ SeakingEvosMoves:
 ; Learnset
 	db 19, SUPERSONIC
 	db 24, HORN_ATTACK
+	db 26, AQUA_JET
 	db 28, FLAIL
 	db 30, FURY_ATTACK
 	db 38, PIERCE
@@ -2466,6 +2494,7 @@ SquirtleEvosMoves:
 	db 8, BUBBLE
 	db 15, WATER_GUN
 	db 22, BITE
+	db 23, AQUA_JET
 	db 28, WITHDRAW
 	db 30, BRINE
 	db 34, SCALD
@@ -2497,6 +2526,7 @@ WartortleEvosMoves:
 	db 8, BUBBLE
 	db 15, WATER_GUN
 	db 24, BITE
+	db 26, AQUA_JET
 	db 31, WITHDRAW
 	db 34, BRINE
 	db 38, SCALD

@@ -23,7 +23,7 @@ MoveEnd:
 	move SCRATCH,      NO_ADDITIONAL_EFFECT,        40, NORMAL,   100, 35
 	move VICEGRIP,     NO_ADDITIONAL_EFFECT,        75, BUG,     100, 30
 	move GUILLOTINE,   ATTACK_AND_STAT_EFFECT,      120, NORMAL,   40,  5
-	move RAZOR_WIND,   CHARGE_EFFECT,               80, NORMAL,    75, 10
+	move RAZOR_WIND,   FLINCH_SIDE_EFFECT2,         40, DRAGON,  100, 15
 	move SWORDS_DANCE, ATTACK_UP2_EFFECT,            0, NORMAL,   100, 30
 	move CUT,          NO_ADDITIONAL_EFFECT,        50, BUG,      95, 30
 	move GUST,         NO_ADDITIONAL_EFFECT,        40, FLYING,  100, 35
@@ -109,7 +109,7 @@ MoveEnd:
 	move MEDITATE,     COMPOUND_STATUS_EFFECT,        0, PSYCHIC, 100, 15
 	move AGILITY,      SPEED_UP2_EFFECT,             0, PSYCHIC,  100, 30
 	move QUICK_ATTACK, NO_ADDITIONAL_EFFECT,        40, NORMAL,   100, 30
-	move RAGE,         RAGE_EFFECT,                 20, NORMAL,   100, 20
+	move RAGE,         NO_ADDITIONAL_EFFECT,        40, NORMAL,   95, 20
 	move TELEPORT,     SWITCH_AND_TELEPORT_EFFECT,   0, PSYCHIC,  100, 20
 	move NIGHT_SHADE,  SPECIAL_DAMAGE_EFFECT,        1, GHOST,    100, 15
 	move MIMIC,        MIMIC_EFFECT,                 0, NORMAL,   100, 10
@@ -164,7 +164,7 @@ MoveEnd:
 	move ACID_ARMOR,   DEFENSE_UP2_EFFECT,           0, POISON,  100, 15
 	move CRABHAMMER,   NO_ADDITIONAL_EFFECT,        90, NORMAL,   90, 10
 	move EXPLOSION,    EXPLODE_EFFECT,             170, NORMAL,   100,  5
-	move FURY_SWIPES,  TWO_TO_FIVE_ATTACKS_EFFECT,  18, NORMAL,    80, 15
+	move FURY_SWIPES,  ATTACK_TWICE_EFFECT,         35, NORMAL,   80, 15
 	move BONEMERANG,   ATTACK_TWICE_EFFECT,         50, GROUND,    90, 10
 	move REST,         HEAL_EFFECT,                  0, PSYCHIC,  100, 10
 	move ROCK_SLIDE,   FLINCH_SIDE_EFFECT2,         65, ROCK,     90, 10
@@ -229,4 +229,10 @@ MoveEnd:
 	move COIL,         UTILITY_STATUS_EFFECT,        0, POISON,  100, 10
 	move POISON_FANG,  UTILITY_HIT_EFFECT,          50, POISON,  100, 15
 	move DRAGON_DANCE, COMPOUND_STATUS_EFFECT,       0, DRAGON,  100, 10
+
+; Patch 6 priority and multihit additions.
+	move AMBUSH,       NO_ADDITIONAL_EFFECT,        50, BUG,     100, 10
+	move AQUA_JET,     NO_ADDITIONAL_EFFECT,        40, WATER,   100, 20
+	move THUNDERCLAP,  FLINCH_SIDE_EFFECT2,         50, ELECTRIC,100,  5
+	move ICICLE_SPEAR, TWO_TO_FIVE_ATTACKS_EFFECT,  15, ICE,      90, 15
 MovesEnd:

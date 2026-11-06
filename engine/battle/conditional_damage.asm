@@ -69,6 +69,8 @@ IsConditionalDamageMove:
 	and a
 	ret
 ConditionalDamageMoves:
+	db AMBUSH, 50, BUG
+	db RAZOR_WIND, 40, DRAGON
 	db EGG_BOMB, 100, NORMAL
 	db BRICK_BREAK, 70, FIGHTING
 	db STOMP, 65, NORMAL
@@ -513,6 +515,10 @@ ConditionalHP:
 
 ConditionalPower:
 	ld a, [wCustomMove]
+	cp AMBUSH
+	jr z, .ambush
+	cp RAZOR_WIND
+	jr z, .twister
 	cp FLAIL
 	jp z, ConditionalFlail
 	cp PUNISHMENT
@@ -533,6 +539,17 @@ ConditionalPower:
 	jr z, .freeze
 	cp POLLUTION
 	jr z, .water
+	ret
+.ambush
+	callab SequenceTargetBelowHalf
+	ret nc
+	ld a, [wCustomChance]
+	add 30
+	ld [wCustomChance], a
+	ret
+.twister
+	callab SequenceAirborneHit
+	jr c, .double
 	ret
 .facade
 	ld hl, wBattleMonStatus

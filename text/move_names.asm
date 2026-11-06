@@ -11,7 +11,7 @@ MoveNames::
 	db "SCRATCH@"
 	db "VICEGRIP@"
 	db "GUILLOTINE@"
-	db "RAZOR WIND@"
+	db "TWISTER@"
 	db "SWORDS DANCE@"
 	db "CUT@"
 	db "GUST@"
@@ -212,4 +212,8 @@ MoveNames::
 	db "COIL@"
 	db "POISON FANG@"
 	db "DRAGON DANCE@"
+	db "AMBUSH@"
+	db "AQUA JET@"
+	db "THUNDERCLAP@"
+	db "ICICLE SPEAR@"
 MoveNamesEnd:

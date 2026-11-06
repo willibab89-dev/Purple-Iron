@@ -19,28 +19,11 @@ LowPriorityMoves:
 ;	cp CLAMP
 	ret
 
-CheckHigherPlayerPriority:	
-	ld a, [wPlayerSelectedMove]
-	call HighPriorityMoves
-	ret
+CheckHigherPlayerPriority:
+	jpab SequencePlayerPriority
 CheckHigherEnemyPriority:
-	ld a, [wEnemySelectedMove]
-	call HighPriorityMoves
-	ret
-HighPriorityMoves:
-	cp QUICK_ATTACK
-;	ret z
-;	cp DUMMY_MOVE1
-;	ret z
-;	cp DUMMY_MOVE2
-;	ret z
-;	cp DUMMY_MOVE3
-;	ret z
-;	cp DUMMY_MOVE4
-	ret
-	
-	
-	
+	jpab SequenceEnemyPriority
+
 
 SwapTurn:	;a simple custom function for swapping whose turn it is in the battle engine
 	ld a, [H_WHOSETURN]
@@ -180,6 +163,9 @@ EnemyBideAccum:
 	ld hl, wEnemyBattleStatus1
 	bit STORING_ENERGY, [hl] ; is mon using bide?
 	ret z
+	ld a, [wEnemyNumAttacksLeft]
+	and a
+	ret z ; only the two storage turns contribute damage
 	xor a
 	ld [wEnemyMoveNum], a
 	ld hl, wDamage
@@ -199,6 +185,9 @@ PlayerBideAccum:
 	ld hl, wPlayerBattleStatus1
 	bit STORING_ENERGY, [hl] ; is mon using bide?
 	ret z
+	ld a, [wPlayerNumAttacksLeft]
+	and a
+	ret z ; only the two storage turns contribute damage
 	xor a
 	ld [wPlayerMoveNum], a
 	ld hl, wDamage

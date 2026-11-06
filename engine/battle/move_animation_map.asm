@@ -39,7 +39,7 @@ MoveAnimationMap:
 	db 10
 	db 11
 	db 12
-	db 13
+	db GUST ; Twister retains legacy move ID 13
 	db 14
 	db 15
 	db 16
@@ -239,6 +239,10 @@ MoveAnimationMap:
 	db DEFENSE_CURL ; COIL
 	db BITE ; POISON_FANG
 	db AGILITY ; DRAGON_DANCE
+	db QUICK_ATTACK ; AMBUSH
+	db QUICK_ATTACK ; AQUA_JET
+	db THUNDERSHOCK ; THUNDERCLAP
+	db PIN_MISSILE ; ICICLE_SPEAR
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

@@ -259,5 +259,10 @@ const_value = 166
 	const POISON_FANG
 	const DRAGON_DANCE
 
+	const AMBUSH
+	const AQUA_JET
+	const THUNDERCLAP
+	const ICICLE_SPEAR
+
 MAX_MOVE_ID EQU const_value + -1
 NUM_ATTACKS EQU MAX_MOVE_ID + -1 ; selectable moves, excluding Struggle

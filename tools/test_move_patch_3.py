@@ -11,8 +11,9 @@ PLAN = json.loads((ROOT / 'data/move_patch_3.json').read_text())
 NEW = PLAN['new_moves']
 PATCH4 = json.loads((ROOT / 'data/move_patch_4.json').read_text())
 PATCH5 = json.loads((ROOT / 'data/move_patch_5.json').read_text())
-ALL_NEW = NEW + PATCH4['new_moves'] + PATCH5['new_moves']
-ALL_ADDITIONS = PLAN['learnset_additions'] + PATCH4['learnset_additions'] + PATCH5['learnset_additions']
+PATCH6 = json.loads((ROOT / 'data/move_patch_6.json').read_text())
+ALL_NEW = NEW + PATCH4['new_moves'] + PATCH5['new_moves'] + PATCH6['new_moves']
+ALL_ADDITIONS = PLAN['learnset_additions'] + PATCH4['learnset_additions'] + PATCH5['learnset_additions'] + PATCH6['learnset_additions']
 MAX_MOVE = max(d['id'] for d in ALL_NEW)
 
 
@@ -45,6 +46,7 @@ def validate(version):
         assert data('Moves', 6, (d['id']-1)*6) == expected
         assert MOVES[d['symbol']] == d['id']
     animation_map = list(range(1,166))+[MOVES[x['animation']] for x in ALL_NEW]
+    animation_map[MOVES['RAZOR_WIND']-1] = MOVES['GUST']
     assert list(data('MoveAnimationMap', MAX_MOVE)) == animation_map
     raw_names = data('MoveNames', 2400).split(b'\x50')
     for d in NEW: assert raw_names[d['id']-1]+b'\x50' == encode(d['name'])

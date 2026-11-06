@@ -25,6 +25,8 @@ def validate(version):
     cumulative.update({entry['id']: entry['after'] for entry in patch4['existing_changes']})
     patch5 = json.loads((ROOT / 'data/move_patch_5.json').read_text())
     cumulative.update({entry['id']: entry['after'] for entry in patch5['existing_changes']})
+    patch6 = json.loads((ROOT / 'data/move_patch_6.json').read_text())
+    cumulative.update({entry['id']: entry['after'] for entry in patch6['existing_changes']})
     assert len(changes) == 56
     expected, names = [], bytearray()
     for baseline in PLAN['baseline']:
@@ -38,8 +40,8 @@ def validate(version):
     assert len(expected) == 165
     assert data('Moves', 165 * 6) == b''.join(expected), version
     assert data('MoveNames', len(names)) == names, version
-    crit = data('HighCriticalMoves', 9)
-    assert set(crit) == {2, 3, 75, 82, 152, 163, 169, 172, 255}, list(crit)
+    crit = data('HighCriticalMoves', 10)
+    assert set(crit) == {2, 3, 75, 82, 152, 163, 169, 172, 216, 255}, list(crit)
     game = PyBoy(str(ROOT / (version + '.gbc')), window='null', sound_emulated=False)
     game.set_emulation_speed(0)
     game.tick(90, False)

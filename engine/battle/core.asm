@@ -388,6 +388,7 @@ EnemyRanText:
 	db "@"
 
 MainInBattleLoop:
+	callab SequenceNewRound
 	callab ClearCounterRecord
 ;joenote - zero the damage from last round if not using a trapping move
 	ld a, [wEnemyBattleStatus1]
@@ -417,13 +418,7 @@ MainInBattleLoop:
 	xor a
 	ld [wFirstMonsNotOutYet], a
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;joenote - if raging, reset rage's accuracy here to prevent degradation
-	ld a, [wPlayerBattleStatus2]
-	bit USING_RAGE, a
-	jr z, .not_player_raging
-	ld a, $FF
-	ld [wPlayerMoveAccuracy], a
-.not_player_raging
+; Rage data is reloaded on every forced use.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;joenote - if thrashing, reset the move accuracy here to prevent degradation
@@ -3182,13 +3177,7 @@ SelectEnemyMove:
 	jp .done
 .noLinkBattle
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;joenote - if raging, reset rage's accuracy here to prevent degradation
-	ld a, [wEnemyBattleStatus2]
-	bit USING_RAGE, a
-	jr z, .not_enemy_raging
-	ld a, $FF
-	ld [wEnemyMoveAccuracy], a
-.not_enemy_raging
+; Rage data is reloaded on every forced use.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;joenote - if thrashing, reset the move accuracy here to prevent degradation
@@ -3342,6 +3331,19 @@ LinkBattleExchangeData:
 	ret
 
 ExecutePlayerMove:
+	call ExecutePlayerMoveBody
+	push af
+	push bc
+	push de
+	push hl
+	callab SequenceFinishPlayerAction
+	pop hl
+	pop de
+	pop bc
+	pop af
+	ret
+
+ExecutePlayerMoveBody:
 	xor a
 	ld [H_WHOSETURN], a ; set player's turn
 	ld a, [wPlayerSelectedMove]
@@ -3390,6 +3392,7 @@ PlayerCanExecuteMove:
 	ld de, wPlayerSelectedMove ; pointer to the move just used
 	ld b, BANK(DecrementPP)
 	call Bankswitch
+	callab SequenceBeginRage
 	ld a, [wPlayerMoveEffect] ; effect of the move just used
 	ld hl, ResidualEffects1
 	ld de, 1
@@ -3687,6 +3690,7 @@ CheckPlayerStatusConditions:
 	bit FLINCHED, [hl]
 	jp z, .HyperBeamCheck
 	res FLINCHED, [hl] ; reset player's flinch status
+	callab SequenceCancelCharge
 	ld hl, FlinchedText
 	call PrintText
 	ld hl, ExecutePlayerMoveDone ; player can't move this turn
@@ -3810,7 +3814,8 @@ CheckPlayerStatusConditions:
 ;	adc b
 ;	ld [hl], a
 	ld hl, wPlayerNumAttacksLeft
-	dec [hl] ; did Bide counter hit 0?
+	ld a, [hl]
+	and a ; storage window advances at round boundaries
 	jr z, .UnleashEnergy
 	ld hl, ExecutePlayerMoveDone
 	jp .returnToHL ; unless mon unleashes energy, can't move this turn
@@ -3885,14 +3890,9 @@ CheckPlayerStatusConditions:
 
 .RageCheck
 	ld a, [wPlayerBattleStatus2]
-	bit USING_RAGE, a ; is mon using rage?
-	jp z, .checkPlayerStatusConditionsDone ; if we made it this far, mon can move normally this turn
-	ld a, RAGE
-	ld [wd11e], a
-	call GetMoveName
-	call CopyStringToCF4B
-	xor a
-	ld [wPlayerMoveEffect], a
+	bit USING_RAGE, a
+	jp z, .checkPlayerStatusConditionsDone
+	callab SequenceReloadPlayerRage
 	ld hl, PlayerCanExecuteMove
 	jp .returnToHL
 
@@ -4788,6 +4788,7 @@ CriticalHitTest:
 
 ; high critical hit moves
 HighCriticalMoves:
+	db ICICLE_SPEAR
 	db X_SCISSOR
 	db STONE_EDGE
 	db KARATE_CHOP
@@ -5141,6 +5142,12 @@ AttackSubstitute:
 	jr z, .skipnullify
 	cp UTILITY_SELF_EFFECT
 	jr z, .skipnullify
+	cp ATTACK_TWICE_EFFECT
+	jr z, .skipnullify
+	cp TWO_TO_FIVE_ATTACKS_EFFECT
+	jr z, .skipnullify
+	cp TWINEEDLE_EFFECT
+	jr z, .skipnullify
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	xor a
 	ld [hl], a ; zero the effect of the attacker's move
@@ -5164,46 +5171,7 @@ SubstituteBrokeText:
 
 ; this function raises the attack modifier of a pokemon using Rage when that pokemon is attacked
 HandleBuildingRage:
-; values for the player turn
-	ld hl, wEnemyBattleStatus2
-	ld de, wEnemyMonStatMods
-	ld bc, wEnemyMoveNum
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .next
-; values for the enemy turn
-	ld hl, wPlayerBattleStatus2
-	ld de, wPlayerMonStatMods
-	ld bc, wPlayerMoveNum
-.next
-	bit USING_RAGE, [hl] ; is the pokemon being attacked under the effect of Rage?
-	ret z ; return if not
-	ld a, [de]
-	cp $0d ; maximum stat modifier value
-	ret z ; return if attack modifier is already maxed
-	ld a, [H_WHOSETURN]
-	xor $01 ; flip turn for the stat modifier raising function
-	ld [H_WHOSETURN], a
-; temporarily change the target pokemon's move to $00 and the effect to the one
-; that causes the attack modifier to go up one stage
-	ld h, b
-	ld l, c
-	ld [hl], $00 ; null move number
-	inc hl
-	ld [hl], ATTACK_UP1_EFFECT
-	push hl
-	ld hl, BuildingRageText
-	call PrintText
-	call StatModifierUpEffect ; stat modifier raising function
-	pop hl
-	xor a
-	ldd [hl], a ; null move effect
-	ld a, RAGE
-	ld [hl], a ; restore the target pokemon's move number to Rage
-	ld a, [H_WHOSETURN]
-	xor $01 ; flip turn back to the way it was
-	ld [H_WHOSETURN], a
-	ret
+	jpab SequenceRageBoost
 
 BuildingRageText:
 	TX_FAR _BuildingRageText
@@ -5594,7 +5562,16 @@ MoveHitTest:
 	jp z, .moveMissed
 .checkForDigOrFlyStatus
 	bit INVULNERABLE, [hl]
-	jp nz, .moveMissed
+	jr z, .targetReachable
+	push hl
+	push bc
+	push de
+	callab SequenceAirborneHit
+	pop de
+	pop bc
+	pop hl
+	jp nc, .moveMissed
+.targetReachable
 	push hl
 	push bc
 	callab ConditionalAccuracyCheck
@@ -5679,9 +5656,11 @@ MoveHitTest:
 	call BattleRandom
 	cp b
 	jr z, .move_hit ;joenote - fixed move accuracy so a move hits if acc = randnum
-	jr nc, .moveMissed
+	jr nc, .accuracyMiss
 .move_hit
 	ret
+.accuracyMiss
+	callab SequenceFuryAccuracyMiss
 .moveMissed
 ;;;;;;;;;;;;;;;;;;;;
 ;joenote - if a move misses, store the damage it threatened into wUnusedD71F.
@@ -5821,6 +5800,19 @@ RandomizeDamage:
 
 ; for more detailed commentary, see equivalent function for player side (ExecutePlayerMove)
 ExecuteEnemyMove:
+	call ExecuteEnemyMoveBody
+	push af
+	push bc
+	push de
+	push hl
+	callab SequenceFinishEnemyAction
+	pop hl
+	pop de
+	pop bc
+	pop af
+	ret
+
+ExecuteEnemyMoveBody:
 	ld a, [wEnemySelectedMove]
 	inc a
 	jp z, ExecuteEnemyMoveDone
@@ -5873,6 +5865,7 @@ EnemyCanExecuteChargingMove:
 	ld de, wcd6d
 	call CopyStringToCF4B
 EnemyCanExecuteMove:
+	callab SequenceBeginRage
 	xor a
 	ld [wMonIsDisobedient], a
 	call PrintMonName1Text
@@ -6128,6 +6121,7 @@ CheckEnemyStatusConditions:
 	bit FLINCHED, [hl] ; check if enemy mon flinched
 	jp z, .checkIfMustRecharge
 	res FLINCHED, [hl]
+	callab SequenceCancelCharge
 	ld hl, FlinchedText
 	call PrintText
 	ld hl, ExecuteEnemyMoveDone ; enemy can't move this turn
@@ -6251,7 +6245,7 @@ CheckEnemyStatusConditions:
 	ld hl, wEnemyBattleStatus1
 	ld a, [hl]
 	; clear bide, thrashing about, charging up, and multi-turn moves such as warp
-	and $ff ^ ((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
+	and $ff ^ ((1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << INVULNERABLE) | (1 << USING_TRAPPING_MOVE))
 	ld [hl], a
 	ld a, [wEnemyMoveEffect]
 	cp FLY_EFFECT
@@ -6287,7 +6281,8 @@ CheckEnemyStatusConditions:
 ;	adc b
 ;	ld [hl], a
 	ld hl, wEnemyNumAttacksLeft
-	dec [hl] ; did Bide counter hit 0?
+	ld a, [hl]
+	and a ; storage window advances at round boundaries
 	jr z, .unleashEnergy
 	ld hl, ExecuteEnemyMoveDone
 	jp .enemyReturnToHL ; unless mon unleashes energy, can't move this turn
@@ -6359,16 +6354,12 @@ CheckEnemyStatusConditions:
 	jp .enemyReturnToHL
 .checkIfUsingRage
 	ld a, [wEnemyBattleStatus2]
-	bit USING_RAGE, a ; is mon using rage?
-	jp z, .checkEnemyStatusConditionsDone ; if we made it this far, mon can move normally this turn
-	ld a, RAGE
-	ld [wd11e], a
-	call GetMoveName
-	call CopyStringToCF4B
-	xor a
-	ld [wEnemyMoveEffect], a
+	bit USING_RAGE, a
+	jp z, .checkEnemyStatusConditionsDone
+	callab SequenceReloadEnemyRage
 	ld hl, EnemyCanExecuteMove
 	jp .enemyReturnToHL
+
 .enemyReturnToHL
 	xor a ; set Z flag
 	ret
@@ -8433,11 +8424,8 @@ BideEffect:
 	ld [de], a
 	ld [wPlayerMoveEffect], a
 	ld [wEnemyMoveEffect], a
-	call BattleRandom
-	and $1
-	inc a
-	inc a
-	ld [bc], a ; set Bide counter to 2 or 3 at random
+	ld a, 2
+	ld [bc], a ; two storage turns; release on the third action
 	ld a, [H_WHOSETURN]
 	add XSTATITEM_ANIM
 	jp PlayBattleAnimation2
@@ -8623,6 +8611,9 @@ TwoToFiveAttacksEffect:
 	jr .saveNumberOfHits
 
 FlinchSideEffect:
+	ld a, [wCustomTargetHadSub]
+	and a
+	ret nz
 	call CheckTargetSubstitute
 	ret nz
 	ld hl, wEnemyBattleStatus1
@@ -8680,6 +8671,7 @@ ChargeEffect:
 	call PlayBattleAnimation
 	ld a, [de]
 	ld [wChargeMoveNum], a
+	callab SequenceSkullBashBoost
 	ld hl, ChargeMoveEffectText
 	jp PrintText
 

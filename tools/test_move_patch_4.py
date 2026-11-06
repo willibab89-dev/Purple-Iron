@@ -64,6 +64,8 @@ def validate(version):
         bank,start=syms['Moves'];updates={x['id']:x['after'] for x in PLAN['existing_changes']}
         patch5=json.loads((ROOT/'data/move_patch_5.json').read_text())
         updates.update({x['id']:x['after'] for x in patch5['existing_changes']})
+        patch6=json.loads((ROOT/'data/move_patch_6.json').read_text())
+        updates.update({x['id']:x['after'] for x in patch6['existing_changes']})
         entries=[updates.get(x['id'],x) for x in PLAN['baseline_moves']]+PLAN['new_moves']
         assert len(entries)==191
         for d in entries:
