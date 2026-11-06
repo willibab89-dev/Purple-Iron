@@ -179,4 +179,12 @@ const_value = 1
 	const DEX_MILTANK
 	const DEX_SABLEYE
 
-NUM_POKEMON    EQU 176
+	const DEX_BALTOY
+	const DEX_CLAYDOL
+	const DEX_CROBAT
+	const DEX_DITTWO
+	const DEX_LARVITAR
+	const DEX_PUPITAR
+	const DEX_TYRANITAR
+
+NUM_POKEMON    EQU 183

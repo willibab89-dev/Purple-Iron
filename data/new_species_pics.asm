@@ -43,3 +43,59 @@ _SableyeDexEntry::
 	next "the darkness when"
 	next "it spots a jewel."
 	dex
+BaltoyPicFront:: INCBIN "pic/new_species/baltoy.pic"
+BaltoyPicBack:: INCBIN "pic/new_species/baltoy_b.pic"
+
+_BaltoyDexEntry::
+	text "A rare POKEMON."
+	next "Its habits remain"
+	next "a mystery."
+	dex
+ClaydolPicFront:: INCBIN "pic/new_species/claydol.pic"
+ClaydolPicBack:: INCBIN "pic/new_species/claydol_b.pic"
+
+_ClaydolDexEntry::
+	text "A rare POKEMON."
+	next "Its habits remain"
+	next "a mystery."
+	dex
+CrobatPicFront:: INCBIN "pic/new_species/crobat.pic"
+CrobatPicBack:: INCBIN "pic/new_species/crobat_b.pic"
+
+_CrobatDexEntry::
+	text "A rare POKEMON."
+	next "Its habits remain"
+	next "a mystery."
+	dex
+DittwoPicFront:: INCBIN "pic/new_species/dittwo.pic"
+DittwoPicBack:: INCBIN "pic/new_species/dittwo_b.pic"
+
+_DittwoDexEntry::
+	text "A rare POKEMON."
+	next "Its habits remain"
+	next "a mystery."
+	dex
+LarvitarPicFront:: INCBIN "pic/new_species/larvitar.pic"
+LarvitarPicBack:: INCBIN "pic/new_species/larvitar_b.pic"
+
+_LarvitarDexEntry::
+	text "A rare POKEMON."
+	next "Its habits remain"
+	next "a mystery."
+	dex
+PupitarPicFront:: INCBIN "pic/new_species/pupitar.pic"
+PupitarPicBack:: INCBIN "pic/new_species/pupitar_b.pic"
+
+_PupitarDexEntry::
+	text "A rare POKEMON."
+	next "Its habits remain"
+	next "a mystery."
+	dex
+TyranitarPicFront:: INCBIN "pic/new_species/tyranitar.pic"
+TyranitarPicBack:: INCBIN "pic/new_species/tyranitar_b.pic"
+
+_TyranitarDexEntry::
+	text "A rare POKEMON."
+	next "Its habits remain"
+	next "a mystery."
+	dex

@@ -225,6 +225,20 @@ DetermineMonGender:
 	ld d, $F5
 	ret
 .notMiltank
+	cp BALTOY
+	jr z, .genderlessNew
+	cp CLAYDOL
+	jr z, .genderlessNew
+	cp DITTWO
+	jr z, .genderlessNew
+	cp CROBAT
+	jr z, .newHalf
+	cp LARVITAR
+	jr z, .newHalf
+	cp PUPITAR
+	jr z, .newHalf
+	cp TYRANITAR
+	jr z, .newHalf
 	cp MAREANIE
 	jr z, .newHalf
 	cp TOXAPEX
@@ -237,6 +251,9 @@ DetermineMonGender:
 	ld d, $EF
 	ret nc
 	ld d, $F5
+	ret
+.genderlessNew
+	ld d, 0
 	ret
 .originalSpecies
 	ld a, d

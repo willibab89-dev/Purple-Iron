@@ -36,6 +36,20 @@ RouteImportedSprite:
 	jr z, .newSpecies
 	cp SABLEYE
 	jr z, .newSpecies
+	cp BALTOY
+	jr z, .newSpecies
+	cp CLAYDOL
+	jr z, .newSpecies
+	cp CROBAT
+	jr z, .newSpecies
+	cp DITTWO
+	jr z, .newSpecies
+	cp LARVITAR
+	jr z, .newSpecies
+	cp PUPITAR
+	jr z, .newSpecies
+	cp TYRANITAR
+	jr z, .newSpecies
 	jr .oldSpecies
 .newSpecies
 	ld a, BANK(MareaniePicFront)

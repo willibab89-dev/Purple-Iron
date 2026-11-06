@@ -139,13 +139,13 @@ CryData:
 	db $1C, $00, $80; Gastly
 	db $20, $EE, $E0; Kingler
 	db $18, $6F, $E0; Cloyster
-	db $00, $00, $00; MissingNo.
+	db $24, $F0, $10; BALTOY
 	db $06, $A8, $90; Electrode
 	db $19, $AA, $20; Clefable
 	db $12, $FF, $FF; Weezing
 	db $19, $99, $FF; Persian
 	db $08, $4F, $60; Marowak
-	db $00, $00, $00; MissingNo.
+	db $12, $E0, $40; CLAYDOL
 	db $1C, $30, $40; Haunter
 	db $1C, $C0, $01; Abra
 	db $1C, $98, $FF; Alakazam
@@ -155,13 +155,13 @@ CryData:
 	db $0F, $80, $01; Bulbasaur
 	db $0F, $00, $C0; Venusaur
 	db $1A, $EE, $FF; Tentacruel
-	db $00, $00, $00; MissingNo.
+	db $1D, $FA, $80; CROBAT
 	db $16, $80, $40; Goldeen
 	db $16, $10, $FF; Seaking
-	db $00, $00, $00; MissingNo.
-	db $00, $00, $00; MissingNo.
-	db $00, $00, $00; MissingNo.
-	db $00, $00, $00; MissingNo.
+	db $0E, $FF, $FF; DITTWO
+	db $04, $00, $80; LARVITAR
+	db $11, $00, $80; PUPITAR
+	db $11, $00, $80; TYRANITAR
 	db $25, $00, $80; Ponyta
 	db $25, $20, $C0; Rapidash
 	db $22, $00, $80; Rattata

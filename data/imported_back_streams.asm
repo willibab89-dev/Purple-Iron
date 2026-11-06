@@ -138,13 +138,13 @@ CustomBackStreams:
 	dbw BANK(SableyePicBack), SableyePicBack
 	dbw BANK(ImportedBackKingler), ImportedBackKingler
 	dbw BANK(ImportedBackCloyster), ImportedBackCloyster
-	dbw 0, 0
+	dbw BANK(BaltoyPicBack), BaltoyPicBack
 	dbw BANK(ImportedBackElectrode), ImportedBackElectrode
 	dbw BANK(ImportedBackClefable), ImportedBackClefable
 	dbw BANK(ImportedBackWeezing), ImportedBackWeezing
 	dbw BANK(ImportedBackPersian), ImportedBackPersian
 	dbw BANK(ImportedBackMarowak), ImportedBackMarowak
-	dbw 0, 0
+	dbw BANK(ClaydolPicBack), ClaydolPicBack
 	dbw BANK(ImportedBackHaunter), ImportedBackHaunter
 	dbw BANK(ImportedBackAbra), ImportedBackAbra
 	dbw BANK(ImportedBackAlakazam), ImportedBackAlakazam
@@ -154,13 +154,13 @@ CustomBackStreams:
 	dbw BANK(ImportedBackBulbasaur), ImportedBackBulbasaur
 	dbw BANK(ImportedBackVenusaur), ImportedBackVenusaur
 	dbw BANK(ImportedBackTentacruel), ImportedBackTentacruel
-	dbw 0, 0
+	dbw BANK(CrobatPicBack), CrobatPicBack
 	dbw BANK(ImportedBackGoldeen), ImportedBackGoldeen
 	dbw BANK(ImportedBackSeaking), ImportedBackSeaking
-	dbw 0, 0
-	dbw 0, 0
-	dbw 0, 0
-	dbw 0, 0
+	dbw BANK(DittwoPicBack), DittwoPicBack
+	dbw BANK(LarvitarPicBack), LarvitarPicBack
+	dbw BANK(PupitarPicBack), PupitarPicBack
+	dbw BANK(TyranitarPicBack), TyranitarPicBack
 	dbw BANK(ImportedBackPonyta), ImportedBackPonyta
 	dbw BANK(ImportedBackRapidash), ImportedBackRapidash
 	dbw BANK(ImportedBackRattata), ImportedBackRattata

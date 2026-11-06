@@ -39,6 +39,8 @@ EntryAutoOne:
 	ld a, [de]
 	cp DITTO
 	jr z, .ditto
+	cp DITTWO
+	jr z, .ditto
 	cp UNIQUE_DITTO_HAPPY
 	ret nz
 .ditto
@@ -54,6 +56,8 @@ EntryAutoOne:
 	ret nz
 	ld a, [de]
 	cp DITTO
+	ret z
+	cp DITTWO
 	ret z
 	cp UNIQUE_DITTO_HAPPY
 	ret z

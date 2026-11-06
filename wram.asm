@@ -3364,8 +3364,9 @@ wCustomRandomValue:: ds 1
 wCounterDamage:: ds 2
 wCounterRecipient:: ds 1
 
-SECTION "Stack", WRAM0[$df00]
-	ds $ff
+; Expanded dex flags consume two bytes; retain the same stack top.
+SECTION "Stack", WRAM0[$df02]
+	ds $fd
 wStack:: ; dfff
 
 

@@ -75,7 +75,7 @@ def validate(version):
             d=updates.get(d['id'],d)
             assert list(game.memory[bank,start+(d['id']-1)*6:start+d['id']*6])==[d['id'],EFFECTS[d['effect']],d['power'],TYPES[d['type']],d['accuracy']*255//100,d['pp']]
         for turn in (0,1):
-            for ditto in (76,56):
+            for ditto in (76,56,159):
                 for status in (0,3,8,16,32,64):
                     actor,target,ap,tp=init('TACKLE',turn);put(ap+'Species',ditto)
                     word(ap+'HP',47);word(ap+'MaxHP',123);put(ap+'Status',status)
@@ -103,13 +103,14 @@ def validate(version):
                     if turn:assert list(game.memory[addr('wTransformedEnemyMonOriginalDVs'):addr('wTransformedEnemyMonOriginalDVs')+2])==[171,205]
                     # A new opponent never re-triggers this entry.
                     put(tp+'Species',1);call('EntryAutoBoth');assert get(ap+'Species')==153
-            for blocker in ('sub','fly','transformed','ditto','happy'):
+            for blocker in ('sub','fly','transformed','ditto','happy','dittwo'):
                 actor,target,ap,tp=init('TACKLE',turn);put(ap+'Species',76)
                 if blocker=='sub':put(f'w{target}BattleStatus2',16)
                 if blocker=='fly':put(f'w{target}BattleStatus1',64)
                 if blocker=='transformed':put(f'w{target}BattleStatus3',8)
                 if blocker=='ditto':put(tp+'Species',76)
                 if blocker=='happy':put(tp+'Species',56)
+                if blocker=='dittwo':put(tp+'Species',159)
                 call('EntryAutoBoth');assert not(get(f'w{actor}BattleStatus3')&8),(turn,blocker)
                 assert get(f'w{actor}Residual')&8
                 put(f'w{target}BattleStatus1',0);put(f'w{target}BattleStatus2',0);put(f'w{target}BattleStatus3',0);put(tp+'Species',153)
@@ -202,7 +203,7 @@ def validate(version):
             assert get(f'w{target}SelectedMove')==255
         # The catch-data reconstruction used by successful ball captures restores
         # the original Ditto identity and its pre-transform DVs.
-        for ditto in (76,56):
+        for ditto in (76,56,159):
             actor,target,ap,tp=init('TACKLE',1);put('wIsInBattle',1);put(ap+'Species',ditto);put('wEnemyMonSpecies2',ditto)
             game.memory[addr(ap+'DVs'):addr(ap+'DVs')+2]=[171,205]
             game.memory[addr(tp+'DVs'):addr(tp+'DVs')+2]=[18,52]

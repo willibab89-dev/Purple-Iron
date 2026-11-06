@@ -8,6 +8,7 @@ from PIL import Image
 from pyboy import PyBoy
 from test_unique_species import ROOT, symbols
 from test_move_patch_3 import MOVES
+from test_move_patch_1 import TYPES
 from generate_unique_encounters import pools
 
 PLAN=json.loads((ROOT/'data/backsprite_import.json').read_text())
@@ -36,16 +37,17 @@ def validate(version):
         assert hashlib.sha256((ROOT/entry['source']).read_bytes()).hexdigest()==entry['sha256']
         assert Image.open(ROOT/entry['png']).size==(56,56)
     assert len(rom)==1024*1024
-    headers=data('BaseStats',176*28);order=data('PokedexOrder',190)
-    assert sorted(n for n in order if n)==list(range(1,177))
-    assert (176+7)//8==22
-    for name,address in PLAN['save_addresses'].items():assert addr(name)==address,name
+    headers=data('BaseStats',183*28);order=data('PokedexOrder',190)
+    assert sorted(n for n in order if n)==list(range(1,184))
+    assert (183+7)//8==23
+    assert addr('wPokedexSeen')-addr('wPokedexOwned')==23
     for i,old in enumerate(PLAN['previous_headers']):
         before=bytes.fromhex(old);now=headers[i*28:(i+1)*28]
         assert before[:11]+before[15:]==now[:11]+now[15:],i+1
     for d in NEW:
         h=headers[(d['dex']-1)*28:d['dex']*28]
         assert list(h[1:6])==d['stats']
+        assert list(h[6:8])==[TYPES[t] for t in d['types']]
         assert order[d['index']-1]==d['dex']
         assert h[8]==d['catch'] and h[9]==d['xp']
     game=PyBoy(str(ROOT/(version+'.gbc')),window='null',sound_emulated=False)
@@ -110,36 +112,42 @@ def validate(version):
         # four formerly unused high bits without moving later fields.
         put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0);put('wNumBagItems',7)
         for d in NEW:
+            put('wPartyCount',0)
             put('wCurEnemyLVL',40);put('wcf91',d['index']);call('AddPartyMon')
-            assert get('wPartyCount')[0]==NEW.index(d)+1
+            assert get('wPartyCount')[0]==1
             assert get('wNumBagItems')[0]==7
-            slot=addr('wPartyMon1')+NEW.index(d)*(addr('wPartyMon2')-addr('wPartyMon1'))
-            known=d['start']+[move for level,move in d['learn'] if level<=40]
+            slot=addr('wPartyMon1')
+            known=list(d['start'])
+            for level,move in d['learn']:
+                if level<=40 and move not in known:known=(known+[move])[-4:]
             expected_moves=[MOVES[move] for move in known[-4:]]
+            expected_moves += [0]*(4-len(expected_moves))
             off=addr('wPartyMon1Moves')-addr('wPartyMon1')
             assert list(game.memory[slot+off:slot+off+4])==expected_moves,d['name']
             off=addr('wPartyMon1PP')-addr('wPartyMon1')
-            assert list(game.memory[slot+off:slot+off+4])==[data('Moves',219*6)[(move-1)*6+5] for move in expected_moves]
-            flag=d['dex']-1;assert get('wPokedexOwned',22)[flag//8]&(1<<(flag%8))
+            assert list(game.memory[slot+off:slot+off+4])==[data('Moves',219*6)[(move-1)*6+5] if move else 0 for move in expected_moves]
+            flag=d['dex']-1;assert get('wPokedexOwned',23)[flag//8]&(1<<(flag%8))
             for dv in range(16):
                 call('DetermineMonGender',D=d['index'],E=dv)
-                assert game.register_file.D==(0xf5 if d['symbol']=='MILTANK' or dv<8 else 0xef)
-        snapshot=get('wPokedexOwned',22);assert snapshot[-1]&240==240
+                assert game.register_file.D==(0 if d['symbol'] in ('BALTOY','CLAYDOL','DITTWO') else 0xf5 if d['symbol']=='MILTANK' or dv<8 else 0xef)
+        snapshot=get('wPokedexOwned',23);assert snapshot[-1]&127==127
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2')
-        for n in ('wPokedexOwned','wPokedexSeen'):game.memory[addr(n):addr(n)+22]=[0]*22
+        for n in ('wPokedexOwned','wPokedexSeen'):game.memory[addr(n):addr(n)+23]=[0]*23
         call('LoadSAV0');call('LoadSAV2');assert not(game.register_file.F&16)
-        assert get('wPokedexOwned',22)==snapshot
+        assert get('wPokedexOwned',23)==snapshot
         stride=addr('wPartyMon2')-addr('wPartyMon1')
-        for i,d in enumerate(NEW):assert game.memory[addr('wPartyMon1')+i*stride]==d['index']
+        assert game.memory[addr('wPartyMon1')]==NEW[-1]['index']
+        for name,level,target in [('Baltoy',36,146),('Larvitar',30,161),('Pupitar',55,162),('Golbat',40,156)]:
+            assert data(name+'EvosMoves',4)==bytes([1,level,target,0])
         # Evolution record is a real level-38 evolution to Toxapex.
         assert data('MareanieEvosMoves',4)==bytes([1,38,134,0])
-        expected={'MAREANIE':5,'MILTANK':2,'SABLEYE':2}
+        expected={'MAREANIE':5,'MILTANK':2,'SABLEYE':2,'BALTOY':2,'LARVITAR':2,'DITTWO':1}
         for mapname,kind,variants in pools('_RED' if version=='pokered' else '_BLUE'):
             counts=Counter(name for level,name in variants)
             for name,rate in expected.items():
                 if name in counts:assert counts[name]==rate,(mapname,kind,name)
             if 'UNIQUE_OMANYTE_UNIQUE' in counts:assert counts['UNIQUE_OMANYTE_UNIQUE']==1
-        print(f'{version}: 176 back-loader paths/pixel comparisons; four species/party/gender/evolution/save flags; old stats/layout and encounter shares passed')
+        print(f'{version}: 183 back-loader paths/pixel comparisons; eleven species/party/gender/evolution/save flags; old stats and encounter shares passed')
     finally:game.stop(save=False)
 
 

@@ -1,4 +1,4 @@
-name: Back sprites and four new Pokemon
+name: "Seven more Pokemon: 183 species"
 
 on:
   workflow_dispatch:
@@ -65,7 +65,7 @@ jobs:
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
-          name: pokemon-backs-and-new-species-bps
+          name: pokemon-183-species-bps
           retention-days: 30
           if-no-files-found: error
           path: |
@@ -85,3 +85,4 @@ jobs:
             ${{ runner.temp }}/patches/TM-DISTRIBUTION.md
             ${{ runner.temp }}/patches/NEW-TMS.md
             ${{ runner.temp }}/patches/BACKSPRITES-AND-NEW-SPECIES.md
+            ${{ runner.temp }}/patches/SEVEN-MORE-SPECIES.md

@@ -35,7 +35,7 @@ def validate(version):
         return rom[start:start + size]
 
     dex_order = data("PokedexOrder", 190)
-    assert sorted(n for n in dex_order if n) == list(range(1, 177))
+    assert sorted(n for n in dex_order if n) == list(range(1, 184))
     assert len(rom) == 1024 * 1024
     assert (sum(rom) - rom[0x14e] - rom[0x14f]) & 65535 == int.from_bytes(rom[0x14e:0x150], "big")
     header_sum = 0
@@ -154,7 +154,7 @@ def validate(version):
             assert get("wPartyCount")[0] == 1
             assert get("wPartyMon1")[0] == index
             for field in ("wPokedexOwned", "wPokedexSeen"):
-                flags = get(field, 22)
+                flags = get(field, 23)
                 bit = entry["dex"] - 1
                 assert flags[bit // 8] & (1 << (bit % 8))
             assert get("wNumBagItems")[0] == 7
@@ -166,15 +166,15 @@ def validate(version):
                 call("DetermineMonGender", D=entry["base_index"], E=attack_dv)
                 assert gender == game.register_file.D
         # Save/load both expanded bitfields through the actual SRAM routines.
-        owned, seen = get("wPokedexOwned", 22), get("wPokedexSeen", 22)
+        owned, seen = get("wPokedexOwned", 23), get("wPokedexSeen", 23)
         call("SaveSAVtoSRAM0")
         for name in ("wPokedexOwned", "wPokedexSeen"):
             start = address(name)
-            game.memory[start:start + 22] = [0] * 22
+            game.memory[start:start + 23] = [0] * 23
         call("LoadSAV0")
         assert not (game.register_file.F & 0x10), "save checksum failed"
-        assert get("wPokedexOwned", 22) == owned
-        assert get("wPokedexSeen", 22) == seen
+        assert get("wPokedexOwned", 23) == owned
+        assert get("wPokedexSeen", 23) == seen
         assert (ROOT / "data/unique_encounters.asm").read_text() == render()
         map_names = re.findall(r"^\s*mapconst\s+(\w+),", (ROOT / "constants/map_constants.asm").read_text(), re.M)
         indexes = {entry["symbol"]: entry["index"] for entry in SPECIES}
@@ -257,7 +257,7 @@ def validate(version):
             assert raw[-1] == 255 and set(raw[:-1]) == expected_maps
     finally:
         game.stop(save=False)
-    print(f"{version}: 176 dex/header round-trips, 42 sprite decodes, 21 party additions, expanded save/load; all 100 rolls in {len(habitat_pools)} encounter pools and AREA maps passed")
+    print(f"{version}: 183 dex/header round-trips, 42 sprite decodes, 21 party additions, expanded save/load; all 100 rolls in {len(habitat_pools)} encounter pools and AREA maps passed")
 
 
 if __name__ == "__main__":

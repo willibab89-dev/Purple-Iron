@@ -1,3 +1,5 @@
+> Historical guide: the current build has 183 species and requires a fresh save. See [SEVEN-MORE-SPECIES.md](SEVEN-MORE-SPECIES.md). Save compatibility statements below apply only to the earlier build.
+
 # Back sprites and four additional Pokémon: 176 species
 
 Cumulative Red/Blue BPS patches include all prior front sprites, unique species, encounters, crit/freeze changes, the completed move overhaul, thematic TM compatibility and TM51–TM60 with their shops/prices. This patch imports the supplied back sprites, updates Snorlax's front, and adds Mareanie, Toxapex, Miltank and Sableye.

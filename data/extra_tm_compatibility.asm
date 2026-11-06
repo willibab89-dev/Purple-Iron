@@ -175,4 +175,11 @@ ExtraTMCompatibilityTable:
 	db $0c, $00 ; 174: toxapex
 	db $62, $00 ; 175: miltank
 	db $d2, $02 ; 176: sableye
+	db 0, 0 ; 177: baltoy
+	db 0, 0 ; 178: claydol
+	db 0, 0 ; 179: crobat
+	db 0, 0 ; 180: dittwo
+	db 0, 0 ; 181: larvitar
+	db 0, 0 ; 182: pupitar
+	db 0, 0 ; 183: tyranitar
 ExtraTMCompatibilityTableEnd:

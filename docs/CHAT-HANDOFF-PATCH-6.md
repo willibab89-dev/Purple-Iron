@@ -1,3 +1,5 @@
+> Historical guide: the current build has 183 species and requires a fresh save. See [SEVEN-MORE-SPECIES.md](SEVEN-MORE-SPECIES.md). Save compatibility statements below apply only to the earlier build.
+
 # Purple-Iron: planning handoff after move patch 6
 
 **Update:** the game now has 176 species and imported back sprites; see [BACKSPRITES-AND-NEW-SPECIES.md](BACKSPRITES-AND-NEW-SPECIES.md) for the four new Pokémon. Ten new TMs and shop stock are implemented in [NEW-TMS.md](NEW-TMS.md). Existing TM compatibility has also been redistributed: read [TM-DISTRIBUTION.md](TM-DISTRIBUTION.md) for the current masks; the TM lists below are historical. The move overhaul is complete through patch 8. Read [MOVE-PATCH-7.md](MOVE-PATCH-7.md) for Ingrain, Curse, Shadow Leech, Wrap, Fire Spin and 26 learning additions, and [MOVE-PATCH-8.md](MOVE-PATCH-8.md) for Roar, Flying-type Whirlwind and Ditto/Happy Ditto automatic entry transformation. There are now 219 move records. The tables below remain a historical patch-6 snapshot; the two linked guides supersede its unfinished-move list and Transform behavior. Pokémon base stats remain unchanged.

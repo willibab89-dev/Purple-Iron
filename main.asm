@@ -924,6 +924,7 @@ INCLUDE "engine/battle/draw_hud_pokeball_gfx.asm"
 ;TradingAnimationGraphics2End:
 
 INCLUDE "engine/evos_moves.asm"
+SECTION "Relocated healing and transformation effects", ROMX, BANK[$39]
 INCLUDE "engine/battle/moveEffects/heal_effect.asm"
 INCLUDE "engine/battle/moveEffects/transform_effect.asm"
 INCLUDE "engine/battle/moveEffects/reflect_light_screen_effect.asm"

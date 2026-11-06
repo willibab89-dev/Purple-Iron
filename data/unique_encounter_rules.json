@@ -155,5 +155,44 @@
     ],
     "level": 18,
     "percent": 2
+  },
+  {
+    "species": "BALTOY",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROCK_TUNNEL_1",
+      "ROCK_TUNNEL_2"
+    ],
+    "level": 18,
+    "percent": 2
+  },
+  {
+    "species": "LARVITAR",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "VICTORY_ROAD_1",
+      "VICTORY_ROAD_2",
+      "VICTORY_ROAD_3"
+    ],
+    "level": 40,
+    "percent": 2
+  },
+  {
+    "species": "DITTWO",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "MANSION_1",
+      "MANSION_2",
+      "MANSION_3",
+      "MANSION_4"
+    ],
+    "level": 30,
+    "percent": 1
   }
 ]

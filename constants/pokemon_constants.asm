@@ -139,13 +139,13 @@ const_value = 1
 	const SABLEYE ; $89 (formerly mislabeled MissingNo slot)
 	const KINGLER      ; $8A
 	const CLOYSTER     ; $8B
-	const MISSINGNO_8C ; $8C
+	const BALTOY ; $8C
 	const ELECTRODE    ; $8D
 	const CLEFABLE     ; $8E
 	const WEEZING      ; $8F
 	const PERSIAN      ; $90
 	const MAROWAK      ; $91
-	const MISSINGNO_92 ; $92
+	const CLAYDOL ; $92
 	const HAUNTER      ; $93
 	const ABRA         ; $94
 	const ALAKAZAM     ; $95
@@ -155,13 +155,13 @@ const_value = 1
 	const BULBASAUR    ; $99
 	const VENUSAUR     ; $9A
 	const TENTACRUEL   ; $9B
-	const MISSINGNO_9C ; $9C
+	const CROBAT ; $9C
 	const GOLDEEN      ; $9D
 	const SEAKING      ; $9E
-	const MISSINGNO_9F ; $9F
-	const MISSINGNO_A0 ; $A0
-	const MISSINGNO_A1 ; $A1
-	const MISSINGNO_A2 ; $A2
+	const DITTWO ; $9F
+	const LARVITAR ; $A0
+	const PUPITAR ; $A1
+	const TYRANITAR ; $A2
 	const PONYTA       ; $A3
 	const RAPIDASH     ; $A4
 	const RATTATA      ; $A5

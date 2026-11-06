@@ -1,3 +1,5 @@
+> Historical guide: the current build has 183 species and requires a fresh save. See [SEVEN-MORE-SPECIES.md](SEVEN-MORE-SPECIES.md). Save compatibility statements below apply only to the earlier build.
+
 # Current version: 176 Pokémon
 
 See `BACKSPRITES-AND-NEW-SPECIES.md` for the new backs and dex 173–176, `NEW-TMS.md` for TM51–TM60 and shops, `TM-DISTRIBUTION.md` for thematic TM01–TM50 access and `MOVE-PATCH-8.md` for the completed move overhaul. Earlier patch notes are retained for reference.

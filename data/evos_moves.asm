@@ -141,13 +141,13 @@ EvosMovesPointerTable:
 	dw SableyeEvosMoves
 	dw KinglerEvosMoves
 	dw CloysterEvosMoves
-	dw MissingNo8CEvosMoves
+	dw BaltoyEvosMoves
 	dw ElectrodeEvosMoves
 	dw ClefableEvosMoves
 	dw WeezingEvosMoves
 	dw PersianEvosMoves
 	dw MarowakEvosMoves
-	dw MissingNo92EvosMoves
+	dw ClaydolEvosMoves
 	dw HaunterEvosMoves
 	dw AbraEvosMoves
 	dw AlakazamEvosMoves
@@ -157,13 +157,13 @@ EvosMovesPointerTable:
 	dw BulbasaurEvosMoves
 	dw VenusaurEvosMoves
 	dw TentacruelEvosMoves
-	dw MissingNo9CEvosMoves
+	dw CrobatEvosMoves
 	dw GoldeenEvosMoves
 	dw SeakingEvosMoves
-	dw MissingNo9FEvosMoves
-	dw MissingNoA0EvosMoves
-	dw MissingNoA1EvosMoves
-	dw MissingNoA2EvosMoves
+	dw DittwoEvosMoves
+	dw LarvitarEvosMoves
+	dw PupitarEvosMoves
+	dw TyranitarEvosMoves
 	dw PonytaEvosMoves
 	dw RapidashEvosMoves
 	dw RattataEvosMoves
@@ -1955,6 +1955,7 @@ HypnoEvosMoves:
 	db 0
 
 GolbatEvosMoves:
+	db EV_LEVEL, 40, CROBAT
 ; Evolutions
 	db 0
 ; Learnset
@@ -2771,4 +2772,71 @@ SableyeEvosMoves:
 	db 42, RECOVER
 	db 48, SLASH
 	db 54, PSYCH_UP
+	db 0
+
+BaltoyEvosMoves:
+	db EV_LEVEL, 36, CLAYDOL
+	db 0
+	db 5, TACKLE
+	db 11, ROCK_THROW
+	db 17, ASTONISH
+	db 23, PSYBEAM
+	db 29, ROCK_TOMB
+	db 35, NIGHT_SHADE
+	db 41, EARTHQUAKE
+	db 0
+
+ClaydolEvosMoves:
+	db 0
+	db 17, PSYBEAM
+	db 23, ROCK_TOMB
+	db 29, NIGHT_SHADE
+	db 35, PSYCHIC_M
+	db 41, EARTHQUAKE
+	db 47, EXPLOSION
+	db 0
+
+CrobatEvosMoves:
+	db 0
+	db 15, BITE
+	db 21, WING_ATTACK
+	db 28, CONFUSE_RAY
+	db 35, POISON_FANG
+	db 42, AERIAL_ACE
+	db 49, WING_ATTACK
+	db 0
+
+DittwoEvosMoves:
+	db 0
+	db 0
+
+LarvitarEvosMoves:
+	db EV_LEVEL, 30, PUPITAR
+	db 0
+	db 8, SAND_ATTACK
+	db 15, ROCK_THROW
+	db 22, DIG
+	db 29, ROCK_SLIDE
+	db 36, THRASH
+	db 43, EARTHQUAKE
+	db 0
+
+PupitarEvosMoves:
+	db EV_LEVEL, 55, TYRANITAR
+	db 0
+	db 15, ROCK_THROW
+	db 22, DIG
+	db 29, ROCK_SLIDE
+	db 38, THRASH
+	db 47, EARTHQUAKE
+	db 0
+
+TyranitarEvosMoves:
+	db 0
+	db 22, DIG
+	db 29, ROCK_SLIDE
+	db 38, THRASH
+	db 47, EARTHQUAKE
+	db 55, DRAGON_RAGE
+	db 65, HYPER_BEAM
 	db 0

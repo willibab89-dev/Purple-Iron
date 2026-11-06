@@ -393,5 +393,498 @@
       "the darkness when",
       "it spots a jewel."
     ]
+  },
+  {
+    "name": "baltoy",
+    "symbol": "BALTOY",
+    "old": "MISSINGNO_8C",
+    "index": 140,
+    "dex": 177,
+    "stats": [
+      40,
+      40,
+      55,
+      55,
+      55
+    ],
+    "types": [
+      "ROCK",
+      "GHOST"
+    ],
+    "catch": 90,
+    "xp": 100,
+    "growth": 0,
+    "cry": "GEODUDE",
+    "palette": "PAL_PURPLEMON",
+    "start": [
+      "CONFUSION",
+      "HARDEN"
+    ],
+    "tms": [
+      6,
+      10,
+      32,
+      44,
+      50
+    ],
+    "extra": [],
+    "evo": [
+      "EV_LEVEL, 36, CLAYDOL"
+    ],
+    "learn": [
+      [
+        5,
+        "TACKLE"
+      ],
+      [
+        11,
+        "ROCK_THROW"
+      ],
+      [
+        17,
+        "ASTONISH"
+      ],
+      [
+        23,
+        "PSYBEAM"
+      ],
+      [
+        29,
+        "ROCK_TOMB"
+      ],
+      [
+        35,
+        "NIGHT_SHADE"
+      ],
+      [
+        41,
+        "EARTHQUAKE"
+      ]
+    ],
+    "height": [
+      3,
+      3
+    ],
+    "weight": 500,
+    "category": "MYSTERIOUS",
+    "text": [
+      "A rare POKEMON.",
+      "Its habits are",
+      "still being studied."
+    ]
+  },
+  {
+    "name": "claydol",
+    "symbol": "CLAYDOL",
+    "old": "MISSINGNO_92",
+    "index": 146,
+    "dex": 178,
+    "stats": [
+      60,
+      70,
+      105,
+      75,
+      120
+    ],
+    "types": [
+      "ROCK",
+      "GHOST"
+    ],
+    "catch": 90,
+    "xp": 100,
+    "growth": 0,
+    "cry": "GOLEM",
+    "palette": "PAL_PURPLEMON",
+    "start": [
+      "CONFUSION",
+      "HARDEN",
+      "ROCK_THROW",
+      "ASTONISH"
+    ],
+    "tms": [
+      6,
+      10,
+      32,
+      44,
+      50
+    ],
+    "extra": [],
+    "evo": [],
+    "learn": [
+      [
+        17,
+        "PSYBEAM"
+      ],
+      [
+        23,
+        "ROCK_TOMB"
+      ],
+      [
+        29,
+        "NIGHT_SHADE"
+      ],
+      [
+        35,
+        "PSYCHIC_M"
+      ],
+      [
+        41,
+        "EARTHQUAKE"
+      ],
+      [
+        47,
+        "EXPLOSION"
+      ]
+    ],
+    "height": [
+      3,
+      3
+    ],
+    "weight": 500,
+    "category": "MYSTERIOUS",
+    "text": [
+      "A rare POKEMON.",
+      "Its habits are",
+      "still being studied."
+    ]
+  },
+  {
+    "name": "crobat",
+    "symbol": "CROBAT",
+    "old": "MISSINGNO_9C",
+    "index": 156,
+    "dex": 179,
+    "stats": [
+      85,
+      90,
+      80,
+      130,
+      80
+    ],
+    "types": [
+      "POISON",
+      "FLYING"
+    ],
+    "catch": 90,
+    "xp": 204,
+    "growth": 0,
+    "cry": "GOLBAT",
+    "palette": "PAL_GREENMON",
+    "start": [
+      "LEECH_LIFE",
+      "SCREECH",
+      "BITE",
+      "CONFUSE_RAY"
+    ],
+    "tms": [
+      6,
+      10,
+      32,
+      44,
+      50
+    ],
+    "extra": [],
+    "evo": [],
+    "learn": [
+      [
+        15,
+        "BITE"
+      ],
+      [
+        21,
+        "WING_ATTACK"
+      ],
+      [
+        28,
+        "CONFUSE_RAY"
+      ],
+      [
+        35,
+        "POISON_FANG"
+      ],
+      [
+        42,
+        "AERIAL_ACE"
+      ],
+      [
+        49,
+        "WING_ATTACK"
+      ]
+    ],
+    "height": [
+      3,
+      3
+    ],
+    "weight": 500,
+    "category": "MYSTERIOUS",
+    "text": [
+      "A rare POKEMON.",
+      "Its habits are",
+      "still being studied."
+    ]
+  },
+  {
+    "name": "dittwo",
+    "symbol": "DITTWO",
+    "old": "MISSINGNO_9F",
+    "index": 159,
+    "dex": 180,
+    "stats": [
+      48,
+      48,
+      48,
+      48,
+      48
+    ],
+    "types": [
+      "NORMAL",
+      "NORMAL"
+    ],
+    "catch": 35,
+    "xp": 61,
+    "growth": 0,
+    "cry": "DITTO",
+    "palette": "PAL_GREENMON",
+    "start": [
+      "TRANSFORM"
+    ],
+    "tms": [],
+    "extra": [],
+    "evo": [],
+    "learn": [],
+    "height": [
+      3,
+      3
+    ],
+    "weight": 500,
+    "category": "MYSTERIOUS",
+    "text": [
+      "A rare POKEMON.",
+      "Its habits are",
+      "still being studied."
+    ]
+  },
+  {
+    "name": "larvitar",
+    "symbol": "LARVITAR",
+    "old": "MISSINGNO_A0",
+    "index": 160,
+    "dex": 181,
+    "stats": [
+      50,
+      64,
+      50,
+      41,
+      45
+    ],
+    "types": [
+      "GROUND",
+      "GROUND"
+    ],
+    "catch": 45,
+    "xp": 67,
+    "growth": 5,
+    "cry": "RHYHORN",
+    "palette": "PAL_GREENMON",
+    "start": [
+      "BITE",
+      "LEER"
+    ],
+    "tms": [
+      6,
+      10,
+      32,
+      44,
+      50
+    ],
+    "extra": [],
+    "evo": [
+      "EV_LEVEL, 30, PUPITAR"
+    ],
+    "learn": [
+      [
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        15,
+        "ROCK_THROW"
+      ],
+      [
+        22,
+        "DIG"
+      ],
+      [
+        29,
+        "ROCK_SLIDE"
+      ],
+      [
+        36,
+        "THRASH"
+      ],
+      [
+        43,
+        "EARTHQUAKE"
+      ]
+    ],
+    "height": [
+      3,
+      3
+    ],
+    "weight": 500,
+    "category": "MYSTERIOUS",
+    "text": [
+      "A rare POKEMON.",
+      "Its habits are",
+      "still being studied."
+    ]
+  },
+  {
+    "name": "pupitar",
+    "symbol": "PUPITAR",
+    "old": "MISSINGNO_A1",
+    "index": 161,
+    "dex": 182,
+    "stats": [
+      70,
+      84,
+      70,
+      51,
+      65
+    ],
+    "types": [
+      "GROUND",
+      "GROUND"
+    ],
+    "catch": 45,
+    "xp": 144,
+    "growth": 5,
+    "cry": "RHYDON",
+    "palette": "PAL_GREENMON",
+    "start": [
+      "BITE",
+      "LEER",
+      "SAND_ATTACK",
+      "ROCK_THROW"
+    ],
+    "tms": [
+      6,
+      10,
+      32,
+      44,
+      50
+    ],
+    "extra": [],
+    "evo": [
+      "EV_LEVEL, 55, TYRANITAR"
+    ],
+    "learn": [
+      [
+        15,
+        "ROCK_THROW"
+      ],
+      [
+        22,
+        "DIG"
+      ],
+      [
+        29,
+        "ROCK_SLIDE"
+      ],
+      [
+        38,
+        "THRASH"
+      ],
+      [
+        47,
+        "EARTHQUAKE"
+      ]
+    ],
+    "height": [
+      3,
+      3
+    ],
+    "weight": 500,
+    "category": "MYSTERIOUS",
+    "text": [
+      "A rare POKEMON.",
+      "Its habits are",
+      "still being studied."
+    ]
+  },
+  {
+    "name": "tyranitar",
+    "symbol": "TYRANITAR",
+    "old": "MISSINGNO_A2",
+    "index": 162,
+    "dex": 183,
+    "stats": [
+      100,
+      134,
+      110,
+      61,
+      95
+    ],
+    "types": [
+      "GROUND",
+      "DRAGON"
+    ],
+    "catch": 45,
+    "xp": 218,
+    "growth": 5,
+    "cry": "RHYDON",
+    "palette": "PAL_GREENMON",
+    "start": [
+      "BITE",
+      "LEER",
+      "ROCK_SLIDE",
+      "THRASH"
+    ],
+    "tms": [
+      6,
+      10,
+      32,
+      44,
+      50
+    ],
+    "extra": [],
+    "evo": [],
+    "learn": [
+      [
+        22,
+        "DIG"
+      ],
+      [
+        29,
+        "ROCK_SLIDE"
+      ],
+      [
+        38,
+        "THRASH"
+      ],
+      [
+        47,
+        "EARTHQUAKE"
+      ],
+      [
+        55,
+        "DRAGON_RAGE"
+      ],
+      [
+        65,
+        "HYPER_BEAM"
+      ]
+    ],
+    "height": [
+      3,
+      3
+    ],
+    "weight": 500,
+    "category": "MYSTERIOUS",
+    "text": [
+      "A rare POKEMON.",
+      "Its habits are",
+      "still being studied."
+    ]
   }
 ]

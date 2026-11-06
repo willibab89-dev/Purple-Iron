@@ -138,13 +138,13 @@ PokedexEntryPointers:
 	dw SableyeDexEntry
 	dw KinglerDexEntry
 	dw CloysterDexEntry
-	dw MissingNoDexEntry
+	dw BaltoyDexEntry
 	dw ElectrodeDexEntry
 	dw ClefableDexEntry
 	dw WeezingDexEntry
 	dw PersianDexEntry
 	dw MarowakDexEntry
-	dw MissingNoDexEntry
+	dw ClaydolDexEntry
 	dw HaunterDexEntry
 	dw AbraDexEntry
 	dw AlakazamDexEntry
@@ -154,13 +154,13 @@ PokedexEntryPointers:
 	dw BulbasaurDexEntry
 	dw VenusaurDexEntry
 	dw TentacruelDexEntry
-	dw MissingNoDexEntry
+	dw CrobatDexEntry
 	dw GoldeenDexEntry
 	dw SeakingDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw DittwoDexEntry
+	dw LarvitarDexEntry
+	dw PupitarDexEntry
+	dw TyranitarDexEntry
 	dw PonytaDexEntry
 	dw RapidashDexEntry
 	dw RattataDexEntry
@@ -1284,4 +1284,53 @@ SableyeDexEntry:
 	db 1, 8
 	dw 243
 	TX_FAR _SableyeDexEntry
+	db "@"
+
+BaltoyDexEntry:
+	db "MYSTERIOUS@"
+	db 3, 3
+	dw 500
+	TX_FAR _BaltoyDexEntry
+	db "@"
+
+ClaydolDexEntry:
+	db "MYSTERIOUS@"
+	db 3, 3
+	dw 500
+	TX_FAR _ClaydolDexEntry
+	db "@"
+
+CrobatDexEntry:
+	db "MYSTERIOUS@"
+	db 3, 3
+	dw 500
+	TX_FAR _CrobatDexEntry
+	db "@"
+
+DittwoDexEntry:
+	db "MYSTERIOUS@"
+	db 3, 3
+	dw 500
+	TX_FAR _DittwoDexEntry
+	db "@"
+
+LarvitarDexEntry:
+	db "MYSTERIOUS@"
+	db 3, 3
+	dw 500
+	TX_FAR _LarvitarDexEntry
+	db "@"
+
+PupitarDexEntry:
+	db "MYSTERIOUS@"
+	db 3, 3
+	dw 500
+	TX_FAR _PupitarDexEntry
+	db "@"
+
+TyranitarDexEntry:
+	db "MYSTERIOUS@"
+	db 3, 3
+	dw 500
+	TX_FAR _TyranitarDexEntry
 	db "@"
