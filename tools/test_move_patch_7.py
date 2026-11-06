@@ -71,6 +71,8 @@ def validate(version):
         for label in ('ApplyAttackToPlayerPokemon','ApplyAttackToEnemyPokemon'):
             b,a=syms[label];game.hook_register(b,a,lambda label:applied.append(label),label)
         bank,start=syms['Moves'];updates={d['id']:d['after'] for d in PLAN['existing_changes']}
+        patch8=json.loads((ROOT/'data/move_patch_8.json').read_text())
+        updates.update({x['id']:x['after'] for x in patch8['existing_changes']})
         entries=[updates.get(d['id'],d) for d in PLAN['baseline_moves']]+PLAN['new_moves'];assert len(entries)==219
         for d in entries:
             actual=list(game.memory[bank,start+(d['id']-1)*6:start+d['id']*6])

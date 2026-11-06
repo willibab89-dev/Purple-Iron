@@ -1542,7 +1542,7 @@ EnemySendOutFirstMon:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;AI trainer switching & sendout is handled in this block
 .next
-	callba AISelectWhichMonSendOut
+	callab EntrySelectEnemy
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .next3
 	ld a, [wWhichPokemon]
@@ -1607,6 +1607,8 @@ EnemySendOutFirstMon:
 	call GoBackToPartyMenu
 	jr .next9
 .next6
+	callab ResidualPlayerSwitchBlocked
+	jr nz, .next8
 	call HasMonFainted
 	jr z, .next8
 	xor a
@@ -1642,7 +1644,13 @@ EnemySendOutFirstMon:
 	callba ShinyEnemyAnimation
 	ld a, [wCurrentMenuItem]
 	and a
-	ret nz
+	jr z, .playerResponded
+	ld a, [wFirstMonsNotOutYet]
+	dec a
+	ret z
+	callab EntryAutoBoth
+	ret
+.playerResponded
 	xor a
 	ld [wPartyGainExpFlags], a
 	ld [wPartyFoughtCurrentEnemyFlags], a
@@ -1977,6 +1985,7 @@ SendOutMon:
 	call PrintEmptyString
 	;joenote - check for player shiny & play animation on send-out
 	callba ShinyPlayerAnimation
+	callab EntryAutoBoth
 	jp SaveScreenTilesToBuffer1
 
 ; show 2 stages of the player mon getting smaller before disappearing
@@ -8471,6 +8480,8 @@ ThrashPetalDanceEffect:
 	jp PlayBattleAnimation2
 
 SwitchAndTeleportEffect:
+	callab EntryTryPhaze
+	ret nz
 	ld a, [H_WHOSETURN]
 	and a
 	jr nz, .handleEnemy

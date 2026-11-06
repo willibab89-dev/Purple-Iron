@@ -28,7 +28,7 @@ MoveEnd:
 	move CUT,          NO_ADDITIONAL_EFFECT,        50, BUG,      95, 30
 	move GUST,         NO_ADDITIONAL_EFFECT,        40, FLYING,  100, 35
 	move WING_ATTACK,  NO_ADDITIONAL_EFFECT,        65, FLYING,  100, 25
-	move WHIRLWIND,    SWITCH_AND_TELEPORT_EFFECT,   0, NORMAL,    85, 20
+	move WHIRLWIND,    SWITCH_AND_TELEPORT_EFFECT,   0, FLYING,    85, 20
 	move FLY,          FLY_EFFECT,                  70, FLYING,  100, 15
 	move BIND,         ATTACK_AND_STAT_EFFECT,       60, NORMAL,   90, 15
 	move SLAM,         ATTACK_AND_STAT_EFFECT,       60, NORMAL,   90, 20

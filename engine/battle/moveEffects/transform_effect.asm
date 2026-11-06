@@ -1,16 +1,29 @@
 TransformEffect_:
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .originalDVsSaved
+	ld a, [wEnemyBattleStatus3]
+	bit TRANSFORMED, a
+	jr nz, .originalDVsSaved
+	ld a, [wEnemyMonDVs]
+	ld [wTransformedEnemyMonOriginalDVs], a
+	ld a, [wEnemyMonDVs + 1]
+	ld [wTransformedEnemyMonOriginalDVs + 1], a
+.originalDVsSaved
 	ld hl, wBattleMonSpecies
 	ld de, wEnemyMonSpecies
 	ld bc, wEnemyBattleStatus3
-	ld a, [wEnemyBattleStatus1]
 	ld a, [H_WHOSETURN]
 	and a
-	jr nz, .hitTest
+	jr z, .playerActor
+	ld a, [wPlayerBattleStatus1]
+	jr .hitTest
+.playerActor
 	ld hl, wEnemyMonSpecies
 	ld de, wBattleMonSpecies
 	ld bc, wPlayerBattleStatus3
 	ld [wPlayerMoveListIndex], a
-	ld a, [wPlayerBattleStatus1]
+	ld a, [wEnemyBattleStatus1]
 .hitTest
 	bit INVULNERABLE, a ; is mon invulnerable to typical attacks? (fly/dig)
 	jp nz, .failed
@@ -65,27 +78,7 @@ TransformEffect_:
 	inc bc
 	;call CopyData
 	call CopyDataTransform	;joenote - want to do a special copy that doesn't copy the transform move and replaces it
-	;de is now pointing to DVs
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .next
-; save enemy mon DVs at wTransformedEnemyMonOriginalDVs
-; joenote - there is a bug here. It assumes the enemy mon is not transformed already.
-; If the enemy has already transformed once before, then the DVs for that form 
-; end up getting written to wTransformedEnemyMonOriginalDVs.
-; This causes the true original untransformed DVs to be overwritten with the DVs of 
-; the prior form. Further transformations will continue to overwrite this with the DVs
-; of the last form  utilized.
-; Therefore, a check is needed to skip this if the enemy is already transformed.
-	ld a, [wEnemyBattleStatus3]
-	bit 3, a 	;check the state of the enemy transformed bit
-	jr nz, .next	;skip ahead if bit is set
-	ld a, [de]
-	ld [wTransformedEnemyMonOriginalDVs], a
-	inc de
-	ld a, [de]
-	ld [wTransformedEnemyMonOriginalDVs + 1], a
-	dec de
+	; Original enemy DVs were preserved before setting TRANSFORMED.
 .next
 ; DVs
 	ld a, [hli]
@@ -136,6 +129,8 @@ TransformEffect_:
 	ld hl, wEnemyMonStatMods
 	ld de, wPlayerMonStatMods
 	call .copyBasedOnTurn ; stat mods
+	callab CustomSetActor
+	callab CustomRecalculate
 	ld hl, TransformedText
 	jp PrintText
 

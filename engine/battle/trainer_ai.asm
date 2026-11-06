@@ -186,8 +186,20 @@ AIMoveChoiceModification1:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;joenote - do not use effects that end battle because this is a trainer battle and they do not work
 	ld a, [wEnemyMoveEffect]	;load the move effect
-	cp SWITCH_AND_TELEPORT_EFFECT	;see if it is a battle-ending effect
-	jp z, .heavydiscourage	;heavily discourage if so
+	cp SWITCH_AND_TELEPORT_EFFECT
+	jr nz, .notSwitchEffect
+	push hl
+	push bc
+	push de
+	callab EntryAIPhazeScore
+	pop de
+	pop bc
+	pop hl
+	ld a, [wCustomRandomValue]
+	and a
+	jp nz, .heavydiscourage
+	jp .nextMove
+.notSwitchEffect
 ;and dont try to use rage either
 	cp RAGE_EFFECT	
 	jp z, .heavydiscourage
@@ -1516,6 +1528,7 @@ SwitchEnemyMon:
 	ld a, 1
 	ld [wFirstMonsNotOutYet], a
 	callab EnemySendOut
+	callab EntryAutoBoth
 	xor a
 	ld [wFirstMonsNotOutYet], a
 	ld a, [wLinkState]
