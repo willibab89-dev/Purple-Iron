@@ -232,7 +232,7 @@ ekans, arbok, clefairy, clefable, vulpix, ninetales, jigglypuff, wigglytuff, meo
 | 162 | marowak_unique | — | — | — | — | — | — | Yes | — | Yes |
 | 163 | nidoking_unique | Yes | Yes | Yes | Yes | — | — | — | — | Yes |
 | 164 | nidoking_unique2 | Yes | Yes | Yes | Yes | — | — | — | — | Yes |
-| 165 | nidoranm_unique | Yes | — | — | — | — | — | — | — | Yes |
+| 165 | nidoranm_unique | Yes | Yes | Yes | Yes | — | — | — | — | Yes |
 | 166 | omanyte_unique | — | — | — | — | — | — | Yes | — | Yes |
 | 167 | onix_brock | — | — | — | — | — | — | Yes | — | Yes |
 | 168 | raichu_unique | — | — | — | — | — | Yes | — | — | Yes |
@@ -249,4 +249,4 @@ Only the eight selected compatibility bits in each species' existing seven-byte 
 
 ## Remaining planning list
 
-The ten proposed new TMs (Roost, Facade, Brine, Venoshock, Aerial Ace, Bulk Up, Rock Tomb, Will-O-Wisp, Scald and Curse), their compatibility, additional vendor stock and individual prices remain a separate next task. The existing level-up alternatives to trade evolution are retained.
+TM51–TM60, their compatibility, additional vendor stock and prices are now implemented: see `NEW-TMS.md`. The existing level-up alternatives to trade evolution are retained.

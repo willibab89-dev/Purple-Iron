@@ -1,6 +1,6 @@
 # Unique species version: 172 Pokémon
 
-See `TM-DISTRIBUTION.md` for current thematic TM access and `MOVE-PATCH-8.md` for the completed move overhaul. Earlier patch notes are retained for reference.
+See `NEW-TMS.md` for TM51–TM60 and shops, `TM-DISTRIBUTION.md` for thematic TM01–TM50 access and `MOVE-PATCH-8.md` for the completed move overhaul. Earlier patch notes are retained for reference.
 
 This branch adds 21 separate species at Pokédex numbers 152–172. The 151 original species and their custom front sprites remain available. Fossil and ghost display IDs and the existing special MissingNo battle are preserved.
 

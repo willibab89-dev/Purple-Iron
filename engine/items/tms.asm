@@ -14,14 +14,27 @@ CanLearnTM:
 	cp b
 	jr z, .TMfoundLoop
 	inc c
-	jr .findTMloop
+	ld a, c
+	cp 65
+	jr c, .findTMloop
+	pop hl
+	ld c, 0
+	ret
 .TMfoundLoop
 	pop hl
+	ld a, c
+	cp 55
+	jr c, .ordinary
+	callab ExtraTMCompatibility
+	ld a, [wCustomRandomValue]
+	ld c, a
+	ret
+.ordinary
 	ld b, FLAG_TEST
 	predef_jump FlagActionPredef
 
 ; converts TM/HM number in wd11e into move number
-; HMs start at 51
+; HMs occupy 51–55; added TMs use internal entries 56–65.
 TMToMove:
 	ld a, [wd11e]
 	dec a

@@ -10,3 +10,4 @@ KeyItemBitfield:
 	db %11110000
 	db %00111011
 	db %00000000
+	db 0, 0, 0, 0 ; ordinary new TMs; cover all 120 copied bits

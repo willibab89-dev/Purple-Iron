@@ -101,6 +101,31 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
 
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw UnusableItem ; floor item
+	dw ItemUseTMHM ; TM_51
+	dw ItemUseTMHM ; TM_52
+	dw ItemUseTMHM ; TM_53
+	dw ItemUseTMHM ; TM_54
+	dw ItemUseTMHM ; TM_55
+	dw ItemUseTMHM ; TM_56
+	dw ItemUseTMHM ; TM_57
+	dw ItemUseTMHM ; TM_58
+	dw ItemUseTMHM ; TM_59
+	dw ItemUseTMHM ; TM_60
+
 ItemUseBall:
 
 ; Balls can't be used out of battle.
@@ -2334,14 +2359,8 @@ ItemUseTMHM:
 	ld a, [wIsInBattle]
 	and a
 	jp nz, ItemUseNotTime
-	ld a, [wcf91]
-	sub TM_01
+	callab DecodeMachineItem
 	push af
-	jr nc, .skipAdding
-	add 55 ; if item is an HM, add 55
-.skipAdding
-	inc a
-	ld [wd11e], a
 	predef TMToMove ; get move ID from TM/HM ID
 	ld a, [wd11e]
 	ld [wMoveNum], a
@@ -2806,7 +2825,7 @@ IsKeyItem_:
 	push af
 	ld hl, KeyItemBitfield
 	ld de, wBuffer
-	ld bc, 15 ; only 11 bytes are actually used
+	ld bc, 15 ; padded flags include the ten added ordinary TM items
 	call CopyData
 	pop af
 	dec a

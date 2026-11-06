@@ -1,0 +1,1753 @@
+{
+  "baseline_commit": "7b45eed",
+  "new_tms": [
+    {
+      "number": 51,
+      "item_id": 98,
+      "internal_number": 56,
+      "move": "ROOST",
+      "move_id": 175,
+      "price": 18000,
+      "shop": "ViridianCashierText",
+      "name": "TM51 ROOST"
+    },
+    {
+      "number": 52,
+      "item_id": 99,
+      "internal_number": 57,
+      "move": "FACADE",
+      "move_id": 176,
+      "price": 6000,
+      "shop": "VermilionCashierText",
+      "name": "TM52 FACADE"
+    },
+    {
+      "number": 53,
+      "item_id": 100,
+      "internal_number": 58,
+      "move": "BRINE",
+      "move_id": 178,
+      "price": 5000,
+      "shop": "CeruleanCashierText",
+      "name": "TM53 BRINE"
+    },
+    {
+      "number": 54,
+      "item_id": 101,
+      "internal_number": 59,
+      "move": "VENOSHOCK",
+      "move_id": 180,
+      "price": 6000,
+      "shop": "FuchsiaCashierText",
+      "name": "TM54 VENOSHK"
+    },
+    {
+      "number": 55,
+      "item_id": 102,
+      "internal_number": 60,
+      "move": "AERIAL_ACE",
+      "move_id": 191,
+      "price": 7000,
+      "shop": "CeladonMart2Clerk2Text",
+      "name": "TM55 AERLACE"
+    },
+    {
+      "number": 56,
+      "item_id": 103,
+      "internal_number": 61,
+      "move": "BULK_UP",
+      "move_id": 199,
+      "price": 9000,
+      "shop": "VermilionCashierText",
+      "name": "TM56 BULKUP"
+    },
+    {
+      "number": 57,
+      "item_id": 104,
+      "internal_number": 62,
+      "move": "ROCK_TOMB",
+      "move_id": 201,
+      "price": 4000,
+      "shop": "PewterCashierText",
+      "name": "TM57 ROCKTMB"
+    },
+    {
+      "number": 58,
+      "item_id": 105,
+      "internal_number": 63,
+      "move": "WILL_O_WISP",
+      "move_id": 202,
+      "price": 14000,
+      "shop": "CinnabarCashierText",
+      "name": "TM58 WILWISP"
+    },
+    {
+      "number": 59,
+      "item_id": 106,
+      "internal_number": 64,
+      "move": "SCALD",
+      "move_id": 205,
+      "price": 16000,
+      "shop": "SaffronCashierText",
+      "name": "TM59 SCALD"
+    },
+    {
+      "number": 60,
+      "item_id": 107,
+      "internal_number": 65,
+      "move": "CURSE",
+      "move_id": 218,
+      "price": 10000,
+      "shop": "LavenderCashierText",
+      "name": "TM60 CURSE"
+    }
+  ],
+  "entries": [
+    {
+      "dex": 1,
+      "name": "bulbasaur",
+      "source": "bulbasaur",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 2,
+      "name": "ivysaur",
+      "source": "ivysaur",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 3,
+      "name": "venusaur",
+      "source": "venusaur",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 4,
+      "name": "charmander",
+      "source": "charmander",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 5,
+      "name": "charmeleon",
+      "source": "charmeleon",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 6,
+      "name": "charizard",
+      "source": "charizard",
+      "tms": [
+        51,
+        55,
+        58
+      ],
+      "mask": 145
+    },
+    {
+      "dex": 7,
+      "name": "squirtle",
+      "source": "squirtle",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 8,
+      "name": "wartortle",
+      "source": "wartortle",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 9,
+      "name": "blastoise",
+      "source": "blastoise",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 10,
+      "name": "caterpie",
+      "source": "caterpie",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 11,
+      "name": "metapod",
+      "source": "metapod",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 12,
+      "name": "butterfree",
+      "source": "butterfree",
+      "tms": [
+        51
+      ],
+      "mask": 1
+    },
+    {
+      "dex": 13,
+      "name": "weedle",
+      "source": "weedle",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 14,
+      "name": "kakuna",
+      "source": "kakuna",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 15,
+      "name": "beedrill",
+      "source": "beedrill",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 16,
+      "name": "pidgey",
+      "source": "pidgey",
+      "tms": [
+        51,
+        55
+      ],
+      "mask": 17
+    },
+    {
+      "dex": 17,
+      "name": "pidgeotto",
+      "source": "pidgeotto",
+      "tms": [
+        51,
+        55
+      ],
+      "mask": 17
+    },
+    {
+      "dex": 18,
+      "name": "pidgeot",
+      "source": "pidgeot",
+      "tms": [
+        51,
+        55
+      ],
+      "mask": 17
+    },
+    {
+      "dex": 19,
+      "name": "rattata",
+      "source": "rattata",
+      "tms": [
+        52
+      ],
+      "mask": 2
+    },
+    {
+      "dex": 20,
+      "name": "raticate",
+      "source": "raticate",
+      "tms": [
+        52
+      ],
+      "mask": 2
+    },
+    {
+      "dex": 21,
+      "name": "spearow",
+      "source": "spearow",
+      "tms": [
+        51,
+        52,
+        55
+      ],
+      "mask": 19
+    },
+    {
+      "dex": 22,
+      "name": "fearow",
+      "source": "fearow",
+      "tms": [
+        51,
+        52,
+        55
+      ],
+      "mask": 19
+    },
+    {
+      "dex": 23,
+      "name": "ekans",
+      "source": "ekans",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 24,
+      "name": "arbok",
+      "source": "arbok",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 25,
+      "name": "pikachu",
+      "source": "pikachu",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 26,
+      "name": "raichu",
+      "source": "raichu",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 27,
+      "name": "sandshrew",
+      "source": "sandshrew",
+      "tms": [
+        55,
+        57
+      ],
+      "mask": 80
+    },
+    {
+      "dex": 28,
+      "name": "sandslash",
+      "source": "sandslash",
+      "tms": [
+        55,
+        57
+      ],
+      "mask": 80
+    },
+    {
+      "dex": 29,
+      "name": "nidoranf",
+      "source": "nidoranf",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 30,
+      "name": "nidorina",
+      "source": "nidorina",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 31,
+      "name": "nidoqueen",
+      "source": "nidoqueen",
+      "tms": [
+        54,
+        57
+      ],
+      "mask": 72
+    },
+    {
+      "dex": 32,
+      "name": "nidoranm",
+      "source": "nidoranm",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 33,
+      "name": "nidorino",
+      "source": "nidorino",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 34,
+      "name": "nidoking",
+      "source": "nidoking",
+      "tms": [
+        54,
+        56,
+        57
+      ],
+      "mask": 104
+    },
+    {
+      "dex": 35,
+      "name": "clefairy",
+      "source": "clefairy",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 36,
+      "name": "clefable",
+      "source": "clefable",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 37,
+      "name": "vulpix",
+      "source": "vulpix",
+      "tms": [
+        58,
+        60
+      ],
+      "mask": 640
+    },
+    {
+      "dex": 38,
+      "name": "ninetales",
+      "source": "ninetales",
+      "tms": [
+        58,
+        60
+      ],
+      "mask": 640
+    },
+    {
+      "dex": 39,
+      "name": "jigglypuff",
+      "source": "jigglypuff",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 40,
+      "name": "wigglytuff",
+      "source": "wigglytuff",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 41,
+      "name": "zubat",
+      "source": "zubat",
+      "tms": [
+        51,
+        54,
+        55
+      ],
+      "mask": 25
+    },
+    {
+      "dex": 42,
+      "name": "golbat",
+      "source": "golbat",
+      "tms": [
+        51,
+        54,
+        55
+      ],
+      "mask": 25
+    },
+    {
+      "dex": 43,
+      "name": "oddish",
+      "source": "oddish",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 44,
+      "name": "gloom",
+      "source": "gloom",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 45,
+      "name": "vileplume",
+      "source": "vileplume",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 46,
+      "name": "paras",
+      "source": "paras",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 47,
+      "name": "parasect",
+      "source": "parasect",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 48,
+      "name": "venonat",
+      "source": "venonat",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 49,
+      "name": "venomoth",
+      "source": "venomoth",
+      "tms": [
+        51,
+        54
+      ],
+      "mask": 9
+    },
+    {
+      "dex": 50,
+      "name": "diglett",
+      "source": "diglett",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 51,
+      "name": "dugtrio",
+      "source": "dugtrio",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 52,
+      "name": "meowth",
+      "source": "meowth",
+      "tms": [
+        52,
+        55
+      ],
+      "mask": 18
+    },
+    {
+      "dex": 53,
+      "name": "persian",
+      "source": "persian",
+      "tms": [
+        52,
+        55
+      ],
+      "mask": 18
+    },
+    {
+      "dex": 54,
+      "name": "psyduck",
+      "source": "psyduck",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 55,
+      "name": "golduck",
+      "source": "golduck",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 56,
+      "name": "mankey",
+      "source": "mankey",
+      "tms": [
+        52,
+        56
+      ],
+      "mask": 34
+    },
+    {
+      "dex": 57,
+      "name": "primeape",
+      "source": "primeape",
+      "tms": [
+        52,
+        56
+      ],
+      "mask": 34
+    },
+    {
+      "dex": 58,
+      "name": "growlithe",
+      "source": "growlithe",
+      "tms": [
+        58
+      ],
+      "mask": 128
+    },
+    {
+      "dex": 59,
+      "name": "arcanine",
+      "source": "arcanine",
+      "tms": [
+        58
+      ],
+      "mask": 128
+    },
+    {
+      "dex": 60,
+      "name": "poliwag",
+      "source": "poliwag",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 61,
+      "name": "poliwhirl",
+      "source": "poliwhirl",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 62,
+      "name": "poliwrath",
+      "source": "poliwrath",
+      "tms": [
+        53,
+        56,
+        59
+      ],
+      "mask": 292
+    },
+    {
+      "dex": 63,
+      "name": "abra",
+      "source": "abra",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 64,
+      "name": "kadabra",
+      "source": "kadabra",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 65,
+      "name": "alakazam",
+      "source": "alakazam",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 66,
+      "name": "machop",
+      "source": "machop",
+      "tms": [
+        52,
+        56,
+        57
+      ],
+      "mask": 98
+    },
+    {
+      "dex": 67,
+      "name": "machoke",
+      "source": "machoke",
+      "tms": [
+        52,
+        56,
+        57
+      ],
+      "mask": 98
+    },
+    {
+      "dex": 68,
+      "name": "machamp",
+      "source": "machamp",
+      "tms": [
+        52,
+        56,
+        57
+      ],
+      "mask": 98
+    },
+    {
+      "dex": 69,
+      "name": "bellsprout",
+      "source": "bellsprout",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 70,
+      "name": "weepinbell",
+      "source": "weepinbell",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 71,
+      "name": "victreebel",
+      "source": "victreebel",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 72,
+      "name": "tentacool",
+      "source": "tentacool",
+      "tms": [
+        53,
+        54
+      ],
+      "mask": 12
+    },
+    {
+      "dex": 73,
+      "name": "tentacruel",
+      "source": "tentacruel",
+      "tms": [
+        53,
+        54
+      ],
+      "mask": 12
+    },
+    {
+      "dex": 74,
+      "name": "geodude",
+      "source": "geodude",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 75,
+      "name": "graveler",
+      "source": "graveler",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 76,
+      "name": "golem",
+      "source": "golem",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 77,
+      "name": "ponyta",
+      "source": "ponyta",
+      "tms": [
+        58
+      ],
+      "mask": 128
+    },
+    {
+      "dex": 78,
+      "name": "rapidash",
+      "source": "rapidash",
+      "tms": [
+        58
+      ],
+      "mask": 128
+    },
+    {
+      "dex": 79,
+      "name": "slowpoke",
+      "source": "slowpoke",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 80,
+      "name": "slowbro",
+      "source": "slowbro",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 81,
+      "name": "magnemite",
+      "source": "magnemite",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 82,
+      "name": "magneton",
+      "source": "magneton",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 83,
+      "name": "farfetchd",
+      "source": "farfetchd",
+      "tms": [
+        51,
+        52,
+        55
+      ],
+      "mask": 19
+    },
+    {
+      "dex": 84,
+      "name": "doduo",
+      "source": "doduo",
+      "tms": [
+        51,
+        52,
+        55
+      ],
+      "mask": 19
+    },
+    {
+      "dex": 85,
+      "name": "dodrio",
+      "source": "dodrio",
+      "tms": [
+        51,
+        52,
+        55
+      ],
+      "mask": 19
+    },
+    {
+      "dex": 86,
+      "name": "seel",
+      "source": "seel",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 87,
+      "name": "dewgong",
+      "source": "dewgong",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 88,
+      "name": "grimer",
+      "source": "grimer",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 89,
+      "name": "muk",
+      "source": "muk",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 90,
+      "name": "shellder",
+      "source": "shellder",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 91,
+      "name": "cloyster",
+      "source": "cloyster",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 92,
+      "name": "gastly",
+      "source": "gastly",
+      "tms": [
+        54,
+        58,
+        60
+      ],
+      "mask": 648
+    },
+    {
+      "dex": 93,
+      "name": "haunter",
+      "source": "haunter",
+      "tms": [
+        54,
+        58,
+        60
+      ],
+      "mask": 648
+    },
+    {
+      "dex": 94,
+      "name": "gengar",
+      "source": "gengar",
+      "tms": [
+        54,
+        58,
+        60
+      ],
+      "mask": 648
+    },
+    {
+      "dex": 95,
+      "name": "onix",
+      "source": "onix",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 96,
+      "name": "drowzee",
+      "source": "drowzee",
+      "tms": [
+        60
+      ],
+      "mask": 512
+    },
+    {
+      "dex": 97,
+      "name": "hypno",
+      "source": "hypno",
+      "tms": [
+        60
+      ],
+      "mask": 512
+    },
+    {
+      "dex": 98,
+      "name": "krabby",
+      "source": "krabby",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 99,
+      "name": "kingler",
+      "source": "kingler",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 100,
+      "name": "voltorb",
+      "source": "voltorb",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 101,
+      "name": "electrode",
+      "source": "electrode",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 102,
+      "name": "exeggcute",
+      "source": "exeggcute",
+      "tms": [
+        60
+      ],
+      "mask": 512
+    },
+    {
+      "dex": 103,
+      "name": "exeggutor",
+      "source": "exeggutor",
+      "tms": [
+        60
+      ],
+      "mask": 512
+    },
+    {
+      "dex": 104,
+      "name": "cubone",
+      "source": "cubone",
+      "tms": [
+        57,
+        60
+      ],
+      "mask": 576
+    },
+    {
+      "dex": 105,
+      "name": "marowak",
+      "source": "marowak",
+      "tms": [
+        57,
+        58,
+        60
+      ],
+      "mask": 704
+    },
+    {
+      "dex": 106,
+      "name": "hitmonlee",
+      "source": "hitmonlee",
+      "tms": [
+        56
+      ],
+      "mask": 32
+    },
+    {
+      "dex": 107,
+      "name": "hitmonchan",
+      "source": "hitmonchan",
+      "tms": [
+        56
+      ],
+      "mask": 32
+    },
+    {
+      "dex": 108,
+      "name": "lickitung",
+      "source": "lickitung",
+      "tms": [
+        52
+      ],
+      "mask": 2
+    },
+    {
+      "dex": 109,
+      "name": "koffing",
+      "source": "koffing",
+      "tms": [
+        54,
+        58
+      ],
+      "mask": 136
+    },
+    {
+      "dex": 110,
+      "name": "weezing",
+      "source": "weezing",
+      "tms": [
+        54,
+        58
+      ],
+      "mask": 136
+    },
+    {
+      "dex": 111,
+      "name": "rhyhorn",
+      "source": "rhyhorn",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 112,
+      "name": "rhydon",
+      "source": "rhydon",
+      "tms": [
+        56,
+        57
+      ],
+      "mask": 96
+    },
+    {
+      "dex": 113,
+      "name": "chansey",
+      "source": "chansey",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 114,
+      "name": "tangela",
+      "source": "tangela",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 115,
+      "name": "kangaskhan",
+      "source": "kangaskhan",
+      "tms": [
+        52,
+        56
+      ],
+      "mask": 34
+    },
+    {
+      "dex": 116,
+      "name": "horsea",
+      "source": "horsea",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 117,
+      "name": "seadra",
+      "source": "seadra",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 118,
+      "name": "goldeen",
+      "source": "goldeen",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 119,
+      "name": "seaking",
+      "source": "seaking",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 120,
+      "name": "staryu",
+      "source": "staryu",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 121,
+      "name": "starmie",
+      "source": "starmie",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 122,
+      "name": "mrmime",
+      "source": "mrmime",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 123,
+      "name": "scyther",
+      "source": "scyther",
+      "tms": [
+        51,
+        55
+      ],
+      "mask": 17
+    },
+    {
+      "dex": 124,
+      "name": "jynx",
+      "source": "jynx",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 125,
+      "name": "electabuzz",
+      "source": "electabuzz",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 126,
+      "name": "magmar",
+      "source": "magmar",
+      "tms": [
+        58
+      ],
+      "mask": 128
+    },
+    {
+      "dex": 127,
+      "name": "pinsir",
+      "source": "pinsir",
+      "tms": [
+        56,
+        57
+      ],
+      "mask": 96
+    },
+    {
+      "dex": 128,
+      "name": "tauros",
+      "source": "tauros",
+      "tms": [
+        52
+      ],
+      "mask": 2
+    },
+    {
+      "dex": 129,
+      "name": "magikarp",
+      "source": "magikarp",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 130,
+      "name": "gyarados",
+      "source": "gyarados",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 131,
+      "name": "lapras",
+      "source": "lapras",
+      "tms": [
+        53
+      ],
+      "mask": 4
+    },
+    {
+      "dex": 132,
+      "name": "ditto",
+      "source": "ditto",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 133,
+      "name": "eevee",
+      "source": "eevee",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 134,
+      "name": "vaporeon",
+      "source": "vaporeon",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 135,
+      "name": "jolteon",
+      "source": "jolteon",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 136,
+      "name": "flareon",
+      "source": "flareon",
+      "tms": [
+        52,
+        58
+      ],
+      "mask": 130
+    },
+    {
+      "dex": 137,
+      "name": "porygon",
+      "source": "porygon",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 138,
+      "name": "omanyte",
+      "source": "omanyte",
+      "tms": [
+        53,
+        57,
+        59
+      ],
+      "mask": 324
+    },
+    {
+      "dex": 139,
+      "name": "omastar",
+      "source": "omastar",
+      "tms": [
+        53,
+        57,
+        59
+      ],
+      "mask": 324
+    },
+    {
+      "dex": 140,
+      "name": "kabuto",
+      "source": "kabuto",
+      "tms": [
+        53,
+        57
+      ],
+      "mask": 68
+    },
+    {
+      "dex": 141,
+      "name": "kabutops",
+      "source": "kabutops",
+      "tms": [
+        53,
+        55,
+        57
+      ],
+      "mask": 84
+    },
+    {
+      "dex": 142,
+      "name": "aerodactyl",
+      "source": "aerodactyl",
+      "tms": [
+        51,
+        55,
+        57
+      ],
+      "mask": 81
+    },
+    {
+      "dex": 143,
+      "name": "snorlax",
+      "source": "snorlax",
+      "tms": [
+        52
+      ],
+      "mask": 2
+    },
+    {
+      "dex": 144,
+      "name": "articuno",
+      "source": "articuno",
+      "tms": [
+        51,
+        55
+      ],
+      "mask": 17
+    },
+    {
+      "dex": 145,
+      "name": "zapdos",
+      "source": "zapdos",
+      "tms": [
+        51,
+        55
+      ],
+      "mask": 17
+    },
+    {
+      "dex": 146,
+      "name": "moltres",
+      "source": "moltres",
+      "tms": [
+        51,
+        55,
+        58
+      ],
+      "mask": 145
+    },
+    {
+      "dex": 147,
+      "name": "dratini",
+      "source": "dratini",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 148,
+      "name": "dragonair",
+      "source": "dragonair",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 149,
+      "name": "dragonite",
+      "source": "dragonite",
+      "tms": [
+        51,
+        55
+      ],
+      "mask": 17
+    },
+    {
+      "dex": 150,
+      "name": "mewtwo",
+      "source": "mewtwo",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 151,
+      "name": "mew",
+      "source": "mew",
+      "tms": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "mask": 1023
+    },
+    {
+      "dex": 152,
+      "name": "blastoise_unique",
+      "source": "blastoise",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 153,
+      "name": "bulbasaur_unique",
+      "source": "bulbasaur",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 154,
+      "name": "chansey_unique",
+      "source": "chansey",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 155,
+      "name": "charmander_unique",
+      "source": "charmander",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 156,
+      "name": "ditto_happy",
+      "source": "ditto",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 157,
+      "name": "geodude_fighting",
+      "source": "geodude",
+      "tms": [
+        56,
+        57
+      ],
+      "mask": 96
+    },
+    {
+      "dex": 158,
+      "name": "goldeen_fighting",
+      "source": "goldeen",
+      "tms": [
+        52
+      ],
+      "mask": 2
+    },
+    {
+      "dex": 159,
+      "name": "grimer_poison",
+      "source": "grimer",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 160,
+      "name": "ivysaur_erika",
+      "source": "ivysaur",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 161,
+      "name": "kakuna_rock_type",
+      "source": "kakuna",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 162,
+      "name": "marowak_unique",
+      "source": "marowak",
+      "tms": [
+        57,
+        58,
+        60
+      ],
+      "mask": 704
+    },
+    {
+      "dex": 163,
+      "name": "nidoking_unique",
+      "source": "nidoking",
+      "tms": [
+        54,
+        56,
+        57
+      ],
+      "mask": 104
+    },
+    {
+      "dex": 164,
+      "name": "nidoking_unique2",
+      "source": "nidoking",
+      "tms": [
+        54,
+        56,
+        57
+      ],
+      "mask": 104
+    },
+    {
+      "dex": 165,
+      "name": "nidoranm_unique",
+      "source": "nidoranm",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 166,
+      "name": "omanyte_unique",
+      "source": "omanyte",
+      "tms": [
+        53,
+        57,
+        59
+      ],
+      "mask": 324
+    },
+    {
+      "dex": 167,
+      "name": "onix_brock",
+      "source": "onix",
+      "tms": [
+        57
+      ],
+      "mask": 64
+    },
+    {
+      "dex": 168,
+      "name": "raichu_unique",
+      "source": "raichu",
+      "tms": [],
+      "mask": 0
+    },
+    {
+      "dex": 169,
+      "name": "squirtle_unique",
+      "source": "squirtle",
+      "tms": [
+        53,
+        59
+      ],
+      "mask": 260
+    },
+    {
+      "dex": 170,
+      "name": "tangela_erika",
+      "source": "tangela",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    },
+    {
+      "dex": 171,
+      "name": "tentacool_big",
+      "source": "tentacool",
+      "tms": [
+        53,
+        54
+      ],
+      "mask": 12
+    },
+    {
+      "dex": 172,
+      "name": "venusaur_erika",
+      "source": "venusaur",
+      "tms": [
+        54
+      ],
+      "mask": 8
+    }
+  ],
+  "old_machine_moves": [
+    "MEGA_PUNCH",
+    "RAZOR_WIND",
+    "SWORDS_DANCE",
+    "WHIRLWIND",
+    "MEGA_KICK",
+    "TOXIC",
+    "HORN_DRILL",
+    "BODY_SLAM",
+    "TAKE_DOWN",
+    "DOUBLE_EDGE",
+    "BUBBLEBEAM",
+    "WATER_GUN",
+    "ICE_BEAM",
+    "BLIZZARD",
+    "HYPER_BEAM",
+    "PAY_DAY",
+    "SUBMISSION",
+    "COUNTER",
+    "SEISMIC_TOSS",
+    "RAGE",
+    "MEGA_DRAIN",
+    "SOLARBEAM",
+    "DRAGON_RAGE",
+    "THUNDERBOLT",
+    "THUNDER",
+    "EARTHQUAKE",
+    "FISSURE",
+    "DIG",
+    "PSYCHIC_M",
+    "TELEPORT",
+    "MIMIC",
+    "DOUBLE_TEAM",
+    "REFLECT",
+    "BIDE",
+    "METRONOME",
+    "SELFDESTRUCT",
+    "EGG_BOMB",
+    "FIRE_BLAST",
+    "SWIFT",
+    "SKULL_BASH",
+    "SOFTBOILED",
+    "DREAM_EATER",
+    "SKY_ATTACK",
+    "REST",
+    "THUNDER_WAVE",
+    "PSYWAVE",
+    "EXPLOSION",
+    "ROCK_SLIDE",
+    "TRI_ATTACK",
+    "SUBSTITUTE",
+    "CUT",
+    "FLY",
+    "SURF",
+    "STRENGTH",
+    "FLASH"
+  ],
+  "baseline_item_names": "ItemNames:\n\tdb \"MASTER BALL@\"\n\tdb \"ULTRA BALL@\"\n\tdb \"GREAT BALL@\"\n\tdb \"POK\u00e9 BALL@\"\n\tdb \"TOWN MAP@\"\n\tdb \"BICYCLE@\"\n\tdb \"SURFBOARD@\"\t;joenote - give the surfboard it's fan name instead of ?????\n\tdb \"SAFARI BALL@\"\n\tdb \"POK\u00e9DEX@\"\n\tdb \"MOON STONE@\"\n\tdb \"ANTIDOTE@\"\n\tdb \"BURN HEAL@\"\n\tdb \"ICE HEAL@\"\n\tdb \"AWAKENING@\"\n\tdb \"PARLYZ HEAL@\"\n\tdb \"FULL RESTORE@\"\n\tdb \"MAX POTION@\"\n\tdb \"HYPER POTION@\"\n\tdb \"SUPER POTION@\"\n\tdb \"POTION@\"\n\tdb \"BOULDERBADGE@\"\n\tdb \"CASCADEBADGE@\"\n\tdb \"THUNDERBADGE@\"\n\tdb \"RAINBOWBADGE@\"\n\tdb \"SOULBADGE@\"\n\tdb \"MARSHBADGE@\"\n\tdb \"VOLCANOBADGE@\"\n\tdb \"EARTHBADGE@\"\n\tdb \"ESCAPE ROPE@\"\n\tdb \"REPEL@\"\n\tdb \"OLD AMBER@\"\n\tdb \"FIRE STONE@\"\n\tdb \"THUNDERSTONE@\"\n\tdb \"WATER STONE@\"\n\tdb \"HP UP@\"\n\tdb \"PROTEIN@\"\n\tdb \"IRON@\"\n\tdb \"CARBOS@\"\n\tdb \"CALCIUM@\"\n\tdb \"RARE CANDY@\"\n\tdb \"DOME FOSSIL@\"\n\tdb \"HELIX FOSSIL@\"\n\tdb \"SECRET KEY@\"\n\tdb \"?????@\"\n\tdb \"BIKE VOUCHER@\"\n\tdb \"X ACCURACY@\"\n\tdb \"LEAF STONE@\"\n\tdb \"CARD KEY@\"\n\tdb \"NUGGET@\"\n\t;db \"PP UP@\"\t;unused PP_UP\n\tdb \"M.GENE@\"\t;joenote - custom item\n\tdb \"POK\u00e9 DOLL@\"\n\tdb \"FULL HEAL@\"\n\tdb \"REVIVE@\"\n\tdb \"MAX REVIVE@\"\n\tdb \"GUARD SPEC.@\"\n\tdb \"SUPER REPEL@\"\n\tdb \"MAX REPEL@\"\n\tdb \"DIRE HIT@\"\n\tdb \"COIN@\"\n\tdb \"FRESH WATER@\"\n\tdb \"SODA POP@\"\n\tdb \"LEMONADE@\"\n\tdb \"S.S.TICKET@\"\n\tdb \"GOLD TEETH@\"\n\tdb \"X ATTACK@\"\n\tdb \"X DEFEND@\"\n\tdb \"X SPEED@\"\n\tdb \"X SPECIAL@\"\n\tdb \"COIN CASE@\"\n\tdb \"OAK's PARCEL@\"\n\tdb \"ITEMFINDER@\"\n\tdb \"SILPH SCOPE@\"\n\tdb \"POK\u00e9 FLUTE@\"\n\tdb \"LIFT KEY@\"\n\tdb \"EXP.ALL@\"\n\tdb \"OLD ROD@\"\n\tdb \"GOOD ROD@\"\n\tdb \"SUPER ROD@\"\n\tdb \"PP UP@\"\n\tdb \"ETHER@\"\n\tdb \"MAX ETHER@\"\n\tdb \"ELIXER@\"\n\tdb \"MAX ELIXER@\"\n\tdb \"B2F@\"\n\tdb \"B1F@\"\n\tdb \"1F@\"\n\tdb \"2F@\"\n\tdb \"3F@\"\n\tdb \"4F@\"\n\tdb \"5F@\"\n\tdb \"6F@\"\n\tdb \"7F@\"\n\tdb \"8F@\"\n\tdb \"9F@\"\n\tdb \"10F@\"\n\tdb \"11F@\"\n\tdb \"B4F@\"\n",
+  "baseline_item_prices": "ItemPrices:;joenote - added prices for amber/fossils/moon stone/pp_up/exp all/master ball\n\tmoney 50000     ; MASTER_BALL\n\tmoney 1200  ; ULTRA_BALL\n\tmoney 600   ; GREAT_BALL\n\tmoney 200   ; POKE_BALL\n\tmoney 0     ; TOWN_MAP\n\tmoney 0     ; BICYCLE\n\tmoney 0     ; SURFBOARD\n\tmoney 1000  ; SAFARI_BALL\n\tmoney 0     ; POKEDEX\n\tmoney 4200  ; MOON_STONE\n\tmoney 100   ; ANTIDOTE\n\tmoney 250   ; BURN_HEAL\n\tmoney 250   ; ICE_HEAL\n\tmoney 200   ; AWAKENING\n\tmoney 200   ; PARLYZ_HEAL\n\tmoney 3000  ; FULL_RESTORE\n\tmoney 2500  ; MAX_POTION\n\tmoney 1500  ; HYPER_POTION\n\tmoney 700   ; SUPER_POTION\n\tmoney 300   ; POTION\n\tmoney 0     ; BOULDERBADGE\n\tmoney 0     ; CASCADEBADGE\n\tmoney 0     ; THUNDERBADGE\n\tmoney 0     ; RAINBOWBADGE\n\tmoney 0     ; SOULBADGE\n\tmoney 0     ; MARSHBADGE\n\tmoney 0     ; VOLCANOBADGE\n\tmoney 0     ; EARTHBADGE\n\tmoney 550   ; ESCAPE_ROPE\n\tmoney 350   ; REPEL\n\tmoney 15000 ; OLD_AMBER\n\tmoney 2100  ; FIRE_STONE\n\tmoney 2100  ; THUNDER_STONE\n\tmoney 2100  ; WATER_STONE\n\tmoney 9800  ; HP_UP\n\tmoney 9800  ; PROTEIN\n\tmoney 9800  ; IRON\n\tmoney 9800  ; CARBOS\n\tmoney 9800  ; CALCIUM\n\tmoney 4800  ; RARE_CANDY\n\tmoney 12000 ; DOME_FOSSIL\n\tmoney 12000 ; HELIX_FOSSIL\n\tmoney 0     ; SECRET_KEY\n\tmoney 0     ; XXX\n\tmoney 0     ; BIKE_VOUCHER\n\tmoney 950   ; X_ACCURACY\n\tmoney 2100  ; LEAF_STONE\n\tmoney 0     ; CARD_KEY\n\tmoney 10000 ; NUGGET\n\t;money 9800\t\t; XXX PP_UP (not used)\n\tmoney 9800  ;M_GENE\t\t;joenote - custom item\n\tmoney 1000  ; POKE_DOLL\n\tmoney 600   ; FULL_HEAL\n\tmoney 1500  ; REVIVE\n\tmoney 4000  ; MAX_REVIVE\n\tmoney 700   ; GUARD_SPEC\n\tmoney 500   ; SUPER_REPEL\n\tmoney 700   ; MAX_REPEL\n\tmoney 650   ; DIRE_HIT\n\tmoney 10    ; COIN\n\tmoney 200   ; FRESH_WATER\n\tmoney 300   ; SODA_POP\n\tmoney 350   ; LEMONADE\n\tmoney 0     ; S_S_TICKET\n\tmoney 0     ; GOLD_TEETH\n\tmoney 500   ; X_ATTACK\n\tmoney 550   ; X_DEFEND\n\tmoney 350   ; X_SPEED\n\tmoney 350   ; X_SPECIAL\n\tmoney 0     ; COIN_CASE\n\tmoney 0     ; OAKS_PARCEL\n\tmoney 0     ; ITEMFINDER\n\tmoney 0     ; SILPH_SCOPE\n\tmoney 0     ; POKE_FLUTE\n\tmoney 0     ; LIFT_KEY\n\tmoney 20000     ; EXP_ALL\n\tmoney 0     ; OLD_ROD\n\tmoney 0     ; GOOD_ROD\n\tmoney 0     ; SUPER_ROD\n\tmoney 9800  ; PP_UP\n\tmoney 1200  ; ETHER\n\tmoney 2000  ; MAX_ETHER\n\tmoney 3000  ; ELIXER\n\tmoney 5500  ; MAX_ELIXER\n\tmoney 0     ; FLOOR_B2F\n\tmoney 0     ; FLOOR_B1F\n\tmoney 0     ; FLOOR_1F\n\tmoney 0     ; FLOOR_2F\n\tmoney 0     ; FLOOR_3F\n\tmoney 0     ; FLOOR_4F\n\tmoney 0     ; FLOOR_5F\n\tmoney 0     ; FLOOR_6F\n\tmoney 0     ; FLOOR_7F\n\tmoney 0     ; FLOOR_8F\n\tmoney 0     ; FLOOR_9F\n\tmoney 0     ; FLOOR_10F\n\tmoney 0     ; FLOOR_11F\n\tmoney 0     ; FLOOR_B4F\n",
+  "baseline_shops": "; mart inventories are below\n; they are texts\n;joenote - added moon stone, fossils, amber, pp_up, all kinds of TMs\n\n; Viridian\nViridianCashierText::\n\tTX_MART POKE_BALL, ANTIDOTE, PARLYZ_HEAL, BURN_HEAL, TM_16, TM_37, TM_41\n\n; Pewter\nPewterCashierText::\n\tTX_MART POKE_BALL, POTION, ESCAPE_ROPE, ANTIDOTE, BURN_HEAL, AWAKENING, PARLYZ_HEAL, ETHER, TM_42\n\n; Cerulean\nCeruleanCashierText::\n\tTX_MART POKE_BALL, POTION, REPEL, ANTIDOTE, BURN_HEAL, AWAKENING, PARLYZ_HEAL, TM_04, TM_34\n\n; Bike shop\n\tTX_MART BICYCLE\n\n; Vermilion\nVermilionCashierText::\n\tTX_MART POKE_BALL, SUPER_POTION, ICE_HEAL, AWAKENING, PARLYZ_HEAL, REPEL, TM_11, TM_12, TM_45\n\n; Lavender\nLavenderCashierText::\n\tTX_MART GREAT_BALL, SUPER_POTION, REVIVE, ESCAPE_ROPE, SUPER_REPEL, ANTIDOTE, BURN_HEAL, ICE_HEAL, PARLYZ_HEAL, MAX_ETHER, TM_28, TM_44, TM_48\n\n; Celadon Dept. Store 2F (1)\nCeladonMart2Clerk1Text::\n\tTX_MART GREAT_BALL, SUPER_POTION, REVIVE, SUPER_REPEL, ANTIDOTE, BURN_HEAL, ICE_HEAL, AWAKENING, PARLYZ_HEAL\n\n; Celadon Dept. Store 2F (2)\nCeladonMart2Clerk2Text::\n\tTX_MART TM_32, TM_33, TM_02, TM_07, TM_23, TM_01, TM_05, TM_09, TM_17\n\n; Celadon Dept. Store 4F\nCeladonMart4ClerkText::\n\tTX_MART POKE_DOLL, FIRE_STONE, THUNDER_STONE, WATER_STONE, LEAF_STONE\n\n; Celadon Dept. Store 5F (1)\nCeladonMart5Clerk1Text::\n\tTX_MART X_ACCURACY, GUARD_SPEC, DIRE_HIT, X_ATTACK, X_DEFEND, X_SPEED, X_SPECIAL\n\n; Celadon Dept. Store 5F (2)\nCeladonMart5Clerk2Text::\n\tTX_MART HP_UP, PP_UP, PROTEIN, IRON, CARBOS, CALCIUM, TM_08, TM_20, TM_36\n\n; Fuchsia\nFuchsiaCashierText::\n\tTX_MART ULTRA_BALL, GREAT_BALL, SUPER_POTION, REVIVE, FULL_HEAL, SUPER_REPEL, TM_30, TM_31, TM_46, TM_49, TM_50\n\n; unused? joenote - repurposing for a new vendor on celadon dept store floor 3\nCeladonMart3ClerkText::\n\t;TX_MART GREAT_BALL, HYPER_POTION, SUPER_POTION, FULL_HEAL, REVIVE\n\tTX_MART MOON_STONE, RARE_CANDY, DOME_FOSSIL, HELIX_FOSSIL, OLD_AMBER, EXP_ALL, MASTER_BALL\n\n; Cinnabar\nCinnabarCashierText::\n\tTX_MART ULTRA_BALL, GREAT_BALL, HYPER_POTION, MAX_REPEL, ESCAPE_ROPE, FULL_HEAL, REVIVE, MAX_ELIXER, TM_03, TM_06, TM_29, TM_39, TM_40\n\n; Saffron\nSaffronCashierText::\n\tTX_MART GREAT_BALL, HYPER_POTION, MAX_REPEL, ESCAPE_ROPE, FULL_HEAL, REVIVE, ELIXER, TM_10, TM_18, TM_19, TM_21, TM_35\n\n; Indigo\nIndigoCashierText::\n\tTX_MART ULTRA_BALL, FULL_RESTORE, MAX_POTION, FULL_HEAL, REVIVE, MAX_REPEL, TM_13, TM_22, TM_25, TM_26, TM_27, TM_38, TM_43, TM_47"
+}

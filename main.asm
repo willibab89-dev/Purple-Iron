@@ -89,7 +89,7 @@ INCLUDE "engine/remove_pokemon.asm"
 
 INCLUDE "engine/display_pokedex.asm"
 
-INCLUDE "text/tmhm_names.asm"	;joenote - adding name list for tm and hm items
+; Machine names share the expanded TM bank.
 
 SECTION "bank3",ROMX,BANK[$3]
 
@@ -2178,3 +2178,4 @@ INCLUDE "engine/battle/utility_effects.asm"
 INCLUDE "engine/battle/sequence_moves.asm"
 INCLUDE "engine/battle/residual_moves.asm"
 INCLUDE "engine/battle/entry_switch_moves.asm"
+INCLUDE "engine/items/extra_tms.asm"

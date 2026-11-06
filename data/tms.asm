@@ -54,3 +54,16 @@ TechnicalMachines:
 	db SURF
 	db STRENGTH
 	db FLASH
+
+ExtraTechnicalMachines:
+	db ROOST
+	db FACADE
+	db BRINE
+	db VENOSHOCK
+	db AERIAL_ACE
+	db BULK_UP
+	db ROCK_TOMB
+	db WILL_O_WISP
+	db SCALD
+	db CURSE
+TechnicalMachinesEnd:

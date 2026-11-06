@@ -261,4 +261,6 @@ ClassifyMachineName:
 	ld [wd0b5], a
 	ld a, TMHM_NAME
 	ld [wNameListType], a
+	ld a, BANK(tmhmNames)
+	ld [wPredefBank], a
 	ret

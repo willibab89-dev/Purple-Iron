@@ -1961,54 +1961,20 @@ GetMonName::
 	ret
 
 GetItemName::
-; given an item ID at [wd11e], store the name of the item into a string
-;     starting at wcd6d
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;joenote - rewriting this function for list of tm & hm names
+; ClassifyMachineName selects the correct table/bank inside GetName.
 	push hl
 	push bc
 	ld a, [wd11e]
-	cp HM_01 ; is this a TM/HM?
-	jr nc, .Machine
 	ld [wd0b5], a
 	ld a, ITEM_NAME
 	ld [wNameListType], a
 	ld a, BANK(ItemNames)
 	ld [wPredefBank], a
 	call GetName
-	jr .Finish
-.Machine
-	ld [wd0b5], a
-	;ld a, TMHM_NAME	;this will be done within GetName since it has a tm/hm check
-	;ld [wNameListType], a
-	ld a, BANK(tmhmNames)
-	ld [wPredefBank], a
-	call GetName
-.Finish
-	ld de, wcd6d ; pointer to where item name is stored in RAM
+	ld de, wcd6d
 	pop bc
 	pop hl
 	ret
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	push hl
-;	push bc
-;	ld a, [wd11e]
-;	cp HM_01 ; is this a TM/HM?
-;	jr nc, .Machine
-;	ld [wd0b5], a
-;	ld a, ITEM_NAME
-;	ld [wNameListType], a
-;	ld a, BANK(ItemNames)
-;	ld [wPredefBank], a
-;	call GetName
-;	jr .Finish
-;.Machine
-;;	call GetMachineName
-;.Finish
-;	ld de, wcd6d ; pointer to where item name is stored in RAM
-;	pop bc
-;	pop hl
-;	ret
 
 ;GetMachineName::	;joenote - not needed since using list for tm and hm names
 ;; copies the name of the TM/HM in [wd11e] to wcd6d

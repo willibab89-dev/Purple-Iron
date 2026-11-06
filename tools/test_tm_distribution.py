@@ -27,6 +27,9 @@ def validate(version):
         assert {n for n in entry['new'] if n > 50} == {n for n in entry['old'] if n > 50}
     entries = {e['name']: e for e in PLAN['entries']}
     assert set(range(1, 56)) <= set(entries['mew']['new'])
+    for entry in PLAN['entries']:
+        if entry['dex'] > 151 and entry['name'] != 'kakuna_rock_type':
+            assert entry['new'] == entries[entry['source']]['new'], entry['name']
     assert 6 in entries['kakuna']['new'] and 6 not in entries['kakuna_rock_type']['new']
     assert 6 in entries['paras']['new'] and 6 in entries['parasect']['new']
     assert 32 in entries['electrode']['new'] and 32 not in entries['snorlax']['new']

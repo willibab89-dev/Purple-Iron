@@ -490,6 +490,16 @@ UsableItems_PartyMenu:
 	db ELIXER
 	db MAX_ELIXER
 	db M_GENE	;joenote - custom item
+	db TM_51
+	db TM_52
+	db TM_53
+	db TM_54
+	db TM_55
+	db TM_56
+	db TM_57
+	db TM_58
+	db TM_59
+	db TM_60
 	db $ff
 
 ; items which close the item menu when used
