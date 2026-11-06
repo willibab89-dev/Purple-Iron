@@ -18,11 +18,11 @@ db 0
 db 0
 db 5 ; growth rate
 ; learnset
-	tmlearn 6,8
-	tmlearn 9,10,11,12,13,14
-	tmlearn 20,23,24
-	tmlearn 25,31,32
-	tmlearn 33,34,38,39,40
+	tmlearn 8
+	tmlearn 11,12,13,14
+	tmlearn 23,24
+	tmlearn 25
+	tmlearn 33,38,39,40
 	tmlearn 44,45
-	tmlearn 50,53
+	tmlearn 53
 db 0 ; padding

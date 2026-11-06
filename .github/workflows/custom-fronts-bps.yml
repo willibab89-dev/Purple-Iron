@@ -1,4 +1,4 @@
-name: Move overhaul — patch 8
+name: Thematic TM compatibility
 
 on:
   workflow_dispatch:
@@ -59,10 +59,11 @@ jobs:
           python3 tools/test_move_patch_6.py
           python3 tools/test_move_patch_7.py
           python3 tools/test_move_patch_8.py
+          python3 tools/test_tm_distribution.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
-          name: pokemon-move-patch-8-bps
+          name: pokemon-tm-distribution-bps
           retention-days: 30
           if-no-files-found: error
           path: |
@@ -79,3 +80,4 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-PATCH-6.md
             ${{ runner.temp }}/patches/MOVE-PATCH-7.md
             ${{ runner.temp }}/patches/MOVE-PATCH-8.md
+            ${{ runner.temp }}/patches/TM-DISTRIBUTION.md

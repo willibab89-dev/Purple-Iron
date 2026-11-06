@@ -18,11 +18,11 @@ db REST
 db 0
 db 5 ; growth rate
 ; learnset
-	tmlearn 1,5,6,8
+	tmlearn 1,5,8
 	tmlearn 9,10,11,12,13,14,15,16
-	tmlearn 17,18,19,20,22,24
-	tmlearn 25,26,27,29,31,32
+	tmlearn 17,18,19,22,24
+	tmlearn 25,26,27,29
 	tmlearn 33,34,35,36,38,40
 	tmlearn 44,46,48
-	tmlearn 50,53,54
+	tmlearn 53,54
 db 0 ; padding

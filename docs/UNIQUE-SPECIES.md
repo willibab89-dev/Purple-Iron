@@ -1,12 +1,14 @@
 # Unique species version: 172 Pokémon
 
-See `MOVE-PATCH-8.md` for the latest cumulative move changes and remaining work. Earlier patch notes are retained for reference.
+See `TM-DISTRIBUTION.md` for current thematic TM access and `MOVE-PATCH-8.md` for the completed move overhaul. Earlier patch notes are retained for reference.
 
 This branch adds 21 separate species at Pokédex numbers 152–172. The 151 original species and their custom front sprites remain available. Fossil and ghost display IDs and the existing special MissingNo battle are preserved.
 
 **A new save is required only when upgrading from the old 151-species version.** The 172-species layout uses 22-byte Pokédex bitfields. Saves from previous 172-species patches remain compatible. Keep a backup; link battles require matching ROM revisions.
 
-Each new species copies the source's stats, starting/level-up/TM/HM moves, growth, experience yield, cry, Pokédex description, palette, party icon, back sprite and evolution destinations. Evolutions still lead to the original species (for example, unique Bulbasaur evolves into the original Ivysaur). These are new species IDs, not replacements or a new evolution family. Display names are shortened to fit the game's 10-character limit; the filenames below identify the full variant.
+Each new species copies the source's stats, starting/level-up moves, growth, experience yield, cry, Pokédex description, palette, party icon, back sprite and evolution destinations. Evolutions still lead to the original species (for example, unique Bulbasaur evolves into the original Ivysaur). These are new species IDs, not replacements or a new evolution family. Display names are shortened to fit the game's 10-character limit; the filenames below identify the full variant.
+
+TM/HM compatibility now follows `TM-DISTRIBUTION.md`; Rock Kakuna differs from Poison Kakuna for Toxic, while the other variants follow their originals.
 
 Type overrides: Fighting Geodude and Fighting Goldeen are pure Fighting; Rock Kakuna is pure Rock; Poison Grimer remains pure Poison. All other types match their sources. Big Tentacool has catch rate 60 instead of the normal 190; other catch rates are copied.
 

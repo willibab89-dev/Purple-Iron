@@ -18,7 +18,7 @@ db 0
 db 0
 db 0 ; growth rate
 ; learnset
-	tmlearn 0
+	tmlearn 6
 	tmlearn 0
 	tmlearn 0
 	tmlearn 0

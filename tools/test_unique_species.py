@@ -49,7 +49,13 @@ def validate(version):
         assert clone[1:6] == source[1:6], entry["symbol"]
         assert clone[8] == entry.get("catch_rate_override", source[8])
         assert clone[9] == source[9]
-        assert clone[15:] == source[15:]
+        assert clone[15:20] == source[15:20]
+        assert clone[27:] == source[27:]
+        # Thematic TM rules allow the Rock-type Kakuna variant to differ
+        # from its Poison-type source; validate all variant masks explicitly.
+        tm_plan = json.loads((ROOT / 'data/tm_distribution.json').read_text())
+        expected_tm = next(e['tm_bytes'] for e in tm_plan['entries'] if e['dex'] == entry['dex'])
+        assert clone[20:27] == bytes(expected_tm), entry['symbol']
         types = {"FIGHTING": 1, "POISON": 3, "ROCK": 5}
         expected_types = bytes([types[entry["type_override"]]] * 2) if entry["type_override"] else source[6:8]
         assert clone[6:8] == expected_types

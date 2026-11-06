@@ -19,10 +19,10 @@ db LEECH_LIFE
 db 0 ; growth rate
 ; learnset;joenote-added strength from yellow
 	tmlearn 2,4,6
-	tmlearn 9,10,15
-	tmlearn 20,21,22
-	tmlearn 29,30,31,32
-	tmlearn 33,34,39
+	tmlearn 15
+	tmlearn 21,22
+	tmlearn 29,30,32
+	tmlearn 33,39
 	tmlearn 44,46
-	tmlearn 50,54
+	tmlearn 54
 db 0 ; padding

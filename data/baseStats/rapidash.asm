@@ -18,11 +18,11 @@ db STOMP
 db GROWL
 db 0 ; growth rate
 ; learnset
-	tmlearn 6,7,8
-	tmlearn 9,10,15
-	tmlearn 20
-	tmlearn 31,32
-	tmlearn 33,34,38,39,40
+	tmlearn 7,8
+	tmlearn 9,15
+	tmlearn 0
+	tmlearn 32
+	tmlearn 33,38,39,40
 	tmlearn 44
-	tmlearn 50
+	tmlearn 0
 db 0 ; padding

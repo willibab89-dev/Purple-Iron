@@ -18,11 +18,11 @@ db HARDEN
 db CONFUSION
 db 0 ; growth rate
 ; learnset
-	tmlearn 2,4,6
-	tmlearn 9,10,15
-	tmlearn 20,21,22
-	tmlearn 29,30,31,32
-	tmlearn 33,34,39
+	tmlearn 2,4
+	tmlearn 15
+	tmlearn 21,22
+	tmlearn 29,30,32
+	tmlearn 33,39
 	tmlearn 44,46
-	tmlearn 50,54;joenote - learns strength in yellow
+	tmlearn 54
 db 0 ; padding
