@@ -1,8 +1,8 @@
 db DEX_BEEDRILL ; pokedex id
 db 65 ; base hp
-db 80 ; base attack
+db 90 ; base attack
 db 40 ; base defense
-db 75 ; base speed
+db 85 ; base speed
 db 45 ; base special
 db BUG ; species type 1
 db POISON ; species type 2
@@ -19,8 +19,8 @@ db FURY_ATTACK
 db 0 ; growth rate
 ; learnset
 	tmlearn 3,6
-	tmlearn 15
-	tmlearn 21
+	tmlearn 0
+	tmlearn 0
 	tmlearn 32
 	tmlearn 33,39,40
 	tmlearn 44

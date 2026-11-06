@@ -842,5 +842,477 @@
       78,
       85
     ]
+  },
+  {
+    "name": "caterpie",
+    "title": "Caterpie",
+    "dex": 10,
+    "stats": [
+      45,
+      30,
+      35,
+      45,
+      20
+    ],
+    "start": [
+      "TACKLE",
+      "STRING_SHOT"
+    ],
+    "learn": [],
+    "remove": [],
+    "before_stats": [
+      45,
+      30,
+      35,
+      45,
+      20
+    ],
+    "before_start": [
+      "TACKLE",
+      "STRING_SHOT",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "metapod",
+    "title": "Metapod",
+    "dex": 11,
+    "stats": [
+      50,
+      20,
+      55,
+      30,
+      25
+    ],
+    "start": [
+      "HARDEN"
+    ],
+    "learn": [
+      [
+        7,
+        "HARDEN"
+      ]
+    ],
+    "remove": [],
+    "before_stats": [
+      50,
+      20,
+      55,
+      30,
+      25
+    ],
+    "before_start": [
+      "HARDEN",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "butterfree",
+    "title": "Butterfree",
+    "dex": 12,
+    "stats": [
+      60,
+      45,
+      50,
+      80,
+      90
+    ],
+    "start": [
+      "TACKLE",
+      "STRING_SHOT",
+      "HARDEN",
+      "CONFUSION"
+    ],
+    "learn": [
+      [
+        11,
+        "CONFUSION"
+      ],
+      [
+        12,
+        "GUST"
+      ],
+      [
+        14,
+        "POISONPOWDER"
+      ],
+      [
+        16,
+        "STUN_SPORE"
+      ],
+      [
+        18,
+        "SLEEP_POWDER"
+      ],
+      [
+        24,
+        "SUPERSONIC"
+      ],
+      [
+        27,
+        "WHIRLWIND"
+      ],
+      [
+        32,
+        "PSYBEAM"
+      ],
+      [
+        36,
+        "RAZOR_WIND"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "before_stats": [
+      60,
+      45,
+      50,
+      70,
+      80
+    ],
+    "before_start": [
+      "TACKLE",
+      "STRING_SHOT",
+      "HARDEN",
+      "CONFUSION"
+    ]
+  },
+  {
+    "name": "weedle",
+    "title": "Weedle",
+    "dex": 13,
+    "stats": [
+      40,
+      35,
+      30,
+      50,
+      20
+    ],
+    "start": [
+      "POISON_STING",
+      "STRING_SHOT"
+    ],
+    "learn": [],
+    "remove": [],
+    "before_stats": [
+      40,
+      35,
+      30,
+      50,
+      20
+    ],
+    "before_start": [
+      "POISON_STING",
+      "STRING_SHOT",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "kakuna",
+    "title": "Kakuna",
+    "dex": 14,
+    "stats": [
+      45,
+      25,
+      50,
+      35,
+      25
+    ],
+    "start": [
+      "HARDEN"
+    ],
+    "learn": [
+      [
+        7,
+        "HARDEN"
+      ]
+    ],
+    "remove": [],
+    "before_stats": [
+      45,
+      25,
+      50,
+      35,
+      25
+    ],
+    "before_start": [
+      "HARDEN",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "beedrill",
+    "title": "Beedrill",
+    "dex": 15,
+    "stats": [
+      65,
+      90,
+      40,
+      85,
+      45
+    ],
+    "start": [
+      "POISON_STING",
+      "STRING_SHOT",
+      "HARDEN",
+      "FURY_ATTACK"
+    ],
+    "learn": [
+      [
+        11,
+        "FURY_ATTACK"
+      ],
+      [
+        14,
+        "TWINEEDLE"
+      ],
+      [
+        18,
+        "FOCUS_ENERGY"
+      ],
+      [
+        23,
+        "PIN_MISSILE"
+      ],
+      [
+        28,
+        "AGILITY"
+      ],
+      [
+        34,
+        "PIERCE"
+      ],
+      [
+        40,
+        "AMBUSH"
+      ]
+    ],
+    "remove": [
+      15,
+      21
+    ],
+    "before_stats": [
+      65,
+      80,
+      40,
+      75,
+      45
+    ],
+    "before_start": [
+      "POISON_STING",
+      "STRING_SHOT",
+      "HARDEN",
+      "FURY_ATTACK"
+    ]
+  },
+  {
+    "name": "pidgey",
+    "title": "Pidgey",
+    "dex": 16,
+    "stats": [
+      40,
+      45,
+      40,
+      56,
+      35
+    ],
+    "start": [
+      "GUST"
+    ],
+    "learn": [
+      [
+        5,
+        "SAND_ATTACK"
+      ],
+      [
+        9,
+        "QUICK_ATTACK"
+      ],
+      [
+        16,
+        "WING_ATTACK"
+      ],
+      [
+        21,
+        "WHIRLWIND"
+      ],
+      [
+        25,
+        "GALE_WIND"
+      ],
+      [
+        29,
+        "ROOST"
+      ],
+      [
+        33,
+        "AGILITY"
+      ],
+      [
+        37,
+        "MIRROR_MOVE"
+      ]
+    ],
+    "remove": [
+      2
+    ],
+    "before_stats": [
+      40,
+      45,
+      40,
+      56,
+      35
+    ],
+    "before_start": [
+      "GUST",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "pidgeotto",
+    "title": "Pidgeotto",
+    "dex": 17,
+    "stats": [
+      63,
+      60,
+      55,
+      71,
+      50
+    ],
+    "start": [
+      "GUST",
+      "SAND_ATTACK"
+    ],
+    "learn": [
+      [
+        5,
+        "SAND_ATTACK"
+      ],
+      [
+        9,
+        "QUICK_ATTACK"
+      ],
+      [
+        16,
+        "WING_ATTACK"
+      ],
+      [
+        22,
+        "WHIRLWIND"
+      ],
+      [
+        27,
+        "GALE_WIND"
+      ],
+      [
+        32,
+        "ROOST"
+      ],
+      [
+        38,
+        "AGILITY"
+      ],
+      [
+        43,
+        "MIRROR_MOVE"
+      ]
+    ],
+    "remove": [
+      2
+    ],
+    "before_stats": [
+      63,
+      60,
+      55,
+      71,
+      50
+    ],
+    "before_start": [
+      "GUST",
+      "SAND_ATTACK",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "pidgeot",
+    "title": "Pidgeot",
+    "dex": 18,
+    "stats": [
+      90,
+      80,
+      85,
+      91,
+      70
+    ],
+    "start": [
+      "GUST",
+      "SAND_ATTACK",
+      "QUICK_ATTACK"
+    ],
+    "learn": [
+      [
+        5,
+        "SAND_ATTACK"
+      ],
+      [
+        9,
+        "QUICK_ATTACK"
+      ],
+      [
+        16,
+        "WING_ATTACK"
+      ],
+      [
+        22,
+        "WHIRLWIND"
+      ],
+      [
+        27,
+        "GALE_WIND"
+      ],
+      [
+        32,
+        "ROOST"
+      ],
+      [
+        40,
+        "AGILITY"
+      ],
+      [
+        45,
+        "MIRROR_MOVE"
+      ],
+      [
+        52,
+        "SKY_ATTACK"
+      ]
+    ],
+    "remove": [
+      2,
+      15
+    ],
+    "before_stats": [
+      83,
+      80,
+      75,
+      91,
+      70
+    ],
+    "before_start": [
+      "GUST",
+      "SAND_ATTACK",
+      "QUICK_ATTACK",
+      "0"
+    ]
   }
 ]

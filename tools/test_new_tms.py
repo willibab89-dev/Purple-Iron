@@ -42,7 +42,7 @@ def validate(version):
     assert data('ExtraTMCompatibilityTable', 2 * len(PLAN['entries'])) == masks
     byname = {e['name']: set(e['tms']) for e in PLAN['entries']}
     assert byname['mew'] == set(range(51, 64))
-    for number,allowed in [(61,{'ekans','arbok','mew'}),(62,{'ekans','arbok','mew'}),(63,{'farfetchd','mew'})]:
+    for number,allowed in [(61,{'ekans','arbok','mew'}),(62,{'ekans','arbok','beedrill','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','mew'})]:
         assert {name for name,tms in byname.items() if number in tms}==allowed
     for baby, adult in (('dragonair','dragonite'),('caterpie','butterfree'),('venonat','venomoth')):
         assert 51 not in byname[baby] and 51 in byname[adult]

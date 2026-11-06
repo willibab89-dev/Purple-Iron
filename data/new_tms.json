@@ -232,9 +232,10 @@
       "name": "butterfree",
       "source": "butterfree",
       "tms": [
-        51
+        51,
+        63
       ],
-      "mask": 1
+      "mask": 4097
     },
     {
       "dex": 13,
@@ -259,9 +260,11 @@
       "name": "beedrill",
       "source": "beedrill",
       "tms": [
-        54
+        54,
+        62,
+        63
       ],
-      "mask": 8
+      "mask": 6152
     },
     {
       "dex": 16,
@@ -269,9 +272,10 @@
       "source": "pidgey",
       "tms": [
         51,
-        55
+        55,
+        63
       ],
-      "mask": 17
+      "mask": 4113
     },
     {
       "dex": 17,
@@ -279,9 +283,10 @@
       "source": "pidgeotto",
       "tms": [
         51,
-        55
+        55,
+        63
       ],
-      "mask": 17
+      "mask": 4113
     },
     {
       "dex": 18,
@@ -289,9 +294,10 @@
       "source": "pidgeot",
       "tms": [
         51,
-        55
+        55,
+        63
       ],
-      "mask": 17
+      "mask": 4113
     },
     {
       "dex": 19,

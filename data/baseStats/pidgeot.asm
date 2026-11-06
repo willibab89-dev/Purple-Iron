@@ -1,7 +1,7 @@
 db DEX_PIDGEOT ; pokedex id
-db 83 ; base hp
+db 90 ; base hp
 db 80 ; base attack
-db 75 ; base defense
+db 85 ; base defense
 db 91 ; base speed
 db 70 ; base special
 db NORMAL ; species type 1
@@ -18,8 +18,8 @@ db QUICK_ATTACK
 db 0
 db 3 ; growth rate
 ; learnset
-	tmlearn 2,4
-	tmlearn 15
+	tmlearn 4
+	tmlearn 0
 	tmlearn 0
 	tmlearn 32
 	tmlearn 33,39

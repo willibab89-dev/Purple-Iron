@@ -728,13 +728,13 @@ PidgeyEvosMoves:
 	db 0
 ; Learnset
 	db 5, SAND_ATTACK
-	db 12, QUICK_ATTACK
-	db 19, WHIRLWIND
-	db 25, ROOST
-	db 28, WING_ATTACK
-	db 32, AERIAL_ACE
-	db 36, AGILITY
-	db 44, MIRROR_MOVE
+	db 9, QUICK_ATTACK
+	db 16, WING_ATTACK
+	db 21, WHIRLWIND
+	db 25, GALE_WIND
+	db 29, ROOST
+	db 33, AGILITY
+	db 37, MIRROR_MOVE
 	db 0
 
 SlowpokeEvosMoves:
@@ -1749,16 +1749,13 @@ BeedrillEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 12, FURY_ATTACK
-	db 16, FOCUS_ENERGY
-	db 20, TWINEEDLE
-	db 25, RAGE
-	db 28, LUNGE
-	db 30, PIN_MISSILE
+	db 11, FURY_ATTACK
+	db 14, TWINEEDLE
+	db 18, FOCUS_ENERGY
+	db 23, PIN_MISSILE
+	db 28, AGILITY
 	db 34, PIERCE
-	db 35, AGILITY
-	db 38, AMBUSH
-	db 48, MEGAHORN
+	db 40, AMBUSH
 	db 0
 
 MissingNo73EvosMoves:
@@ -1877,14 +1874,15 @@ ButterfreeEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 12, CONFUSION
-	db 15, POISONPOWDER
+	db 11, CONFUSION
+	db 12, GUST
+	db 14, POISONPOWDER
 	db 16, STUN_SPORE
-	db 17, SLEEP_POWDER
-	db 21, SUPERSONIC
-	db 26, WHIRLWIND
-	db 28, GUST;joenote - yellow update
+	db 18, SLEEP_POWDER
+	db 24, SUPERSONIC
+	db 27, WHIRLWIND
 	db 32, PSYBEAM
+	db 36, RAZOR_WIND
 	db 0
 
 MachampEvosMoves:
@@ -2178,14 +2176,13 @@ PidgeottoEvosMoves:
 	db 0
 ; Learnset
 	db 5, SAND_ATTACK
-	db 12, QUICK_ATTACK
-	db 21, WHIRLWIND
-	db 29, ROOST
-	db 31, WING_ATTACK
-	db 36, AERIAL_ACE
-	db 38, GALE_WIND
-	db 40, AGILITY
-	db 49, MIRROR_MOVE
+	db 9, QUICK_ATTACK
+	db 16, WING_ATTACK
+	db 22, WHIRLWIND
+	db 27, GALE_WIND
+	db 32, ROOST
+	db 38, AGILITY
+	db 43, MIRROR_MOVE
 	db 0
 
 PidgeotEvosMoves:
@@ -2193,14 +2190,14 @@ PidgeotEvosMoves:
 	db 0
 ; Learnset
 	db 5, SAND_ATTACK
-	db 12, QUICK_ATTACK
-	db 21, WHIRLWIND
-	db 31, WING_ATTACK
-	db 33, ROOST
-	db 40, AERIAL_ACE
-	db 42, GALE_WIND
-	db 44, AGILITY
-	db 54, MIRROR_MOVE
+	db 9, QUICK_ATTACK
+	db 16, WING_ATTACK
+	db 22, WHIRLWIND
+	db 27, GALE_WIND
+	db 32, ROOST
+	db 40, AGILITY
+	db 45, MIRROR_MOVE
+	db 52, SKY_ATTACK
 	db 0
 
 StarmieEvosMoves:

@@ -10,13 +10,13 @@ ExtraTMCompatibilityTable:
 	db $04, $01 ; 9: blastoise
 	db $00, $00 ; 10: caterpie
 	db $00, $00 ; 11: metapod
-	db $01, $00 ; 12: butterfree
+	db $01, $10 ; 12: butterfree
 	db $08, $00 ; 13: weedle
 	db $08, $00 ; 14: kakuna
-	db $08, $00 ; 15: beedrill
-	db $11, $00 ; 16: pidgey
-	db $11, $00 ; 17: pidgeotto
-	db $11, $00 ; 18: pidgeot
+	db $08, $18 ; 15: beedrill
+	db $11, $10 ; 16: pidgey
+	db $11, $10 ; 17: pidgeotto
+	db $11, $10 ; 18: pidgeot
 	db $02, $00 ; 19: rattata
 	db $02, $00 ; 20: raticate
 	db $13, $00 ; 21: spearow
