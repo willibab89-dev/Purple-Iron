@@ -365,44 +365,40 @@
       "HARDEN"
     ],
     "tms": [
-      6,
-      10,
+      29,
+      30,
       32,
+      33,
       44,
       50
     ],
-    "extra": [],
+    "extra": [
+      57,
+      60
+    ],
     "evo": [
       "EV_LEVEL, 36, CLAYDOL"
     ],
     "learn": [
       [
-        5,
-        "TACKLE"
-      ],
-      [
-        11,
+        9,
         "ROCK_THROW"
       ],
       [
         17,
-        "ASTONISH"
-      ],
-      [
-        23,
-        "PSYBEAM"
-      ],
-      [
-        29,
-        "ROCK_TOMB"
-      ],
-      [
-        35,
         "NIGHT_SHADE"
       ],
       [
-        41,
-        "EARTHQUAKE"
+        25,
+        "PSYBEAM"
+      ],
+      [
+        33,
+        "REFLECT"
+      ],
+      [
+        45,
+        "WAILING_CRY"
       ]
     ],
     "height": [
@@ -442,42 +438,49 @@
     "start": [
       "CONFUSION",
       "HARDEN",
-      "ROCK_THROW",
-      "ASTONISH"
+      "ROCK_THROW"
     ],
     "tms": [
-      6,
-      10,
+      29,
+      30,
       32,
+      33,
       44,
       50
     ],
-    "extra": [],
+    "extra": [
+      57,
+      60
+    ],
     "evo": [],
     "learn": [
       [
+        9,
+        "ROCK_THROW"
+      ],
+      [
         17,
-        "PSYBEAM"
-      ],
-      [
-        23,
-        "ROCK_TOMB"
-      ],
-      [
-        29,
         "NIGHT_SHADE"
       ],
       [
-        35,
-        "PSYCHIC_M"
+        25,
+        "PSYBEAM"
       ],
       [
-        41,
-        "EARTHQUAKE"
+        33,
+        "REFLECT"
       ],
       [
-        47,
-        "EXPLOSION"
+        37,
+        "STONE_PRESS"
+      ],
+      [
+        45,
+        "WAILING_CRY"
+      ],
+      [
+        53,
+        "LIGHT_SCREEN"
       ]
     ],
     "height": [
@@ -584,11 +587,11 @@
     "index": 159,
     "dex": 180,
     "stats": [
-      48,
-      48,
-      48,
-      48,
-      48
+      132,
+      33,
+      66,
+      33,
+      66
     ],
     "types": [
       "NORMAL",
@@ -600,12 +603,34 @@
     "cry": "DITTO",
     "palette": "PAL_GREENMON",
     "start": [
-      "TRANSFORM"
+      "DUPLICATE"
     ],
-    "tms": [],
+    "tms": [
+      8,
+      11,
+      44,
+      50
+    ],
     "extra": [],
     "evo": [],
-    "learn": [],
+    "learn": [
+      [
+        10,
+        "DOUBLESLAP"
+      ],
+      [
+        30,
+        "STOCKPILE"
+      ],
+      [
+        40,
+        "SLUDGE"
+      ],
+      [
+        50,
+        "RECOVER"
+      ]
+    ],
     "height": [
       3,
       3
@@ -632,7 +657,7 @@
       45
     ],
     "types": [
-      "GROUND",
+      "ROCK",
       "GROUND"
     ],
     "catch": 45,
@@ -645,13 +670,17 @@
       "LEER"
     ],
     "tms": [
-      6,
       10,
+      26,
+      28,
       32,
       44,
+      48,
       50
     ],
-    "extra": [],
+    "extra": [
+      57
+    ],
     "evo": [
       "EV_LEVEL, 30, PUPITAR"
     ],
@@ -661,23 +690,23 @@
         "SAND_ATTACK"
       ],
       [
-        15,
+        16,
         "ROCK_THROW"
       ],
       [
-        22,
+        24,
         "DIG"
       ],
       [
-        29,
+        32,
+        "CRUNCH"
+      ],
+      [
+        40,
         "ROCK_SLIDE"
       ],
       [
-        36,
-        "THRASH"
-      ],
-      [
-        43,
+        48,
         "EARTHQUAKE"
       ]
     ],
@@ -707,7 +736,7 @@
       65
     ],
     "types": [
-      "GROUND",
+      "ROCK",
       "GROUND"
     ],
     "catch": 45,
@@ -718,39 +747,46 @@
     "start": [
       "BITE",
       "LEER",
-      "SAND_ATTACK",
-      "ROCK_THROW"
+      "SAND_ATTACK"
     ],
     "tms": [
-      6,
       10,
+      26,
+      28,
       32,
       44,
+      48,
       50
     ],
-    "extra": [],
+    "extra": [
+      57
+    ],
     "evo": [
       "EV_LEVEL, 55, TYRANITAR"
     ],
     "learn": [
       [
-        15,
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        16,
         "ROCK_THROW"
       ],
       [
-        22,
+        24,
         "DIG"
       ],
       [
-        29,
+        32,
+        "CRUNCH"
+      ],
+      [
+        40,
         "ROCK_SLIDE"
       ],
       [
-        38,
-        "THRASH"
-      ],
-      [
-        47,
+        48,
         "EARTHQUAKE"
       ]
     ],
@@ -780,7 +816,7 @@
       95
     ],
     "types": [
-      "GROUND",
+      "ROCK",
       "DRAGON"
     ],
     "catch": 45,
@@ -791,42 +827,57 @@
     "start": [
       "BITE",
       "LEER",
-      "ROCK_SLIDE",
-      "THRASH"
+      "ROCK_THROW"
     ],
     "tms": [
-      6,
       10,
+      14,
+      15,
+      25,
+      26,
+      28,
       32,
+      38,
       44,
+      48,
       50
     ],
-    "extra": [],
+    "extra": [
+      57
+    ],
     "evo": [],
     "learn": [
       [
-        22,
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        24,
         "DIG"
       ],
       [
-        29,
+        32,
+        "CRUNCH"
+      ],
+      [
+        40,
         "ROCK_SLIDE"
       ],
       [
-        38,
-        "THRASH"
-      ],
-      [
-        47,
+        48,
         "EARTHQUAKE"
       ],
       [
-        55,
+        56,
         "DRAGON_RAGE"
       ],
       [
-        65,
-        "HYPER_BEAM"
+        64,
+        "OUTRAGE"
       ]
     ],
     "height": [

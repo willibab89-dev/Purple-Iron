@@ -32,7 +32,8 @@ def validate(version):
         actual = headers[(entry['dex'] - 1) * 28:entry['dex'] * 28]
         assert actual == expected, entry['name']
         assert (set(entry['new']) ^ set(entry['old'])) <= reviewed | set(tuning['remove'] if tuning else []) | set(tuning.get('add', []) if tuning else []), entry['name']
-        assert (44 in entry['new']) == (44 in entry['old']), entry['name']
+        expected_rest = 44 in ((set(entry['old']) - set(tuning['remove'] if tuning else [])) | set(tuning.get('add', []) if tuning else []))
+        assert (44 in entry['new']) == expected_rest, entry['name']
         expected_hms=({n for n in entry['old'] if n > 50} - set(tuning['remove'] if tuning else [])) | {n for n in (tuning.get('add', []) if tuning else []) if n > 50}
         assert {n for n in entry['new'] if n > 50} == expected_hms
     entries = {e['name']: e for e in PLAN['entries']}

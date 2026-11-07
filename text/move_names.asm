@@ -232,4 +232,5 @@ MoveNames::
 	db "OUTRAGE@"
 	db "MILK DRINK@"
 	db "SNARL@"
+	db "DUPLICATE@"
 MoveNamesEnd:

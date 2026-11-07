@@ -1,4 +1,4 @@
-name: "Toxapex, Miltank and Sableye redesigns"
+name: "Claydol, Dittwo, Tyranitar and Dragonite redesigns"
 
 on:
   workflow_dispatch:
@@ -73,6 +73,7 @@ jobs:
           python3 tools/test_outrage.py
           python3 tools/test_milk_drink.py
           python3 tools/test_snarl.py
+          python3 tools/test_duplicate.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -125,3 +126,4 @@ jobs:
             ${{ runner.temp }}/patches/FINAL-MOVE-DISTRIBUTION-REVIEW.md
             ${{ runner.temp }}/patches/DRAGONS-MEWTWO-MEW.md
             ${{ runner.temp }}/patches/TOXAPEX-MILTANK-SABLEYE.md
+            ${{ runner.temp }}/patches/CLAYDOL-DITTWO-TYRANITAR.md

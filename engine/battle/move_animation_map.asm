@@ -259,6 +259,7 @@ MoveAnimationMap:
 	db THRASH ; OUTRAGE
 	db RECOVER ; MILK_DRINK
 	db GROWL ; SNARL
+	db MIMIC ; DUPLICATE
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

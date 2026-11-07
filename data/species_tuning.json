@@ -9927,5 +9927,390 @@
       "ASTONISH",
       "0"
     ]
+  },
+  {
+    "name": "baltoy",
+    "title": "Baltoy",
+    "dex": 177,
+    "stats": [
+      40,
+      40,
+      55,
+      55,
+      55
+    ],
+    "start": [
+      "CONFUSION",
+      "HARDEN"
+    ],
+    "learn": [
+      [
+        9,
+        "ROCK_THROW"
+      ],
+      [
+        17,
+        "NIGHT_SHADE"
+      ],
+      [
+        25,
+        "PSYBEAM"
+      ],
+      [
+        33,
+        "REFLECT"
+      ],
+      [
+        45,
+        "WAILING_CRY"
+      ]
+    ],
+    "remove": [
+      6,
+      10
+    ],
+    "add": [
+      29,
+      30,
+      33
+    ],
+    "before_stats": [
+      40,
+      40,
+      55,
+      55,
+      55
+    ],
+    "before_start": [
+      "CONFUSION",
+      "HARDEN",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "claydol",
+    "title": "Claydol",
+    "dex": 178,
+    "stats": [
+      60,
+      70,
+      105,
+      75,
+      120
+    ],
+    "start": [
+      "CONFUSION",
+      "HARDEN",
+      "ROCK_THROW"
+    ],
+    "learn": [
+      [
+        9,
+        "ROCK_THROW"
+      ],
+      [
+        17,
+        "NIGHT_SHADE"
+      ],
+      [
+        25,
+        "PSYBEAM"
+      ],
+      [
+        33,
+        "REFLECT"
+      ],
+      [
+        37,
+        "STONE_PRESS"
+      ],
+      [
+        45,
+        "WAILING_CRY"
+      ],
+      [
+        53,
+        "LIGHT_SCREEN"
+      ]
+    ],
+    "remove": [
+      6,
+      10
+    ],
+    "add": [
+      29,
+      30,
+      33
+    ],
+    "before_stats": [
+      60,
+      70,
+      105,
+      75,
+      120
+    ],
+    "before_start": [
+      "CONFUSION",
+      "HARDEN",
+      "ROCK_THROW",
+      "ASTONISH"
+    ]
+  },
+  {
+    "name": "dittwo",
+    "title": "Dittwo",
+    "dex": 180,
+    "stats": [
+      132,
+      33,
+      66,
+      33,
+      66
+    ],
+    "start": [
+      "DUPLICATE"
+    ],
+    "learn": [
+      [
+        10,
+        "DOUBLESLAP"
+      ],
+      [
+        30,
+        "STOCKPILE"
+      ],
+      [
+        40,
+        "SLUDGE"
+      ],
+      [
+        50,
+        "RECOVER"
+      ]
+    ],
+    "remove": [],
+    "add": [
+      8,
+      11,
+      44,
+      50
+    ],
+    "before_stats": [
+      48,
+      48,
+      48,
+      48,
+      48
+    ],
+    "before_start": [
+      "TRANSFORM",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "larvitar",
+    "title": "Larvitar",
+    "dex": 181,
+    "stats": [
+      50,
+      64,
+      50,
+      41,
+      45
+    ],
+    "start": [
+      "BITE",
+      "LEER"
+    ],
+    "learn": [
+      [
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        24,
+        "DIG"
+      ],
+      [
+        32,
+        "CRUNCH"
+      ],
+      [
+        40,
+        "ROCK_SLIDE"
+      ],
+      [
+        48,
+        "EARTHQUAKE"
+      ]
+    ],
+    "remove": [
+      6
+    ],
+    "add": [
+      26,
+      28,
+      48
+    ],
+    "before_stats": [
+      50,
+      64,
+      50,
+      41,
+      45
+    ],
+    "before_start": [
+      "BITE",
+      "LEER",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "pupitar",
+    "title": "Pupitar",
+    "dex": 182,
+    "stats": [
+      70,
+      84,
+      70,
+      51,
+      65
+    ],
+    "start": [
+      "BITE",
+      "LEER",
+      "SAND_ATTACK"
+    ],
+    "learn": [
+      [
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        24,
+        "DIG"
+      ],
+      [
+        32,
+        "CRUNCH"
+      ],
+      [
+        40,
+        "ROCK_SLIDE"
+      ],
+      [
+        48,
+        "EARTHQUAKE"
+      ]
+    ],
+    "remove": [
+      6
+    ],
+    "add": [
+      26,
+      28,
+      48
+    ],
+    "before_stats": [
+      70,
+      84,
+      70,
+      51,
+      65
+    ],
+    "before_start": [
+      "BITE",
+      "LEER",
+      "SAND_ATTACK",
+      "ROCK_THROW"
+    ]
+  },
+  {
+    "name": "tyranitar",
+    "title": "Tyranitar",
+    "dex": 183,
+    "stats": [
+      100,
+      134,
+      110,
+      61,
+      95
+    ],
+    "start": [
+      "BITE",
+      "LEER",
+      "ROCK_THROW"
+    ],
+    "learn": [
+      [
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        24,
+        "DIG"
+      ],
+      [
+        32,
+        "CRUNCH"
+      ],
+      [
+        40,
+        "ROCK_SLIDE"
+      ],
+      [
+        48,
+        "EARTHQUAKE"
+      ],
+      [
+        56,
+        "DRAGON_RAGE"
+      ],
+      [
+        64,
+        "OUTRAGE"
+      ]
+    ],
+    "remove": [
+      6
+    ],
+    "add": [
+      14,
+      15,
+      25,
+      26,
+      28,
+      38,
+      48
+    ],
+    "before_stats": [
+      100,
+      134,
+      110,
+      61,
+      95
+    ],
+    "before_start": [
+      "BITE",
+      "LEER",
+      "ROCK_SLIDE",
+      "THRASH"
+    ]
   }
 ]

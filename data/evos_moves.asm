@@ -2467,23 +2467,24 @@ SableyeEvosMoves:
 BaltoyEvosMoves:
 	db EV_LEVEL, 36, CLAYDOL
 	db 0
-	db 5, TACKLE
-	db 11, ROCK_THROW
-	db 17, ASTONISH
-	db 23, PSYBEAM
-	db 29, ROCK_TOMB
-	db 35, NIGHT_SHADE
-	db 41, EARTHQUAKE
+; Learnset
+	db 9, ROCK_THROW
+	db 17, NIGHT_SHADE
+	db 25, PSYBEAM
+	db 33, REFLECT
+	db 45, WAILING_CRY
 	db 0
 
 ClaydolEvosMoves:
 	db 0
-	db 17, PSYBEAM
-	db 23, ROCK_TOMB
-	db 29, NIGHT_SHADE
-	db 35, PSYCHIC_M
-	db 41, EARTHQUAKE
-	db 47, EXPLOSION
+; Learnset
+	db 9, ROCK_THROW
+	db 17, NIGHT_SHADE
+	db 25, PSYBEAM
+	db 33, REFLECT
+	db 37, STONE_PRESS
+	db 45, WAILING_CRY
+	db 53, LIGHT_SCREEN
 	db 0
 
 CrobatEvosMoves:
@@ -2502,35 +2503,46 @@ CrobatEvosMoves:
 
 DittwoEvosMoves:
 	db 0
+; Learnset
+	db 10, DOUBLESLAP
+	db 30, STOCKPILE
+	db 40, SLUDGE
+	db 50, RECOVER
 	db 0
 
 LarvitarEvosMoves:
 	db EV_LEVEL, 30, PUPITAR
 	db 0
+; Learnset
 	db 8, SAND_ATTACK
-	db 15, ROCK_THROW
-	db 22, DIG
-	db 29, ROCK_SLIDE
-	db 36, THRASH
-	db 43, EARTHQUAKE
+	db 16, ROCK_THROW
+	db 24, DIG
+	db 32, CRUNCH
+	db 40, ROCK_SLIDE
+	db 48, EARTHQUAKE
 	db 0
 
 PupitarEvosMoves:
 	db EV_LEVEL, 55, TYRANITAR
 	db 0
-	db 15, ROCK_THROW
-	db 22, DIG
-	db 29, ROCK_SLIDE
-	db 38, THRASH
-	db 47, EARTHQUAKE
+; Learnset
+	db 8, SAND_ATTACK
+	db 16, ROCK_THROW
+	db 24, DIG
+	db 32, CRUNCH
+	db 40, ROCK_SLIDE
+	db 48, EARTHQUAKE
 	db 0
 
 TyranitarEvosMoves:
 	db 0
-	db 22, DIG
-	db 29, ROCK_SLIDE
-	db 38, THRASH
-	db 47, EARTHQUAKE
-	db 55, DRAGON_RAGE
-	db 65, HYPER_BEAM
+; Learnset
+	db 8, SAND_ATTACK
+	db 16, ROCK_THROW
+	db 24, DIG
+	db 32, CRUNCH
+	db 40, ROCK_SLIDE
+	db 48, EARTHQUAKE
+	db 56, DRAGON_RAGE
+	db 64, OUTRAGE
 	db 0

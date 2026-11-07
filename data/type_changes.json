@@ -130,5 +130,53 @@
       "GROUND",
       "GROUND"
     ]
+  },
+  {
+    "name": "dragonite",
+    "dex": 149,
+    "before": [
+      "DRAGON",
+      "FLYING"
+    ],
+    "after": [
+      "DRAGON",
+      "DRAGON"
+    ]
+  },
+  {
+    "name": "larvitar",
+    "dex": 181,
+    "before": [
+      "GROUND",
+      "GROUND"
+    ],
+    "after": [
+      "ROCK",
+      "GROUND"
+    ]
+  },
+  {
+    "name": "pupitar",
+    "dex": 182,
+    "before": [
+      "GROUND",
+      "GROUND"
+    ],
+    "after": [
+      "ROCK",
+      "GROUND"
+    ]
+  },
+  {
+    "name": "tyranitar",
+    "dex": 183,
+    "before": [
+      "GROUND",
+      "DRAGON"
+    ],
+    "after": [
+      "ROCK",
+      "DRAGON"
+    ]
   }
 ]

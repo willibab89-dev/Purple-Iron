@@ -141,5 +141,16 @@
     "accuracy": 95,
     "pp": 15,
     "animation": "GROWL"
+  },
+  {
+    "id": 233,
+    "symbol": "DUPLICATE",
+    "name": "DUPLICATE",
+    "effect": "MIMIC_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "MIMIC"
   }
 ]

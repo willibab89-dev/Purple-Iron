@@ -1806,15 +1806,21 @@
       "dex": 177,
       "name": "baltoy",
       "source": "baltoy",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        57,
+        60
+      ],
+      "mask": 576
     },
     {
       "dex": 178,
       "name": "claydol",
       "source": "claydol",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        57,
+        60
+      ],
+      "mask": 576
     },
     {
       "dex": 179,
@@ -1838,22 +1844,28 @@
       "dex": 181,
       "name": "larvitar",
       "source": "larvitar",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        57
+      ],
+      "mask": 64
     },
     {
       "dex": 182,
       "name": "pupitar",
       "source": "pupitar",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        57
+      ],
+      "mask": 64
     },
     {
       "dex": 183,
       "name": "tyranitar",
       "source": "tyranitar",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        57
+      ],
+      "mask": 64
     }
   ],
   "old_machine_moves": [
