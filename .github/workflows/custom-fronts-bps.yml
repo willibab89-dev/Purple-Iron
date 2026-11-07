@@ -1,4 +1,4 @@
-name: "Happy Ditto and Fighting variant redesigns"
+name: "Koga Grimer, Erika Ivysaur and Rock Kakuna; Cocoon"
 
 on:
   workflow_dispatch:
@@ -75,6 +75,7 @@ jobs:
           python3 tools/test_snarl.py
           python3 tools/test_duplicate.py
           python3 tools/test_heal_bell_charm.py
+          python3 tools/test_cocoon.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -130,3 +131,4 @@ jobs:
             ${{ runner.temp }}/patches/CLAYDOL-DITTWO-TYRANITAR.md
             ${{ runner.temp }}/patches/FIRST-UNIQUE-VARIANTS.md
             ${{ runner.temp }}/patches/HAPPY-DITTO-AND-FIGHTERS.md
+            ${{ runner.temp }}/patches/KOGA-ERIKA-ROCK-KAKUNA.md

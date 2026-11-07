@@ -158,7 +158,7 @@ ExtraTMCompatibilityTable:
 	db $62, $00 ; 157: geodude_fighting
 	db $02, $10 ; 158: goldeen_fighting
 	db $08, $00 ; 159: grimer_poison
-	db $08, $00 ; 160: ivysaur_erika
+	db $00, $00 ; 160: ivysaur_erika
 	db $40, $00 ; 161: kakuna_rock_type
 	db $c0, $02 ; 162: marowak_unique
 	db $68, $00 ; 163: nidoking_unique

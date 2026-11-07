@@ -235,4 +235,5 @@ MoveNames::
 	db "DUPLICATE@"
 	db "HEAL BELL@"
 	db "CHARM@"
+	db "COCOON@"
 MoveNamesEnd:

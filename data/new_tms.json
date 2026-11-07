@@ -1643,10 +1643,8 @@
       "dex": 160,
       "name": "ivysaur_erika",
       "source": "ivysaur",
-      "tms": [
-        54
-      ],
-      "mask": 8
+      "tms": [],
+      "mask": 0
     },
     {
       "dex": 161,

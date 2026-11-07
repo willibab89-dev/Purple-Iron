@@ -64,12 +64,12 @@ EvosMovesPointerTable:
 	dw TaurosEvosMoves
 	dw ReviewedGeodudeFightingEvosMoves ; UNIQUE_GEODUDE_FIGHTING
 	dw ReviewedGoldeenFightingEvosMoves ; UNIQUE_GOLDEEN_FIGHTING
-	dw GrimerEvosMoves ; UNIQUE_GRIMER_POISON
+	dw ReviewedGrimerPoisonEvosMoves ; UNIQUE_GRIMER_POISON
 	dw FarfetchdEvosMoves
 	dw VenonatEvosMoves
 	dw DragoniteEvosMoves
-	dw IvysaurEvosMoves ; UNIQUE_IVYSAUR_ERIKA
-	dw KakunaEvosMoves ; UNIQUE_KAKUNA_ROCK_TYPE
+	dw ReviewedIvysaurErikaEvosMoves ; UNIQUE_IVYSAUR_ERIKA
+	dw ReviewedKakunaRockTypeEvosMoves ; UNIQUE_KAKUNA_ROCK_TYPE
 	dw MarowakEvosMoves ; UNIQUE_MAROWAK_UNIQUE
 	dw DoduoEvosMoves
 	dw PoliwagEvosMoves
@@ -2629,4 +2629,40 @@ ReviewedGoldeenFightingEvosMoves:
 	db 33, WATERFALL
 	db 41, FOCUS_ENERGY
 	db 49, AGILITY
+	db 0
+
+ReviewedGrimerPoisonEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, POISON_GAS
+	db 15, SLUDGE
+	db 23, DISABLE
+	db 31, TOXIC
+	db 39, ACID_ARMOR
+	db 47, VENOSHOCK
+	db 0
+
+ReviewedIvysaurErikaEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, VINE_WHIP
+	db 13, STUN_SPORE
+	db 19, LEECH_SEED
+	db 25, REFLECT
+	db 33, VINE_CRUSH
+	db 41, SYNTHESIS
+	db 49, SOLARBEAM
+	db 0
+
+ReviewedKakunaRockTypeEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 9, ROCK_THROW
+	db 17, LEECH_LIFE
+	db 25, COCOON
+	db 33, ROCK_TOMB
+	db 41, STONE_PRESS
 	db 0

@@ -10783,5 +10783,195 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "grimer_poison",
+    "title": "ReviewedGrimerPoison",
+    "dex": 159,
+    "stats": [
+      90,
+      90,
+      90,
+      35,
+      60
+    ],
+    "start": [
+      "POUND",
+      "HARDEN"
+    ],
+    "learn": [
+      [
+        7,
+        "POISON_GAS"
+      ],
+      [
+        15,
+        "SLUDGE"
+      ],
+      [
+        23,
+        "DISABLE"
+      ],
+      [
+        31,
+        "TOXIC"
+      ],
+      [
+        39,
+        "ACID_ARMOR"
+      ],
+      [
+        47,
+        "VENOSHOCK"
+      ]
+    ],
+    "remove": [
+      24,
+      25,
+      36,
+      38,
+      47
+    ],
+    "add": [],
+    "before_stats": [
+      80,
+      80,
+      50,
+      25,
+      40
+    ],
+    "before_start": [
+      "POUND",
+      "DISABLE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "ivysaur_erika",
+    "title": "ReviewedIvysaurErika",
+    "dex": 160,
+    "stats": [
+      70,
+      62,
+      85,
+      50,
+      85
+    ],
+    "start": [
+      "TACKLE",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        7,
+        "VINE_WHIP"
+      ],
+      [
+        13,
+        "STUN_SPORE"
+      ],
+      [
+        19,
+        "LEECH_SEED"
+      ],
+      [
+        25,
+        "REFLECT"
+      ],
+      [
+        33,
+        "VINE_CRUSH"
+      ],
+      [
+        41,
+        "SYNTHESIS"
+      ],
+      [
+        49,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [
+      3,
+      8
+    ],
+    "add": [
+      50
+    ],
+    "before_stats": [
+      60,
+      62,
+      63,
+      60,
+      80
+    ],
+    "before_start": [
+      "TACKLE",
+      "GROWL",
+      "LEECH_SEED",
+      "0"
+    ]
+  },
+  {
+    "name": "kakuna_rock_type",
+    "title": "ReviewedKakunaRockType",
+    "dex": 161,
+    "stats": [
+      65,
+      45,
+      120,
+      20,
+      50
+    ],
+    "start": [
+      "TACKLE",
+      "HARDEN"
+    ],
+    "learn": [
+      [
+        9,
+        "ROCK_THROW"
+      ],
+      [
+        17,
+        "LEECH_LIFE"
+      ],
+      [
+        25,
+        "COCOON"
+      ],
+      [
+        33,
+        "ROCK_TOMB"
+      ],
+      [
+        41,
+        "STONE_PRESS"
+      ]
+    ],
+    "remove": [],
+    "add": [
+      20,
+      21,
+      33,
+      34,
+      44,
+      48,
+      50
+    ],
+    "before_stats": [
+      45,
+      25,
+      50,
+      35,
+      25
+    ],
+    "before_start": [
+      "HARDEN",
+      "0",
+      "0",
+      "0"
+    ]
   }
 ]

@@ -174,5 +174,16 @@
     "accuracy": 90,
     "pp": 20,
     "animation": "GROWL"
+  },
+  {
+    "id": 236,
+    "symbol": "COCOON",
+    "name": "COCOON",
+    "effect": "SPECIAL_UP2_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 15,
+    "animation": "HARDEN"
   }
 ]
