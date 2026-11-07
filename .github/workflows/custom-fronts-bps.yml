@@ -1,4 +1,4 @@
-name: "Lapras, Ditto and Eevee family redesigns"
+name: "Porygon, Omastar and Kabutops redesigns"
 
 on:
   workflow_dispatch:
@@ -116,3 +116,4 @@ jobs:
             ${{ runner.temp }}/patches/SCYTHER-JYNX-ELECTABUZZ-MAGMAR.md
             ${{ runner.temp }}/patches/PINSIR-TAUROS-GYARADOS.md
             ${{ runner.temp }}/patches/LAPRAS-DITTO-EEVEE-FAMILY.md
+            ${{ runner.temp }}/patches/PORYGON-OMASTAR-KABUTOPS.md

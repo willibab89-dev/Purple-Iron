@@ -1268,33 +1268,23 @@ KabutoEvosMoves:
 	db EV_LEVEL, 40, KABUTOPS
 	db 0
 ; Learnset
-	db 24, ROCK_TOMB
-	db 26, AQUA_JET
-	db 28, ROCK_POLISH
-	db 29, SHELL_BREAK
-	db 34, ABSORB
-	db 38, STONE_PRESS
-	db 39, SLASH
-	db 44, LEER
-	db 49, HYDRO_PUMP
-	db 50, STONE_EDGE
+	db 9, ABSORB
+	db 17, ROCK_TOMB
+	db 25, AQUA_JET
+	db 33, SHELL_BREAK
 	db 0
 
 KabutopsEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 28, ROCK_TOMB
-	db 30, AQUA_JET
-	db 32, ROCK_POLISH
+	db 9, ABSORB
+	db 17, ROCK_TOMB
+	db 25, AQUA_JET
 	db 33, SHELL_BREAK
-	db 34, ABSORB
-	db 39, SLASH
-	db 42, X_SCISSOR
-	db 43, STONE_PRESS
-	db 46, LEER
-	db 47, STONE_EDGE
-	db 53, HYDRO_PUMP
+	db 41, SLASH
+	db 49, X_SCISSOR
+	db 57, STONE_EDGE
 	db 0
 
 HorseaEvosMoves:
@@ -1369,29 +1359,22 @@ OmanyteEvosMoves:
 	db EV_LEVEL, 40, OMASTAR
 	db 0
 ; Learnset
-	db 24, ROCK_TOMB
-	db 28, ROCK_POLISH
-	db 32, BRINE
-	db 34, HORN_ATTACK
-	db 38, STONE_PRESS
-	db 39, LEER
-	db 46, SPIKE_CANNON
-	db 50, STONE_EDGE
-	db 53, HYDRO_PUMP
+	db 9, CONSTRICT
+	db 17, SUPERSONIC
+	db 25, ROCK_TOMB
+	db 33, BRINE
+	db 49, HYDRO_PUMP
 	db 0
 
 OmastarEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 28, ROCK_TOMB
-	db 32, ROCK_POLISH
-	db 34, HORN_ATTACK
-	db 36, BRINE
-	db 39, LEER
-	db 42, STONE_PRESS
-	db 44, SPIKE_CANNON
-	db 46, STONE_EDGE
+	db 9, CONSTRICT
+	db 17, SUPERSONIC
+	db 25, ROCK_TOMB
+	db 33, BRINE
+	db 41, STONE_PRESS
 	db 49, HYDRO_PUMP
 	db 0
 
@@ -2214,10 +2197,12 @@ PorygonEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 23, PSYBEAM
-	db 28, RECOVER
-	db 35, AGILITY
-	db 42, TRI_ATTACK
+	db 9, PSYBEAM
+	db 17, RECOVER
+	db 25, TRI_ATTACK
+	db 33, AGILITY
+	db 41, PSYCH_UP
+	db 49, HYPER_BEAM
 	db 0
 
 AerodactylEvosMoves:

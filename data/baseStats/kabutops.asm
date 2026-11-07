@@ -18,9 +18,9 @@ db ABSORB
 db 0
 db 0 ; growth rate
 ; learnset
-	tmlearn 2,3,5,8
-	tmlearn 11,12,13,14,15
-	tmlearn 17,19
+	tmlearn 3,8
+	tmlearn 11,12,13,14
+	tmlearn 19
 	tmlearn 0
 	tmlearn 33,34,40
 	tmlearn 44

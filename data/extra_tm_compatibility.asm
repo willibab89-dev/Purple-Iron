@@ -135,9 +135,9 @@ ExtraTMCompatibilityTable:
 	db $06, $01 ; 134: vaporeon
 	db $02, $00 ; 135: jolteon
 	db $02, $00 ; 136: flareon
-	db $00, $00 ; 137: porygon
-	db $44, $01 ; 138: omanyte
-	db $44, $01 ; 139: omastar
+	db $02, $10 ; 137: porygon
+	db $44, $00 ; 138: omanyte
+	db $44, $00 ; 139: omastar
 	db $44, $00 ; 140: kabuto
 	db $54, $00 ; 141: kabutops
 	db $51, $00 ; 142: aerodactyl

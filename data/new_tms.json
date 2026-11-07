@@ -1418,8 +1418,11 @@
       "dex": 137,
       "name": "porygon",
       "source": "porygon",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52,
+        63
+      ],
+      "mask": 4098
     },
     {
       "dex": 138,
@@ -1427,10 +1430,9 @@
       "source": "omanyte",
       "tms": [
         53,
-        57,
-        59
+        57
       ],
-      "mask": 324
+      "mask": 68
     },
     {
       "dex": 139,
@@ -1438,10 +1440,9 @@
       "source": "omastar",
       "tms": [
         53,
-        57,
-        59
+        57
       ],
-      "mask": 324
+      "mask": 68
     },
     {
       "dex": 140,

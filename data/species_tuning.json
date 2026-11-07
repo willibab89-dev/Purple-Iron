@@ -8763,5 +8763,295 @@
       "QUICK_ATTACK",
       "EMBER"
     ]
+  },
+  {
+    "name": "porygon",
+    "title": "Porygon",
+    "dex": 137,
+    "stats": [
+      75,
+      75,
+      70,
+      40,
+      85
+    ],
+    "start": [
+      "TACKLE",
+      "SHARPEN",
+      "CONVERSION"
+    ],
+    "learn": [
+      [
+        9,
+        "PSYBEAM"
+      ],
+      [
+        17,
+        "RECOVER"
+      ],
+      [
+        25,
+        "TRI_ATTACK"
+      ],
+      [
+        33,
+        "AGILITY"
+      ],
+      [
+        41,
+        "PSYCH_UP"
+      ],
+      [
+        49,
+        "HYPER_BEAM"
+      ]
+    ],
+    "remove": [
+      46
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      60,
+      70,
+      40,
+      75
+    ],
+    "before_start": [
+      "TACKLE",
+      "SHARPEN",
+      "CONVERSION",
+      "0"
+    ]
+  },
+  {
+    "name": "omanyte",
+    "title": "Omanyte",
+    "dex": 138,
+    "stats": [
+      35,
+      40,
+      100,
+      35,
+      90
+    ],
+    "start": [
+      "WATER_GUN",
+      "WITHDRAW"
+    ],
+    "learn": [
+      [
+        9,
+        "CONSTRICT"
+      ],
+      [
+        17,
+        "SUPERSONIC"
+      ],
+      [
+        25,
+        "ROCK_TOMB"
+      ],
+      [
+        33,
+        "BRINE"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      35,
+      40,
+      100,
+      35,
+      90
+    ],
+    "before_start": [
+      "WATER_GUN",
+      "WITHDRAW",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "omastar",
+    "title": "Omastar",
+    "dex": 139,
+    "stats": [
+      70,
+      60,
+      125,
+      55,
+      115
+    ],
+    "start": [
+      "WATER_GUN",
+      "WITHDRAW"
+    ],
+    "learn": [
+      [
+        9,
+        "CONSTRICT"
+      ],
+      [
+        17,
+        "SUPERSONIC"
+      ],
+      [
+        25,
+        "ROCK_TOMB"
+      ],
+      [
+        33,
+        "BRINE"
+      ],
+      [
+        41,
+        "STONE_PRESS"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      7,
+      15,
+      17
+    ],
+    "add": [],
+    "before_stats": [
+      70,
+      60,
+      125,
+      55,
+      115
+    ],
+    "before_start": [
+      "WATER_GUN",
+      "WITHDRAW",
+      "HORN_ATTACK",
+      "0"
+    ]
+  },
+  {
+    "name": "kabuto",
+    "title": "Kabuto",
+    "dex": 140,
+    "stats": [
+      30,
+      80,
+      90,
+      55,
+      45
+    ],
+    "start": [
+      "SCRATCH",
+      "HARDEN"
+    ],
+    "learn": [
+      [
+        9,
+        "ABSORB"
+      ],
+      [
+        17,
+        "ROCK_TOMB"
+      ],
+      [
+        25,
+        "AQUA_JET"
+      ],
+      [
+        33,
+        "SHELL_BREAK"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      30,
+      80,
+      90,
+      55,
+      45
+    ],
+    "before_start": [
+      "SCRATCH",
+      "HARDEN",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "kabutops",
+    "title": "Kabutops",
+    "dex": 141,
+    "stats": [
+      60,
+      115,
+      105,
+      80,
+      70
+    ],
+    "start": [
+      "SCRATCH",
+      "HARDEN",
+      "ABSORB"
+    ],
+    "learn": [
+      [
+        9,
+        "ABSORB"
+      ],
+      [
+        17,
+        "ROCK_TOMB"
+      ],
+      [
+        25,
+        "AQUA_JET"
+      ],
+      [
+        33,
+        "SHELL_BREAK"
+      ],
+      [
+        41,
+        "SLASH"
+      ],
+      [
+        49,
+        "X_SCISSOR"
+      ],
+      [
+        57,
+        "STONE_EDGE"
+      ]
+    ],
+    "remove": [
+      2,
+      5,
+      15,
+      17
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      115,
+      105,
+      80,
+      70
+    ],
+    "before_start": [
+      "SCRATCH",
+      "HARDEN",
+      "ABSORB",
+      "0"
+    ]
   }
 ]
