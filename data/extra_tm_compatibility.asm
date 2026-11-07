@@ -82,8 +82,8 @@ ExtraTMCompatibilityTable:
 	db $00, $00 ; 81: magnemite
 	db $00, $00 ; 82: magneton
 	db $13, $10 ; 83: farfetchd
-	db $13, $00 ; 84: doduo
-	db $13, $00 ; 85: dodrio
+	db $12, $10 ; 84: doduo
+	db $12, $10 ; 85: dodrio
 	db $04, $00 ; 86: seel
 	db $04, $00 ; 87: dewgong
 	db $08, $00 ; 88: grimer

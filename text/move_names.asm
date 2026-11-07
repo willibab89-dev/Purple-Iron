@@ -222,4 +222,6 @@ MoveNames::
 	db "MOONLIGHT@"
 	db "WAKE-UP SLAP@"
 	db "QUIVER DANCE@"
+	db "ZAP CANNON@"
+	db "TRIPLE KICK@"
 MoveNamesEnd:

@@ -252,3 +252,48 @@ SequenceBideClock:
 	dec a
 	ld [de], a
 	ret
+
+; Only Triple Kick rerolls accuracy between strikes. Other multihit moves
+; retain their existing single gate. Carry means stop after the missed kick.
+SequenceTripleAccuracy:
+	push hl
+	push de
+	push bc
+	call CustomActorMove
+	ld a, [hl]
+	cp TRIPLE_KICK
+	jr nz, .hit
+	ld hl, wPlayerMoveAccuracy
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .accuracy
+	ld hl, wEnemyMoveAccuracy
+.accuracy
+	ld [hl], 242 ; restore base accuracy before applying stages each kick
+	callab MoveHitTest
+	ld a, [wMoveMissed]
+	and a
+	jr z, .hit
+	ld hl, wPlayerBattleStatus1
+	ld de, wPlayerNumAttacksLeft
+	ld bc, wPlayerNumHits
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .stop
+	ld hl, wEnemyBattleStatus1
+	ld de, wEnemyNumAttacksLeft
+	ld bc, wEnemyNumHits
+.stop
+	res ATTACKING_MULTIPLE_TIMES, [hl]
+	xor a
+	ld [de], a
+	ld [bc], a
+	scf
+	jr .done
+.hit
+	and a
+.done
+	pop bc
+	pop de
+	pop hl
+	ret

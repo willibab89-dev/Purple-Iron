@@ -935,22 +935,22 @@
       "name": "doduo",
       "source": "doduo",
       "tms": [
-        51,
         52,
-        55
+        55,
+        63
       ],
-      "mask": 19
+      "mask": 4114
     },
     {
       "dex": 85,
       "name": "dodrio",
       "source": "dodrio",
       "tms": [
-        51,
         52,
-        55
+        55,
+        63
       ],
-      "mask": 19
+      "mask": 4114
     },
     {
       "dex": 86,

@@ -5403,5 +5403,389 @@
       "HEADBUTT",
       "0"
     ]
+  },
+  {
+    "name": "magnemite",
+    "title": "Magnemite",
+    "dex": 81,
+    "stats": [
+      25,
+      35,
+      70,
+      45,
+      95
+    ],
+    "start": [
+      "TACKLE",
+      "THUNDERSHOCK"
+    ],
+    "learn": [
+      [
+        8,
+        "SUPERSONIC"
+      ],
+      [
+        14,
+        "THUNDER_WAVE"
+      ],
+      [
+        20,
+        "SONICBOOM"
+      ],
+      [
+        26,
+        "FLASH"
+      ],
+      [
+        33,
+        "CHARGE"
+      ],
+      [
+        40,
+        "SHOCK_WAVE"
+      ],
+      [
+        47,
+        "LIGHT_SCREEN"
+      ],
+      [
+        54,
+        "ZAP_CANNON"
+      ]
+    ],
+    "remove": [
+      6
+    ],
+    "add": [],
+    "before_stats": [
+      25,
+      35,
+      70,
+      45,
+      95
+    ],
+    "before_start": [
+      "TACKLE",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "magneton",
+    "title": "Magneton",
+    "dex": 82,
+    "stats": [
+      50,
+      60,
+      95,
+      70,
+      120
+    ],
+    "start": [
+      "TACKLE",
+      "THUNDERSHOCK",
+      "SUPERSONIC"
+    ],
+    "learn": [
+      [
+        8,
+        "SUPERSONIC"
+      ],
+      [
+        14,
+        "THUNDER_WAVE"
+      ],
+      [
+        20,
+        "SONICBOOM"
+      ],
+      [
+        26,
+        "FLASH"
+      ],
+      [
+        33,
+        "CHARGE"
+      ],
+      [
+        40,
+        "SHOCK_WAVE"
+      ],
+      [
+        47,
+        "LIGHT_SCREEN"
+      ],
+      [
+        54,
+        "ZAP_CANNON"
+      ]
+    ],
+    "remove": [
+      6
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      60,
+      95,
+      70,
+      120
+    ],
+    "before_start": [
+      "TACKLE",
+      "SONICBOOM",
+      "THUNDERSHOCK",
+      "0"
+    ]
+  },
+  {
+    "name": "doduo",
+    "title": "Doduo",
+    "dex": 84,
+    "stats": [
+      35,
+      85,
+      45,
+      75,
+      35
+    ],
+    "start": [
+      "PECK",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "QUICK_ATTACK"
+      ],
+      [
+        16,
+        "FURY_ATTACK"
+      ],
+      [
+        23,
+        "TRIPLE_KICK"
+      ],
+      [
+        30,
+        "DRILL_PECK"
+      ],
+      [
+        38,
+        "AGILITY"
+      ],
+      [
+        45,
+        "THRASH"
+      ]
+    ],
+    "remove": [
+      4,
+      43
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      35,
+      85,
+      45,
+      75,
+      35
+    ],
+    "before_start": [
+      "PECK",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "dodrio",
+    "title": "Dodrio",
+    "dex": 85,
+    "stats": [
+      60,
+      110,
+      70,
+      100,
+      60
+    ],
+    "start": [
+      "PECK",
+      "GROWL",
+      "FURY_ATTACK"
+    ],
+    "learn": [
+      [
+        9,
+        "QUICK_ATTACK"
+      ],
+      [
+        16,
+        "FURY_ATTACK"
+      ],
+      [
+        23,
+        "TRIPLE_KICK"
+      ],
+      [
+        30,
+        "DRILL_PECK"
+      ],
+      [
+        32,
+        "TRI_ATTACK"
+      ],
+      [
+        38,
+        "AGILITY"
+      ],
+      [
+        45,
+        "THRASH"
+      ]
+    ],
+    "remove": [
+      4,
+      15,
+      43
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      60,
+      110,
+      70,
+      100,
+      60
+    ],
+    "before_start": [
+      "PECK",
+      "GROWL",
+      "FURY_ATTACK",
+      "0"
+    ]
+  },
+  {
+    "name": "seel",
+    "title": "Seel",
+    "dex": 86,
+    "stats": [
+      65,
+      45,
+      55,
+      45,
+      70
+    ],
+    "start": [
+      "HEADBUTT",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        8,
+        "WATER_GUN"
+      ],
+      [
+        15,
+        "ICY_WIND"
+      ],
+      [
+        22,
+        "REST"
+      ],
+      [
+        29,
+        "AURORA_BEAM"
+      ],
+      [
+        41,
+        "BRINE"
+      ],
+      [
+        48,
+        "ICE_BEAM"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      65,
+      45,
+      55,
+      45,
+      70
+    ],
+    "before_start": [
+      "HEADBUTT",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "dewgong",
+    "title": "Dewgong",
+    "dex": 87,
+    "stats": [
+      90,
+      70,
+      80,
+      70,
+      95
+    ],
+    "start": [
+      "HEADBUTT",
+      "GROWL",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        8,
+        "WATER_GUN"
+      ],
+      [
+        15,
+        "ICY_WIND"
+      ],
+      [
+        22,
+        "REST"
+      ],
+      [
+        29,
+        "AURORA_BEAM"
+      ],
+      [
+        35,
+        "ICE_ARMOR"
+      ],
+      [
+        41,
+        "BRINE"
+      ],
+      [
+        48,
+        "ICE_BEAM"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      90,
+      70,
+      80,
+      70,
+      95
+    ],
+    "before_start": [
+      "HEADBUTT",
+      "GROWL",
+      "AURORA_BEAM",
+      "0"
+    ]
   }
 ]

@@ -14,7 +14,7 @@ dw DewgongPicBack
 ; attacks known at lvl 0
 db HEADBUTT
 db GROWL
-db AURORA_BEAM
+db WATER_GUN
 db 0
 db 0 ; growth rate
 ; learnset

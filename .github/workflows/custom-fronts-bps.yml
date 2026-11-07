@@ -1,4 +1,4 @@
-name: "Golem, Rapidash and Slowbro family redesigns"
+name: "Magnemite, Dodrio and Dewgong family redesigns"
 
 on:
   workflow_dispatch:
@@ -65,6 +65,7 @@ jobs:
           python3 tools/test_moonlight.py
           python3 tools/test_wake_up_slap.py
           python3 tools/test_quiver_dance.py
+          python3 tools/test_zap_and_triple.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -102,3 +103,4 @@ jobs:
             ${{ runner.temp }}/patches/GROWLITHE-POLIWAG-ABRA.md
             ${{ runner.temp }}/patches/MACHOP-BELLSPROUT-TENTACOOL.md
             ${{ runner.temp }}/patches/GOLEM-RAPIDASH-SLOWBRO.md
+            ${{ runner.temp }}/patches/MAGNETS-DODRIO-DEWGONG.md

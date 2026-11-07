@@ -274,5 +274,8 @@ const_value = 166
 
 	const QUIVER_DANCE
 
+	const ZAP_CANNON
+	const TRIPLE_KICK
+
 MAX_MOVE_ID EQU const_value + -1
 NUM_ATTACKS EQU MAX_MOVE_ID + -1 ; selectable moves, excluding Struggle

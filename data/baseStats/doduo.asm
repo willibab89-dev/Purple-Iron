@@ -13,16 +13,16 @@ dw DoduoPicFront
 dw DoduoPicBack
 ; attacks known at lvl 0
 db PECK
-db 0
+db GROWL
 db 0
 db 0
 db 0 ; growth rate
 ; learnset
-	tmlearn 4,8
-	tmlearn 9
+	tmlearn 8
+	tmlearn 9,10
 	tmlearn 20
 	tmlearn 32
 	tmlearn 33,40
-	tmlearn 43,44
+	tmlearn 44
 	tmlearn 49,52
 db 0 ; padding

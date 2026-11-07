@@ -3585,8 +3585,12 @@ MirrorMoveCheck:
 	pop bc
 	pop af
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	jp nz, getPlayerAnimationType ; for multi-hit moves, apply attack until PlayerNumAttacksLeft hits 0 or the enemy faints.
-	                             ; damage calculation and accuracy tests only happen for the first hit
+	jr z, .finishedMultiHits
+	callab SequenceTripleAccuracy
+	jp c, handleIfPlayerMoveMissed
+	jp getPlayerAnimationType
+.finishedMultiHits
+; Damage is recalculated for every strike; only Triple Kick rerolls accuracy.
 	res ATTACKING_MULTIPLE_TIMES, [hl] ; clear attacking multiple times status when all attacks are over
 	ld hl, MultiHitText
 	call PrintText
@@ -6072,7 +6076,11 @@ EnemyCheckIfMirrorMoveEffect:
 	pop bc
 	pop af
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	jp nz, GetEnemyAnimationType
+	jr z, .finishedMultiHits
+	callab SequenceTripleAccuracy
+	jp c, handleIfEnemyMoveMissed
+	jp GetEnemyAnimationType
+.finishedMultiHits
 	res ATTACKING_MULTIPLE_TIMES, [hl] ; mon is no longer hitting multiple times
 	ld hl, HitXTimesText
 	call PrintText
@@ -8616,6 +8624,17 @@ TwoToFiveAttacksEffect:
 	jr z, .setNumberOfHits
 	ld hl, wEnemyMoveEffect
 .setNumberOfHits
+	push hl
+	ld a, [H_WHOSETURN]
+	and a
+	ld a, [wPlayerMoveNum]
+	jr z, .checkTripleKick
+	ld a, [wEnemyMoveNum]
+.checkTripleKick
+	cp TRIPLE_KICK
+	pop hl
+	ld a, 3
+	jr z, .saveNumberOfHits
 	ld a, [hl]
 	cp TWINEEDLE_EFFECT
 	jr z, .twineedle

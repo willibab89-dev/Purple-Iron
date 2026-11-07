@@ -179,6 +179,8 @@ ConditionalAccuracyCheck:
 	jr z, .yes
 	cp AERIAL_ACE
 	jr z, .yes
+	cp ZAP_CANNON
+	jr z, .zap
 	cp THUNDER
 	jr nz, .no
 	call ConditionalTargetStatus
@@ -188,6 +190,12 @@ ConditionalAccuracyCheck:
 .no
 	and a
 	jr .done
+.zap
+	call ConditionalTargetStatus
+	ld a, [hl]
+	and 1 << PAR
+	jr nz, .yes
+	jr .no
 .yes
 	scf
 .done

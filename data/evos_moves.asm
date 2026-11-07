@@ -960,14 +960,14 @@ MagnetonEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 21, SONICBOOM
-	db 25, THUNDERSHOCK
-	db 26, CHARGE
-	db 29, SUPERSONIC
-	db 34, SHOCK_WAVE
-	db 38, THUNDER_WAVE
-	db 46, SWIFT
-	db 54, SCREECH
+	db 8, SUPERSONIC
+	db 14, THUNDER_WAVE
+	db 20, SONICBOOM
+	db 26, FLASH
+	db 33, CHARGE
+	db 40, SHOCK_WAVE
+	db 47, LIGHT_SCREEN
+	db 54, ZAP_CANNON
 	db 0
 
 KoffingEvosMoves:
@@ -1010,17 +1010,12 @@ SeelEvosMoves:
 	db EV_LEVEL, 34, DEWGONG
 	db 0
 ; Learnset
-	db 20, ICY_WIND
-	db 24, ICE_SHARD
-	db 28, BRINE
-	db 30, GROWL
-	db 32, ICE_ARMOR
-	db 34, ICICLE_SPEAR
-	db 35, AURORA_BEAM
-	db 38, FROST_BREATH
-	db 40, REST
-	db 45, TAKE_DOWN
-	db 50, ICE_BEAM
+	db 8, WATER_GUN
+	db 15, ICY_WIND
+	db 22, REST
+	db 29, AURORA_BEAM
+	db 41, BRINE
+	db 48, ICE_BEAM
 	db 0
 
 DiglettEvosMoves:
@@ -1127,15 +1122,12 @@ DoduoEvosMoves:
 	db EV_LEVEL, 31, DODRIO
 	db 0
 ; Learnset
-	db 20, GROWL
-	db 22, FLAIL
-	db 24, FURY_ATTACK
-	db 28, ROOST
+	db 9, QUICK_ATTACK
+	db 16, FURY_ATTACK
+	db 23, TRIPLE_KICK
 	db 30, DRILL_PECK
-	db 34, AERIAL_ACE
-	db 36, RAGE
-	db 40, TRI_ATTACK
-	db 44, AGILITY
+	db 38, AGILITY
+	db 45, THRASH
 	db 0
 
 PoliwagEvosMoves:
@@ -1728,16 +1720,13 @@ DodrioEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 20, GROWL
-	db 24, FURY_ATTACK
-	db 26, FLAIL
+	db 9, QUICK_ATTACK
+	db 16, FURY_ATTACK
+	db 23, TRIPLE_KICK
 	db 30, DRILL_PECK
-	db 32, ROOST
-	db 38, AERIAL_ACE
-	db 39, RAGE
-	db 42, GALE_WIND
-	db 45, TRI_ATTACK
-	db 51, AGILITY
+	db 32, TRI_ATTACK
+	db 38, AGILITY
+	db 45, THRASH
 	db 0
 
 PrimeapeEvosMoves:
@@ -1783,18 +1772,13 @@ DewgongEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 24, ICY_WIND
-	db 28, ICE_SHARD
-	db 30, GROWL
-	db 32, ICE_ARMOR
-	db 33, BRINE
-	db 35, AURORA_BEAM
-	db 38, ICICLE_SPEAR
-	db 42, FROST_BREATH
-	db 44, REST
-	db 48, FLASH_FREEZE
-	db 50, TAKE_DOWN
-	db 56, ICE_BEAM
+	db 8, WATER_GUN
+	db 15, ICY_WIND
+	db 22, REST
+	db 29, AURORA_BEAM
+	db 35, ICE_ARMOR
+	db 41, BRINE
+	db 48, ICE_BEAM
 	db 0
 
 MissingNo79EvosMoves:
@@ -2406,14 +2390,14 @@ MagnemiteEvosMoves:
 	db EV_LEVEL, 30, MAGNETON
 	db 0
 ; Learnset
-	db 21, SONICBOOM
-	db 22, CHARGE
-	db 25, THUNDERSHOCK
-	db 29, SUPERSONIC
-	db 30, SHOCK_WAVE
-	db 35, THUNDER_WAVE
-	db 41, SWIFT
-	db 47, SCREECH
+	db 8, SUPERSONIC
+	db 14, THUNDER_WAVE
+	db 20, SONICBOOM
+	db 26, FLASH
+	db 33, CHARGE
+	db 40, SHOCK_WAVE
+	db 47, LIGHT_SCREEN
+	db 54, ZAP_CANNON
 	db 0
 
 MissingNoAEEvosMoves:

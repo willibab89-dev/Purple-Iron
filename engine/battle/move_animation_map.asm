@@ -249,6 +249,8 @@ MoveAnimationMap:
 	db RECOVER ; MOONLIGHT
 	db DOUBLESLAP ; WAKE_UP_SLAP
 	db AGILITY ; QUIVER_DANCE
+	db THUNDER ; ZAP_CANNON
+	db DOUBLE_KICK ; TRIPLE_KICK
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

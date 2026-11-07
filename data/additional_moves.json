@@ -31,5 +31,27 @@
     "accuracy": 100,
     "pp": 10,
     "animation": "AGILITY"
+  },
+  {
+    "id": 223,
+    "symbol": "ZAP_CANNON",
+    "name": "ZAP CANNON",
+    "effect": "NO_ADDITIONAL_EFFECT",
+    "power": 120,
+    "type": "ELECTRIC",
+    "accuracy": 50,
+    "pp": 5,
+    "animation": "THUNDER"
+  },
+  {
+    "id": 224,
+    "symbol": "TRIPLE_KICK",
+    "name": "TRIPLE KICK",
+    "effect": "ATTACK_TWICE_EFFECT",
+    "power": 20,
+    "type": "FIGHTING",
+    "accuracy": 95,
+    "pp": 15,
+    "animation": "DOUBLE_KICK"
   }
 ]
