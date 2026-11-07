@@ -1727,5 +1727,561 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "sandshrew",
+    "title": "Sandshrew",
+    "dex": 27,
+    "stats": [
+      50,
+      75,
+      85,
+      40,
+      30
+    ],
+    "start": [
+      "SCRATCH"
+    ],
+    "learn": [
+      [
+        6,
+        "DEFENSE_CURL"
+      ],
+      [
+        10,
+        "SAND_ATTACK"
+      ],
+      [
+        14,
+        "FURY_SWIPES"
+      ],
+      [
+        19,
+        "DIG"
+      ],
+      [
+        23,
+        "SLASH"
+      ],
+      [
+        28,
+        "ROCK_TOMB"
+      ],
+      [
+        34,
+        "SWORDS_DANCE"
+      ],
+      [
+        40,
+        "EARTHQUAKE"
+      ]
+    ],
+    "remove": [
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      75,
+      85,
+      40,
+      30
+    ],
+    "before_start": [
+      "SCRATCH",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "sandslash",
+    "title": "Sandslash",
+    "dex": 28,
+    "stats": [
+      75,
+      100,
+      110,
+      65,
+      55
+    ],
+    "start": [
+      "SCRATCH",
+      "SAND_ATTACK",
+      "DEFENSE_CURL"
+    ],
+    "learn": [
+      [
+        6,
+        "DEFENSE_CURL"
+      ],
+      [
+        10,
+        "SAND_ATTACK"
+      ],
+      [
+        14,
+        "FURY_SWIPES"
+      ],
+      [
+        19,
+        "DIG"
+      ],
+      [
+        23,
+        "SLASH"
+      ],
+      [
+        30,
+        "ROCK_TOMB"
+      ],
+      [
+        38,
+        "SWORDS_DANCE"
+      ],
+      [
+        46,
+        "EARTHQUAKE"
+      ]
+    ],
+    "remove": [
+      15,
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      75,
+      100,
+      110,
+      65,
+      55
+    ],
+    "before_start": [
+      "SCRATCH",
+      "SAND_ATTACK",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "nidoranf",
+    "title": "NidoranF",
+    "dex": 29,
+    "stats": [
+      55,
+      47,
+      52,
+      41,
+      40
+    ],
+    "start": [
+      "GROWL",
+      "TACKLE"
+    ],
+    "learn": [
+      [
+        7,
+        "SCRATCH"
+      ],
+      [
+        10,
+        "DOUBLE_KICK"
+      ],
+      [
+        13,
+        "POISON_STING"
+      ],
+      [
+        18,
+        "BITE"
+      ],
+      [
+        24,
+        "POISON_FANG"
+      ],
+      [
+        30,
+        "VENOSHOCK"
+      ]
+    ],
+    "remove": [
+      7,
+      11,
+      12,
+      25,
+      53
+    ],
+    "add": [],
+    "before_stats": [
+      55,
+      47,
+      52,
+      41,
+      40
+    ],
+    "before_start": [
+      "GROWL",
+      "TACKLE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "nidorina",
+    "title": "Nidorina",
+    "dex": 30,
+    "stats": [
+      70,
+      62,
+      67,
+      56,
+      55
+    ],
+    "start": [
+      "GROWL",
+      "TACKLE",
+      "SCRATCH"
+    ],
+    "learn": [
+      [
+        7,
+        "SCRATCH"
+      ],
+      [
+        10,
+        "DOUBLE_KICK"
+      ],
+      [
+        13,
+        "POISON_STING"
+      ],
+      [
+        20,
+        "BITE"
+      ],
+      [
+        28,
+        "POISON_FANG"
+      ],
+      [
+        34,
+        "VENOSHOCK"
+      ]
+    ],
+    "remove": [
+      7,
+      11,
+      12,
+      25,
+      53
+    ],
+    "add": [],
+    "before_stats": [
+      70,
+      62,
+      67,
+      56,
+      55
+    ],
+    "before_start": [
+      "GROWL",
+      "TACKLE",
+      "SCRATCH",
+      "0"
+    ]
+  },
+  {
+    "name": "nidoqueen",
+    "title": "Nidoqueen",
+    "dex": 31,
+    "stats": [
+      100,
+      82,
+      95,
+      76,
+      75
+    ],
+    "start": [
+      "GROWL",
+      "TACKLE",
+      "DOUBLE_KICK",
+      "POISON_STING"
+    ],
+    "learn": [
+      [
+        7,
+        "SCRATCH"
+      ],
+      [
+        10,
+        "DOUBLE_KICK"
+      ],
+      [
+        13,
+        "POISON_STING"
+      ],
+      [
+        20,
+        "BITE"
+      ],
+      [
+        23,
+        "BODY_SLAM"
+      ],
+      [
+        28,
+        "POISON_FANG"
+      ],
+      [
+        34,
+        "VENOSHOCK"
+      ],
+      [
+        40,
+        "BULK_UP"
+      ],
+      [
+        48,
+        "EARTHQUAKE"
+      ]
+    ],
+    "remove": [
+      7,
+      11,
+      12,
+      15,
+      25,
+      53
+    ],
+    "add": [],
+    "before_stats": [
+      90,
+      82,
+      87,
+      76,
+      75
+    ],
+    "before_start": [
+      "TACKLE",
+      "SCRATCH",
+      "TAIL_WHIP",
+      "BODY_SLAM"
+    ]
+  },
+  {
+    "name": "nidoranm",
+    "title": "NidoranM",
+    "dex": 32,
+    "stats": [
+      46,
+      57,
+      40,
+      50,
+      40
+    ],
+    "start": [
+      "LEER",
+      "TACKLE"
+    ],
+    "learn": [
+      [
+        7,
+        "HORN_ATTACK"
+      ],
+      [
+        10,
+        "DOUBLE_KICK"
+      ],
+      [
+        13,
+        "POISON_STING"
+      ],
+      [
+        18,
+        "FOCUS_ENERGY"
+      ],
+      [
+        24,
+        "POISON_TAIL"
+      ],
+      [
+        30,
+        "FURY_ATTACK"
+      ],
+      [
+        43,
+        "HORN_DRILL"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      25,
+      53
+    ],
+    "add": [],
+    "before_stats": [
+      46,
+      57,
+      40,
+      50,
+      40
+    ],
+    "before_start": [
+      "LEER",
+      "TACKLE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "nidorino",
+    "title": "Nidorino",
+    "dex": 33,
+    "stats": [
+      61,
+      72,
+      57,
+      65,
+      55
+    ],
+    "start": [
+      "LEER",
+      "TACKLE",
+      "HORN_ATTACK"
+    ],
+    "learn": [
+      [
+        7,
+        "HORN_ATTACK"
+      ],
+      [
+        10,
+        "DOUBLE_KICK"
+      ],
+      [
+        13,
+        "POISON_STING"
+      ],
+      [
+        20,
+        "FOCUS_ENERGY"
+      ],
+      [
+        28,
+        "POISON_TAIL"
+      ],
+      [
+        34,
+        "FURY_ATTACK"
+      ],
+      [
+        49,
+        "HORN_DRILL"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      25,
+      53
+    ],
+    "add": [],
+    "before_stats": [
+      61,
+      72,
+      57,
+      65,
+      55
+    ],
+    "before_start": [
+      "LEER",
+      "TACKLE",
+      "HORN_ATTACK",
+      "0"
+    ]
+  },
+  {
+    "name": "nidoking",
+    "title": "Nidoking",
+    "dex": 34,
+    "stats": [
+      81,
+      102,
+      77,
+      85,
+      75
+    ],
+    "start": [
+      "LEER",
+      "TACKLE",
+      "HORN_ATTACK",
+      "POISON_STING"
+    ],
+    "learn": [
+      [
+        7,
+        "HORN_ATTACK"
+      ],
+      [
+        10,
+        "DOUBLE_KICK"
+      ],
+      [
+        13,
+        "POISON_STING"
+      ],
+      [
+        20,
+        "FOCUS_ENERGY"
+      ],
+      [
+        23,
+        "THRASH"
+      ],
+      [
+        28,
+        "POISON_TAIL"
+      ],
+      [
+        34,
+        "PIERCE"
+      ],
+      [
+        42,
+        "EARTHQUAKE"
+      ],
+      [
+        50,
+        "MEGAHORN"
+      ],
+      [
+        58,
+        "HORN_DRILL"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      15,
+      25,
+      53
+    ],
+    "add": [],
+    "before_stats": [
+      81,
+      92,
+      77,
+      85,
+      75
+    ],
+    "before_start": [
+      "TACKLE",
+      "HORN_ATTACK",
+      "POISON_STING",
+      "THRASH"
+    ]
   }
 ]

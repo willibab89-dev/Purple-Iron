@@ -230,14 +230,13 @@ NidoranMEvosMoves:
 	db EV_LEVEL, 16, NIDORINO
 	db 0
 ; Learnset
-	db 8, HORN_ATTACK
-	db 12, DOUBLE_KICK
-	db 17, POISON_STING
-	db 20, POISON_TAIL
-	db 23, FOCUS_ENERGY
-	db 28, VENOSHOCK
+	db 7, HORN_ATTACK
+	db 10, DOUBLE_KICK
+	db 13, POISON_STING
+	db 18, FOCUS_ENERGY
+	db 24, POISON_TAIL
 	db 30, FURY_ATTACK
-	db 38, HORN_DRILL
+	db 43, HORN_DRILL
 	db 0
 
 ClefairyEvosMoves:
@@ -284,15 +283,16 @@ NidokingEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 8, HORN_ATTACK
-	db 12, DOUBLE_KICK
-	db 19, POISON_STING
+	db 7, HORN_ATTACK
+	db 10, DOUBLE_KICK
+	db 13, POISON_STING
+	db 20, FOCUS_ENERGY
 	db 23, THRASH
 	db 28, POISON_TAIL
-	db 36, VENOSHOCK
-	db 40, PIERCE
-	db 41, POISON_FANG
-	db 55, MEGAHORN
+	db 34, PIERCE
+	db 42, EARTHQUAKE
+	db 50, MEGAHORN
+	db 58, HORN_DRILL
 	db 0
 
 SlowbroEvosMoves:
@@ -413,27 +413,27 @@ NidoranFEvosMoves:
 	db EV_LEVEL, 16, NIDORINA
 	db 0
 ; Learnset
-	db 8, SCRATCH
-	db 12, DOUBLE_KICK
-	db 17, POISON_STING
-	db 20, POISON_TAIL
-	db 23, TAIL_WHIP
-	db 28, VENOSHOCK
-	db 30, BITE
-	db 38, FURY_SWIPES
+	db 7, SCRATCH
+	db 10, DOUBLE_KICK
+	db 13, POISON_STING
+	db 18, BITE
+	db 24, POISON_FANG
+	db 30, VENOSHOCK
 	db 0
 
 NidoqueenEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 8, SCRATCH
-	db 12, DOUBLE_KICK
-	db 19, POISON_STING
+	db 7, SCRATCH
+	db 10, DOUBLE_KICK
+	db 13, POISON_STING
+	db 20, BITE
 	db 23, BODY_SLAM
-	db 28, POISON_TAIL
-	db 36, VENOSHOCK
-	db 40, POISON_FANG
+	db 28, POISON_FANG
+	db 34, VENOSHOCK
+	db 40, BULK_UP
+	db 48, EARTHQUAKE
 	db 0
 
 CuboneEvosMoves:
@@ -1478,22 +1478,28 @@ SandshrewEvosMoves:
 	db EV_LEVEL, 22, SANDSLASH
 	db 0
 ; Learnset
+	db 6, DEFENSE_CURL
 	db 10, SAND_ATTACK
-	db 17, SLASH
-	db 24, POISON_STING
-	db 31, SWIFT
-	db 38, FURY_SWIPES
+	db 14, FURY_SWIPES
+	db 19, DIG
+	db 23, SLASH
+	db 28, ROCK_TOMB
+	db 34, SWORDS_DANCE
+	db 40, EARTHQUAKE
 	db 0
 
 SandslashEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
+	db 6, DEFENSE_CURL
 	db 10, SAND_ATTACK
-	db 17, SLASH
-	db 27, POISON_STING
-	db 36, SWIFT
-	db 47, FURY_SWIPES
+	db 14, FURY_SWIPES
+	db 19, DIG
+	db 23, SLASH
+	db 30, ROCK_TOMB
+	db 38, SWORDS_DANCE
+	db 46, EARTHQUAKE
 	db 0
 
 OmanyteEvosMoves:
@@ -2378,15 +2384,13 @@ NidorinoEvosMoves:
 	db EV_ITEM, MOON_STONE, 1, NIDOKING
 	db 0
 ; Learnset
-	db 8, HORN_ATTACK
-	db 12, DOUBLE_KICK
-	db 19, POISON_STING
-	db 24, POISON_TAIL
-	db 27, FOCUS_ENERGY
-	db 32, VENOSHOCK
-	db 36, FURY_ATTACK
-	db 37, POISON_FANG
-	db 46, HORN_DRILL
+	db 7, HORN_ATTACK
+	db 10, DOUBLE_KICK
+	db 13, POISON_STING
+	db 20, FOCUS_ENERGY
+	db 28, POISON_TAIL
+	db 34, FURY_ATTACK
+	db 49, HORN_DRILL
 	db 0
 
 NidorinaEvosMoves:
@@ -2394,15 +2398,12 @@ NidorinaEvosMoves:
 	db EV_ITEM, MOON_STONE, 1, NIDOQUEEN
 	db 0
 ; Learnset
-	db 8, SCRATCH
-	db 12, DOUBLE_KICK
-	db 19, POISON_STING
-	db 24, POISON_TAIL
-	db 27, TAIL_WHIP
-	db 32, VENOSHOCK
-	db 36, BITE
-	db 37, POISON_FANG
-	db 46, FURY_SWIPES
+	db 7, SCRATCH
+	db 10, DOUBLE_KICK
+	db 13, POISON_STING
+	db 20, BITE
+	db 28, POISON_FANG
+	db 34, VENOSHOCK
 	db 0
 
 GeodudeEvosMoves:

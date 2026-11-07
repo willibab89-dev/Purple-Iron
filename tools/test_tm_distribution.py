@@ -33,7 +33,8 @@ def validate(version):
         assert actual == expected, entry['name']
         assert (set(entry['new']) ^ set(entry['old'])) <= reviewed | set(tuning['remove'] if tuning else []) | set(tuning.get('add', []) if tuning else []), entry['name']
         assert (44 in entry['new']) == (44 in entry['old']), entry['name']
-        assert {n for n in entry['new'] if n > 50} == {n for n in entry['old'] if n > 50}
+        expected_hms=({n for n in entry['old'] if n > 50} - set(tuning['remove'] if tuning else [])) | {n for n in (tuning.get('add', []) if tuning else []) if n > 50}
+        assert {n for n in entry['new'] if n > 50} == expected_hms
     entries = {e['name']: e for e in PLAN['entries']}
     assert set(range(1, 56)) <= set(entries['mew']['new'])
     for entry in PLAN['entries']:
@@ -74,7 +75,7 @@ def validate(version):
                 call('CanLearnTM')
                 assert bool(game.register_file.C) == (tm in entry['new']), (entry['name'], tm)
                 calls += 1
-        print(f'{version}: all {len(PLAN['entries'])} headers bounded to eight TM bits; Rest/HMs/other TMs preserved; {calls} real compatibility checks passed')
+        print(f'{version}: all {len(PLAN['entries'])} headers bounded to eight TM bits; approved Rest/HM/TM distribution; {calls} real compatibility checks passed')
     finally:
         game.stop(save=False)
 

@@ -27,12 +27,12 @@ ExtraTMCompatibilityTable:
 	db $02, $10 ; 26: raichu
 	db $50, $00 ; 27: sandshrew
 	db $50, $00 ; 28: sandslash
-	db $08, $00 ; 29: nidoranf
-	db $08, $00 ; 30: nidorina
-	db $48, $00 ; 31: nidoqueen
-	db $08, $00 ; 32: nidoranm
-	db $08, $00 ; 33: nidorino
-	db $68, $00 ; 34: nidoking
+	db $08, $08 ; 29: nidoranf
+	db $08, $08 ; 30: nidorina
+	db $68, $08 ; 31: nidoqueen
+	db $08, $08 ; 32: nidoranm
+	db $08, $08 ; 33: nidorino
+	db $48, $08 ; 34: nidoking
 	db $00, $00 ; 35: clefairy
 	db $00, $00 ; 36: clefable
 	db $80, $02 ; 37: vulpix

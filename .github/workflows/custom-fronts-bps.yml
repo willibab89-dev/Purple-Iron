@@ -1,4 +1,4 @@
-name: "Rattata, Fearow and Raichu family redesigns"
+name: "Sandshrew and Nidoran family redesigns"
 
 on:
   workflow_dispatch:
@@ -91,3 +91,4 @@ jobs:
             ${{ runner.temp }}/patches/STARTER-REDESIGNS.md
             ${{ runner.temp }}/patches/EARLY-BUGS-AND-BIRDS.md
             ${{ runner.temp }}/patches/RATTATA-FEAROW-RAICHU.md
+            ${{ runner.temp }}/patches/SANDSHREW-AND-NIDOS.md

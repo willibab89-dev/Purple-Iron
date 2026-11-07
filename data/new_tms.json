@@ -406,18 +406,20 @@
       "name": "nidoranf",
       "source": "nidoranf",
       "tms": [
-        54
+        54,
+        62
       ],
-      "mask": 8
+      "mask": 2056
     },
     {
       "dex": 30,
       "name": "nidorina",
       "source": "nidorina",
       "tms": [
-        54
+        54,
+        62
       ],
-      "mask": 8
+      "mask": 2056
     },
     {
       "dex": 31,
@@ -425,27 +427,31 @@
       "source": "nidoqueen",
       "tms": [
         54,
-        57
+        56,
+        57,
+        62
       ],
-      "mask": 72
+      "mask": 2152
     },
     {
       "dex": 32,
       "name": "nidoranm",
       "source": "nidoranm",
       "tms": [
-        54
+        54,
+        62
       ],
-      "mask": 8
+      "mask": 2056
     },
     {
       "dex": 33,
       "name": "nidorino",
       "source": "nidorino",
       "tms": [
-        54
+        54,
+        62
       ],
-      "mask": 8
+      "mask": 2056
     },
     {
       "dex": 34,
@@ -453,10 +459,10 @@
       "source": "nidoking",
       "tms": [
         54,
-        56,
-        57
+        57,
+        62
       ],
-      "mask": 104
+      "mask": 2120
     },
     {
       "dex": 35,

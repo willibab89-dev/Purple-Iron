@@ -42,12 +42,13 @@ def validate(version):
     assert data('ExtraTMCompatibilityTable', 2 * len(PLAN['entries'])) == masks
     byname = {e['name']: set(e['tms']) for e in PLAN['entries']}
     assert byname['mew'] == set(range(51, 64))
-    for number,allowed in [(61,{'ekans','arbok','mew'}),(62,{'ekans','arbok','beedrill','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','spearow','fearow','pikachu','raichu','mew'})]:
+    for number,allowed in [(61,{'ekans','arbok','mew'}),(62,{'ekans','arbok','beedrill','nidoranf','nidorina','nidoqueen','nidoranm','nidorino','nidoking','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','spearow','fearow','pikachu','raichu','mew'})]:
         assert {name for name,tms in byname.items() if number in tms}==allowed
     for baby, adult in (('dragonair','dragonite'),('caterpie','butterfree'),('venonat','venomoth')):
         assert 51 not in byname[baby] and 51 in byname[adult]
     for mon in ('charmander','charmeleon','charizard'):
         assert 51 not in byname[mon] and 58 not in byname[mon]
+    assert 56 in byname['nidoqueen'] and 56 not in byname['nidoking']
     assert 55 in byname['charizard']
     for mon in ('spearow','fearow'):
         assert 51 not in byname[mon] and {52,55,63} <= byname[mon]

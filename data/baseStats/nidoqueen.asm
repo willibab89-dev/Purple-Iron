@@ -1,7 +1,7 @@
 db DEX_NIDOQUEEN ; pokedex id
-db 90 ; base hp
+db 100 ; base hp
 db 82 ; base attack
-db 87 ; base defense
+db 95 ; base defense
 db 76 ; base speed
 db 75 ; base special
 db POISON ; species type 1
@@ -12,17 +12,17 @@ INCBIN NIDOQUEEN_FR,0,1 ; 77, sprite dimensions
 dw NidoqueenPicFront
 dw NidoqueenPicBack
 ; attacks known at lvl 0
+db GROWL
 db TACKLE
-db SCRATCH
-db TAIL_WHIP
-db BODY_SLAM
+db DOUBLE_KICK
+db POISON_STING
 db 3 ; growth rate
 ; learnset
-	tmlearn 1,5,6,7,8
-	tmlearn 9,11,12,13,14,15,16
+	tmlearn 1,5,6,8
+	tmlearn 9,13,14,16
 	tmlearn 17,18,19,24
-	tmlearn 25,26,27
+	tmlearn 26,27
 	tmlearn 33,38,40
 	tmlearn 44,48
-	tmlearn 53,54
+	tmlearn 54
 db 0 ; padding
