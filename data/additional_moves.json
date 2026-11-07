@@ -152,5 +152,27 @@
     "accuracy": 100,
     "pp": 10,
     "animation": "MIMIC"
+  },
+  {
+    "id": 234,
+    "symbol": "HEAL_BELL",
+    "name": "HEAL BELL",
+    "effect": "UTILITY_STATUS_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 5,
+    "animation": "SING"
+  },
+  {
+    "id": 235,
+    "symbol": "CHARM",
+    "name": "CHARM",
+    "effect": "ATTACK_DOWN2_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 90,
+    "pp": 20,
+    "animation": "GROWL"
   }
 ]

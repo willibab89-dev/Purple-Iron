@@ -1,9 +1,9 @@
 db DEX_UNIQUE_BULBASAUR_UNIQUE ; pokedex id
-db 45 ; base hp
-db 49 ; base attack
-db 49 ; base defense
-db 45 ; base speed
-db 65 ; base special
+db 75 ; base hp
+db 79 ; base attack
+db 79 ; base defense
+db 75 ; base speed
+db 95 ; base special
 db GRASS ; species type 1
 db POISON ; species type 2
 db 45 ; catch rate
@@ -18,7 +18,7 @@ db 0
 db 0
 db 3 ; growth rate
 ; learnset
-	tmlearn 3,6,8
+	tmlearn 6
 	tmlearn 0
 	tmlearn 21,22
 	tmlearn 0

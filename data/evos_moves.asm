@@ -32,8 +32,8 @@ EvosMovesPointerTable:
 	dw BlastoiseEvosMoves
 	dw PinsirEvosMoves
 	dw TangelaEvosMoves
-	dw BlastoiseEvosMoves ; UNIQUE_BLASTOISE_UNIQUE
-	dw BulbasaurEvosMoves ; UNIQUE_BULBASAUR_UNIQUE
+	dw ReviewedBlastoiseUniqueEvosMoves ; UNIQUE_BLASTOISE_UNIQUE
+	dw ReviewedBulbasaurUniqueEvosMoves ; UNIQUE_BULBASAUR_UNIQUE
 	dw GrowlitheEvosMoves
 	dw OnixEvosMoves
 	dw FearowEvosMoves
@@ -51,9 +51,9 @@ EvosMovesPointerTable:
 	dw PsyduckEvosMoves
 	dw DrowzeeEvosMoves
 	dw GolemEvosMoves
-	dw ChanseyEvosMoves ; UNIQUE_CHANSEY_UNIQUE
+	dw ReviewedChanseyUniqueEvosMoves ; UNIQUE_CHANSEY_UNIQUE
 	dw MagmarEvosMoves
-	dw CharmanderEvosMoves ; UNIQUE_CHARMANDER_UNIQUE
+	dw ReviewedCharmanderUniqueEvosMoves ; UNIQUE_CHARMANDER_UNIQUE
 	dw ElectabuzzEvosMoves
 	dw MagnetonEvosMoves
 	dw KoffingEvosMoves
@@ -2545,4 +2545,58 @@ TyranitarEvosMoves:
 	db 48, EARTHQUAKE
 	db 56, DRAGON_RAGE
 	db 64, OUTRAGE
+	db 0
+
+ReviewedBlastoiseUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, BUBBLE
+	db 12, WATER_GUN
+	db 18, WITHDRAW
+	db 23, BITE
+	db 30, SKULL_BASH
+	db 37, SNIPE_SHOT
+	db 45, SPIKE_CANNON
+	db 54, HYDRO_PUMP
+	db 0
+
+ReviewedBulbasaurUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, VINE_WHIP
+	db 14, LEECH_SEED
+	db 21, SLUDGE
+	db 28, MEGA_DRAIN
+	db 35, GROWTH
+	db 42, VENOSHOCK
+	db 49, SYNTHESIS
+	db 56, SOLARBEAM
+	db 0
+
+ReviewedChanseyUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 9, SING
+	db 17, DOUBLESLAP
+	db 25, SOFTBOILED
+	db 33, LIGHT_SCREEN
+	db 41, MIST
+	db 49, HEAL_BELL
+	db 0
+
+ReviewedCharmanderUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, EMBER
+	db 14, CHARM
+	db 21, RAGE
+	db 28, FLAME_CHARGE
+	db 35, SLASH
+	db 42, FLAMETHROWER
+	db 49, OUTRAGE
+	db 56, FIRE_BLAST
 	db 0

@@ -233,4 +233,6 @@ MoveNames::
 	db "MILK DRINK@"
 	db "SNARL@"
 	db "DUPLICATE@"
+	db "HEAL BELL@"
+	db "CHARM@"
 MoveNamesEnd:

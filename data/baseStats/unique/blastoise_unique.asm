@@ -1,9 +1,9 @@
 db DEX_UNIQUE_BLASTOISE_UNIQUE ; pokedex id
-db 79 ; base hp
+db 89 ; base hp
 db 83 ; base attack
 db 100 ; base defense
-db 78 ; base speed
-db 85 ; base special
+db 58 ; base speed
+db 105 ; base special
 db WATER ; species type 1
 db WATER ; species type 2
 db 45 ; catch rate
@@ -14,14 +14,14 @@ dw Unique1PicBack
 ; attacks known at lvl 0
 db TACKLE
 db TAIL_WHIP
-db BUBBLE
 db WATER_GUN
+db WITHDRAW
 db 3 ; growth rate
 ; learnset
 	tmlearn 1,5,8
 	tmlearn 9,11,12,13,14,15
 	tmlearn 17,18,19
-	tmlearn 26,27,28
+	tmlearn 0
 	tmlearn 33,34,40
 	tmlearn 44
 	tmlearn 53,54

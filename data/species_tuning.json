@@ -10312,5 +10312,309 @@
       "ROCK_SLIDE",
       "THRASH"
     ]
+  },
+  {
+    "name": "blastoise_unique",
+    "title": "ReviewedBlastoiseUnique",
+    "dex": 152,
+    "stats": [
+      89,
+      83,
+      100,
+      58,
+      105
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "WATER_GUN",
+      "WITHDRAW"
+    ],
+    "learn": [
+      [
+        7,
+        "BUBBLE"
+      ],
+      [
+        12,
+        "WATER_GUN"
+      ],
+      [
+        18,
+        "WITHDRAW"
+      ],
+      [
+        23,
+        "BITE"
+      ],
+      [
+        30,
+        "SKULL_BASH"
+      ],
+      [
+        37,
+        "SNIPE_SHOT"
+      ],
+      [
+        45,
+        "SPIKE_CANNON"
+      ],
+      [
+        54,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      26,
+      27,
+      28
+    ],
+    "add": [],
+    "before_stats": [
+      79,
+      83,
+      100,
+      78,
+      85
+    ],
+    "before_start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "BUBBLE",
+      "WATER_GUN"
+    ]
+  },
+  {
+    "name": "bulbasaur_unique",
+    "title": "ReviewedBulbasaurUnique",
+    "dex": 153,
+    "stats": [
+      75,
+      79,
+      79,
+      75,
+      95
+    ],
+    "start": [
+      "TACKLE",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        7,
+        "VINE_WHIP"
+      ],
+      [
+        14,
+        "LEECH_SEED"
+      ],
+      [
+        21,
+        "SLUDGE"
+      ],
+      [
+        28,
+        "MEGA_DRAIN"
+      ],
+      [
+        35,
+        "GROWTH"
+      ],
+      [
+        42,
+        "VENOSHOCK"
+      ],
+      [
+        49,
+        "SYNTHESIS"
+      ],
+      [
+        56,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [
+      3,
+      8
+    ],
+    "add": [],
+    "before_stats": [
+      45,
+      49,
+      49,
+      45,
+      65
+    ],
+    "before_start": [
+      "TACKLE",
+      "GROWL",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "chansey_unique",
+    "title": "ReviewedChanseyUnique",
+    "dex": 154,
+    "stats": [
+      250,
+      5,
+      5,
+      50,
+      105
+    ],
+    "start": [
+      "POUND",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "SING"
+      ],
+      [
+        17,
+        "DOUBLESLAP"
+      ],
+      [
+        25,
+        "SOFTBOILED"
+      ],
+      [
+        33,
+        "LIGHT_SCREEN"
+      ],
+      [
+        41,
+        "MIST"
+      ],
+      [
+        49,
+        "HEAL_BELL"
+      ]
+    ],
+    "remove": [
+      1,
+      5,
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      17,
+      18,
+      19,
+      22,
+      24,
+      25,
+      29,
+      30,
+      34,
+      37,
+      38,
+      40,
+      45,
+      46,
+      49,
+      54,
+      55
+    ],
+    "add": [
+      50
+    ],
+    "before_stats": [
+      250,
+      5,
+      5,
+      50,
+      105
+    ],
+    "before_start": [
+      "POUND",
+      "DOUBLESLAP",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "charmander_unique",
+    "title": "ReviewedCharmanderUnique",
+    "dex": 155,
+    "stats": [
+      69,
+      82,
+      73,
+      95,
+      80
+    ],
+    "start": [
+      "SCRATCH",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        7,
+        "EMBER"
+      ],
+      [
+        14,
+        "CHARM"
+      ],
+      [
+        21,
+        "RAGE"
+      ],
+      [
+        28,
+        "FLAME_CHARGE"
+      ],
+      [
+        35,
+        "SLASH"
+      ],
+      [
+        42,
+        "FLAMETHROWER"
+      ],
+      [
+        49,
+        "OUTRAGE"
+      ],
+      [
+        56,
+        "FIRE_BLAST"
+      ]
+    ],
+    "remove": [
+      1,
+      3,
+      5,
+      8,
+      17,
+      18,
+      19,
+      20,
+      23,
+      28,
+      33,
+      40,
+      51,
+      54
+    ],
+    "add": [],
+    "before_stats": [
+      39,
+      52,
+      43,
+      65,
+      50
+    ],
+    "before_start": [
+      "SCRATCH",
+      "GROWL",
+      "0",
+      "0"
+    ]
   }
 ]

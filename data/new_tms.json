@@ -1597,8 +1597,10 @@
       "dex": 155,
       "name": "charmander_unique",
       "source": "charmander",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52
+      ],
+      "mask": 2
     },
     {
       "dex": 156,

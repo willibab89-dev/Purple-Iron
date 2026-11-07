@@ -260,6 +260,8 @@ MoveAnimationMap:
 	db RECOVER ; MILK_DRINK
 	db GROWL ; SNARL
 	db MIMIC ; DUPLICATE
+	db SING ; HEAL_BELL
+	db GROWL ; CHARM
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

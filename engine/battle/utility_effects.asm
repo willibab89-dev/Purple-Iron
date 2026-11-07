@@ -218,6 +218,8 @@ UtilityBreakScreens:
 
 UtilityStatusEffect:
 	call UtilityLoadMove
+	cp HEAL_BELL
+	jp z, UtilityHealBell
 	cp CAUTERIZE
 	jp z, UtilityCauterize
 	cp COIL
@@ -547,6 +549,9 @@ UtilityToxicText:
 	db "@"
 
 UtilityAIStatusScore:
+	ld a, [wEnemyMoveNum]
+	cp HEAL_BELL
+	jp z, UtilityHealBellAIScore
 	xor a
 	ld [wCustomRandomValue], a
 	ld a, [wEnemyMoveNum]
@@ -656,4 +661,129 @@ UtilityWakeTarget:
 UtilityWokeText:
 	text "The target"
 	line "woke up!"
+	prompt
+
+; Heal Bell checks the active battler plus living reserves. The active party
+; slot is skipped because battle HP/status is authoritative until synchronized.
+; wCustomChance = 0: inspect only (also used by AI), 1: cure reserves.
+UtilityHealBellCheck:
+	xor a
+	ld [wCustomChanged], a
+	call ResidualAlive
+	jr z, .party
+	call UtilityStatusPointer
+	ld a, [hl]
+	and a
+	jr z, .party
+	ld a, 1
+	ld [wCustomChanged], a
+.party
+	call UtilityHealBellParty
+	ld a, [wCustomChanged]
+	ret
+
+UtilityHealBellParty:
+	ld a, [wCustomSide]
+	and a
+	jr nz, .enemy
+	ld hl, wPartyMon1HP
+	ld a, [wPlayerMonNumber]
+	ld d, a
+	ld a, [wPartyCount]
+	jr .count
+.enemy
+	ld a, [wIsInBattle]
+	cp 2
+	ret nz ; wild opponents have no trainer roster
+	ld hl, wEnemyMon1HP
+	ld a, [wEnemyMonPartyPos]
+	ld d, a
+	ld a, [wEnemyPartyCount]
+.count
+	cp 7
+	jr c, .bounded
+	ld a, 6
+.bounded
+	and a
+	ret z
+	ld b, a
+	ld c, 0
+.loop
+	ld a, c
+	cp d
+	jr z, .next
+	push hl
+	ld a, [hli]
+	or [hl]
+	jr z, .restore ; never cure or revive fainted members
+	inc hl
+	inc hl ; status is three bytes after the HP pointer
+	ld a, [hl]
+	and a
+	jr z, .restore
+	ld a, 1
+	ld [wCustomChanged], a
+	ld a, [wCustomChance]
+	and a
+	jr z, .restore
+	xor a
+	ld [hl], a
+.restore
+	pop hl
+.next
+	push bc
+	ld bc, wPartyMon2 - wPartyMon1
+	add hl, bc
+	pop bc
+	inc c
+	dec b
+	jr nz, .loop
+	ret
+
+UtilityHealBell:
+	call CustomSetActor
+	xor a
+	ld [wCustomChance], a
+	call UtilityHealBellCheck
+	and a
+	jp z, CustomFailed
+	callab PlayCurrentMoveAnimation
+	call ResidualAlive
+	jr z, .reserves
+	call UtilityStatusPointer
+	ld a, [hl]
+	and a
+	jr z, .reserves
+	xor a
+	ld [hl], a
+	call UtilityStatus3Pointer
+	res BADLY_POISONED, [hl]
+	call UtilityToxicPointer
+	ld [hl], 0
+	call CustomRecalculate ; rebuild stages/badges without burn/paralysis once
+.reserves
+	call UtilitySyncParty ; also overwrite stale active roster status when healthy
+	ld a, 1
+	ld [wCustomChance], a
+	call UtilityHealBellParty
+	callab DrawHUDsAndHPBars
+	ld hl, UtilityHealBellText
+	jp PrintText
+
+UtilityHealBellAIScore:
+	ld a, 1
+	ld [wCustomSide], a
+	xor a
+	ld [wCustomChance], a
+	ld [wCustomRandomValue], a
+	call UtilityHealBellCheck
+	and a
+	ret nz
+	inc a
+	ld [wCustomRandomValue], a
+	ret
+
+UtilityHealBellText:
+	text "The soothing bell"
+	line "cured the party!"
 	prompt

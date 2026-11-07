@@ -49,10 +49,11 @@ def validate(version):
         clone = data("BaseStats", 28, (entry["dex"] - 1) * 28)
         source = data("BaseStats", 28, (entry["base_dex"] - 1) * 28)
         assert clone[0] == entry["dex"]
-        assert clone[1:6] == next((bytes(d["before_stats"]) for d in TUNING.values() if d["dex"]==entry["base_dex"]), source[1:6]), entry["symbol"]
+        variant_tuning=next((d for d in TUNING.values() if d["dex"]==entry["dex"]),None)
+        assert clone[1:6] == (bytes(variant_tuning["stats"]) if variant_tuning else next((bytes(d["before_stats"]) for d in TUNING.values() if d["dex"]==entry["base_dex"]), source[1:6])), entry["symbol"]
         assert clone[8] == entry.get("catch_rate_override", source[8])
         assert clone[9] == source[9]
-        assert clone[15:20] == next((bytes([MOVES[m] if m!="0" else 0 for m in d["before_start"]])+source[19:20] for d in TUNING.values() if d["dex"]==entry["base_dex"]), source[15:20])
+        assert clone[15:20] == (bytes([MOVES[m] for m in variant_tuning["start"]]+[0]*(4-len(variant_tuning["start"])))+source[19:20] if variant_tuning else next((bytes([MOVES[m] if m!="0" else 0 for m in d["before_start"]])+source[19:20] for d in TUNING.values() if d["dex"]==entry["base_dex"]), source[15:20]))
         assert clone[27:] == source[27:]
         # Thematic TM rules allow the Rock-type Kakuna variant to differ
         # from its Poison-type source; validate all variant masks explicitly.
@@ -64,7 +65,11 @@ def validate(version):
         expected_types = bytes([types[entry["type_override"]]] * 2) if entry["type_override"] else original_types
         assert clone[6:8] == expected_types
         for table, width in (("EvosMovesPointerTable", 2), ("PokedexEntryPointers", 2), ("CryData", 3)):
-            assert data(table, width, (entry["index"] - 1) * width) == data(table, width, (entry["base_index"] - 1) * width)
+            if table=="EvosMovesPointerTable" and variant_tuning:
+                expected_pointer=syms[variant_tuning["title"]+"EvosMoves"][1].to_bytes(2,"little")
+                assert data(table,width,(entry["index"]-1)*width)==expected_pointer
+            else:
+                assert data(table, width, (entry["index"] - 1) * width) == data(table, width, (entry["base_index"] - 1) * width)
         assert data("MonsterPalettes", 1, entry["dex"]) == data("MonsterPalettes", 1, entry["base_dex"])
         def icon(dex):
             packed = data("MonPartyData", 1, (dex - 1) // 2)[0]

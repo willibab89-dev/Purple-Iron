@@ -153,7 +153,7 @@ ExtraTMCompatibilityTable:
 	db $04, $01 ; 152: blastoise_unique
 	db $08, $00 ; 153: bulbasaur_unique
 	db $00, $00 ; 154: chansey_unique
-	db $00, $00 ; 155: charmander_unique
+	db $02, $00 ; 155: charmander_unique
 	db $00, $00 ; 156: ditto_happy
 	db $60, $00 ; 157: geodude_fighting
 	db $02, $00 ; 158: goldeen_fighting

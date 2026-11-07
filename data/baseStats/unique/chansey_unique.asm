@@ -13,16 +13,16 @@ dw Unique3PicFront
 dw Unique3PicBack
 ; attacks known at lvl 0
 db POUND
-db DOUBLESLAP
+db GROWL
 db 0
 db 0
 db 4 ; growth rate
 ; learnset
-	tmlearn 1,5,8
-	tmlearn 11,12,13,14,15
-	tmlearn 17,18,19,22,24
-	tmlearn 25,29,30,31
-	tmlearn 33,34,35,37,38,40
-	tmlearn 41,44,45,46
-	tmlearn 49,54,55
+	tmlearn 0
+	tmlearn 0
+	tmlearn 0
+	tmlearn 31
+	tmlearn 33,35
+	tmlearn 41,44
+	tmlearn 50
 db 0 ; padding

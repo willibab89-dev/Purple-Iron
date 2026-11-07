@@ -1,4 +1,4 @@
-name: "Claydol, Dittwo, Tyranitar and Dragonite redesigns"
+name: "First unique variant redesigns; Heal Bell and Charm"
 
 on:
   workflow_dispatch:
@@ -74,6 +74,7 @@ jobs:
           python3 tools/test_milk_drink.py
           python3 tools/test_snarl.py
           python3 tools/test_duplicate.py
+          python3 tools/test_heal_bell_charm.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -127,3 +128,4 @@ jobs:
             ${{ runner.temp }}/patches/DRAGONS-MEWTWO-MEW.md
             ${{ runner.temp }}/patches/TOXAPEX-MILTANK-SABLEYE.md
             ${{ runner.temp }}/patches/CLAYDOL-DITTWO-TYRANITAR.md
+            ${{ runner.temp }}/patches/FIRST-UNIQUE-VARIANTS.md
