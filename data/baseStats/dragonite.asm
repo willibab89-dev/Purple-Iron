@@ -15,11 +15,11 @@ dw DragonitePicBack
 db WRAP
 db LEER
 db THUNDER_WAVE
-db AGILITY
+db 0
 db 5 ; growth rate
 ; learnset
-	tmlearn 2,7,8
-	tmlearn 11,12,13,14,15
+	tmlearn 2,8
+	tmlearn 10,11,12,13,14,15
 	tmlearn 23,24
 	tmlearn 25,32
 	tmlearn 33,38,39,40

@@ -108,5 +108,16 @@
     "accuracy": 100,
     "pp": 15,
     "animation": "BITE"
+  },
+  {
+    "id": 230,
+    "symbol": "OUTRAGE",
+    "name": "OUTRAGE",
+    "effect": "THRASH_PETAL_DANCE_EFFECT",
+    "power": 90,
+    "type": "DRAGON",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "THRASH"
   }
 ]

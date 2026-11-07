@@ -229,4 +229,5 @@ MoveNames::
 	db "ELECTRO BALL@"
 	db "VINE CRUSH@"
 	db "CRUNCH@"
+	db "OUTRAGE@"
 MoveNamesEnd:

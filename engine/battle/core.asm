@@ -3881,8 +3881,12 @@ CheckPlayerStatusConditions:
 .ThrashingAboutCheck
 	bit THRASHING_ABOUT, [hl] ; is mon using thrash or petal dance?
 	jr z, .MultiturnMoveCheck
+	ld a, [wPlayerMoveNum]
+	cp OUTRAGE
+	jr z, .thrashMoveReady
 	ld a, THRASH
 	ld [wPlayerMoveNum], a
+.thrashMoveReady
 	ld hl, ThrashingAboutText
 	call PrintText
 	ld hl, wPlayerNumAttacksLeft
@@ -6352,8 +6356,12 @@ CheckEnemyStatusConditions:
 .checkIfThrashingAbout
 	bit THRASHING_ABOUT, [hl] ; is mon using thrash or petal dance?
 	jr z, .checkIfUsingMultiturnMove
+	ld a, [wEnemyMoveNum]
+	cp OUTRAGE
+	jr z, .thrashMoveReady
 	ld a, THRASH
 	ld [wEnemyMoveNum], a
+.thrashMoveReady
 	ld hl, ThrashingAboutText
 	call PrintText
 	ld hl, wEnemyNumAttacksLeft

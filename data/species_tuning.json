@@ -9379,5 +9379,302 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "dratini",
+    "title": "Dratini",
+    "dex": 147,
+    "stats": [
+      41,
+      64,
+      45,
+      50,
+      50
+    ],
+    "start": [
+      "WRAP",
+      "LEER"
+    ],
+    "learn": [
+      [
+        10,
+        "THUNDER_WAVE"
+      ],
+      [
+        18,
+        "RAZOR_WIND"
+      ],
+      [
+        26,
+        "DRAGON_RAGE"
+      ],
+      [
+        34,
+        "SLAM"
+      ],
+      [
+        42,
+        "COIL"
+      ]
+    ],
+    "remove": [],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      41,
+      64,
+      45,
+      50,
+      50
+    ],
+    "before_start": [
+      "WRAP",
+      "LEER",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "dragonair",
+    "title": "Dragonair",
+    "dex": 148,
+    "stats": [
+      61,
+      84,
+      65,
+      70,
+      70
+    ],
+    "start": [
+      "WRAP",
+      "LEER",
+      "THUNDER_WAVE"
+    ],
+    "learn": [
+      [
+        10,
+        "THUNDER_WAVE"
+      ],
+      [
+        18,
+        "RAZOR_WIND"
+      ],
+      [
+        26,
+        "DRAGON_RAGE"
+      ],
+      [
+        34,
+        "SLAM"
+      ],
+      [
+        42,
+        "COIL"
+      ]
+    ],
+    "remove": [
+      7
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      61,
+      84,
+      65,
+      70,
+      70
+    ],
+    "before_start": [
+      "WRAP",
+      "LEER",
+      "THUNDER_WAVE",
+      "0"
+    ]
+  },
+  {
+    "name": "dragonite",
+    "title": "Dragonite",
+    "dex": 149,
+    "stats": [
+      91,
+      134,
+      95,
+      80,
+      100
+    ],
+    "start": [
+      "WRAP",
+      "LEER",
+      "THUNDER_WAVE"
+    ],
+    "learn": [
+      [
+        10,
+        "THUNDER_WAVE"
+      ],
+      [
+        18,
+        "RAZOR_WIND"
+      ],
+      [
+        26,
+        "DRAGON_RAGE"
+      ],
+      [
+        34,
+        "SLAM"
+      ],
+      [
+        56,
+        "WING_ATTACK"
+      ],
+      [
+        60,
+        "DRAGON_DANCE"
+      ],
+      [
+        65,
+        "OUTRAGE"
+      ]
+    ],
+    "remove": [
+      7
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      91,
+      134,
+      95,
+      80,
+      100
+    ],
+    "before_start": [
+      "WRAP",
+      "LEER",
+      "THUNDER_WAVE",
+      "AGILITY"
+    ]
+  },
+  {
+    "name": "mewtwo",
+    "title": "Mewtwo",
+    "dex": 150,
+    "stats": [
+      106,
+      110,
+      90,
+      130,
+      154
+    ],
+    "start": [
+      "CONFUSION",
+      "DISABLE",
+      "SWIFT"
+    ],
+    "learn": [
+      [
+        55,
+        "PSYSHOCK"
+      ],
+      [
+        63,
+        "BARRIER"
+      ],
+      [
+        66,
+        "PSYCHIC_M"
+      ],
+      [
+        70,
+        "RECOVER"
+      ],
+      [
+        81,
+        "AMNESIA"
+      ]
+    ],
+    "remove": [
+      6,
+      11,
+      12,
+      16,
+      22,
+      36,
+      46
+    ],
+    "add": [],
+    "before_stats": [
+      106,
+      110,
+      90,
+      130,
+      154
+    ],
+    "before_start": [
+      "CONFUSION",
+      "DISABLE",
+      "SWIFT",
+      "PSYCHIC_M"
+    ]
+  },
+  {
+    "name": "mew",
+    "title": "Mew",
+    "dex": 151,
+    "stats": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "start": [
+      "POUND"
+    ],
+    "learn": [
+      [
+        10,
+        "TRANSFORM"
+      ],
+      [
+        20,
+        "MEGA_PUNCH"
+      ],
+      [
+        30,
+        "METRONOME"
+      ],
+      [
+        40,
+        "PSYCHIC_M"
+      ],
+      [
+        50,
+        "MIMIC"
+      ],
+      [
+        60,
+        "PSYCH_UP"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "before_start": [
+      "POUND",
+      "0",
+      "0",
+      "0"
+    ]
   }
 ]

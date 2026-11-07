@@ -469,9 +469,9 @@ MewEvosMoves:
 	db 10, TRANSFORM
 	db 20, MEGA_PUNCH
 	db 30, METRONOME
-	db 35, PSYCH_UP
 	db 40, PSYCHIC_M
-	db 41, PSYSHOCK
+	db 50, MIMIC
+	db 60, PSYCH_UP
 	db 0
 
 GyaradosEvosMoves:
@@ -998,12 +998,12 @@ DragoniteEvosMoves:
 	db 0
 ; Learnset
 	db 10, THUNDER_WAVE
-	db 20, AGILITY
-	db 35, SLAM
-	db 40, COIL
-	db 45, DRAGON_RAGE
-	db 48, DRAGON_DANCE
-	db 60, HYPER_BEAM
+	db 18, RAZOR_WIND
+	db 26, DRAGON_RAGE
+	db 34, SLAM
+	db 56, WING_ATTACK
+	db 60, DRAGON_DANCE
+	db 65, OUTRAGE
 	db 0
 
 MissingNo43EvosMoves:
@@ -1232,12 +1232,10 @@ DratiniEvosMoves:
 	db 0
 ; Learnset
 	db 10, THUNDER_WAVE
-	db 20, AGILITY
-	db 30, SLAM
-	db 31, COIL
-	db 36, DRAGON_DANCE
-	db 40, DRAGON_RAGE
-	db 50, HYPER_BEAM
+	db 18, RAZOR_WIND
+	db 26, DRAGON_RAGE
+	db 34, SLAM
+	db 42, COIL
 	db 0
 
 DragonairEvosMoves:
@@ -1246,12 +1244,10 @@ DragonairEvosMoves:
 	db 0
 ; Learnset
 	db 10, THUNDER_WAVE
-	db 20, AGILITY
-	db 34, COIL
-	db 35, SLAM
-	db 40, DRAGON_DANCE
-	db 45, DRAGON_RAGE
-	db 55, HYPER_BEAM
+	db 18, RAZOR_WIND
+	db 26, DRAGON_RAGE
+	db 34, SLAM
+	db 42, COIL
 	db 0
 
 KabutoEvosMoves:
@@ -1744,12 +1740,9 @@ MewtwoEvosMoves:
 	db 0
 ; Learnset
 	db 55, PSYSHOCK
-	db 60, PSYCH_UP
 	db 63, BARRIER
-	db 65, MIND_BREAK
 	db 66, PSYCHIC_M
 	db 70, RECOVER
-	db 75, MIST
 	db 81, AMNESIA
 	db 0
 

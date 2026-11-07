@@ -44,7 +44,7 @@ def validate(version):
     assert byname['mew'] == set(range(51, 64))
     for number,allowed in [(61,{'ekans','arbok','zubat','golbat','crobat','paras','parasect','mew'}),(62,{'ekans','arbok','beedrill','nidoranf','nidorina','nidoqueen','nidoranm','nidorino','nidoking','bellsprout','weepinbell','victreebel','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','spearow','fearow','pikachu','raichu','growlithe','arcanine','ponyta','rapidash','doduo','dodrio','hitmonlee','horsea','seadra','goldeen','seaking','porygon','mew'})]:
         assert {name for name,tms in byname.items() if number in tms}==allowed
-    for baby, adult in (('dragonair','dragonite'),('caterpie','butterfree')):
+    for baby, adult in (('caterpie','butterfree'),):
         assert 51 not in byname[baby] and 51 in byname[adult]
     for mon in ('charmander','charmeleon','charizard'):
         assert 51 not in byname[mon] and 58 not in byname[mon]
@@ -69,6 +69,7 @@ def validate(version):
     for mon in ('omanyte','omastar'):assert 59 not in byname[mon]
     assert {52,55,57} <= byname['aerodactyl'] and 51 not in byname['aerodactyl']
     for mon in ('articuno','zapdos','moltres'):assert 51 in byname[mon]
+    assert 51 not in byname['dragonite'] and 55 in byname['dragonite']
     assert 55 in byname['charizard']
     for mon in ('spearow','fearow'):
         assert 51 not in byname[mon] and {52,55,63} <= byname[mon]

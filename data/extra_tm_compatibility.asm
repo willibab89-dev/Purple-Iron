@@ -147,7 +147,7 @@ ExtraTMCompatibilityTable:
 	db $91, $00 ; 146: moltres
 	db $00, $00 ; 147: dratini
 	db $00, $00 ; 148: dragonair
-	db $11, $00 ; 149: dragonite
+	db $10, $00 ; 149: dragonite
 	db $00, $00 ; 150: mewtwo
 	db $ff, $1f ; 151: mew
 	db $04, $01 ; 152: blastoise_unique
