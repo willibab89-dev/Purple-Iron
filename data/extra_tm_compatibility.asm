@@ -131,10 +131,10 @@ ExtraTMCompatibilityTable:
 	db $04, $00 ; 130: gyarados
 	db $04, $00 ; 131: lapras
 	db $00, $00 ; 132: ditto
-	db $00, $00 ; 133: eevee
-	db $04, $01 ; 134: vaporeon
-	db $00, $00 ; 135: jolteon
-	db $82, $00 ; 136: flareon
+	db $02, $00 ; 133: eevee
+	db $06, $01 ; 134: vaporeon
+	db $02, $00 ; 135: jolteon
+	db $02, $00 ; 136: flareon
 	db $00, $00 ; 137: porygon
 	db $44, $01 ; 138: omanyte
 	db $44, $01 ; 139: omastar

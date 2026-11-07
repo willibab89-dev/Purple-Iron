@@ -1380,35 +1380,39 @@
       "dex": 133,
       "name": "eevee",
       "source": "eevee",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52
+      ],
+      "mask": 2
     },
     {
       "dex": 134,
       "name": "vaporeon",
       "source": "vaporeon",
       "tms": [
+        52,
         53,
         59
       ],
-      "mask": 260
+      "mask": 262
     },
     {
       "dex": 135,
       "name": "jolteon",
       "source": "jolteon",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52
+      ],
+      "mask": 2
     },
     {
       "dex": 136,
       "name": "flareon",
       "source": "flareon",
       "tms": [
-        52,
-        58
+        52
       ],
-      "mask": 130
+      "mask": 2
     },
     {
       "dex": 137,

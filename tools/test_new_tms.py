@@ -63,6 +63,8 @@ def validate(version):
     for mon in ('electabuzz','magmar'):assert 52 in byname[mon] and 56 not in byname[mon]
     assert 58 not in byname['magmar']
     assert {52,56,57} <= byname['pinsir']
+    for mon in ('eevee','vaporeon','jolteon','flareon'):assert 52 in byname[mon]
+    assert 58 not in byname['flareon'] and not byname['ditto']
     assert 55 in byname['charizard']
     for mon in ('spearow','fearow'):
         assert 51 not in byname[mon] and {52,55,63} <= byname[mon]

@@ -439,20 +439,12 @@ LaprasEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 16, SING
-	db 20, MIST
-	db 21, ICY_WIND
-	db 24, ICE_SHARD
+	db 9, SING
+	db 17, MIST
 	db 25, BODY_SLAM
-	db 28, ICE_ARMOR
-	db 31, CONFUSE_RAY
-	db 34, SCALD
-	db 38, ICE_BEAM
-	db 39, ICICLE_SPEAR
-	db 40, FROST_BREATH
-	db 44, DRAGON_DANCE
-	db 46, HYDRO_PUMP
-	db 48, FLASH_FREEZE
+	db 33, CONFUSE_RAY
+	db 41, ICE_BEAM
+	db 49, HYDRO_PUMP
 	db 0
 
 ArcanineEvosMoves:
@@ -1438,68 +1430,51 @@ EeveeEvosMoves:
 	db EV_ITEM, WATER_STONE, 1, VAPOREON
 	db 0
 ; Learnset
-	db 8, TAIL_WHIP
-	db 16, GROWL
-	db 23, QUICK_ATTACK
-	db 30, BITE
-	db 31, FACADE
-	db 36, FOCUS_ENERGY
-	db 42, TAKE_DOWN
+	db 8, SAND_ATTACK
+	db 15, QUICK_ATTACK
+	db 22, BITE
+	db 29, FOCUS_ENERGY
+	db 36, TAKE_DOWN
+	db 43, DOUBLE_EDGE
 	db 0
 
 FlareonEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 8, TAIL_WHIP
-	db 16, EMBER
-	db 23, QUICK_ATTACK
-	db 24, FLAME_CHARGE
-	db 26, WILL_O_WISP
-	db 30, BITE
-	db 31, INCINERATE
-	db 36, FIRE_SPIN
-	db 37, FACADE
-	db 38, CAUTERIZE
-	db 42, SMOG
-	db 47, LEER
-	db 48, RAGE
-	db 52, FLAMETHROWER
+	db 8, SAND_ATTACK
+	db 15, QUICK_ATTACK
+	db 22, BITE
+	db 29, FIRE_SPIN
+	db 36, FLAMETHROWER
+	db 43, CAUTERIZE
+	db 50, FIRE_BLAST
 	db 0
 
 JolteonEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 8, TAIL_WHIP
-	db 16, THUNDERSHOCK
-	db 23, QUICK_ATTACK
-	db 24, CHARGE
-	db 30, DOUBLE_KICK
-	db 32, SHOCK_WAVE
-	db 36, PIN_MISSILE
-	db 37, FACADE
-	db 40, THUNDERCLAP
-	db 42, THUNDER_WAVE
-	db 47, AGILITY
-	db 52, THUNDER
+	db 8, SAND_ATTACK
+	db 15, QUICK_ATTACK
+	db 22, DOUBLE_KICK
+	db 29, PIN_MISSILE
+	db 36, THUNDER_WAVE
+	db 43, SHOCK_WAVE
+	db 50, THUNDER
 	db 0
 
 VaporeonEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 8, TAIL_WHIP
-	db 16, WATER_GUN
-	db 23, QUICK_ATTACK
-	db 30, BITE
-	db 32, SCALD
-	db 36, AURORA_BEAM
-	db 37, FACADE
-	db 42, HAZE
-	db 47, ACID_ARMOR
-	db 48, MIST
-	db 52, HYDRO_PUMP
+	db 8, SAND_ATTACK
+	db 15, QUICK_ATTACK
+	db 22, BITE
+	db 29, SCALD
+	db 36, ACID_ARMOR
+	db 43, HAZE
+	db 50, HYDRO_PUMP
 	db 0
 
 MachopEvosMoves:

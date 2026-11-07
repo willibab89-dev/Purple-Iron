@@ -8410,5 +8410,358 @@
       "LEER",
       "HYDRO_PUMP"
     ]
+  },
+  {
+    "name": "lapras",
+    "title": "Lapras",
+    "dex": 131,
+    "stats": [
+      130,
+      85,
+      80,
+      60,
+      95
+    ],
+    "start": [
+      "WATER_GUN",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "SING"
+      ],
+      [
+        17,
+        "MIST"
+      ],
+      [
+        25,
+        "BODY_SLAM"
+      ],
+      [
+        33,
+        "CONFUSE_RAY"
+      ],
+      [
+        41,
+        "ICE_BEAM"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      7,
+      15,
+      22,
+      23,
+      25,
+      34,
+      46
+    ],
+    "add": [],
+    "before_stats": [
+      130,
+      85,
+      80,
+      60,
+      95
+    ],
+    "before_start": [
+      "WATER_GUN",
+      "GROWL",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "ditto",
+    "title": "Ditto",
+    "dex": 132,
+    "stats": [
+      66,
+      66,
+      66,
+      66,
+      66
+    ],
+    "start": [
+      "TRANSFORM"
+    ],
+    "learn": [],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      48,
+      48,
+      48,
+      48,
+      48
+    ],
+    "before_start": [
+      "TRANSFORM",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "eevee",
+    "title": "Eevee",
+    "dex": 133,
+    "stats": [
+      55,
+      55,
+      50,
+      55,
+      65
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        15,
+        "QUICK_ATTACK"
+      ],
+      [
+        22,
+        "BITE"
+      ],
+      [
+        29,
+        "FOCUS_ENERGY"
+      ],
+      [
+        36,
+        "TAKE_DOWN"
+      ],
+      [
+        43,
+        "DOUBLE_EDGE"
+      ]
+    ],
+    "remove": [],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      55,
+      55,
+      50,
+      55,
+      65
+    ],
+    "before_start": [
+      "TACKLE",
+      "SAND_ATTACK",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "vaporeon",
+    "title": "Vaporeon",
+    "dex": 134,
+    "stats": [
+      130,
+      65,
+      60,
+      65,
+      110
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        15,
+        "QUICK_ATTACK"
+      ],
+      [
+        22,
+        "BITE"
+      ],
+      [
+        29,
+        "SCALD"
+      ],
+      [
+        36,
+        "ACID_ARMOR"
+      ],
+      [
+        43,
+        "HAZE"
+      ],
+      [
+        50,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      130,
+      65,
+      60,
+      65,
+      110
+    ],
+    "before_start": [
+      "TACKLE",
+      "SAND_ATTACK",
+      "QUICK_ATTACK",
+      "WATER_GUN"
+    ]
+  },
+  {
+    "name": "jolteon",
+    "title": "Jolteon",
+    "dex": 135,
+    "stats": [
+      65,
+      65,
+      60,
+      130,
+      110
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "THUNDERSHOCK"
+    ],
+    "learn": [
+      [
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        15,
+        "QUICK_ATTACK"
+      ],
+      [
+        22,
+        "DOUBLE_KICK"
+      ],
+      [
+        29,
+        "PIN_MISSILE"
+      ],
+      [
+        36,
+        "THUNDER_WAVE"
+      ],
+      [
+        43,
+        "SHOCK_WAVE"
+      ],
+      [
+        50,
+        "THUNDER"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      65,
+      65,
+      60,
+      130,
+      110
+    ],
+    "before_start": [
+      "TACKLE",
+      "SAND_ATTACK",
+      "QUICK_ATTACK",
+      "THUNDERSHOCK"
+    ]
+  },
+  {
+    "name": "flareon",
+    "title": "Flareon",
+    "dex": 136,
+    "stats": [
+      65,
+      60,
+      130,
+      65,
+      110
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "EMBER"
+    ],
+    "learn": [
+      [
+        8,
+        "SAND_ATTACK"
+      ],
+      [
+        15,
+        "QUICK_ATTACK"
+      ],
+      [
+        22,
+        "BITE"
+      ],
+      [
+        29,
+        "FIRE_SPIN"
+      ],
+      [
+        36,
+        "FLAMETHROWER"
+      ],
+      [
+        43,
+        "CAUTERIZE"
+      ],
+      [
+        50,
+        "FIRE_BLAST"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      65,
+      130,
+      60,
+      65,
+      110
+    ],
+    "before_start": [
+      "TACKLE",
+      "SAND_ATTACK",
+      "QUICK_ATTACK",
+      "EMBER"
+    ]
   }
 ]

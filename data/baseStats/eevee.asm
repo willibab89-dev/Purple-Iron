@@ -13,13 +13,13 @@ dw EeveePicFront
 dw EeveePicBack
 ; attacks known at lvl 0
 db TACKLE
-db SAND_ATTACK
+db TAIL_WHIP
 db 0
 db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 8
-	tmlearn 0
+	tmlearn 10
 	tmlearn 0
 	tmlearn 0
 	tmlearn 33,39,40
