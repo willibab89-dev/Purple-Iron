@@ -96,7 +96,7 @@ EvosMovesPointerTable:
 	dw HorseaEvosMoves
 	dw SeadraEvosMoves
 	dw ReviewedRaichuUniqueEvosMoves ; UNIQUE_RAICHU_UNIQUE
-	dw SquirtleEvosMoves ; UNIQUE_SQUIRTLE_UNIQUE
+	dw ReviewedSquirtleUniqueEvosMoves ; UNIQUE_SQUIRTLE_UNIQUE
 	dw SandshrewEvosMoves
 	dw SandslashEvosMoves
 	dw OmanyteEvosMoves
@@ -116,14 +116,14 @@ EvosMovesPointerTable:
 	dw WeedleEvosMoves
 	dw KakunaEvosMoves
 	dw BeedrillEvosMoves
-	dw TangelaEvosMoves ; UNIQUE_TANGELA_ERIKA
+	dw ReviewedTangelaErikaEvosMoves ; UNIQUE_TANGELA_ERIKA
 	dw DodrioEvosMoves
 	dw PrimeapeEvosMoves
 	dw DugtrioEvosMoves
 	dw VenomothEvosMoves
 	dw DewgongEvosMoves
-	dw TentacoolEvosMoves ; UNIQUE_TENTACOOL_BIG
-	dw VenusaurEvosMoves ; UNIQUE_VENUSAUR_ERIKA
+	dw ReviewedTentacoolBigEvosMoves ; UNIQUE_TENTACOOL_BIG
+	dw ReviewedVenusaurErikaEvosMoves ; UNIQUE_VENUSAUR_ERIKA
 	dw CaterpieEvosMoves
 	dw MetapodEvosMoves
 	dw ButterfreeEvosMoves
@@ -2753,4 +2753,55 @@ ReviewedRaichuUniqueEvosMoves:
 	db 39, BODY_SLAM
 	db 47, LIGHT_SCREEN
 	db 55, ZAP_CANNON
+	db 0
+
+ReviewedSquirtleUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, WATER_GUN
+	db 15, AQUA_JET
+	db 23, BITE
+	db 31, COUNTER
+	db 39, SKULL_BASH
+	db 47, WATERFALL
+	db 55, SHELL_SMASH
+	db 0
+
+ReviewedTangelaErikaEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, BIND
+	db 15, LEECH_LIFE
+	db 23, SLEEP_POWDER
+	db 31, INGRAIN
+	db 39, VICEGRIP
+	db 47, STOCKPILE
+	db 0
+
+ReviewedTentacoolBigEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, SUPERSONIC
+	db 15, ACID
+	db 23, WRAP
+	db 31, BRINE
+	db 39, TOXIC
+	db 47, MIST
+	db 55, HYDRO_PUMP
+	db 0
+
+ReviewedVenusaurErikaEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, VINE_WHIP
+	db 15, POISONPOWDER
+	db 23, GROWTH
+	db 31, PETAL_DANCE
+	db 39, SLUDGE
+	db 47, SYNTHESIS
+	db 55, VENOSHOCK
 	db 0

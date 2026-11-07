@@ -11470,5 +11470,283 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "squirtle_unique",
+    "title": "ReviewedSquirtleUnique",
+    "dex": 169,
+    "stats": [
+      74,
+      78,
+      95,
+      73,
+      80
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "WITHDRAW"
+    ],
+    "learn": [
+      [
+        7,
+        "WATER_GUN"
+      ],
+      [
+        15,
+        "AQUA_JET"
+      ],
+      [
+        23,
+        "BITE"
+      ],
+      [
+        31,
+        "COUNTER"
+      ],
+      [
+        39,
+        "SKULL_BASH"
+      ],
+      [
+        47,
+        "WATERFALL"
+      ],
+      [
+        55,
+        "SHELL_SMASH"
+      ]
+    ],
+    "remove": [
+      5,
+      9,
+      11,
+      12,
+      13,
+      14,
+      17,
+      28,
+      34,
+      40
+    ],
+    "add": [
+      50
+    ],
+    "before_stats": [
+      44,
+      48,
+      65,
+      43,
+      50
+    ],
+    "before_start": [
+      "TACKLE",
+      "TAIL_WHIP",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "tangela_erika",
+    "title": "ReviewedTangelaErika",
+    "dex": 170,
+    "stats": [
+      75,
+      95,
+      110,
+      45,
+      75
+    ],
+    "start": [
+      "CONSTRICT",
+      "ABSORB"
+    ],
+    "learn": [
+      [
+        7,
+        "BIND"
+      ],
+      [
+        15,
+        "LEECH_LIFE"
+      ],
+      [
+        23,
+        "SLEEP_POWDER"
+      ],
+      [
+        31,
+        "INGRAIN"
+      ],
+      [
+        39,
+        "VICEGRIP"
+      ],
+      [
+        47,
+        "STOCKPILE"
+      ]
+    ],
+    "remove": [
+      3,
+      15,
+      22,
+      34,
+      40
+    ],
+    "add": [
+      33,
+      50
+    ],
+    "before_stats": [
+      65,
+      55,
+      115,
+      60,
+      100
+    ],
+    "before_start": [
+      "CONSTRICT",
+      "BIND",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "tentacool_big",
+    "title": "ReviewedTentacoolBig",
+    "dex": 171,
+    "stats": [
+      100,
+      60,
+      75,
+      40,
+      105
+    ],
+    "start": [
+      "POISON_STING",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        7,
+        "SUPERSONIC"
+      ],
+      [
+        15,
+        "ACID"
+      ],
+      [
+        23,
+        "WRAP"
+      ],
+      [
+        31,
+        "BRINE"
+      ],
+      [
+        39,
+        "TOXIC"
+      ],
+      [
+        47,
+        "MIST"
+      ],
+      [
+        55,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      3,
+      14,
+      21,
+      32,
+      40,
+      51
+    ],
+    "add": [
+      50
+    ],
+    "before_stats": [
+      40,
+      40,
+      35,
+      70,
+      100
+    ],
+    "before_start": [
+      "ACID",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "venusaur_erika",
+    "title": "ReviewedVenusaurErika",
+    "dex": 172,
+    "stats": [
+      80,
+      82,
+      83,
+      65,
+      115
+    ],
+    "start": [
+      "TACKLE",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        7,
+        "VINE_WHIP"
+      ],
+      [
+        15,
+        "POISONPOWDER"
+      ],
+      [
+        23,
+        "GROWTH"
+      ],
+      [
+        31,
+        "PETAL_DANCE"
+      ],
+      [
+        39,
+        "SLUDGE"
+      ],
+      [
+        47,
+        "SYNTHESIS"
+      ],
+      [
+        55,
+        "VENOSHOCK"
+      ]
+    ],
+    "remove": [
+      3,
+      8,
+      15
+    ],
+    "add": [
+      50
+    ],
+    "before_stats": [
+      80,
+      82,
+      83,
+      80,
+      100
+    ],
+    "before_start": [
+      "TACKLE",
+      "GROWL",
+      "LEECH_SEED",
+      "VINE_WHIP"
+    ]
   }
 ]

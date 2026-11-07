@@ -167,8 +167,8 @@ ExtraTMCompatibilityTable:
 	db $44, $00 ; 166: omanyte_unique
 	db $40, $00 ; 167: onix_brock
 	db $02, $00 ; 168: raichu_unique
-	db $04, $01 ; 169: squirtle_unique
-	db $08, $00 ; 170: tangela_erika
+	db $02, $00 ; 169: squirtle_unique
+	db $00, $04 ; 170: tangela_erika
 	db $0c, $00 ; 171: tentacool_big
 	db $08, $00 ; 172: venusaur_erika
 	db $0c, $01 ; 173: mareanie

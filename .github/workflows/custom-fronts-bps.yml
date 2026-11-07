@@ -1,4 +1,4 @@
-name: "Unique Nidoran through Raichu; final Gym leader moves"
+name: "Final unique variants; complete Erika team"
 
 on:
   workflow_dispatch:
@@ -135,3 +135,4 @@ jobs:
             ${{ runner.temp }}/patches/KOGA-ERIKA-ROCK-KAKUNA.md
             ${{ runner.temp }}/patches/UNIQUE-MAROWAK-AND-NIDOKINGS.md
             ${{ runner.temp }}/patches/UNIQUE-NIDORAN-TO-RAICHU.md
+            ${{ runner.temp }}/patches/FINAL-UNIQUE-VARIANTS.md

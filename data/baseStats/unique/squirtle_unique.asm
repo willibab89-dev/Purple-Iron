@@ -1,9 +1,9 @@
 db DEX_UNIQUE_SQUIRTLE_UNIQUE ; pokedex id
-db 44 ; base hp
-db 48 ; base attack
-db 65 ; base defense
-db 43 ; base speed
-db 50 ; base special
+db 74 ; base hp
+db 78 ; base attack
+db 95 ; base defense
+db 73 ; base speed
+db 80 ; base special
 db WATER ; species type 1
 db WATER ; species type 2
 db 45 ; catch rate
@@ -14,15 +14,15 @@ dw Unique18PicBack
 ; attacks known at lvl 0
 db TACKLE
 db TAIL_WHIP
-db 0
+db WITHDRAW
 db 0
 db 3 ; growth rate
 ; learnset
-	tmlearn 1,5,8
-	tmlearn 9,11,12,13,14
-	tmlearn 17,18,19
-	tmlearn 28
-	tmlearn 33,34,40
+	tmlearn 1,8
+	tmlearn 0
+	tmlearn 18,19
+	tmlearn 0
+	tmlearn 33
 	tmlearn 44
-	tmlearn 53,54
+	tmlearn 50,53,54
 db 0 ; padding

@@ -1730,19 +1730,18 @@
       "name": "squirtle_unique",
       "source": "squirtle",
       "tms": [
-        53,
-        59
+        52
       ],
-      "mask": 260
+      "mask": 2
     },
     {
       "dex": 170,
       "name": "tangela_erika",
       "source": "tangela",
       "tms": [
-        54
+        61
       ],
-      "mask": 8
+      "mask": 1024
     },
     {
       "dex": 171,

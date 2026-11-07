@@ -42,6 +42,8 @@ def validate(version):
         cases = [
             ('BROCK', 1, 2, 167, 15, ['TACKLE', 'SCREECH', 'HARDEN', 'WRAP']),
             ('LT_SURGE', 1, 3, 168, 25, ['GROWL', 'QUICK_ATTACK', 'THUNDER_WAVE', 'THUNDERPUNCH']),
+            ('ERIKA', 1, 1, 170, 29, ['ABSORB', 'BIND', 'LEECH_LIFE', 'SLEEP_POWDER']),
+            ('ERIKA', 1, 3, 172, 33, ['VINE_WHIP', 'POISONPOWDER', 'GROWTH', 'PETAL_DANCE']),
             ('ERIKA', 1, 2, 160, 33, ['STUN_SPORE', 'LEECH_SEED', 'REFLECT', 'VINE_CRUSH']),
             ('GIOVANNI', 3, 4, 163, 47, ['STOMP', 'CRUNCH', 'EARTHQUAKE', 'POISON_FANG']),
             ('KOGA', 1, 2, 159, 39, ['SLUDGE', 'DISABLE', 'TOXIC', 'ACID_ARMOR']),
@@ -53,8 +55,6 @@ def validate(version):
             assert get(f'wEnemyMon{slot}Level')[0] == level, trainer
             assert get(f'wEnemyMon{slot}Moves', 4) == bytes(MOVES[m] for m in moves), (trainer, get(f'wEnemyMon{slot}Moves', 4))
         # Preserve unrelated custom moves on the same teams and another leader.
-        load('ERIKA', 1)
-        assert get('wEnemyMon3Moves', 4) == bytes(MOVES[m] for m in ['POISONPOWDER', 'MEGA_DRAIN', 'SLEEP_POWDER', 'PETAL_DANCE'])
         load('GIOVANNI', 3)
         assert get('wEnemyMon2Moves')[0] == MOVES['FISSURE']
         assert get('wEnemyMon3Moves')[0] == MOVES['EARTHQUAKE']
@@ -65,10 +65,10 @@ def validate(version):
         assert get('wEnemyMon3Moves')[0] == MOVES['SUBSTITUTE']
         load('MISTY', 1)
         assert get('wEnemyMon2Moves', 4)[3] == MOVES['BUBBLEBEAM']
-        for title in ('ReviewedNidoranMUnique', 'ReviewedOmanyteUnique', 'ReviewedOnixBrock', 'ReviewedRaichuUnique'):
+        for title in ('ReviewedNidoranMUnique', 'ReviewedOmanyteUnique', 'ReviewedOnixBrock', 'ReviewedRaichuUnique', 'ReviewedSquirtleUnique', 'ReviewedTangelaErika', 'ReviewedTentacoolBig', 'ReviewedVenusaurErika'):
             bank, target = syms[title+'EvosMoves']
             assert game.memory[bank, target] == 0
-        print(f'{version}: final ReadTrainer sets for five reviewed Gym variants, default levels, independent no-evolution records and unrelated overrides passed')
+        print(f'{version}: final ReadTrainer sets for seven reviewed Gym variants, default levels, independent no-evolution records and unrelated overrides passed')
     finally:
         game.stop(save=False)
 

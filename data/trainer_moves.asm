@@ -53,10 +53,6 @@ SpecialTrainerMoves:
 	db 0
 	
 	db ERIKA,$1
-	db 3,1,POISONPOWDER
-	db 3,2,MEGA_DRAIN
-	db 3,3,SLEEP_POWDER
-	db 3,4,PETAL_DANCE
 	db 0
 	
 	db KOGA,$1
