@@ -13,16 +13,16 @@ dw MachampPicFront
 dw MachampPicBack
 ; attacks known at lvl 0
 db KARATE_CHOP
-db LOW_KICK
 db LEER
+db LOW_KICK
 db 0
 db 3 ; growth rate
 ; learnset
 	tmlearn 1,5,8
-	tmlearn 10,15
+	tmlearn 10
 	tmlearn 17,18,19,20
-	tmlearn 26,27,28
-	tmlearn 34,35,38,40
+	tmlearn 26
+	tmlearn 34,35,40
 	tmlearn 44,48
 	tmlearn 54
 db 0 ; padding

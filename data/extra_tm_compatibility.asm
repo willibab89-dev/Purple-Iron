@@ -67,9 +67,9 @@ ExtraTMCompatibilityTable:
 	db $62, $00 ; 66: machop
 	db $62, $00 ; 67: machoke
 	db $62, $00 ; 68: machamp
-	db $08, $00 ; 69: bellsprout
-	db $08, $00 ; 70: weepinbell
-	db $08, $00 ; 71: victreebel
+	db $08, $08 ; 69: bellsprout
+	db $08, $08 ; 70: weepinbell
+	db $08, $08 ; 71: victreebel
 	db $0c, $00 ; 72: tentacool
 	db $0c, $00 ; 73: tentacruel
 	db $40, $00 ; 74: geodude

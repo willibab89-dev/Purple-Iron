@@ -794,27 +794,30 @@
       "name": "bellsprout",
       "source": "bellsprout",
       "tms": [
-        54
+        54,
+        62
       ],
-      "mask": 8
+      "mask": 2056
     },
     {
       "dex": 70,
       "name": "weepinbell",
       "source": "weepinbell",
       "tms": [
-        54
+        54,
+        62
       ],
-      "mask": 8
+      "mask": 2056
     },
     {
       "dex": 71,
       "name": "victreebel",
       "source": "victreebel",
       "tms": [
-        54
+        54,
+        62
       ],
-      "mask": 8
+      "mask": 2056
     },
     {
       "dex": 72,

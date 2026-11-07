@@ -1,4 +1,4 @@
-name: "Growlithe, Poliwag and Abra family redesigns"
+name: "Machop, Bellsprout and Tentacool family redesigns"
 
 on:
   workflow_dispatch:
@@ -100,3 +100,4 @@ jobs:
             ${{ runner.temp }}/patches/PARAS-VENONAT-DIGLETT.md
             ${{ runner.temp }}/patches/MEOWTH-PSYDUCK-MANKEY.md
             ${{ runner.temp }}/patches/GROWLITHE-POLIWAG-ABRA.md
+            ${{ runner.temp }}/patches/MACHOP-BELLSPROUT-TENTACOOL.md

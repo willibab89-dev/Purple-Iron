@@ -13,7 +13,7 @@ dw MachopPicFront
 dw MachopPicBack
 ; attacks known at lvl 0
 db KARATE_CHOP
-db 0
+db LEER
 db 0
 db 0
 db 3 ; growth rate
@@ -21,8 +21,8 @@ db 3 ; growth rate
 	tmlearn 1,5,8
 	tmlearn 10
 	tmlearn 17,18,19,20
-	tmlearn 26,27,28
-	tmlearn 34,35,38,40
+	tmlearn 26
+	tmlearn 34,35,40
 	tmlearn 44,48
 	tmlearn 54
 db 0 ; padding

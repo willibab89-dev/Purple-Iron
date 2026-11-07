@@ -4425,5 +4425,525 @@
       "CONFUSION",
       "DISABLE"
     ]
+  },
+  {
+    "name": "machop",
+    "title": "Machop",
+    "dex": 66,
+    "stats": [
+      70,
+      80,
+      50,
+      35,
+      35
+    ],
+    "start": [
+      "KARATE_CHOP",
+      "LEER"
+    ],
+    "learn": [
+      [
+        8,
+        "LOW_KICK"
+      ],
+      [
+        15,
+        "FOCUS_ENERGY"
+      ],
+      [
+        22,
+        "SEISMIC_TOSS"
+      ],
+      [
+        28,
+        "BULK_UP"
+      ],
+      [
+        34,
+        "BRICK_BREAK"
+      ],
+      [
+        41,
+        "SUBMISSION"
+      ]
+    ],
+    "remove": [
+      27,
+      28,
+      38
+    ],
+    "add": [],
+    "before_stats": [
+      70,
+      80,
+      50,
+      35,
+      35
+    ],
+    "before_start": [
+      "KARATE_CHOP",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "machoke",
+    "title": "Machoke",
+    "dex": 67,
+    "stats": [
+      80,
+      100,
+      70,
+      45,
+      50
+    ],
+    "start": [
+      "KARATE_CHOP",
+      "LEER",
+      "LOW_KICK"
+    ],
+    "learn": [
+      [
+        8,
+        "LOW_KICK"
+      ],
+      [
+        15,
+        "FOCUS_ENERGY"
+      ],
+      [
+        22,
+        "SEISMIC_TOSS"
+      ],
+      [
+        28,
+        "BULK_UP"
+      ],
+      [
+        34,
+        "BRICK_BREAK"
+      ],
+      [
+        41,
+        "SUBMISSION"
+      ]
+    ],
+    "remove": [
+      27,
+      28,
+      38
+    ],
+    "add": [],
+    "before_stats": [
+      80,
+      100,
+      70,
+      45,
+      50
+    ],
+    "before_start": [
+      "KARATE_CHOP",
+      "LOW_KICK",
+      "LEER",
+      "0"
+    ]
+  },
+  {
+    "name": "machamp",
+    "title": "Machamp",
+    "dex": 68,
+    "stats": [
+      90,
+      130,
+      80,
+      55,
+      65
+    ],
+    "start": [
+      "KARATE_CHOP",
+      "LEER",
+      "LOW_KICK"
+    ],
+    "learn": [
+      [
+        8,
+        "LOW_KICK"
+      ],
+      [
+        15,
+        "FOCUS_ENERGY"
+      ],
+      [
+        22,
+        "SEISMIC_TOSS"
+      ],
+      [
+        28,
+        "BULK_UP"
+      ],
+      [
+        34,
+        "BRICK_BREAK"
+      ],
+      [
+        41,
+        "SUBMISSION"
+      ],
+      [
+        49,
+        "PIERCE"
+      ],
+      [
+        56,
+        "MEGA_KICK"
+      ]
+    ],
+    "remove": [
+      15,
+      27,
+      28,
+      38
+    ],
+    "add": [],
+    "before_stats": [
+      90,
+      130,
+      80,
+      55,
+      65
+    ],
+    "before_start": [
+      "KARATE_CHOP",
+      "LOW_KICK",
+      "LEER",
+      "0"
+    ]
+  },
+  {
+    "name": "bellsprout",
+    "title": "Bellsprout",
+    "dex": 69,
+    "stats": [
+      50,
+      75,
+      35,
+      40,
+      70
+    ],
+    "start": [
+      "VINE_WHIP",
+      "GROWTH"
+    ],
+    "learn": [
+      [
+        7,
+        "WRAP"
+      ],
+      [
+        12,
+        "POISONPOWDER"
+      ],
+      [
+        16,
+        "SLEEP_POWDER"
+      ],
+      [
+        21,
+        "ACID"
+      ],
+      [
+        27,
+        "RAZOR_LEAF"
+      ],
+      [
+        33,
+        "SLAM"
+      ]
+    ],
+    "remove": [],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      50,
+      75,
+      35,
+      40,
+      70
+    ],
+    "before_start": [
+      "VINE_WHIP",
+      "GROWTH",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "weepinbell",
+    "title": "Weepinbell",
+    "dex": 70,
+    "stats": [
+      65,
+      90,
+      50,
+      55,
+      85
+    ],
+    "start": [
+      "VINE_WHIP",
+      "GROWTH",
+      "WRAP"
+    ],
+    "learn": [
+      [
+        7,
+        "WRAP"
+      ],
+      [
+        12,
+        "POISONPOWDER"
+      ],
+      [
+        16,
+        "SLEEP_POWDER"
+      ],
+      [
+        21,
+        "ACID"
+      ],
+      [
+        27,
+        "RAZOR_LEAF"
+      ],
+      [
+        33,
+        "SLAM"
+      ]
+    ],
+    "remove": [],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      65,
+      90,
+      50,
+      55,
+      85
+    ],
+    "before_start": [
+      "VINE_WHIP",
+      "GROWTH",
+      "WRAP",
+      "0"
+    ]
+  },
+  {
+    "name": "victreebel",
+    "title": "Victreebel",
+    "dex": 71,
+    "stats": [
+      80,
+      105,
+      65,
+      70,
+      100
+    ],
+    "start": [
+      "VINE_WHIP",
+      "GROWTH",
+      "WRAP",
+      "ACID"
+    ],
+    "learn": [
+      [
+        7,
+        "WRAP"
+      ],
+      [
+        12,
+        "POISONPOWDER"
+      ],
+      [
+        16,
+        "SLEEP_POWDER"
+      ],
+      [
+        21,
+        "ACID"
+      ],
+      [
+        27,
+        "RAZOR_LEAF"
+      ],
+      [
+        33,
+        "SLAM"
+      ],
+      [
+        39,
+        "POISON_FANG"
+      ],
+      [
+        45,
+        "CLAMP"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [
+      10
+    ],
+    "before_stats": [
+      80,
+      105,
+      65,
+      70,
+      100
+    ],
+    "before_start": [
+      "SLEEP_POWDER",
+      "STUN_SPORE",
+      "ACID",
+      "RAZOR_LEAF"
+    ]
+  },
+  {
+    "name": "tentacool",
+    "title": "Tentacool",
+    "dex": 72,
+    "stats": [
+      40,
+      40,
+      35,
+      70,
+      100
+    ],
+    "start": [
+      "POISON_STING",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        7,
+        "SUPERSONIC"
+      ],
+      [
+        13,
+        "ACID"
+      ],
+      [
+        19,
+        "POISONPOWDER"
+      ],
+      [
+        25,
+        "BIND"
+      ],
+      [
+        31,
+        "BRINE"
+      ],
+      [
+        37,
+        "BARRIER"
+      ],
+      [
+        43,
+        "VENOSHOCK"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      21
+    ],
+    "add": [],
+    "before_stats": [
+      40,
+      40,
+      35,
+      70,
+      100
+    ],
+    "before_start": [
+      "ACID",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "tentacruel",
+    "title": "Tentacruel",
+    "dex": 73,
+    "stats": [
+      80,
+      70,
+      65,
+      100,
+      120
+    ],
+    "start": [
+      "POISON_STING",
+      "WATER_GUN",
+      "SUPERSONIC"
+    ],
+    "learn": [
+      [
+        7,
+        "SUPERSONIC"
+      ],
+      [
+        13,
+        "ACID"
+      ],
+      [
+        19,
+        "POISONPOWDER"
+      ],
+      [
+        25,
+        "BIND"
+      ],
+      [
+        31,
+        "BRINE"
+      ],
+      [
+        37,
+        "BARRIER"
+      ],
+      [
+        43,
+        "VENOSHOCK"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      15,
+      21
+    ],
+    "add": [],
+    "before_stats": [
+      80,
+      70,
+      65,
+      100,
+      120
+    ],
+    "before_start": [
+      "ACID",
+      "SUPERSONIC",
+      "WRAP",
+      "0"
+    ]
   }
 ]

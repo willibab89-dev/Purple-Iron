@@ -557,16 +557,13 @@ TentacoolEvosMoves:
 	db 0
 ; Learnset
 	db 7, SUPERSONIC
-	db 13, WRAP
-	db 18, POISON_STING
-	db 22, WATER_GUN
-	db 24, COIL
-	db 27, CONSTRICT
-	db 28, VENOSHOCK
-	db 32, BRINE
-	db 33, BARRIER
-	db 40, SCREECH
-	db 48, HYDRO_PUMP
+	db 13, ACID
+	db 19, POISONPOWDER
+	db 25, BIND
+	db 31, BRINE
+	db 37, BARRIER
+	db 43, VENOSHOCK
+	db 49, HYDRO_PUMP
 	db 0
 
 GastlyEvosMoves:
@@ -799,14 +796,12 @@ MachokeEvosMoves:
 	db EV_LEVEL, 48, MACHAMP
 	db 0
 ; Learnset
-	db 20, LOW_KICK
-	db 25, LEER
+	db 8, LOW_KICK
+	db 15, FOCUS_ENERGY
+	db 22, SEISMIC_TOSS
 	db 28, BULK_UP
-	db 36, FOCUS_ENERGY
-	db 37, DRAIN_PUNCH
-	db 40, BRICK_BREAK
-	db 44, SEISMIC_TOSS
-	db 52, SUBMISSION
+	db 34, BRICK_BREAK
+	db 41, SUBMISSION
 	db 0
 
 MrMimeEvosMoves:
@@ -1626,14 +1621,12 @@ MachopEvosMoves:
 	db EV_LEVEL, 28, MACHOKE
 	db 0
 ; Learnset
-	db 20, LOW_KICK
-	db 24, BULK_UP
-	db 25, LEER
-	db 32, FOCUS_ENERGY
-	db 33, DRAIN_PUNCH
-	db 36, BRICK_BREAK
-	db 39, SEISMIC_TOSS
-	db 46, SUBMISSION
+	db 8, LOW_KICK
+	db 15, FOCUS_ENERGY
+	db 22, SEISMIC_TOSS
+	db 28, BULK_UP
+	db 34, BRICK_BREAK
+	db 41, SUBMISSION
 	db 0
 
 ZubatEvosMoves:
@@ -1859,14 +1852,14 @@ MachampEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 20, LOW_KICK
-	db 25, LEER
-	db 32, BULK_UP
-	db 36, FOCUS_ENERGY
-	db 40, DRAIN_PUNCH
-	db 44, SEISMIC_TOSS
-	db 45, BRICK_BREAK
-	db 52, SUBMISSION
+	db 8, LOW_KICK
+	db 15, FOCUS_ENERGY
+	db 22, SEISMIC_TOSS
+	db 28, BULK_UP
+	db 34, BRICK_BREAK
+	db 41, SUBMISSION
+	db 49, PIERCE
+	db 56, MEGA_KICK
 	db 0
 
 MissingNo7FEvosMoves:
@@ -2221,16 +2214,13 @@ TentacruelEvosMoves:
 	db 0
 ; Learnset
 	db 7, SUPERSONIC
-	db 13, WRAP
-	db 18, POISON_STING
-	db 22, WATER_GUN
-	db 27, CONSTRICT
-	db 28, COIL
-	db 32, VENOSHOCK
-	db 35, BARRIER
-	db 36, BRINE
-	db 43, SCREECH
-	db 50, HYDRO_PUMP
+	db 13, ACID
+	db 19, POISONPOWDER
+	db 25, BIND
+	db 31, BRINE
+	db 37, BARRIER
+	db 43, VENOSHOCK
+	db 49, HYDRO_PUMP
 	db 0
 
 MissingNo9CEvosMoves:
@@ -2600,17 +2590,12 @@ BellsproutEvosMoves:
 	db EV_LEVEL, 21, WEEPINBELL
 	db 0
 ; Learnset
-	db 13, WRAP
-	db 15, POISONPOWDER
-	db 18, SLEEP_POWDER
-	db 21, STUN_SPORE
-	db 26, ACID
-	db 28, SYNTHESIS
-
-	db 30, INGRAIN
-	db 33, RAZOR_LEAF
-	db 40, GIGA_DRAIN
-	db 42, SLAM
+	db 7, WRAP
+	db 12, POISONPOWDER
+	db 16, SLEEP_POWDER
+	db 21, ACID
+	db 27, RAZOR_LEAF
+	db 33, SLAM
 	db 0
 
 WeepinbellEvosMoves:
@@ -2618,17 +2603,12 @@ WeepinbellEvosMoves:
 	db EV_ITEM, LEAF_STONE, 1, VICTREEBEL
 	db 0
 ; Learnset
-	db 13, WRAP
-	db 15, POISONPOWDER
-	db 18, SLEEP_POWDER
-	db 23, STUN_SPORE
-	db 29, ACID
-	db 32, SYNTHESIS
-
-	db 34, INGRAIN
-	db 38, RAZOR_LEAF
-	db 44, GIGA_DRAIN
-	db 49, SLAM
+	db 7, WRAP
+	db 12, POISONPOWDER
+	db 16, SLEEP_POWDER
+	db 21, ACID
+	db 27, RAZOR_LEAF
+	db 33, SLAM
 	db 0
 
 VictreebelEvosMoves:
@@ -2636,16 +2616,14 @@ VictreebelEvosMoves:
 	db 0
 ;joenote-modified for fun
 ; Learnset
-	db 13, WRAP
-	db 18, POISONPOWDER
-	db 23, SLEEP_POWDER
-	db 30, STUN_SPORE
-	db 36, SYNTHESIS
-	db 37, ACID
-
-	db 38, INGRAIN
-	db 44, RAZOR_LEAF
-	db 45, GIGA_DRAIN
+	db 7, WRAP
+	db 12, POISONPOWDER
+	db 16, SLEEP_POWDER
+	db 21, ACID
+	db 27, RAZOR_LEAF
+	db 33, SLAM
+	db 39, POISON_FANG
+	db 45, CLAMP
 	db 0
 
 MareanieEvosMoves:
