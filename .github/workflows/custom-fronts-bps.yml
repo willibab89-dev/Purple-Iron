@@ -1,4 +1,4 @@
-name: "Unique Marowak and both Nidoking redesigns"
+name: "Unique Nidoran through Raichu; final Gym leader moves"
 
 on:
   workflow_dispatch:
@@ -76,6 +76,7 @@ jobs:
           python3 tools/test_duplicate.py
           python3 tools/test_heal_bell_charm.py
           python3 tools/test_cocoon.py
+          python3 tools/test_reviewed_trainers.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -133,3 +134,4 @@ jobs:
             ${{ runner.temp }}/patches/HAPPY-DITTO-AND-FIGHTERS.md
             ${{ runner.temp }}/patches/KOGA-ERIKA-ROCK-KAKUNA.md
             ${{ runner.temp }}/patches/UNIQUE-MAROWAK-AND-NIDOKINGS.md
+            ${{ runner.temp }}/patches/UNIQUE-NIDORAN-TO-RAICHU.md

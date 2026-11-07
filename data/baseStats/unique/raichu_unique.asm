@@ -1,9 +1,9 @@
 db DEX_UNIQUE_RAICHU_UNIQUE ; pokedex id
-db 60 ; base hp
-db 90 ; base attack
-db 55 ; base defense
-db 100 ; base speed
-db 90 ; base special
+db 70 ; base hp
+db 100 ; base attack
+db 70 ; base defense
+db 85 ; base speed
+db 85 ; base special
 db ELECTRIC ; species type 1
 db ELECTRIC ; species type 2
 db 75 ; catch rate
@@ -12,21 +12,17 @@ INCBIN "pic/unique/raichu_unique.pic",0,1
 dw Unique17PicFront
 dw Unique17PicBack
 ; attacks known at lvl 0
-;db THUNDER_WAVE
-;db GROWL
-;db THUNDERSHOCK
-;db 0
-db GROWL
 db THUNDERSHOCK
+db GROWL
 db 0
 db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 1,5,8
-	tmlearn 15,16
-	tmlearn 17,19,24
-	tmlearn 25,32
-	tmlearn 33,39,40
+	tmlearn 0
+	tmlearn 18,19,24
+	tmlearn 25
+	tmlearn 33,39
 	tmlearn 44,45
-	tmlearn 55
+	tmlearn 50,55
 db 0 ; padding

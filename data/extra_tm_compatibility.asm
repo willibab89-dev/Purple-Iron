@@ -163,10 +163,10 @@ ExtraTMCompatibilityTable:
 	db $42, $00 ; 162: marowak_unique
 	db $42, $08 ; 163: nidoking_unique
 	db $02, $18 ; 164: nidoking_unique2
-	db $08, $00 ; 165: nidoranm_unique
-	db $44, $01 ; 166: omanyte_unique
+	db $08, $08 ; 165: nidoranm_unique
+	db $44, $00 ; 166: omanyte_unique
 	db $40, $00 ; 167: onix_brock
-	db $00, $00 ; 168: raichu_unique
+	db $02, $00 ; 168: raichu_unique
 	db $04, $01 ; 169: squirtle_unique
 	db $08, $00 ; 170: tangela_erika
 	db $0c, $00 ; 171: tentacool_big

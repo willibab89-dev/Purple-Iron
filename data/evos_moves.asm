@@ -82,20 +82,20 @@ EvosMovesPointerTable:
 	dw KrabbyEvosMoves
 	dw ReviewedNidokingUniqueEvosMoves ; UNIQUE_NIDOKING_UNIQUE
 	dw ReviewedNidokingUnique2EvosMoves ; UNIQUE_NIDOKING_UNIQUE2
-	dw NidoranMEvosMoves ; UNIQUE_NIDORANM_UNIQUE
+	dw ReviewedNidoranMUniqueEvosMoves ; UNIQUE_NIDORANM_UNIQUE
 	dw VulpixEvosMoves
 	dw NinetalesEvosMoves
 	dw PikachuEvosMoves
 	dw RaichuEvosMoves
-	dw OmanyteEvosMoves ; UNIQUE_OMANYTE_UNIQUE
-	dw OnixEvosMoves ; UNIQUE_ONIX_BROCK
+	dw ReviewedOmanyteUniqueEvosMoves ; UNIQUE_OMANYTE_UNIQUE
+	dw ReviewedOnixBrockEvosMoves ; UNIQUE_ONIX_BROCK
 	dw DratiniEvosMoves
 	dw DragonairEvosMoves
 	dw KabutoEvosMoves
 	dw KabutopsEvosMoves
 	dw HorseaEvosMoves
 	dw SeadraEvosMoves
-	dw RaichuEvosMoves ; UNIQUE_RAICHU_UNIQUE
+	dw ReviewedRaichuUniqueEvosMoves ; UNIQUE_RAICHU_UNIQUE
 	dw SquirtleEvosMoves ; UNIQUE_SQUIRTLE_UNIQUE
 	dw SandshrewEvosMoves
 	dw SandslashEvosMoves
@@ -2704,4 +2704,53 @@ ReviewedNidokingUnique2EvosMoves:
 	db 41, PIERCE
 	db 49, MEGAHORN
 	db 57, AGILITY
+	db 0
+
+ReviewedNidoranMUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, POISON_STING
+	db 15, DOUBLE_KICK
+	db 23, CHARM
+	db 31, POISON_FANG
+	db 39, VENOSHOCK
+	db 47, FLAIL
+	db 0
+
+ReviewedOmanyteUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 9, CONSTRICT
+	db 17, WRAP
+	db 25, CLAMP
+	db 33, ROCK_TOMB
+	db 41, BRINE
+	db 49, AMNESIA
+	db 0
+
+ReviewedOnixBrockEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, HARDEN
+	db 15, WRAP
+	db 23, ROCK_THROW
+	db 31, ROCK_TOMB
+	db 39, STONE_PRESS
+	db 47, ROCK_POLISH
+	db 0
+
+ReviewedRaichuUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 7, QUICK_ATTACK
+	db 15, THUNDER_WAVE
+	db 23, THUNDERPUNCH
+	db 31, MEGA_PUNCH
+	db 39, BODY_SLAM
+	db 47, LIGHT_SCREEN
+	db 55, ZAP_CANNON
 	db 0

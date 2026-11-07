@@ -1692,9 +1692,10 @@
       "name": "nidoranm_unique",
       "source": "nidoranm",
       "tms": [
-        54
+        54,
+        62
       ],
-      "mask": 8
+      "mask": 2056
     },
     {
       "dex": 166,
@@ -1702,10 +1703,9 @@
       "source": "omanyte",
       "tms": [
         53,
-        57,
-        59
+        57
       ],
-      "mask": 324
+      "mask": 68
     },
     {
       "dex": 167,
@@ -1720,8 +1720,10 @@
       "dex": 168,
       "name": "raichu_unique",
       "source": "raichu",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52
+      ],
+      "mask": 2
     },
     {
       "dex": 169,

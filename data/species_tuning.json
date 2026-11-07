@@ -11207,5 +11207,268 @@
       "POISON_STING",
       "THRASH"
     ]
+  },
+  {
+    "name": "nidoranm_unique",
+    "title": "ReviewedNidoranMUnique",
+    "dex": 165,
+    "stats": [
+      76,
+      77,
+      80,
+      65,
+      65
+    ],
+    "start": [
+      "TACKLE",
+      "LEER"
+    ],
+    "learn": [
+      [
+        7,
+        "POISON_STING"
+      ],
+      [
+        15,
+        "DOUBLE_KICK"
+      ],
+      [
+        23,
+        "CHARM"
+      ],
+      [
+        31,
+        "POISON_FANG"
+      ],
+      [
+        39,
+        "VENOSHOCK"
+      ],
+      [
+        47,
+        "FLAIL"
+      ]
+    ],
+    "remove": [
+      7,
+      9,
+      14,
+      24,
+      25,
+      40
+    ],
+    "add": [
+      50
+    ],
+    "before_stats": [
+      46,
+      57,
+      40,
+      50,
+      40
+    ],
+    "before_start": [
+      "LEER",
+      "TACKLE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "omanyte_unique",
+    "title": "ReviewedOmanyteUnique",
+    "dex": 166,
+    "stats": [
+      65,
+      55,
+      110,
+      40,
+      95
+    ],
+    "start": [
+      "WATER_GUN",
+      "WITHDRAW"
+    ],
+    "learn": [
+      [
+        9,
+        "CONSTRICT"
+      ],
+      [
+        17,
+        "WRAP"
+      ],
+      [
+        25,
+        "CLAMP"
+      ],
+      [
+        33,
+        "ROCK_TOMB"
+      ],
+      [
+        41,
+        "BRINE"
+      ],
+      [
+        49,
+        "AMNESIA"
+      ]
+    ],
+    "remove": [
+      8,
+      14
+    ],
+    "add": [
+      50
+    ],
+    "before_stats": [
+      35,
+      40,
+      100,
+      35,
+      90
+    ],
+    "before_start": [
+      "WATER_GUN",
+      "WITHDRAW",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "onix_brock",
+    "title": "ReviewedOnixBrock",
+    "dex": 167,
+    "stats": [
+      50,
+      60,
+      150,
+      50,
+      40
+    ],
+    "start": [
+      "TACKLE",
+      "SCREECH"
+    ],
+    "learn": [
+      [
+        7,
+        "HARDEN"
+      ],
+      [
+        15,
+        "WRAP"
+      ],
+      [
+        23,
+        "ROCK_THROW"
+      ],
+      [
+        31,
+        "ROCK_TOMB"
+      ],
+      [
+        39,
+        "STONE_PRESS"
+      ],
+      [
+        47,
+        "ROCK_POLISH"
+      ]
+    ],
+    "remove": [
+      26,
+      27,
+      36,
+      40,
+      47
+    ],
+    "add": [
+      50
+    ],
+    "before_stats": [
+      35,
+      45,
+      160,
+      70,
+      30
+    ],
+    "before_start": [
+      "TACKLE",
+      "SCREECH",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "raichu_unique",
+    "title": "ReviewedRaichuUnique",
+    "dex": 168,
+    "stats": [
+      70,
+      100,
+      70,
+      85,
+      85
+    ],
+    "start": [
+      "THUNDERSHOCK",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        7,
+        "QUICK_ATTACK"
+      ],
+      [
+        15,
+        "THUNDER_WAVE"
+      ],
+      [
+        23,
+        "THUNDERPUNCH"
+      ],
+      [
+        31,
+        "MEGA_PUNCH"
+      ],
+      [
+        39,
+        "BODY_SLAM"
+      ],
+      [
+        47,
+        "LIGHT_SCREEN"
+      ],
+      [
+        55,
+        "ZAP_CANNON"
+      ]
+    ],
+    "remove": [
+      15,
+      16,
+      17,
+      32,
+      40
+    ],
+    "add": [
+      18,
+      50
+    ],
+    "before_stats": [
+      60,
+      90,
+      55,
+      100,
+      90
+    ],
+    "before_start": [
+      "GROWL",
+      "THUNDERSHOCK",
+      "0",
+      "0"
+    ]
   }
 ]

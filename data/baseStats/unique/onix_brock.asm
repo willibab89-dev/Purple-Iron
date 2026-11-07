@@ -1,9 +1,9 @@
 db DEX_UNIQUE_ONIX_BROCK ; pokedex id
-db 35 ; base hp
-db 45 ; base attack
-db 160 ; base defense
-db 70 ; base speed
-db 30 ; base special
+db 50 ; base hp
+db 60 ; base attack
+db 150 ; base defense
+db 50 ; base speed
+db 40 ; base special
 db ROCK ; species type 1
 db GROUND ; species type 2
 db 45 ; catch rate
@@ -21,8 +21,8 @@ db 0 ; growth rate
 	tmlearn 8
 	tmlearn 0
 	tmlearn 0
-	tmlearn 26,27,28
-	tmlearn 34,36,40
-	tmlearn 44,47,48
-	tmlearn 54
+	tmlearn 28
+	tmlearn 34
+	tmlearn 44,48
+	tmlearn 50,54
 db 0 ; padding

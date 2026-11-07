@@ -42,7 +42,6 @@
 ; moveset = partymon location, partymon's move, moveid
 SpecialTrainerMoves:
 	db BROCK,$1
-	db 2,4,BIDE
 	db 0
 	
 	db MISTY,$1
@@ -51,14 +50,9 @@ SpecialTrainerMoves:
 	db 0
 	
 	db LT_SURGE,$1
-	db 3,1,THUNDERBOLT
 	db 0
 	
 	db ERIKA,$1
-	db 2,1,GROWTH
-	db 2,2,SLEEP_POWDER
-	db 2,3,WRAP
-	db 2,4,RAZOR_LEAF
 	db 3,1,POISONPOWDER
 	db 3,2,MEGA_DRAIN
 	db 3,3,SLEEP_POWDER
@@ -91,8 +85,6 @@ SpecialTrainerMoves:
 	db 2,1,FISSURE
 	db 3,1,EARTHQUAKE
 	db 3,3,THUNDER
-	db 4,1,EARTHQUAKE
-	db 4,3,ICE_BEAM
 	db 5,1,ROCK_SLIDE
 	db 5,4,EARTHQUAKE
 	db 0
