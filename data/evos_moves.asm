@@ -301,15 +301,14 @@ SlowbroEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 18, DISABLE
+	db 8, WATER_GUN
+	db 15, DISABLE
 	db 22, HEADBUTT
-	db 27, GROWL
-	db 32, SCALD
-	db 33, WATER_GUN
-	db 36, PSYSHOCK
-	db 37, WITHDRAW
-	db 44, AMNESIA
-	db 55, PSYCHIC_M
+	db 29, AMNESIA
+	db 36, REST
+	db 38, WITHDRAW
+	db 44, PSYCHIC_M
+	db 51, SURF
 	db 0
 
 IvysaurEvosMoves:
@@ -734,14 +733,12 @@ SlowpokeEvosMoves:
 	db EV_LEVEL, 37, SLOWBRO
 	db 0
 ; Learnset
-	db 18, DISABLE
+	db 8, WATER_GUN
+	db 15, DISABLE
 	db 22, HEADBUTT
-	db 27, GROWL
-	db 28, SCALD
-	db 32, PSYSHOCK
-	db 33, WATER_GUN
-	db 40, AMNESIA
-	db 48, PSYCHIC_M
+	db 29, AMNESIA
+	db 36, REST
+	db 44, PSYCHIC_M
 	db 0
 
 KadabraEvosMoves:
@@ -765,16 +762,12 @@ GravelerEvosMoves:
 	db EV_LEVEL, 45, GOLEM
 	db 0
 ; Learnset
-	db 11, DEFENSE_CURL
-	db 16, ROCK_THROW
-	db 21, SELFDESTRUCT
-	db 22, ROCK_TOMB
-	db 26, ROCK_POLISH
-	db 29, HARDEN
-	db 34, STONE_PRESS
-	db 36, EARTHQUAKE
-	db 43, EXPLOSION
-	db 44, STONE_EDGE
+	db 8, ROCK_THROW
+	db 15, ROCK_TOMB
+	db 22, SELFDESTRUCT
+	db 29, ROCK_POLISH
+	db 36, STONE_PRESS
+	db 43, EARTHQUAKE
 	db 0
 
 ChanseyEvosMoves:
@@ -911,16 +904,14 @@ GolemEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 11, DEFENSE_CURL
-	db 16, ROCK_THROW
-	db 21, SELFDESTRUCT
-	db 26, ROCK_POLISH
-	db 27, ROCK_TOMB
-	db 29, HARDEN
-	db 36, EARTHQUAKE
-	db 38, STONE_PRESS
-	db 43, EXPLOSION
-	db 48, STONE_EDGE
+	db 8, ROCK_THROW
+	db 15, ROCK_TOMB
+	db 22, SELFDESTRUCT
+	db 29, ROCK_POLISH
+	db 36, STONE_PRESS
+	db 43, EARTHQUAKE
+	db 49, STONE_EDGE
+	db 55, EXPLOSION
 	db 0
 
 MissingNo32EvosMoves:
@@ -2291,30 +2282,27 @@ PonytaEvosMoves:
 	db EV_LEVEL, 40, RAPIDASH
 	db 0
 ; Learnset
+	db 8, STOMP
+	db 15, DOUBLE_KICK
 	db 22, FLAME_CHARGE
-	db 26, WILL_O_WISP
-	db 30, TAIL_WHIP
-	db 31, INCINERATE
-	db 32, STOMP
-	db 35, GROWL
-	db 39, FIRE_SPIN
-	db 43, TAKE_DOWN
-	db 48, AGILITY
+	db 29, FIRE_SPIN
+	db 36, AGILITY
+	db 44, FLAMETHROWER
 	db 0
 
 RapidashEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 26, FLAME_CHARGE
-	db 30, TAIL_WHIP
-	db 31, WILL_O_WISP
-	db 32, STOMP
-	db 34, INCINERATE
-	db 35, GROWL
-	db 39, FIRE_SPIN
-	db 47, TAKE_DOWN
-	db 55, AGILITY
+	db 8, STOMP
+	db 15, DOUBLE_KICK
+	db 22, FLAME_CHARGE
+	db 29, FIRE_SPIN
+	db 36, AGILITY
+	db 41, HORN_ATTACK
+	db 44, FLAMETHROWER
+	db 50, PIERCE
+	db 57, HORN_DRILL
 	db 0
 
 RattataEvosMoves:
@@ -2374,16 +2362,12 @@ GeodudeEvosMoves:
 	db EV_LEVEL, 25, GRAVELER
 	db 0
 ; Learnset
-	db 11, DEFENSE_CURL
-	db 16, ROCK_THROW
-	db 18, ROCK_TOMB
-	db 21, SELFDESTRUCT
-	db 22, ROCK_POLISH
-	db 26, HARDEN
-	db 30, STONE_PRESS
-	db 31, EARTHQUAKE
-	db 36, EXPLOSION
-	db 40, STONE_EDGE
+	db 8, ROCK_THROW
+	db 15, ROCK_TOMB
+	db 22, SELFDESTRUCT
+	db 29, ROCK_POLISH
+	db 36, STONE_PRESS
+	db 43, EARTHQUAKE
 	db 0
 
 PorygonEvosMoves:

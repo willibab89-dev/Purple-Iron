@@ -871,18 +871,20 @@
       "name": "ponyta",
       "source": "ponyta",
       "tms": [
-        58
+        52,
+        63
       ],
-      "mask": 128
+      "mask": 4098
     },
     {
       "dex": 78,
       "name": "rapidash",
       "source": "rapidash",
       "tms": [
-        58
+        52,
+        63
       ],
-      "mask": 128
+      "mask": 4098
     },
     {
       "dex": 79,

@@ -75,8 +75,8 @@ ExtraTMCompatibilityTable:
 	db $40, $00 ; 74: geodude
 	db $40, $00 ; 75: graveler
 	db $40, $00 ; 76: golem
-	db $80, $00 ; 77: ponyta
-	db $80, $00 ; 78: rapidash
+	db $02, $10 ; 77: ponyta
+	db $02, $10 ; 78: rapidash
 	db $04, $00 ; 79: slowpoke
 	db $04, $00 ; 80: slowbro
 	db $00, $00 ; 81: magnemite

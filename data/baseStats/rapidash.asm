@@ -15,11 +15,11 @@ dw RapidashPicBack
 db EMBER
 db TAIL_WHIP
 db STOMP
-db GROWL
+db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 7,8
-	tmlearn 9,15
+	tmlearn 9
 	tmlearn 0
 	tmlearn 32
 	tmlearn 33,38,39,40

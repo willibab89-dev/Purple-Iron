@@ -1,4 +1,4 @@
-name: "Machop, Bellsprout and Tentacool family redesigns"
+name: "Golem, Rapidash and Slowbro family redesigns"
 
 on:
   workflow_dispatch:
@@ -101,3 +101,4 @@ jobs:
             ${{ runner.temp }}/patches/MEOWTH-PSYDUCK-MANKEY.md
             ${{ runner.temp }}/patches/GROWLITHE-POLIWAG-ABRA.md
             ${{ runner.temp }}/patches/MACHOP-BELLSPROUT-TENTACOOL.md
+            ${{ runner.temp }}/patches/GOLEM-RAPIDASH-SLOWBRO.md

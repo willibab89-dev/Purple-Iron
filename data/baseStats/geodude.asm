@@ -13,16 +13,16 @@ dw GeodudePicFront
 dw GeodudePicBack
 ; attacks known at lvl 0
 db TACKLE
-db 0
+db DEFENSE_CURL
 db 0
 db 0
 db 3 ; growth rate
 ; learnset
 	tmlearn 1,8
-	tmlearn 9
+	tmlearn 9,10
 	tmlearn 17,18,19
 	tmlearn 26,27,28
-	tmlearn 34,35,36,38
+	tmlearn 34,35,36
 	tmlearn 44,47,48
 	tmlearn 54
 db 0 ; padding
