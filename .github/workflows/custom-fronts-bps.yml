@@ -1,4 +1,4 @@
-name: "Sandshrew and Nidoran family redesigns"
+name: "Clefairy and Vulpix redesigns with Moonlight"
 
 on:
   workflow_dispatch:
@@ -62,6 +62,7 @@ jobs:
           python3 tools/test_tm_distribution.py
           python3 tools/test_new_tms.py
           python3 tools/test_backs_and_species.py
+          python3 tools/test_moonlight.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -92,3 +93,4 @@ jobs:
             ${{ runner.temp }}/patches/EARLY-BUGS-AND-BIRDS.md
             ${{ runner.temp }}/patches/RATTATA-FEAROW-RAICHU.md
             ${{ runner.temp }}/patches/SANDSHREW-AND-NIDOS.md
+            ${{ runner.temp }}/patches/CLEFAIRY-AND-VULPIX.md

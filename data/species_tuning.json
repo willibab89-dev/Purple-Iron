@@ -2283,5 +2283,289 @@
       "POISON_STING",
       "THRASH"
     ]
+  },
+  {
+    "name": "clefairy",
+    "title": "Clefairy",
+    "dex": 35,
+    "stats": [
+      70,
+      45,
+      48,
+      35,
+      60
+    ],
+    "start": [
+      "POUND",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "SING"
+      ],
+      [
+        14,
+        "DOUBLESLAP"
+      ],
+      [
+        20,
+        "METRONOME"
+      ],
+      [
+        26,
+        "MINIMIZE"
+      ],
+      [
+        30,
+        "SWIFT"
+      ],
+      [
+        35,
+        "PSYCH_UP"
+      ],
+      [
+        40,
+        "MOONLIGHT"
+      ],
+      [
+        48,
+        "LIGHT_SCREEN"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      70,
+      45,
+      48,
+      35,
+      60
+    ],
+    "before_start": [
+      "POUND",
+      "GROWL",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "clefable",
+    "title": "Clefable",
+    "dex": 36,
+    "stats": [
+      95,
+      70,
+      73,
+      60,
+      85
+    ],
+    "start": [
+      "POUND",
+      "GROWL",
+      "SING",
+      "DOUBLESLAP"
+    ],
+    "learn": [
+      [
+        9,
+        "SING"
+      ],
+      [
+        14,
+        "DOUBLESLAP"
+      ],
+      [
+        20,
+        "METRONOME"
+      ],
+      [
+        26,
+        "MINIMIZE"
+      ],
+      [
+        32,
+        "SWIFT"
+      ],
+      [
+        38,
+        "PSYCH_UP"
+      ],
+      [
+        44,
+        "MOONLIGHT"
+      ],
+      [
+        50,
+        "LIGHT_SCREEN"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      15,
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      95,
+      70,
+      73,
+      60,
+      85
+    ],
+    "before_start": [
+      "SING",
+      "DOUBLESLAP",
+      "MINIMIZE",
+      "METRONOME"
+    ]
+  },
+  {
+    "name": "vulpix",
+    "title": "Vulpix",
+    "dex": 37,
+    "stats": [
+      38,
+      41,
+      40,
+      65,
+      65
+    ],
+    "start": [
+      "EMBER",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        9,
+        "QUICK_ATTACK"
+      ],
+      [
+        14,
+        "ROAR"
+      ],
+      [
+        19,
+        "WILL_O_WISP"
+      ],
+      [
+        24,
+        "CONFUSE_RAY"
+      ],
+      [
+        28,
+        "INCINERATE"
+      ],
+      [
+        34,
+        "FLAMETHROWER"
+      ],
+      [
+        40,
+        "CAUTERIZE"
+      ],
+      [
+        46,
+        "FIRE_SPIN"
+      ]
+    ],
+    "remove": [
+      40
+    ],
+    "add": [],
+    "before_stats": [
+      38,
+      41,
+      40,
+      65,
+      65
+    ],
+    "before_start": [
+      "EMBER",
+      "TAIL_WHIP",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "ninetales",
+    "title": "Ninetales",
+    "dex": 38,
+    "stats": [
+      73,
+      76,
+      75,
+      100,
+      100
+    ],
+    "start": [
+      "EMBER",
+      "TAIL_WHIP",
+      "QUICK_ATTACK",
+      "ROAR"
+    ],
+    "learn": [
+      [
+        9,
+        "QUICK_ATTACK"
+      ],
+      [
+        14,
+        "ROAR"
+      ],
+      [
+        19,
+        "WILL_O_WISP"
+      ],
+      [
+        24,
+        "CONFUSE_RAY"
+      ],
+      [
+        28,
+        "INCINERATE"
+      ],
+      [
+        32,
+        "WAILING_CRY"
+      ],
+      [
+        36,
+        "FLAMETHROWER"
+      ],
+      [
+        42,
+        "CAUTERIZE"
+      ],
+      [
+        48,
+        "FIRE_SPIN"
+      ]
+    ],
+    "remove": [
+      15,
+      40
+    ],
+    "add": [],
+    "before_stats": [
+      73,
+      76,
+      75,
+      100,
+      100
+    ],
+    "before_start": [
+      "EMBER",
+      "TAIL_WHIP",
+      "0",
+      "0"
+    ]
   }
 ]

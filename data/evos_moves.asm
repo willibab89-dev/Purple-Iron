@@ -244,11 +244,13 @@ ClefairyEvosMoves:
 	db EV_ITEM, MOON_STONE, 1, CLEFABLE
 	db 0
 ; Learnset
-	db 13, SING
-	db 18, DOUBLESLAP
-	db 24, MINIMIZE
-	db 31, METRONOME
-	db 39, DEFENSE_CURL
+	db 9, SING
+	db 14, DOUBLESLAP
+	db 20, METRONOME
+	db 26, MINIMIZE
+	db 30, SWIFT
+	db 35, PSYCH_UP
+	db 40, MOONLIGHT
 	db 48, LIGHT_SCREEN
 	db 0
 
@@ -1298,15 +1300,14 @@ VulpixEvosMoves:
 	db EV_ITEM, FIRE_STONE, 1, NINETALES
 	db 0
 ; Learnset
-	db 16, QUICK_ATTACK
-	db 21, ROAR
-	db 22, FLAME_CHARGE
-	db 24, WILL_O_WISP
-	db 28, CONFUSE_RAY
-	db 29, INCINERATE
-	db 35, FLAMETHROWER
-	db 36, CAUTERIZE
-	db 42, FIRE_SPIN
+	db 9, QUICK_ATTACK
+	db 14, ROAR
+	db 19, WILL_O_WISP
+	db 24, CONFUSE_RAY
+	db 28, INCINERATE
+	db 34, FLAMETHROWER
+	db 40, CAUTERIZE
+	db 46, FIRE_SPIN
 	db 0
 
 NinetalesEvosMoves:
@@ -1314,14 +1315,15 @@ NinetalesEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 20, QUICK_ATTACK
-	db 26, FLAME_CHARGE
-	db 28, CONFUSE_RAY
-	db 29, WILL_O_WISP
-	db 32, INCINERATE
+	db 9, QUICK_ATTACK
+	db 14, ROAR
+	db 19, WILL_O_WISP
+	db 24, CONFUSE_RAY
+	db 28, INCINERATE
+	db 32, WAILING_CRY
 	db 36, FLAMETHROWER
-	db 40, CAUTERIZE
-	db 44, FIRE_SPIN
+	db 42, CAUTERIZE
+	db 48, FIRE_SPIN
 	db 0
 
 PikachuEvosMoves:
@@ -2072,10 +2074,14 @@ ClefableEvosMoves:	;joenote - modified to gain level up moves
 ; Evolutions
 	db 0
 ; Learnset
-	db 13, SING
-	db 18, DOUBLESLAP
-	db 24, MINIMIZE
-	db 31, METRONOME
+	db 9, SING
+	db 14, DOUBLESLAP
+	db 20, METRONOME
+	db 26, MINIMIZE
+	db 32, SWIFT
+	db 38, PSYCH_UP
+	db 44, MOONLIGHT
+	db 50, LIGHT_SCREEN
 	db 0
 
 WeezingEvosMoves:

@@ -216,7 +216,8 @@ MoveNames::
 	db "AQUA JET@"
 	db "THUNDERCLAP@"
 	db "ICICLE SPEAR@"
-MoveNamesEnd:
 	db "INGRAIN@"
 	db "CURSE@"
 	db "SHADOW LEECH@"
+	db "MOONLIGHT@"
+MoveNamesEnd:

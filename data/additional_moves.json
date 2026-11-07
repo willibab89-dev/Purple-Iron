@@ -1,0 +1,13 @@
+[
+  {
+    "id": 220,
+    "symbol": "MOONLIGHT",
+    "name": "MOONLIGHT",
+    "effect": "HEAL_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "RECOVER"
+  }
+]

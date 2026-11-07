@@ -135,7 +135,7 @@ def validate(version):
             off=addr('wPartyMon1Moves')-addr('wPartyMon1')
             assert list(game.memory[slot+off:slot+off+4])==expected_moves,d['name']
             off=addr('wPartyMon1PP')-addr('wPartyMon1')
-            assert list(game.memory[slot+off:slot+off+4])==[data('Moves',219*6)[(move-1)*6+5] if move else 0 for move in expected_moves]
+            assert list(game.memory[slot+off:slot+off+4])==[data('Moves',max(MOVES.values())*6)[(move-1)*6+5] if move else 0 for move in expected_moves]
             flag=d['dex']-1;assert get('wPokedexOwned',23)[flag//8]&(1<<(flag%8))
             for dv in range(16):
                 call('DetermineMonGender',D=d['index'],E=dv)
@@ -157,7 +157,7 @@ def validate(version):
                 if move not in known:known=(known+[move])[-4:]
             expected=[MOVES[move] for move in known]+[0]*(4-len(known))
             assert get('wPartyMon1Moves',4)==bytes(expected),name
-            assert get('wPartyMon1PP',4)==bytes(data('Moves',219*6)[(move-1)*6+5] if move else 0 for move in expected),name
+            assert get('wPartyMon1PP',4)==bytes(data('Moves',max(MOVES.values())*6)[(move-1)*6+5] if move else 0 for move in expected),name
             b,pointer=syms[d['title']+'EvosMoves']
             pos=pointer
             while game.memory[b,pos]:pos+=1

@@ -42,7 +42,7 @@ def package(originals, targets, output, flips):
     unique_guide = guide.with_name("UNIQUE-SPECIES.md")
     if unique_guide.is_file():
         (output / unique_guide.name).write_bytes(unique_guide.read_bytes())
-    for name in ("MOVE-PATCH-1.md", "MOVE-PATCH-2.md", "MOVE-PATCH-2-PLAN.md", "MOVE-PATCH-3.md", "MOVE-PATCH-4.md", "MOVE-PATCH-5.md", "MOVE-PATCH-6.md", "MOVE-PATCH-7.md", "MOVE-PATCH-8.md", "TM-DISTRIBUTION.md", "NEW-TMS.md", "BACKSPRITES-AND-NEW-SPECIES.md", "SEVEN-MORE-SPECIES.md", "TYPE-CHANGES.md", "SPECIES-TUNING-1.md", "STARTER-REDESIGNS.md", "EARLY-BUGS-AND-BIRDS.md", "RATTATA-FEAROW-RAICHU.md", "SANDSHREW-AND-NIDOS.md"):
+    for name in ("MOVE-PATCH-1.md", "MOVE-PATCH-2.md", "MOVE-PATCH-2-PLAN.md", "MOVE-PATCH-3.md", "MOVE-PATCH-4.md", "MOVE-PATCH-5.md", "MOVE-PATCH-6.md", "MOVE-PATCH-7.md", "MOVE-PATCH-8.md", "TM-DISTRIBUTION.md", "NEW-TMS.md", "BACKSPRITES-AND-NEW-SPECIES.md", "SEVEN-MORE-SPECIES.md", "TYPE-CHANGES.md", "SPECIES-TUNING-1.md", "STARTER-REDESIGNS.md", "EARLY-BUGS-AND-BIRDS.md", "RATTATA-FEAROW-RAICHU.md", "SANDSHREW-AND-NIDOS.md", "CLEFAIRY-AND-VULPIX.md"):
         patch_guide = guide.with_name(name)
         if patch_guide.is_file():
             (output / patch_guide.name).write_bytes(patch_guide.read_bytes())
