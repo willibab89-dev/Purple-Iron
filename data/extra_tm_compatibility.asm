@@ -96,8 +96,8 @@ ExtraTMCompatibilityTable:
 	db $40, $00 ; 95: onix
 	db $00, $02 ; 96: drowzee
 	db $00, $02 ; 97: hypno
-	db $04, $01 ; 98: krabby
-	db $04, $01 ; 99: kingler
+	db $06, $00 ; 98: krabby
+	db $06, $00 ; 99: kingler
 	db $00, $00 ; 100: voltorb
 	db $00, $00 ; 101: electrode
 	db $00, $02 ; 102: exeggcute

@@ -226,4 +226,5 @@ MoveNames::
 	db "TRIPLE KICK@"
 	db "MUD WAVE@"
 	db "SHELL SMASH@"
+	db "ELECTRO BALL@"
 MoveNamesEnd:

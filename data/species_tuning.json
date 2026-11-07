@@ -6236,5 +6236,383 @@
       "NIGHT_SHADE",
       "0"
     ]
+  },
+  {
+    "name": "drowzee",
+    "title": "Drowzee",
+    "dex": 96,
+    "stats": [
+      60,
+      48,
+      45,
+      42,
+      90
+    ],
+    "start": [
+      "POUND",
+      "HYPNOSIS"
+    ],
+    "learn": [
+      [
+        7,
+        "SAND_ATTACK"
+      ],
+      [
+        13,
+        "CONFUSION"
+      ],
+      [
+        19,
+        "DISABLE"
+      ],
+      [
+        25,
+        "HEADBUTT"
+      ],
+      [
+        33,
+        "PSYBEAM"
+      ],
+      [
+        40,
+        "PSYCHIC_M"
+      ]
+    ],
+    "remove": [
+      1,
+      5,
+      17
+    ],
+    "add": [
+      28
+    ],
+    "before_stats": [
+      60,
+      48,
+      45,
+      42,
+      90
+    ],
+    "before_start": [
+      "POUND",
+      "HYPNOSIS",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "hypno",
+    "title": "Hypno",
+    "dex": 97,
+    "stats": [
+      85,
+      73,
+      70,
+      67,
+      115
+    ],
+    "start": [
+      "POUND",
+      "HYPNOSIS",
+      "CONFUSION"
+    ],
+    "learn": [
+      [
+        7,
+        "SAND_ATTACK"
+      ],
+      [
+        13,
+        "CONFUSION"
+      ],
+      [
+        19,
+        "DISABLE"
+      ],
+      [
+        25,
+        "HEADBUTT"
+      ],
+      [
+        27,
+        "DREAM_EATER"
+      ],
+      [
+        33,
+        "PSYBEAM"
+      ],
+      [
+        40,
+        "PSYCHIC_M"
+      ],
+      [
+        47,
+        "AMNESIA"
+      ]
+    ],
+    "remove": [
+      1,
+      5,
+      15,
+      17
+    ],
+    "add": [
+      28
+    ],
+    "before_stats": [
+      85,
+      73,
+      70,
+      67,
+      115
+    ],
+    "before_start": [
+      "POUND",
+      "HYPNOSIS",
+      "DISABLE",
+      "CONFUSION"
+    ]
+  },
+  {
+    "name": "krabby",
+    "title": "Krabby",
+    "dex": 98,
+    "stats": [
+      30,
+      105,
+      90,
+      50,
+      25
+    ],
+    "start": [
+      "BUBBLE",
+      "LEER"
+    ],
+    "learn": [
+      [
+        7,
+        "HARDEN"
+      ],
+      [
+        13,
+        "VICEGRIP"
+      ],
+      [
+        20,
+        "STOMP"
+      ],
+      [
+        27,
+        "SHELL_BREAK"
+      ],
+      [
+        34,
+        "CRABHAMMER"
+      ],
+      [
+        41,
+        "SWORDS_DANCE"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      30,
+      105,
+      90,
+      50,
+      25
+    ],
+    "before_start": [
+      "BUBBLE",
+      "LEER",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "kingler",
+    "title": "Kingler",
+    "dex": 99,
+    "stats": [
+      55,
+      130,
+      115,
+      75,
+      50
+    ],
+    "start": [
+      "BUBBLE",
+      "LEER",
+      "VICEGRIP"
+    ],
+    "learn": [
+      [
+        7,
+        "HARDEN"
+      ],
+      [
+        13,
+        "VICEGRIP"
+      ],
+      [
+        20,
+        "STOMP"
+      ],
+      [
+        27,
+        "SHELL_BREAK"
+      ],
+      [
+        34,
+        "CRABHAMMER"
+      ],
+      [
+        41,
+        "SWORDS_DANCE"
+      ],
+      [
+        48,
+        "GUILLOTINE"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      55,
+      130,
+      115,
+      75,
+      50
+    ],
+    "before_start": [
+      "BUBBLE",
+      "LEER",
+      "VICEGRIP",
+      "0"
+    ]
+  },
+  {
+    "name": "voltorb",
+    "title": "Voltorb",
+    "dex": 100,
+    "stats": [
+      40,
+      30,
+      50,
+      100,
+      55
+    ],
+    "start": [
+      "TACKLE",
+      "SCREECH"
+    ],
+    "learn": [
+      [
+        7,
+        "THUNDERSHOCK"
+      ],
+      [
+        14,
+        "SONICBOOM"
+      ],
+      [
+        21,
+        "SELFDESTRUCT"
+      ],
+      [
+        28,
+        "LIGHT_SCREEN"
+      ],
+      [
+        35,
+        "ELECTRO_BALL"
+      ],
+      [
+        42,
+        "SWIFT"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      40,
+      30,
+      50,
+      100,
+      55
+    ],
+    "before_start": [
+      "TACKLE",
+      "SCREECH",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "electrode",
+    "title": "Electrode",
+    "dex": 101,
+    "stats": [
+      60,
+      50,
+      70,
+      140,
+      80
+    ],
+    "start": [
+      "TACKLE",
+      "SCREECH",
+      "THUNDERSHOCK"
+    ],
+    "learn": [
+      [
+        7,
+        "THUNDERSHOCK"
+      ],
+      [
+        14,
+        "SONICBOOM"
+      ],
+      [
+        21,
+        "SELFDESTRUCT"
+      ],
+      [
+        28,
+        "LIGHT_SCREEN"
+      ],
+      [
+        35,
+        "ELECTRO_BALL"
+      ],
+      [
+        42,
+        "SWIFT"
+      ],
+      [
+        49,
+        "EXPLOSION"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      50,
+      70,
+      140,
+      80
+    ],
+    "before_start": [
+      "TACKLE",
+      "SCREECH",
+      "SONICBOOM",
+      "0"
+    ]
   }
 ]

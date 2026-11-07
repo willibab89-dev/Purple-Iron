@@ -14,12 +14,12 @@ dw ElectrodePicBack
 ; attacks known at lvl 0
 db TACKLE
 db SCREECH
-db SONICBOOM
+db THUNDERSHOCK
 db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 0
-	tmlearn 15
+	tmlearn 0
 	tmlearn 24
 	tmlearn 25,30,32
 	tmlearn 33,36,39,40

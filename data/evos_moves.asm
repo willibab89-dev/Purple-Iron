@@ -272,13 +272,12 @@ VoltorbEvosMoves:
 	db EV_LEVEL, 30, ELECTRODE
 	db 0
 ; Learnset
-	db 17, SONICBOOM
-	db 22, SELFDESTRUCT
-	db 23, CHARGE
-	db 29, LIGHT_SCREEN
-	db 30, SHOCK_WAVE
-	db 36, SWIFT
-	db 43, EXPLOSION
+	db 7, THUNDERSHOCK
+	db 14, SONICBOOM
+	db 21, SELFDESTRUCT
+	db 28, LIGHT_SCREEN
+	db 35, ELECTRO_BALL
+	db 42, SWIFT
 	db 0
 
 NidokingEvosMoves:
@@ -873,17 +872,12 @@ DrowzeeEvosMoves:
 	db EV_LEVEL, 26, HYPNO
 	db 0
 ; Learnset
-	db 12, DISABLE
-	db 13, ASTONISH
-	db 17, CONFUSION
-	db 24, HEADBUTT
-	db 28, PSYSHOCK
-	db 29, POISON_GAS
-	db 30, PSYCH_UP
-	db 32, PSYCHIC_M
-	db 33, PUNISHMENT
-	db 34, MIND_BREAK
-	db 37, MEDITATE
+	db 7, SAND_ATTACK
+	db 13, CONFUSION
+	db 19, DISABLE
+	db 25, HEADBUTT
+	db 33, PSYBEAM
+	db 40, PSYCHIC_M
 	db 0
 
 GolemEvosMoves:
@@ -1218,14 +1212,12 @@ KrabbyEvosMoves:
 	db EV_LEVEL, 28, KINGLER
 	db 0
 ; Learnset
-	db 20, VICEGRIP
-	db 24, FLAIL
-	db 25, GUILLOTINE
-	db 28, SHELL_BREAK
-	db 30, STOMP
-	db 35, CRABHAMMER
-	db 36, X_SCISSOR
-	db 40, HARDEN
+	db 7, HARDEN
+	db 13, VICEGRIP
+	db 20, STOMP
+	db 27, SHELL_BREAK
+	db 34, CRABHAMMER
+	db 41, SWORDS_DANCE
 	db 0
 
 MissingNo4FEvosMoves:
@@ -1848,17 +1840,14 @@ HypnoEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 12, DISABLE
-	db 13, ASTONISH
-	db 17, CONFUSION
-	db 24, HEADBUTT
-	db 32, PSYSHOCK
-	db 33, POISON_GAS
-	db 34, PSYCH_UP
-	db 36, PUNISHMENT
-	db 37, PSYCHIC_M
-	db 38, MIND_BREAK
-	db 43, MEDITATE
+	db 7, SAND_ATTACK
+	db 13, CONFUSION
+	db 19, DISABLE
+	db 25, HEADBUTT
+	db 27, DREAM_EATER
+	db 33, PSYBEAM
+	db 40, PSYCHIC_M
+	db 47, AMNESIA
 	db 0
 
 GolbatEvosMoves:
@@ -1947,14 +1936,13 @@ KinglerEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 20, VICEGRIP
-	db 25, GUILLOTINE
-	db 28, FLAIL
-	db 32, SHELL_BREAK
-	db 34, STOMP
-	db 39, X_SCISSOR
-	db 42, CRABHAMMER
-	db 49, HARDEN
+	db 7, HARDEN
+	db 13, VICEGRIP
+	db 20, STOMP
+	db 27, SHELL_BREAK
+	db 34, CRABHAMMER
+	db 41, SWORDS_DANCE
+	db 48, GUILLOTINE
 	db 0
 
 CloysterEvosMoves:
@@ -1982,13 +1970,13 @@ ElectrodeEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 17, SONICBOOM
-	db 22, SELFDESTRUCT
-	db 26, CHARGE
-	db 29, LIGHT_SCREEN
-	db 34, SHOCK_WAVE
-	db 40, SWIFT
-	db 50, EXPLOSION
+	db 7, THUNDERSHOCK
+	db 14, SONICBOOM
+	db 21, SELFDESTRUCT
+	db 28, LIGHT_SCREEN
+	db 35, ELECTRO_BALL
+	db 42, SWIFT
+	db 49, EXPLOSION
 	db 0
 
 ClefableEvosMoves:	;joenote - modified to gain level up moves

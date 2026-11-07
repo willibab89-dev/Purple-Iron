@@ -1071,20 +1071,20 @@
       "name": "krabby",
       "source": "krabby",
       "tms": [
-        53,
-        59
+        52,
+        53
       ],
-      "mask": 260
+      "mask": 6
     },
     {
       "dex": 99,
       "name": "kingler",
       "source": "kingler",
       "tms": [
-        53,
-        59
+        52,
+        53
       ],
-      "mask": 260
+      "mask": 6
     },
     {
       "dex": 100,

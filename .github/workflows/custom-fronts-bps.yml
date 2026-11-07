@@ -1,4 +1,4 @@
-name: "Muk, Cloyster and Gengar family redesigns"
+name: "Hypno, Kingler and Electrode family redesigns"
 
 on:
   workflow_dispatch:
@@ -67,6 +67,7 @@ jobs:
           python3 tools/test_quiver_dance.py
           python3 tools/test_zap_and_triple.py
           python3 tools/test_mud_and_shell.py
+          python3 tools/test_electro_ball.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -106,3 +107,4 @@ jobs:
             ${{ runner.temp }}/patches/GOLEM-RAPIDASH-SLOWBRO.md
             ${{ runner.temp }}/patches/MAGNETS-DODRIO-DEWGONG.md
             ${{ runner.temp }}/patches/MUK-CLOYSTER-GENGAR.md
+            ${{ runner.temp }}/patches/HYPNO-KINGLER-ELECTRODE.md

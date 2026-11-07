@@ -69,6 +69,7 @@ IsConditionalDamageMove:
 	and a
 	ret
 ConditionalDamageMoves:
+	db ELECTRO_BALL, 40, ELECTRIC
 	db WAKE_UP_SLAP, 60, NORMAL
 	db AMBUSH, 50, BUG
 	db RAZOR_WIND, 40, DRAGON
@@ -524,6 +525,8 @@ ConditionalHP:
 
 ConditionalPower:
 	ld a, [wCustomMove]
+	cp ELECTRO_BALL
+	jp z, ConditionalElectroBall
 	cp WAKE_UP_SLAP
 	jp z, .sleep
 	cp AMBUSH
@@ -783,3 +786,49 @@ ConditionalAIPower:
 	pop af
 	ld [H_WHOSETURN], a
 	ret
+
+; Compare current battle Speeds with bounded 16-bit subtraction. Do not multiply
+; target Speed: four times a large Speed can overflow. Crits retain this bracket.
+ConditionalElectroBall:
+	ld a, [wCustomSide]
+	ld b, 0
+	ld c, 2
+	call ConditionalReadStat
+	push hl
+	ld a, [wCustomSide]
+	xor 1
+	ld b, 0
+	ld c, 2
+	call ConditionalReadStat
+	ld b, h
+	ld c, l
+	ld a, b
+	or c
+	jr nz, .targetReady
+	inc c ; defensive zero-Speed guard
+.targetReady
+	pop hl
+	ld d, 0
+.loop
+	ld a, l
+	sub c
+	ld l, a
+	ld a, h
+	sbc b
+	ld h, a
+	jr c, .select
+	inc d
+	ld a, d
+	cp 4
+	jr c, .loop
+.select
+	ld a, d
+	ld e, a
+	ld d, 0
+	ld hl, .powers
+	add hl, de
+	ld a, [hl]
+	ld [wCustomChance], a
+	ret
+.powers
+	db 40, 60, 80, 120, 150

@@ -75,5 +75,16 @@
     "accuracy": 100,
     "pp": 10,
     "animation": "WITHDRAW"
+  },
+  {
+    "id": 227,
+    "symbol": "ELECTRO_BALL",
+    "name": "ELECTRO BALL",
+    "effect": "NO_ADDITIONAL_EFFECT",
+    "power": 40,
+    "type": "ELECTRIC",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "THUNDERSHOCK"
   }
 ]
