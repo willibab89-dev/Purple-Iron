@@ -70,7 +70,7 @@ EvosMovesPointerTable:
 	dw DragoniteEvosMoves
 	dw ReviewedIvysaurErikaEvosMoves ; UNIQUE_IVYSAUR_ERIKA
 	dw ReviewedKakunaRockTypeEvosMoves ; UNIQUE_KAKUNA_ROCK_TYPE
-	dw MarowakEvosMoves ; UNIQUE_MAROWAK_UNIQUE
+	dw ReviewedMarowakUniqueEvosMoves ; UNIQUE_MAROWAK_UNIQUE
 	dw DoduoEvosMoves
 	dw PoliwagEvosMoves
 	dw JynxEvosMoves
@@ -80,8 +80,8 @@ EvosMovesPointerTable:
 	dw DittoEvosMoves
 	dw MeowthEvosMoves
 	dw KrabbyEvosMoves
-	dw NidokingEvosMoves ; UNIQUE_NIDOKING_UNIQUE
-	dw NidokingEvosMoves ; UNIQUE_NIDOKING_UNIQUE2
+	dw ReviewedNidokingUniqueEvosMoves ; UNIQUE_NIDOKING_UNIQUE
+	dw ReviewedNidokingUnique2EvosMoves ; UNIQUE_NIDOKING_UNIQUE2
 	dw NidoranMEvosMoves ; UNIQUE_NIDORANM_UNIQUE
 	dw VulpixEvosMoves
 	dw NinetalesEvosMoves
@@ -2665,4 +2665,43 @@ ReviewedKakunaRockTypeEvosMoves:
 	db 25, COCOON
 	db 33, ROCK_TOMB
 	db 41, STONE_PRESS
+	db 0
+
+ReviewedMarowakUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 9, LEER
+	db 17, HEADBUTT
+	db 25, FOCUS_ENERGY
+	db 33, PIERCE
+	db 41, BONEMERANG
+	db 49, COUNTER
+	db 57, BULK_UP
+	db 0
+
+ReviewedNidokingUniqueEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 9, HORN_ATTACK
+	db 17, POISON_TAIL
+	db 25, STOMP
+	db 33, CRUNCH
+	db 41, EARTHQUAKE
+	db 47, POISON_FANG
+	db 55, MEGAHORN
+	db 0
+
+ReviewedNidokingUnique2EvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 9, HORN_ATTACK
+	db 17, DOUBLE_KICK
+	db 25, TOXIC
+	db 33, POISON_TAIL
+	db 41, PIERCE
+	db 49, MEGAHORN
+	db 57, AGILITY
 	db 0

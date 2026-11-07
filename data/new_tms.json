@@ -1660,33 +1660,32 @@
       "name": "marowak_unique",
       "source": "marowak",
       "tms": [
-        57,
-        58,
-        60
+        52,
+        57
       ],
-      "mask": 704
+      "mask": 66
     },
     {
       "dex": 163,
       "name": "nidoking_unique",
       "source": "nidoking",
       "tms": [
-        54,
-        56,
-        57
+        52,
+        57,
+        62
       ],
-      "mask": 104
+      "mask": 2114
     },
     {
       "dex": 164,
       "name": "nidoking_unique2",
       "source": "nidoking",
       "tms": [
-        54,
-        56,
-        57
+        52,
+        62,
+        63
       ],
-      "mask": 104
+      "mask": 6146
     },
     {
       "dex": 165,

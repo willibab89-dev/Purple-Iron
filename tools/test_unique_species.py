@@ -63,6 +63,8 @@ def validate(version):
         types = TYPES
         original_types = next((bytes(TYPES[t] for t in e["before"]) for e in json.loads((ROOT/"data/type_changes.json").read_text()) if e["dex"]==entry["base_dex"]), source[6:8])
         expected_types = bytes([types[entry["type_override"]]] * 2) if entry["type_override"] else original_types
+        own_type_change=next((e for e in json.loads((ROOT/"data/type_changes.json").read_text()) if e["dex"]==entry["dex"]),None)
+        if own_type_change: expected_types=bytes(TYPES[t] for t in own_type_change["after"])
         assert clone[6:8] == expected_types
         for table, width in (("EvosMovesPointerTable", 2), ("PokedexEntryPointers", 2), ("CryData", 3)):
             if table=="EvosMovesPointerTable" and variant_tuning:

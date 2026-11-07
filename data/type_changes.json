@@ -178,5 +178,17 @@
       "ROCK",
       "DRAGON"
     ]
+  },
+  {
+    "name": "marowak_unique",
+    "dex": 162,
+    "before": [
+      "GROUND",
+      "GROUND"
+    ],
+    "after": [
+      "GROUND",
+      "FIGHTING"
+    ]
   }
 ]

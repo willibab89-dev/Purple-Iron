@@ -1,9 +1,9 @@
 db DEX_UNIQUE_NIDOKING_UNIQUE2 ; pokedex id
-db 81 ; base hp
-db 92 ; base attack
-db 77 ; base defense
-db 85 ; base speed
-db 75 ; base special
+db 75 ; base hp
+db 95 ; base attack
+db 80 ; base defense
+db 100 ; base speed
+db 70 ; base special
 db POISON ; species type 1
 db GROUND ; species type 2
 db 45 ; catch rate
@@ -13,16 +13,16 @@ dw Unique13PicFront
 dw Unique13PicBack
 ; attacks known at lvl 0
 db TACKLE
-db HORN_ATTACK
-db POISON_STING
-db THRASH
+db LEER
+db 0
+db 0
 db 3 ; growth rate
 ; learnset
-	tmlearn 1,5,6,7,8
-	tmlearn 9,10,11,12,13,14,15,16
-	tmlearn 17,18,19,20,24
-	tmlearn 25,26,27
-	tmlearn 33,38,40
-	tmlearn 44,48
-	tmlearn 53,54
+	tmlearn 1,5,6,7
+	tmlearn 9,10
+	tmlearn 17,18,19,20
+	tmlearn 28
+	tmlearn 39,40
+	tmlearn 44
+	tmlearn 50,54
 db 0 ; padding

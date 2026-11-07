@@ -1,4 +1,4 @@
-name: "Koga Grimer, Erika Ivysaur and Rock Kakuna; Cocoon"
+name: "Unique Marowak and both Nidoking redesigns"
 
 on:
   workflow_dispatch:
@@ -132,3 +132,4 @@ jobs:
             ${{ runner.temp }}/patches/FIRST-UNIQUE-VARIANTS.md
             ${{ runner.temp }}/patches/HAPPY-DITTO-AND-FIGHTERS.md
             ${{ runner.temp }}/patches/KOGA-ERIKA-ROCK-KAKUNA.md
+            ${{ runner.temp }}/patches/UNIQUE-MAROWAK-AND-NIDOKINGS.md

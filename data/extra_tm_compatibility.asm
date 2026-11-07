@@ -160,9 +160,9 @@ ExtraTMCompatibilityTable:
 	db $08, $00 ; 159: grimer_poison
 	db $00, $00 ; 160: ivysaur_erika
 	db $40, $00 ; 161: kakuna_rock_type
-	db $c0, $02 ; 162: marowak_unique
-	db $68, $00 ; 163: nidoking_unique
-	db $68, $00 ; 164: nidoking_unique2
+	db $42, $00 ; 162: marowak_unique
+	db $42, $08 ; 163: nidoking_unique
+	db $02, $18 ; 164: nidoking_unique2
 	db $08, $00 ; 165: nidoranm_unique
 	db $44, $01 ; 166: omanyte_unique
 	db $40, $00 ; 167: onix_brock

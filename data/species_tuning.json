@@ -10973,5 +10973,239 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "marowak_unique",
+    "title": "ReviewedMarowakUnique",
+    "dex": 162,
+    "stats": [
+      75,
+      110,
+      95,
+      60,
+      45
+    ],
+    "start": [
+      "BONE_CLUB",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "LEER"
+      ],
+      [
+        17,
+        "HEADBUTT"
+      ],
+      [
+        25,
+        "FOCUS_ENERGY"
+      ],
+      [
+        33,
+        "PIERCE"
+      ],
+      [
+        41,
+        "BONEMERANG"
+      ],
+      [
+        49,
+        "COUNTER"
+      ],
+      [
+        57,
+        "BULK_UP"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      26,
+      27,
+      34,
+      38
+    ],
+    "add": [
+      9,
+      10,
+      20,
+      50
+    ],
+    "before_stats": [
+      60,
+      80,
+      110,
+      45,
+      50
+    ],
+    "before_start": [
+      "BONE_CLUB",
+      "GROWL",
+      "LEER",
+      "FOCUS_ENERGY"
+    ]
+  },
+  {
+    "name": "nidoking_unique",
+    "title": "ReviewedNidokingUnique",
+    "dex": 163,
+    "stats": [
+      90,
+      110,
+      95,
+      65,
+      65
+    ],
+    "start": [
+      "TACKLE",
+      "LEER"
+    ],
+    "learn": [
+      [
+        9,
+        "HORN_ATTACK"
+      ],
+      [
+        17,
+        "POISON_TAIL"
+      ],
+      [
+        25,
+        "STOMP"
+      ],
+      [
+        33,
+        "CRUNCH"
+      ],
+      [
+        41,
+        "EARTHQUAKE"
+      ],
+      [
+        47,
+        "POISON_FANG"
+      ],
+      [
+        55,
+        "MEGAHORN"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      24,
+      25,
+      27,
+      33,
+      38,
+      53
+    ],
+    "add": [
+      28,
+      50
+    ],
+    "before_stats": [
+      81,
+      92,
+      77,
+      85,
+      75
+    ],
+    "before_start": [
+      "TACKLE",
+      "HORN_ATTACK",
+      "POISON_STING",
+      "THRASH"
+    ]
+  },
+  {
+    "name": "nidoking_unique2",
+    "title": "ReviewedNidokingUnique2",
+    "dex": 164,
+    "stats": [
+      75,
+      95,
+      80,
+      100,
+      70
+    ],
+    "start": [
+      "TACKLE",
+      "LEER"
+    ],
+    "learn": [
+      [
+        9,
+        "HORN_ATTACK"
+      ],
+      [
+        17,
+        "DOUBLE_KICK"
+      ],
+      [
+        25,
+        "TOXIC"
+      ],
+      [
+        33,
+        "POISON_TAIL"
+      ],
+      [
+        41,
+        "PIERCE"
+      ],
+      [
+        49,
+        "MEGAHORN"
+      ],
+      [
+        57,
+        "AGILITY"
+      ]
+    ],
+    "remove": [
+      8,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      24,
+      25,
+      26,
+      27,
+      33,
+      38,
+      48,
+      53
+    ],
+    "add": [
+      28,
+      39,
+      50
+    ],
+    "before_stats": [
+      81,
+      92,
+      77,
+      85,
+      75
+    ],
+    "before_start": [
+      "TACKLE",
+      "HORN_ATTACK",
+      "POISON_STING",
+      "THRASH"
+    ]
   }
 ]
