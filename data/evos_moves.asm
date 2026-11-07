@@ -500,14 +500,14 @@ ArcanineEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 20, EMBER
-	db 26, FLAME_CHARGE
-	db 28, WILL_O_WISP
-	db 30, LEER
-	db 32, INCINERATE
-	db 40, TAKE_DOWN
-	db 41, CAUTERIZE
-	db 50, FLAMETHROWER
+	db 7, EMBER
+	db 13, LEER
+	db 19, FLAME_CHARGE
+	db 25, TAKE_DOWN
+	db 31, AGILITY
+	db 37, FLAMETHROWER
+	db 44, DOUBLE_EDGE
+	db 52, FIRE_BLAST
 	db 0
 
 MewEvosMoves:
@@ -684,15 +684,13 @@ GrowlitheEvosMoves:
 	db EV_ITEM, FIRE_STONE, 1, ARCANINE
 	db 0
 ; Learnset
-	db 18, EMBER
-	db 22, FLAME_CHARGE
-	db 23, LEER
-	db 24, WILL_O_WISP
-	db 28, INCINERATE
-	db 30, TAKE_DOWN
-	db 36, CAUTERIZE
-	db 39, AGILITY
-	db 50, FLAMETHROWER
+	db 7, EMBER
+	db 13, LEER
+	db 19, FLAME_CHARGE
+	db 25, TAKE_DOWN
+	db 31, AGILITY
+	db 37, FLAMETHROWER
+	db 44, DOUBLE_EDGE
 	db 0
 
 OnixEvosMoves:
@@ -757,13 +755,11 @@ KadabraEvosMoves:
 ; Learnset
 	db 16, CONFUSION
 	db 20, DISABLE
-	db 27, PSYBEAM
-	db 28, PSYSHOCK
-	db 31, RECOVER
-	db 34, PSYCH_UP
-	db 36, MIND_BREAK
-	db 38, PSYCHIC_M
-	db 42, REFLECT
+	db 25, PSYBEAM
+	db 30, RECOVER
+	db 35, KINESIS
+	db 40, PSYCHIC_M
+	db 44, PSYCH_UP
 	db 0
 
 GravelerEvosMoves:
@@ -1161,14 +1157,13 @@ PoliwagEvosMoves:
 	db EV_LEVEL, 25, POLIWHIRL
 	db 0
 ; Learnset
-	db 16, HYPNOSIS
-	db 19, WATER_GUN
-	db 22, AQUA_JET
-	db 25, DOUBLESLAP
-	db 28, SCALD
-	db 31, BODY_SLAM
+	db 8, HYPNOSIS
+	db 14, WATER_GUN
+	db 20, DOUBLESLAP
+	db 26, BUBBLEBEAM
+	db 32, BODY_SLAM
 	db 38, AMNESIA
-	db 45, HYDRO_PUMP
+	db 44, HYDRO_PUMP
 	db 0
 
 JynxEvosMoves:
@@ -1686,14 +1681,13 @@ PoliwhirlEvosMoves:
 	db EV_ITEM, WATER_STONE, 1, POLIWRATH
 	db 0
 ; Learnset
-	db 16, HYPNOSIS
-	db 19, WATER_GUN
-	db 26, DOUBLESLAP
-	db 27, AQUA_JET
-	db 32, SCALD
-	db 33, BODY_SLAM
-	db 41, AMNESIA
-	db 49, HYDRO_PUMP
+	db 8, HYPNOSIS
+	db 14, WATER_GUN
+	db 20, DOUBLESLAP
+	db 26, BUBBLEBEAM
+	db 32, BODY_SLAM
+	db 38, AMNESIA
+	db 44, HYDRO_PUMP
 	db 0
 
 PoliwrathEvosMoves:
@@ -1701,16 +1695,15 @@ PoliwrathEvosMoves:
 	db 0
 ;joenote - modified for fun
 ; Learnset
-	db 16, HYPNOSIS
-	db 19, WATER_GUN
-	db 27, DOUBLESLAP
-	db 30, AQUA_JET
-	db 32, BULK_UP
-	db 35, BODY_SLAM
-	db 36, SCALD
-	db 38, DRAIN_PUNCH
-	db 42, BRICK_BREAK
-	db 53, HYDRO_PUMP
+	db 8, HYPNOSIS
+	db 14, WATER_GUN
+	db 20, DOUBLESLAP
+	db 26, BUBBLEBEAM
+	db 30, DRAIN_PUNCH
+	db 32, BODY_SLAM
+	db 38, BULK_UP
+	db 44, HYDRO_PUMP
+	db 50, SUBMISSION
 	db 0
 
 WeedleEvosMoves:
@@ -2133,8 +2126,6 @@ AbraEvosMoves:
 	db EV_LEVEL, 16, KADABRA
 	db 0
 ; Learnset
-	db 24, PSYSHOCK
-	db 30, PSYCH_UP
 	db 0
 
 AlakazamEvosMoves:
@@ -2143,13 +2134,12 @@ AlakazamEvosMoves:
 ; Learnset
 	db 16, CONFUSION
 	db 20, DISABLE
-	db 27, PSYBEAM
-	db 31, RECOVER
-	db 32, PSYSHOCK
-	db 38, PSYCHIC_M
-	db 39, PSYCH_UP
-	db 40, MIND_BREAK
-	db 42, REFLECT
+	db 25, PSYBEAM
+	db 30, RECOVER
+	db 35, KINESIS
+	db 40, PSYCHIC_M
+	db 44, PSYCH_UP
+	db 50, MIND_BREAK
 	db 0
 
 PidgeottoEvosMoves:

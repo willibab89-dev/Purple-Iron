@@ -3,7 +3,7 @@ db 40 ; base hp
 db 35 ; base attack
 db 30 ; base defense
 db 105 ; base speed
-db 120 ; base special
+db 110 ; base special
 db PSYCHIC ; species type 1
 db PSYCHIC ; species type 2
 db 96 ; catch rate	;joenote - adjusted from 100 to match yellow version
@@ -15,13 +15,13 @@ dw KadabraPicBack
 db TELEPORT
 db KINESIS
 db CONFUSION
-db DISABLE
+db 0
 db 3 ; growth rate
 ; learnset
-	tmlearn 1,5,8
 	tmlearn 0
-	tmlearn 17,18,19
-	tmlearn 28,29,30,31,32
+	tmlearn 0
+	tmlearn 18,19
+	tmlearn 29,30,31,32
 	tmlearn 33,35,40
 	tmlearn 44,45,46
 	tmlearn 49,50,55

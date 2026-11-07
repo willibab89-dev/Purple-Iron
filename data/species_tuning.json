@@ -3917,5 +3917,513 @@
       "KARATE_CHOP",
       "FURY_SWIPES"
     ]
+  },
+  {
+    "name": "growlithe",
+    "title": "Growlithe",
+    "dex": 58,
+    "stats": [
+      55,
+      70,
+      45,
+      60,
+      50
+    ],
+    "start": [
+      "BITE",
+      "ROAR"
+    ],
+    "learn": [
+      [
+        7,
+        "EMBER"
+      ],
+      [
+        13,
+        "LEER"
+      ],
+      [
+        19,
+        "FLAME_CHARGE"
+      ],
+      [
+        25,
+        "TAKE_DOWN"
+      ],
+      [
+        31,
+        "AGILITY"
+      ],
+      [
+        37,
+        "FLAMETHROWER"
+      ],
+      [
+        44,
+        "DOUBLE_EDGE"
+      ]
+    ],
+    "remove": [],
+    "add": [
+      8
+    ],
+    "before_stats": [
+      55,
+      70,
+      45,
+      60,
+      50
+    ],
+    "before_start": [
+      "BITE",
+      "ROAR",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "arcanine",
+    "title": "Arcanine",
+    "dex": 59,
+    "stats": [
+      90,
+      110,
+      80,
+      95,
+      80
+    ],
+    "start": [
+      "BITE",
+      "ROAR",
+      "EMBER"
+    ],
+    "learn": [
+      [
+        7,
+        "EMBER"
+      ],
+      [
+        13,
+        "LEER"
+      ],
+      [
+        19,
+        "FLAME_CHARGE"
+      ],
+      [
+        25,
+        "TAKE_DOWN"
+      ],
+      [
+        31,
+        "AGILITY"
+      ],
+      [
+        37,
+        "FLAMETHROWER"
+      ],
+      [
+        44,
+        "DOUBLE_EDGE"
+      ],
+      [
+        52,
+        "FIRE_BLAST"
+      ]
+    ],
+    "remove": [],
+    "add": [
+      8
+    ],
+    "before_stats": [
+      90,
+      110,
+      80,
+      95,
+      80
+    ],
+    "before_start": [
+      "ROAR",
+      "BITE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "poliwag",
+    "title": "Poliwag",
+    "dex": 60,
+    "stats": [
+      40,
+      50,
+      40,
+      90,
+      40
+    ],
+    "start": [
+      "BUBBLE"
+    ],
+    "learn": [
+      [
+        8,
+        "HYPNOSIS"
+      ],
+      [
+        14,
+        "WATER_GUN"
+      ],
+      [
+        20,
+        "DOUBLESLAP"
+      ],
+      [
+        26,
+        "BUBBLEBEAM"
+      ],
+      [
+        32,
+        "BODY_SLAM"
+      ],
+      [
+        38,
+        "AMNESIA"
+      ],
+      [
+        44,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      40,
+      50,
+      40,
+      90,
+      40
+    ],
+    "before_start": [
+      "BUBBLE",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "poliwhirl",
+    "title": "Poliwhirl",
+    "dex": 61,
+    "stats": [
+      65,
+      65,
+      65,
+      90,
+      50
+    ],
+    "start": [
+      "BUBBLE",
+      "HYPNOSIS",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        8,
+        "HYPNOSIS"
+      ],
+      [
+        14,
+        "WATER_GUN"
+      ],
+      [
+        20,
+        "DOUBLESLAP"
+      ],
+      [
+        26,
+        "BUBBLEBEAM"
+      ],
+      [
+        32,
+        "BODY_SLAM"
+      ],
+      [
+        38,
+        "AMNESIA"
+      ],
+      [
+        44,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      26,
+      27
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      65,
+      65,
+      90,
+      50
+    ],
+    "before_start": [
+      "BUBBLE",
+      "HYPNOSIS",
+      "WATER_GUN",
+      "0"
+    ]
+  },
+  {
+    "name": "poliwrath",
+    "title": "Poliwrath",
+    "dex": 62,
+    "stats": [
+      90,
+      95,
+      95,
+      70,
+      70
+    ],
+    "start": [
+      "BUBBLE",
+      "HYPNOSIS",
+      "WATER_GUN",
+      "DOUBLESLAP"
+    ],
+    "learn": [
+      [
+        8,
+        "HYPNOSIS"
+      ],
+      [
+        14,
+        "WATER_GUN"
+      ],
+      [
+        20,
+        "DOUBLESLAP"
+      ],
+      [
+        26,
+        "BUBBLEBEAM"
+      ],
+      [
+        30,
+        "DRAIN_PUNCH"
+      ],
+      [
+        32,
+        "BODY_SLAM"
+      ],
+      [
+        38,
+        "BULK_UP"
+      ],
+      [
+        44,
+        "HYDRO_PUMP"
+      ],
+      [
+        50,
+        "SUBMISSION"
+      ]
+    ],
+    "remove": [
+      15,
+      26,
+      27
+    ],
+    "add": [],
+    "before_stats": [
+      90,
+      85,
+      95,
+      70,
+      70
+    ],
+    "before_start": [
+      "BUBBLE",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "abra",
+    "title": "Abra",
+    "dex": 63,
+    "stats": [
+      25,
+      20,
+      15,
+      90,
+      95
+    ],
+    "start": [
+      "TELEPORT"
+    ],
+    "learn": [],
+    "remove": [
+      1,
+      5,
+      8,
+      17
+    ],
+    "add": [],
+    "before_stats": [
+      25,
+      20,
+      15,
+      90,
+      105
+    ],
+    "before_start": [
+      "TELEPORT",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "kadabra",
+    "title": "Kadabra",
+    "dex": 64,
+    "stats": [
+      40,
+      35,
+      30,
+      105,
+      110
+    ],
+    "start": [
+      "TELEPORT",
+      "KINESIS",
+      "CONFUSION"
+    ],
+    "learn": [
+      [
+        16,
+        "CONFUSION"
+      ],
+      [
+        20,
+        "DISABLE"
+      ],
+      [
+        25,
+        "PSYBEAM"
+      ],
+      [
+        30,
+        "RECOVER"
+      ],
+      [
+        35,
+        "KINESIS"
+      ],
+      [
+        40,
+        "PSYCHIC_M"
+      ],
+      [
+        44,
+        "PSYCH_UP"
+      ]
+    ],
+    "remove": [
+      1,
+      5,
+      8,
+      17,
+      28
+    ],
+    "add": [],
+    "before_stats": [
+      40,
+      35,
+      30,
+      105,
+      120
+    ],
+    "before_start": [
+      "TELEPORT",
+      "KINESIS",
+      "CONFUSION",
+      "DISABLE"
+    ]
+  },
+  {
+    "name": "alakazam",
+    "title": "Alakazam",
+    "dex": 65,
+    "stats": [
+      55,
+      50,
+      45,
+      120,
+      120
+    ],
+    "start": [
+      "TELEPORT",
+      "KINESIS",
+      "CONFUSION"
+    ],
+    "learn": [
+      [
+        16,
+        "CONFUSION"
+      ],
+      [
+        20,
+        "DISABLE"
+      ],
+      [
+        25,
+        "PSYBEAM"
+      ],
+      [
+        30,
+        "RECOVER"
+      ],
+      [
+        35,
+        "KINESIS"
+      ],
+      [
+        40,
+        "PSYCHIC_M"
+      ],
+      [
+        44,
+        "PSYCH_UP"
+      ],
+      [
+        50,
+        "MIND_BREAK"
+      ]
+    ],
+    "remove": [
+      1,
+      5,
+      8,
+      15,
+      17,
+      28
+    ],
+    "add": [],
+    "before_stats": [
+      55,
+      50,
+      45,
+      120,
+      135
+    ],
+    "before_start": [
+      "TELEPORT",
+      "KINESIS",
+      "CONFUSION",
+      "DISABLE"
+    ]
   }
 ]

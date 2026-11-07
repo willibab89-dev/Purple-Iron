@@ -1,6 +1,6 @@
 db DEX_POLIWRATH ; pokedex id
 db 90 ; base hp
-db 85 ; base attack
+db 95 ; base attack
 db 95 ; base defense
 db 70 ; base speed
 db 70 ; base special
@@ -12,20 +12,16 @@ INCBIN POLIWRATH_FR,0,1 ; 77, sprite dimensions
 dw PoliwrathPicFront
 dw PoliwrathPicBack
 ; attacks known at lvl 0
-;db HYPNOSIS
-;db WATER_GUN
-;db DOUBLESLAP
-;db BODY_SLAM
 db BUBBLE
-db 0
-db 0
-db 0
+db HYPNOSIS
+db WATER_GUN
+db DOUBLESLAP
 db 3 ; growth rate
 ; learnset
 	tmlearn 1,5,8
-	tmlearn 11,12,13,14,15
+	tmlearn 11,12,13,14
 	tmlearn 17,18,19
-	tmlearn 26,27,29
+	tmlearn 29
 	tmlearn 35,40
 	tmlearn 44,46
 	tmlearn 53,54

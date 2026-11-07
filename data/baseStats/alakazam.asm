@@ -3,7 +3,7 @@ db 55 ; base hp
 db 50 ; base attack
 db 45 ; base defense
 db 120 ; base speed
-db 135 ; base special
+db 120 ; base special
 db PSYCHIC ; species type 1
 db PSYCHIC ; species type 2
 db 50 ; catch rate
@@ -15,13 +15,13 @@ dw AlakazamPicBack
 db TELEPORT
 db KINESIS
 db CONFUSION
-db DISABLE
+db 0
 db 3 ; growth rate
 ; learnset
-	tmlearn 1,5,8
-	tmlearn 15
-	tmlearn 17,18,19
-	tmlearn 28,29,30,31,32
+	tmlearn 0
+	tmlearn 0
+	tmlearn 18,19
+	tmlearn 29,30,31,32
 	tmlearn 33,35,40
 	tmlearn 44,45,46
 	tmlearn 49,50,55

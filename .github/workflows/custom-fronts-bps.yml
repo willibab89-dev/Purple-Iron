@@ -1,4 +1,4 @@
-name: "Meowth, Psyduck and Mankey family redesigns"
+name: "Growlithe, Poliwag and Abra family redesigns"
 
 on:
   workflow_dispatch:
@@ -99,3 +99,4 @@ jobs:
             ${{ runner.temp }}/patches/PUFF-BATS-AND-FLOWERS.md
             ${{ runner.temp }}/patches/PARAS-VENONAT-DIGLETT.md
             ${{ runner.temp }}/patches/MEOWTH-PSYDUCK-MANKEY.md
+            ${{ runner.temp }}/patches/GROWLITHE-POLIWAG-ABRA.md

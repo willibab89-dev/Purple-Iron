@@ -56,11 +56,11 @@ ExtraTMCompatibilityTable:
 	db $04, $01 ; 55: golduck
 	db $22, $00 ; 56: mankey
 	db $22, $00 ; 57: primeape
-	db $80, $00 ; 58: growlithe
-	db $80, $00 ; 59: arcanine
+	db $02, $10 ; 58: growlithe
+	db $02, $10 ; 59: arcanine
 	db $04, $01 ; 60: poliwag
-	db $04, $01 ; 61: poliwhirl
-	db $24, $01 ; 62: poliwrath
+	db $06, $01 ; 61: poliwhirl
+	db $26, $01 ; 62: poliwrath
 	db $00, $00 ; 63: abra
 	db $00, $00 ; 64: kadabra
 	db $00, $00 ; 65: alakazam

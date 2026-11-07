@@ -687,18 +687,20 @@
       "name": "growlithe",
       "source": "growlithe",
       "tms": [
-        58
+        52,
+        63
       ],
-      "mask": 128
+      "mask": 4098
     },
     {
       "dex": 59,
       "name": "arcanine",
       "source": "arcanine",
       "tms": [
-        58
+        52,
+        63
       ],
-      "mask": 128
+      "mask": 4098
     },
     {
       "dex": 60,
@@ -715,21 +717,23 @@
       "name": "poliwhirl",
       "source": "poliwhirl",
       "tms": [
+        52,
         53,
         59
       ],
-      "mask": 260
+      "mask": 262
     },
     {
       "dex": 62,
       "name": "poliwrath",
       "source": "poliwrath",
       "tms": [
+        52,
         53,
         56,
         59
       ],
-      "mask": 292
+      "mask": 294
     },
     {
       "dex": 63,
