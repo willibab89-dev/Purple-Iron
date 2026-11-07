@@ -444,6 +444,7 @@ LaprasEvosMoves:
 	db 25, BODY_SLAM
 	db 33, CONFUSE_RAY
 	db 41, ICE_BEAM
+	db 45, HEAL_BELL
 	db 49, HYDRO_PUMP
 	db 0
 
@@ -456,6 +457,7 @@ ArcanineEvosMoves:
 	db 13, LEER
 	db 19, FLAME_CHARGE
 	db 25, TAKE_DOWN
+	db 28, SNARL
 	db 31, AGILITY
 	db 37, FLAMETHROWER
 	db 40, CRUNCH
@@ -613,6 +615,7 @@ GrowlitheEvosMoves:
 	db 13, LEER
 	db 19, FLAME_CHARGE
 	db 25, TAKE_DOWN
+	db 28, SNARL
 	db 31, AGILITY
 	db 37, FLAMETHROWER
 	db 40, CRUNCH
@@ -1062,6 +1065,7 @@ JynxEvosMoves:
 	db 9, CONFUSION
 	db 17, ICY_WIND
 	db 25, ICE_PUNCH
+	db 26, CHARM
 	db 33, PSYBEAM
 	db 41, FROST_BREATH
 	db 49, PSYCHIC_M
@@ -1394,6 +1398,7 @@ WigglytuffEvosMoves:	;joenote - modified for level-up moves
 	db 32, BODY_SLAM
 	db 38, REST
 	db 45, WAKE_UP_SLAP
+	db 49, HEAL_BELL
 	db 0
 
 EeveeEvosMoves:
@@ -1409,6 +1414,7 @@ EeveeEvosMoves:
 	db 22, BITE
 	db 29, FOCUS_ENERGY
 	db 36, TAKE_DOWN
+	db 40, CHARM
 	db 43, DOUBLE_EDGE
 	db 0
 
@@ -1885,6 +1891,7 @@ PersianEvosMoves:
 	db 14, PAY_DAY
 	db 19, FURY_SWIPES
 	db 24, SCREECH
+	db 27, SNARL
 	db 31, SLASH
 	db 38, PUNISHMENT
 	db 0
