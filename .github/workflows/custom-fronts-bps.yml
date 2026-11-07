@@ -1,4 +1,4 @@
-name: "Hypno, Kingler and Electrode family redesigns"
+name: "Exeggutor, Marowak and Hitmon family redesigns"
 
 on:
   workflow_dispatch:
@@ -108,3 +108,4 @@ jobs:
             ${{ runner.temp }}/patches/MAGNETS-DODRIO-DEWGONG.md
             ${{ runner.temp }}/patches/MUK-CLOYSTER-GENGAR.md
             ${{ runner.temp }}/patches/HYPNO-KINGLER-ELECTRODE.md
+            ${{ runner.temp }}/patches/EXEGGUTOR-MAROWAK-HITMONS.md

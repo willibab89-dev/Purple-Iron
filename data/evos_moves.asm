@@ -329,16 +329,13 @@ ExeggutorEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset:joenote-made this more interesting for Trainer Green
-	db 25, REFLECT
-	db 28, STOMP
-	db 36, PSYSHOCK
-
-	db 38, INGRAIN
-	db 39, SYNTHESIS
-	db 40, MIND_BREAK
-	db 42, SOLARBEAM
-	db 46, GIGA_DRAIN
-	db 48, SLEEP_POWDER
+	db 9, CONFUSION
+	db 16, REFLECT
+	db 23, LEECH_SEED
+	db 30, PSYBEAM
+	db 37, EGG_BOMB
+	db 44, PSYCHIC_M
+	db 51, SOLARBEAM
 	db 0
 
 LickitungEvosMoves:
@@ -361,18 +358,12 @@ ExeggcuteEvosMoves:
 	db EV_ITEM, LEAF_STONE, 1, EXEGGUTOR
 	db 0
 ; Learnset
-	db 25, REFLECT
-	db 28, LEECH_SEED
-
-	db 30, INGRAIN
-	db 32, STUN_SPORE
-	db 33, PSYSHOCK
-	db 35, SYNTHESIS
-	db 36, MIND_BREAK
-	db 37, POISONPOWDER
-	db 42, SOLARBEAM
-	db 43, GIGA_DRAIN
-	db 48, SLEEP_POWDER
+	db 9, CONFUSION
+	db 16, REFLECT
+	db 23, LEECH_SEED
+	db 30, PSYBEAM
+	db 44, PSYCHIC_M
+	db 51, SOLARBEAM
 	db 0
 
 GrimerEvosMoves:
@@ -434,17 +425,11 @@ CuboneEvosMoves:
 	db EV_LEVEL, 28, MAROWAK
 	db 0
 ; Learnset;joenote-modified for yellow
-	db 13, TAIL_WHIP
+	db 9, TAIL_WHIP
 	db 16, HEADBUTT
-	db 17, ASTONISH
-	db 24, WAILING_CRY
-	db 25, LEER
-
-	db 28, CURSE
-	db 31, FOCUS_ENERGY
-	db 38, THRASH
-	db 43, BONEMERANG
-	db 46, RAGE
+	db 23, FOCUS_ENERGY
+	db 34, BONEMERANG
+	db 41, RAGE
 	db 0
 
 RhyhornEvosMoves:
@@ -800,29 +785,23 @@ HitmonleeEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 28, BULK_UP
-	db 33, ROLLING_KICK
-	db 38, JUMP_KICK
-	db 39, PIERCE
-	db 42, BRICK_BREAK
-	db 43, FOCUS_ENERGY
-	db 48, HI_JUMP_KICK
-	db 53, MEGA_KICK
+	db 15, ROLLING_KICK
+	db 23, FOCUS_ENERGY
+	db 31, BRICK_BREAK
+	db 39, HI_JUMP_KICK
+	db 47, MEGA_KICK
 	db 0
 
 HitmonchanEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 28, BULK_UP
-	db 33, FIRE_PUNCH
-	db 35, DRAIN_PUNCH
-	db 38, ICE_PUNCH
-	db 39, PIERCE
-	db 42, BRICK_BREAK
-	db 43, THUNDERPUNCH
-	db 48, MEGA_PUNCH
-	db 53, COUNTER
+	db 15, COUNTER
+	db 23, FIRE_PUNCH
+	db 28, ICE_PUNCH
+	db 33, THUNDERPUNCH
+	db 39, BULK_UP
+	db 47, BRICK_BREAK
 	db 0
 
 ArbokEvosMoves:
@@ -2023,17 +2002,13 @@ MarowakEvosMoves:
 ; Evolutions
 	db 0
 ; Learnsetjoenote-modified for yellow
-	db 13, TAIL_WHIP
+	db 9, TAIL_WHIP
 	db 16, HEADBUTT
-	db 17, ASTONISH
-	db 25, LEER
-	db 28, WAILING_CRY
-
-	db 32, CURSE
-	db 33, FOCUS_ENERGY
-	db 41, THRASH
-	db 48, BONEMERANG
-	db 55, RAGE
+	db 23, FOCUS_ENERGY
+	db 29, WAILING_CRY
+	db 34, BONEMERANG
+	db 41, RAGE
+	db 48, CURSE
 	db 0
 
 MissingNo92EvosMoves:

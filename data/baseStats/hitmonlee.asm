@@ -3,7 +3,7 @@ db 50 ; base hp
 db 120 ; base attack
 db 53 ; base defense
 db 87 ; base speed
-db 35 ; base special
+db 55 ; base special
 db FIGHTING ; species type 1
 db FIGHTING ; species type 2
 db 45 ; catch rate
@@ -18,7 +18,7 @@ db 0
 db 0
 db 0 ; growth rate
 ; learnset
-	tmlearn 1,5,8
+	tmlearn 5,8
 	tmlearn 0
 	tmlearn 17,18,19
 	tmlearn 0

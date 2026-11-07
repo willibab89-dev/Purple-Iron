@@ -100,12 +100,12 @@ ExtraTMCompatibilityTable:
 	db $06, $00 ; 99: kingler
 	db $00, $00 ; 100: voltorb
 	db $00, $00 ; 101: electrode
-	db $00, $02 ; 102: exeggcute
-	db $00, $02 ; 103: exeggutor
+	db $00, $00 ; 102: exeggcute
+	db $00, $00 ; 103: exeggutor
 	db $40, $02 ; 104: cubone
 	db $c0, $02 ; 105: marowak
-	db $20, $00 ; 106: hitmonlee
-	db $20, $00 ; 107: hitmonchan
+	db $02, $10 ; 106: hitmonlee
+	db $22, $00 ; 107: hitmonchan
 	db $02, $00 ; 108: lickitung
 	db $88, $00 ; 109: koffing
 	db $88, $00 ; 110: weezing

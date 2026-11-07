@@ -1104,19 +1104,15 @@
       "dex": 102,
       "name": "exeggcute",
       "source": "exeggcute",
-      "tms": [
-        60
-      ],
-      "mask": 512
+      "tms": [],
+      "mask": 0
     },
     {
       "dex": 103,
       "name": "exeggutor",
       "source": "exeggutor",
-      "tms": [
-        60
-      ],
-      "mask": 512
+      "tms": [],
+      "mask": 0
     },
     {
       "dex": 104,
@@ -1144,18 +1140,20 @@
       "name": "hitmonlee",
       "source": "hitmonlee",
       "tms": [
-        56
+        52,
+        63
       ],
-      "mask": 32
+      "mask": 4098
     },
     {
       "dex": 107,
       "name": "hitmonchan",
       "source": "hitmonchan",
       "tms": [
+        52,
         56
       ],
-      "mask": 32
+      "mask": 34
     },
     {
       "dex": 108,

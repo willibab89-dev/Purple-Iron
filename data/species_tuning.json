@@ -6614,5 +6614,372 @@
       "SONICBOOM",
       "0"
     ]
+  },
+  {
+    "name": "exeggcute",
+    "title": "Exeggcute",
+    "dex": 102,
+    "stats": [
+      60,
+      40,
+      80,
+      40,
+      60
+    ],
+    "start": [
+      "BARRAGE",
+      "HYPNOSIS"
+    ],
+    "learn": [
+      [
+        9,
+        "CONFUSION"
+      ],
+      [
+        16,
+        "REFLECT"
+      ],
+      [
+        23,
+        "LEECH_SEED"
+      ],
+      [
+        30,
+        "PSYBEAM"
+      ],
+      [
+        44,
+        "PSYCHIC_M"
+      ],
+      [
+        51,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      60,
+      40,
+      80,
+      40,
+      60
+    ],
+    "before_start": [
+      "BARRAGE",
+      "HYPNOSIS",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "exeggutor",
+    "title": "Exeggutor",
+    "dex": 103,
+    "stats": [
+      95,
+      95,
+      85,
+      55,
+      125
+    ],
+    "start": [
+      "BARRAGE",
+      "HYPNOSIS"
+    ],
+    "learn": [
+      [
+        9,
+        "CONFUSION"
+      ],
+      [
+        16,
+        "REFLECT"
+      ],
+      [
+        23,
+        "LEECH_SEED"
+      ],
+      [
+        30,
+        "PSYBEAM"
+      ],
+      [
+        37,
+        "EGG_BOMB"
+      ],
+      [
+        44,
+        "PSYCHIC_M"
+      ],
+      [
+        51,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      95,
+      95,
+      85,
+      55,
+      125
+    ],
+    "before_start": [
+      "BARRAGE",
+      "HYPNOSIS",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "cubone",
+    "title": "Cubone",
+    "dex": 104,
+    "stats": [
+      50,
+      50,
+      95,
+      35,
+      40
+    ],
+    "start": [
+      "BONE_CLUB",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "TAIL_WHIP"
+      ],
+      [
+        16,
+        "HEADBUTT"
+      ],
+      [
+        23,
+        "FOCUS_ENERGY"
+      ],
+      [
+        34,
+        "BONEMERANG"
+      ],
+      [
+        41,
+        "RAGE"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      13,
+      14,
+      26,
+      27,
+      38
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      50,
+      95,
+      35,
+      40
+    ],
+    "before_start": [
+      "BONE_CLUB",
+      "GROWL",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "marowak",
+    "title": "Marowak",
+    "dex": 105,
+    "stats": [
+      70,
+      95,
+      110,
+      45,
+      50
+    ],
+    "start": [
+      "BONE_CLUB",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "TAIL_WHIP"
+      ],
+      [
+        16,
+        "HEADBUTT"
+      ],
+      [
+        23,
+        "FOCUS_ENERGY"
+      ],
+      [
+        29,
+        "WAILING_CRY"
+      ],
+      [
+        34,
+        "BONEMERANG"
+      ],
+      [
+        41,
+        "RAGE"
+      ],
+      [
+        48,
+        "CURSE"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      26,
+      27,
+      38
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      80,
+      110,
+      45,
+      50
+    ],
+    "before_start": [
+      "BONE_CLUB",
+      "GROWL",
+      "LEER",
+      "FOCUS_ENERGY"
+    ]
+  },
+  {
+    "name": "hitmonlee",
+    "title": "Hitmonlee",
+    "dex": 106,
+    "stats": [
+      50,
+      120,
+      53,
+      87,
+      55
+    ],
+    "start": [
+      "DOUBLE_KICK",
+      "MEDITATE"
+    ],
+    "learn": [
+      [
+        15,
+        "ROLLING_KICK"
+      ],
+      [
+        23,
+        "FOCUS_ENERGY"
+      ],
+      [
+        31,
+        "BRICK_BREAK"
+      ],
+      [
+        39,
+        "HI_JUMP_KICK"
+      ],
+      [
+        47,
+        "MEGA_KICK"
+      ]
+    ],
+    "remove": [
+      1
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      120,
+      53,
+      87,
+      35
+    ],
+    "before_start": [
+      "DOUBLE_KICK",
+      "MEDITATE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "hitmonchan",
+    "title": "Hitmonchan",
+    "dex": 107,
+    "stats": [
+      60,
+      105,
+      79,
+      76,
+      70
+    ],
+    "start": [
+      "MEGA_PUNCH",
+      "COMET_PUNCH"
+    ],
+    "learn": [
+      [
+        15,
+        "COUNTER"
+      ],
+      [
+        23,
+        "FIRE_PUNCH"
+      ],
+      [
+        28,
+        "ICE_PUNCH"
+      ],
+      [
+        33,
+        "THUNDERPUNCH"
+      ],
+      [
+        39,
+        "BULK_UP"
+      ],
+      [
+        47,
+        "BRICK_BREAK"
+      ]
+    ],
+    "remove": [
+      5,
+      17,
+      34
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      105,
+      79,
+      76,
+      35
+    ],
+    "before_start": [
+      "COMET_PUNCH",
+      "AGILITY",
+      "0",
+      "0"
+    ]
   }
 ]
