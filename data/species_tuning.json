@@ -6981,5 +6981,317 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "lickitung",
+    "title": "Lickitung",
+    "dex": 108,
+    "stats": [
+      100,
+      75,
+      75,
+      30,
+      70
+    ],
+    "start": [
+      "LICK",
+      "SUPERSONIC"
+    ],
+    "learn": [
+      [
+        7,
+        "WRAP"
+      ],
+      [
+        15,
+        "DISABLE"
+      ],
+      [
+        23,
+        "STOCKPILE"
+      ],
+      [
+        31,
+        "TONGUE_LASH"
+      ],
+      [
+        39,
+        "BODY_SLAM"
+      ],
+      [
+        47,
+        "REST"
+      ]
+    ],
+    "remove": [
+      3,
+      15,
+      26,
+      27
+    ],
+    "add": [],
+    "before_stats": [
+      90,
+      55,
+      75,
+      30,
+      60
+    ],
+    "before_start": [
+      "WRAP",
+      "SUPERSONIC",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "koffing",
+    "title": "Koffing",
+    "dex": 109,
+    "stats": [
+      40,
+      65,
+      95,
+      35,
+      60
+    ],
+    "start": [
+      "TACKLE",
+      "SMOG"
+    ],
+    "learn": [
+      [
+        7,
+        "SMOKESCREEN"
+      ],
+      [
+        14,
+        "SLUDGE"
+      ],
+      [
+        21,
+        "POLLUTION"
+      ],
+      [
+        28,
+        "POISON_GAS"
+      ],
+      [
+        42,
+        "HAZE"
+      ]
+    ],
+    "remove": [
+      36
+    ],
+    "add": [],
+    "before_stats": [
+      40,
+      65,
+      95,
+      35,
+      60
+    ],
+    "before_start": [
+      "TACKLE",
+      "SMOG",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "weezing",
+    "title": "Weezing",
+    "dex": 110,
+    "stats": [
+      65,
+      90,
+      120,
+      60,
+      85
+    ],
+    "start": [
+      "TACKLE",
+      "SMOG"
+    ],
+    "learn": [
+      [
+        7,
+        "SMOKESCREEN"
+      ],
+      [
+        14,
+        "SLUDGE"
+      ],
+      [
+        21,
+        "POLLUTION"
+      ],
+      [
+        28,
+        "POISON_GAS"
+      ],
+      [
+        36,
+        "INCINERATE"
+      ],
+      [
+        42,
+        "HAZE"
+      ],
+      [
+        49,
+        "EXPLOSION"
+      ]
+    ],
+    "remove": [
+      15,
+      36
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      90,
+      120,
+      60,
+      85
+    ],
+    "before_start": [
+      "TACKLE",
+      "SMOG",
+      "SLUDGE",
+      "0"
+    ]
+  },
+  {
+    "name": "rhyhorn",
+    "title": "Rhyhorn",
+    "dex": 111,
+    "stats": [
+      80,
+      85,
+      95,
+      25,
+      30
+    ],
+    "start": [
+      "HORN_ATTACK",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        9,
+        "STOMP"
+      ],
+      [
+        17,
+        "ROCK_TOMB"
+      ],
+      [
+        25,
+        "TAKE_DOWN"
+      ],
+      [
+        33,
+        "PIERCE"
+      ],
+      [
+        41,
+        "EARTHQUAKE"
+      ]
+    ],
+    "remove": [
+      24,
+      25,
+      27,
+      38
+    ],
+    "add": [],
+    "before_stats": [
+      80,
+      85,
+      95,
+      25,
+      30
+    ],
+    "before_start": [
+      "HORN_ATTACK",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "rhydon",
+    "title": "Rhydon",
+    "dex": 112,
+    "stats": [
+      105,
+      130,
+      120,
+      40,
+      45
+    ],
+    "start": [
+      "HORN_ATTACK",
+      "TAIL_WHIP",
+      "STOMP"
+    ],
+    "learn": [
+      [
+        9,
+        "STOMP"
+      ],
+      [
+        17,
+        "ROCK_TOMB"
+      ],
+      [
+        25,
+        "TAKE_DOWN"
+      ],
+      [
+        33,
+        "PIERCE"
+      ],
+      [
+        41,
+        "EARTHQUAKE"
+      ],
+      [
+        49,
+        "MEGAHORN"
+      ],
+      [
+        57,
+        "HORN_DRILL"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      24,
+      25,
+      27,
+      38,
+      53
+    ],
+    "add": [],
+    "before_stats": [
+      105,
+      130,
+      120,
+      40,
+      45
+    ],
+    "before_start": [
+      "HORN_ATTACK",
+      "STOMP",
+      "TAIL_WHIP",
+      "FURY_ATTACK"
+    ]
   }
 ]

@@ -13,16 +13,16 @@ dw RhyhornPicFront
 dw RhyhornPicBack
 ; attacks known at lvl 0
 db HORN_ATTACK
-db 0
+db TAIL_WHIP
 db 0
 db 0
 db 5 ; growth rate
 ; learnset
 	tmlearn 7,8
 	tmlearn 9,10
-	tmlearn 20,24
-	tmlearn 25,26,27,28
-	tmlearn 34,38,40
+	tmlearn 20
+	tmlearn 26,28
+	tmlearn 34,40
 	tmlearn 44,48
 	tmlearn 54
 db 0 ; padding

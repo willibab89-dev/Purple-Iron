@@ -1,4 +1,4 @@
-name: "Exeggutor, Marowak and Hitmon family redesigns"
+name: "Lickitung, Weezing and Rhydon family redesigns"
 
 on:
   workflow_dispatch:
@@ -109,3 +109,4 @@ jobs:
             ${{ runner.temp }}/patches/MUK-CLOYSTER-GENGAR.md
             ${{ runner.temp }}/patches/HYPNO-KINGLER-ELECTRODE.md
             ${{ runner.temp }}/patches/EXEGGUTOR-MAROWAK-HITMONS.md
+            ${{ runner.temp }}/patches/LICKITUNG-WEEZING-RHYDON.md

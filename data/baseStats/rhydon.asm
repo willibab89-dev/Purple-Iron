@@ -13,16 +13,16 @@ dw RhydonPicFront
 dw RhydonPicBack
 ; attacks known at lvl 0
 db HORN_ATTACK
-db STOMP
 db TAIL_WHIP
-db FURY_ATTACK
+db STOMP
+db 0
 db 5 ; growth rate
 ; learnset
 	tmlearn 1,5,7,8
-	tmlearn 9,10,11,12,13,14,15,16
-	tmlearn 17,18,19,20,24
-	tmlearn 25,26,27,28
-	tmlearn 34,38,40
+	tmlearn 9,10,16
+	tmlearn 17,18,19,20
+	tmlearn 26,28
+	tmlearn 34,40
 	tmlearn 44,48
-	tmlearn 53,54
+	tmlearn 54
 db 0 ; padding

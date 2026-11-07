@@ -197,18 +197,13 @@ RhydonEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 30, STOMP
-	db 31, ROCK_TOMB
-	db 34, ROCK_POLISH
-	db 35, TAIL_WHIP
-	db 38, STONE_PRESS
-	db 40, FURY_ATTACK
-	db 42, PIERCE
-	db 47, STONE_EDGE
-	db 48, HORN_DRILL
-	db 55, LEER
-	db 59, MEGAHORN
-	db 64, TAKE_DOWN
+	db 9, STOMP
+	db 17, ROCK_TOMB
+	db 25, TAKE_DOWN
+	db 33, PIERCE
+	db 41, EARTHQUAKE
+	db 49, MEGAHORN
+	db 57, HORN_DRILL
 	db 0
 
 KangaskhanEvosMoves:
@@ -342,15 +337,12 @@ LickitungEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 7, STOMP
+	db 7, WRAP
 	db 15, DISABLE
-	db 18, ASTONISH
-	db 23, DEFENSE_CURL
-	db 26, STOCKPILE
-	db 31, SLAM
-	db 32, TONGUE_LASH
-	db 34, FACADE
-	db 39, SCREECH
+	db 23, STOCKPILE
+	db 31, TONGUE_LASH
+	db 39, BODY_SLAM
+	db 47, REST
 	db 0
 
 ExeggcuteEvosMoves:
@@ -437,18 +429,11 @@ RhyhornEvosMoves:
 	db EV_LEVEL, 42, RHYDON
 	db 0
 ; Learnset
-	db 26, ROCK_TOMB
-	db 30, STOMP
-	db 31, ROCK_POLISH
-	db 34, STONE_PRESS
-	db 35, TAIL_WHIP
-	db 38, PIERCE
-	db 40, FURY_ATTACK
-	db 43, STONE_EDGE
-	db 45, HORN_DRILL
-	db 50, LEER
-	db 53, MEGAHORN
-	db 55, TAKE_DOWN
+	db 9, STOMP
+	db 17, ROCK_TOMB
+	db 25, TAKE_DOWN
+	db 33, PIERCE
+	db 41, EARTHQUAKE
 	db 0
 
 LaprasEvosMoves:
@@ -934,14 +919,11 @@ KoffingEvosMoves:
 	db EV_LEVEL, 35, WEEZING
 	db 0
 ; Learnset
-	db 22, POLLUTION
-	db 26, STOCKPILE
-	db 30, VENOSHOCK
-	db 32, SLUDGE
-	db 37, SMOKESCREEN
-	db 40, SELFDESTRUCT
-	db 45, HAZE
-	db 48, EXPLOSION
+	db 7, SMOKESCREEN
+	db 14, SLUDGE
+	db 21, POLLUTION
+	db 28, POISON_GAS
+	db 42, HAZE
 	db 0
 
 MissingNo38EvosMoves:
@@ -1976,14 +1958,13 @@ WeezingEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 26, POLLUTION
-	db 30, STOCKPILE
-	db 32, SLUDGE
-	db 34, VENOSHOCK
-	db 39, SMOKESCREEN
-	db 43, SELFDESTRUCT
-	db 49, HAZE
-	db 53, EXPLOSION
+	db 7, SMOKESCREEN
+	db 14, SLUDGE
+	db 21, POLLUTION
+	db 28, POISON_GAS
+	db 36, INCINERATE
+	db 42, HAZE
+	db 49, EXPLOSION
 	db 0
 
 PersianEvosMoves:
