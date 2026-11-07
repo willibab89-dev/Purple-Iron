@@ -15,7 +15,7 @@ def validate(version):
     entry=json.loads((ROOT/'data/additional_moves.json').read_text())[0]
     assert entry['symbol']=='MOONLIGHT' and MOVES['MOONLIGHT']==220 and MOVES['STRUGGLE']==165
     assert data('Moves',6,219*6)==bytes([220,EFFECTS['HEAL_EFFECT'],0,TYPES['NORMAL'],255,10])
-    assert syms['BaseStats'][1]-addr('Moves')==220*6
+    assert syms['BaseStats'][1]-addr('Moves')==max(MOVES.values())*6
     assert data('MoveAnimationMap',1,219)==bytes([MOVES['RECOVER']])
     game=PyBoy(str(ROOT/(version+'.gbc')),window='null',sound_emulated=False)
     game.set_emulation_speed(0);game.tick(90,False)

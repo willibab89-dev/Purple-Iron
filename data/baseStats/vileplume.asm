@@ -3,7 +3,7 @@ db 75 ; base hp
 db 80 ; base attack
 db 85 ; base defense
 db 50 ; base speed
-db 100 ; base special
+db 110 ; base special
 db GRASS ; species type 1
 db POISON ; species type 2
 db 45 ; catch rate
@@ -12,14 +12,14 @@ INCBIN VILEPLUME_FR,0,1 ; 77, sprite dimensions
 dw VileplumePicFront
 dw VileplumePicBack
 ; attacks known at lvl 0
-db STUN_SPORE
-db SLEEP_POWDER
+db ABSORB
 db ACID
-db PETAL_DANCE
+db POISONPOWDER
+db STUN_SPORE
 db 3 ; growth rate
 ; learnset
 	tmlearn 3,6,8
-	tmlearn 15
+	tmlearn 0
 	tmlearn 21,22
 	tmlearn 0
 	tmlearn 33

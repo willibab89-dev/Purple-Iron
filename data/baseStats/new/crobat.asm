@@ -11,16 +11,17 @@ db 204 ; base exp yield
 INCBIN "pic/new_species/crobat.pic",0,1
 dw CrobatPicFront
 dw CrobatPicBack
+; attacks known at lvl 0
 db LEECH_LIFE
-db SCREECH
 db BITE
+db SCREECH
 db CONFUSE_RAY
 db 0 ; growth rate
 	tmlearn 6
-	tmlearn 10
+	tmlearn 0
 	tmlearn 0
 	tmlearn 32
 	tmlearn 0
 	tmlearn 44
-	tmlearn 50
+	tmlearn 0
 db 0 ; padding

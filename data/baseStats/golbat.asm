@@ -13,14 +13,14 @@ dw GolbatPicFront
 dw GolbatPicBack
 ; attacks known at lvl 0
 db LEECH_LIFE
-db SCREECH
+db SUPERSONIC
 db BITE
 db 0
 db 0 ; growth rate
 ; learnset
-	tmlearn 2,4,6
-	tmlearn 15
-	tmlearn 21
+	tmlearn 6
+	tmlearn 0
+	tmlearn 0
 	tmlearn 32
 	tmlearn 39
 	tmlearn 44

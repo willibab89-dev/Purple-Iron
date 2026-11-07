@@ -502,37 +502,41 @@
       "dex": 39,
       "name": "jigglypuff",
       "source": "jigglypuff",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52
+      ],
+      "mask": 2
     },
     {
       "dex": 40,
       "name": "wigglytuff",
       "source": "wigglytuff",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52
+      ],
+      "mask": 2
     },
     {
       "dex": 41,
       "name": "zubat",
       "source": "zubat",
       "tms": [
-        51,
         54,
-        55
+        55,
+        61
       ],
-      "mask": 25
+      "mask": 1048
     },
     {
       "dex": 42,
       "name": "golbat",
       "source": "golbat",
       "tms": [
-        51,
         54,
-        55
+        55,
+        61
       ],
-      "mask": 25
+      "mask": 1048
     },
     {
       "dex": 43,
@@ -1805,8 +1809,12 @@
       "dex": 179,
       "name": "crobat",
       "source": "crobat",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        54,
+        55,
+        61
+      ],
+      "mask": 1048
     },
     {
       "dex": 180,

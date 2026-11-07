@@ -194,6 +194,9 @@ UtilityHitEffect:
 	jp CustomChangeStage
 
 UtilitySelfEffect:
+	call UtilityLoadMove
+	cp WAKE_UP_SLAP
+	jp z, UtilityWakeTarget
 	ld a, [wMoveMissed]
 	and a
 	ret nz
@@ -625,3 +628,32 @@ UtilityAIStatusScore:
 	ld a, 1
 	ld [wCustomRandomValue], a
 	ret
+
+; Wake only after actual, unshielded HP damage. This runs through the existing
+; always-after-hit effect path, including a knockout, on either side.
+UtilityWakeTarget:
+	ld a, [wMoveMissed]
+	and a
+	ret nz
+	ld a, [wCustomTargetHadSub]
+	and a
+	ret nz
+	ld hl, wDamage
+	ld a, [hli]
+	or [hl]
+	ret z
+	call CustomSetTarget
+	call UtilityStatusPointer
+	ld a, [hl]
+	and SLP
+	ret z
+	ld a, [hl]
+	and $f8
+	ld [hl], a
+	call UtilitySyncParty
+	ld hl, UtilityWokeText
+	jp PrintText
+UtilityWokeText:
+	text "The target"
+	line "woke up!"
+	prompt

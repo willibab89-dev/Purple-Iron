@@ -572,43 +572,53 @@
     "palette": "PAL_GREENMON",
     "start": [
       "LEECH_LIFE",
-      "SCREECH",
       "BITE",
+      "SCREECH",
       "CONFUSE_RAY"
     ],
     "tms": [
       6,
-      10,
       32,
-      44,
-      50
+      44
     ],
-    "extra": [],
+    "extra": [
+      54,
+      55,
+      61
+    ],
     "evo": [],
     "learn": [
       [
-        15,
+        5,
+        "SUPERSONIC"
+      ],
+      [
+        10,
         "BITE"
       ],
       [
-        21,
+        15,
         "WING_ATTACK"
       ],
       [
-        28,
+        20,
         "CONFUSE_RAY"
       ],
       [
-        35,
+        23,
+        "SCREECH"
+      ],
+      [
+        28,
         "POISON_FANG"
       ],
       [
-        42,
-        "AERIAL_ACE"
+        34,
+        "SHADOW_LEECH"
       ],
       [
-        49,
-        "WING_ATTACK"
+        44,
+        "HAZE"
       ]
     ],
     "height": [

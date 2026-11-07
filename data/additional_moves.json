@@ -9,5 +9,16 @@
     "accuracy": 100,
     "pp": 10,
     "animation": "RECOVER"
+  },
+  {
+    "id": 221,
+    "symbol": "WAKE_UP_SLAP",
+    "name": "WAKE-UP SLAP",
+    "effect": "UTILITY_SELF_EFFECT",
+    "power": 60,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 15,
+    "animation": "DOUBLESLAP"
   }
 ]

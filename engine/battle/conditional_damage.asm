@@ -69,6 +69,7 @@ IsConditionalDamageMove:
 	and a
 	ret
 ConditionalDamageMoves:
+	db WAKE_UP_SLAP, 60, NORMAL
 	db AMBUSH, 50, BUG
 	db RAZOR_WIND, 40, DRAGON
 	db EGG_BOMB, 100, NORMAL
@@ -515,6 +516,8 @@ ConditionalHP:
 
 ConditionalPower:
 	ld a, [wCustomMove]
+	cp WAKE_UP_SLAP
+	jp z, .sleep
 	cp AMBUSH
 	jr z, .ambush
 	cp RAZOR_WIND
@@ -607,6 +610,12 @@ ConditionalPower:
 	call ConditionalTargetStatus
 	bit FRZ, [hl]
 	jr nz, .double
+	ret
+.sleep
+	call ConditionalTargetStatus
+	ld a, [hl]
+	and SLP
+	jp nz, .double
 	ret
 .water
 	ld hl, wEnemyMonType

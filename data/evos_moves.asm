@@ -1540,26 +1540,26 @@ JigglypuffEvosMoves:
 	db EV_ITEM, MOON_STONE, 1, WIGGLYTUFF
 	db 0
 ; Learnset
-	db 9, POUND
-	db 14, DISABLE
-	db 19, DEFENSE_CURL
-	db 24, DOUBLESLAP
-	db 29, REST
-	db 34, BODY_SLAM
-	db 39, DOUBLE_EDGE
+	db 7, DEFENSE_CURL
+	db 12, DOUBLESLAP
+	db 17, DISABLE
+	db 23, STOCKPILE
+	db 29, BODY_SLAM
+	db 35, REST
+	db 41, WAKE_UP_SLAP
 	db 0
 
 WigglytuffEvosMoves:	;joenote - modified for level-up moves
 ; Evolutions
 	db 0
 ; Learnset
-	db 9, POUND
-	db 14, DISABLE
-	db 19, DEFENSE_CURL
-	db 24, SING
-	db 29, DOUBLESLAP
-	db 34, DISABLE
-	db 39, BODY_SLAM
+	db 7, DEFENSE_CURL
+	db 12, DOUBLESLAP
+	db 17, DISABLE
+	db 26, STOCKPILE
+	db 32, BODY_SLAM
+	db 38, REST
+	db 45, WAKE_UP_SLAP
 	db 0
 
 EeveeEvosMoves:
@@ -1654,16 +1654,14 @@ ZubatEvosMoves:
 	db EV_LEVEL, 22, GOLBAT
 	db 0
 ; Learnset
-	db 10, SUPERSONIC
-	db 15, BITE
-	db 21, CONFUSE_RAY
-	db 28, WING_ATTACK
-	db 29, VENOSHOCK
-	db 30, ROOST
-
-	db 31, SHADOW_LEECH
-	db 34, POISON_FANG
-	db 36, HAZE
+	db 5, SUPERSONIC
+	db 10, BITE
+	db 15, WING_ATTACK
+	db 20, CONFUSE_RAY
+	db 23, SCREECH
+	db 25, POISON_FANG
+	db 30, SHADOW_LEECH
+	db 35, HAZE
 	db 0
 
 EkansEvosMoves:
@@ -1940,16 +1938,14 @@ GolbatEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 10, SUPERSONIC
-	db 15, BITE
-	db 21, CONFUSE_RAY
-	db 32, WING_ATTACK
-	db 33, VENOSHOCK
-	db 34, ROOST
-
-	db 35, SHADOW_LEECH
-	db 38, POISON_FANG
-	db 43, HAZE
+	db 5, SUPERSONIC
+	db 10, BITE
+	db 15, WING_ATTACK
+	db 20, CONFUSE_RAY
+	db 23, SCREECH
+	db 28, POISON_FANG
+	db 34, SHADOW_LEECH
+	db 39, HAZE
 	db 0
 
 MewtwoEvosMoves:
@@ -2588,16 +2584,14 @@ OddishEvosMoves:
 	db EV_LEVEL, 21, GLOOM
 	db 0
 ; Learnset
-	db 15, POISONPOWDER
-	db 17, STUN_SPORE
-	db 19, SLEEP_POWDER
-	db 24, ACID
-	db 28, SYNTHESIS
-
-	db 30, INGRAIN
-	db 33, PETAL_DANCE
-	db 40, GIGA_DRAIN
-	db 46, SOLARBEAM
+	db 9, POISONPOWDER
+	db 12, STUN_SPORE
+	db 15, SLEEP_POWDER
+	db 19, MEGA_DRAIN
+	db 23, ACID
+	db 31, GIGA_DRAIN
+	db 37, PETAL_DANCE
+	db 43, SOLARBEAM
 	db 0
 
 GloomEvosMoves:
@@ -2605,16 +2599,14 @@ GloomEvosMoves:
 	db EV_ITEM, LEAF_STONE, 1, VILEPLUME
 	db 0
 ; Learnset
-	db 15, POISONPOWDER
-	db 17, STUN_SPORE
-	db 19, SLEEP_POWDER
-	db 28, ACID
-	db 32, SYNTHESIS
-
-	db 34, INGRAIN
-	db 38, PETAL_DANCE
-	db 44, GIGA_DRAIN
-	db 52, SOLARBEAM
+	db 9, POISONPOWDER
+	db 12, STUN_SPORE
+	db 15, SLEEP_POWDER
+	db 20, MEGA_DRAIN
+	db 26, ACID
+	db 35, GIGA_DRAIN
+	db 42, PETAL_DANCE
+	db 49, SOLARBEAM
 	db 0
 
 VileplumeEvosMoves:
@@ -2622,15 +2614,14 @@ VileplumeEvosMoves:
 	db 0
 ;joenote - modified for fun
 ; Learnset
-	db 15, POISONPOWDER
-	db 17, STUN_SPORE
-	db 19, SLEEP_POWDER
-	db 30, ACID
-	db 36, SYNTHESIS
-
-	db 38, INGRAIN
-	db 40, PETAL_DANCE
-	db 44, GIGA_DRAIN
+	db 9, POISONPOWDER
+	db 12, STUN_SPORE
+	db 15, SLEEP_POWDER
+	db 20, MEGA_DRAIN
+	db 26, ACID
+	db 35, GIGA_DRAIN
+	db 42, PETAL_DANCE
+	db 54, SOLARBEAM
 	db 0
 
 BellsproutEvosMoves:
@@ -2763,13 +2754,17 @@ ClaydolEvosMoves:
 	db 0
 
 CrobatEvosMoves:
+; Evolutions
 	db 0
-	db 15, BITE
-	db 21, WING_ATTACK
-	db 28, CONFUSE_RAY
-	db 35, POISON_FANG
-	db 42, AERIAL_ACE
-	db 49, WING_ATTACK
+; Learnset
+	db 5, SUPERSONIC
+	db 10, BITE
+	db 15, WING_ATTACK
+	db 20, CONFUSE_RAY
+	db 23, SCREECH
+	db 28, POISON_FANG
+	db 34, SHADOW_LEECH
+	db 44, HAZE
 	db 0
 
 DittwoEvosMoves:

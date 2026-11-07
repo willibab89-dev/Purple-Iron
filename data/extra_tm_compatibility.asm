@@ -37,10 +37,10 @@ ExtraTMCompatibilityTable:
 	db $00, $00 ; 36: clefable
 	db $80, $02 ; 37: vulpix
 	db $80, $02 ; 38: ninetales
-	db $00, $00 ; 39: jigglypuff
-	db $00, $00 ; 40: wigglytuff
-	db $19, $00 ; 41: zubat
-	db $19, $00 ; 42: golbat
+	db $02, $00 ; 39: jigglypuff
+	db $02, $00 ; 40: wigglytuff
+	db $18, $04 ; 41: zubat
+	db $18, $04 ; 42: golbat
 	db $08, $00 ; 43: oddish
 	db $08, $00 ; 44: gloom
 	db $08, $00 ; 45: vileplume
@@ -177,7 +177,7 @@ ExtraTMCompatibilityTable:
 	db $d2, $02 ; 176: sableye
 	db $00, $00 ; 177: baltoy
 	db $00, $00 ; 178: claydol
-	db $00, $00 ; 179: crobat
+	db $18, $04 ; 179: crobat
 	db $00, $00 ; 180: dittwo
 	db $00, $00 ; 181: larvitar
 	db $00, $00 ; 182: pupitar

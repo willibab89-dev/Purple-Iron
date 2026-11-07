@@ -3,7 +3,7 @@ db 140 ; base hp
 db 70 ; base attack
 db 45 ; base defense
 db 45 ; base speed
-db 50 ; base special
+db 65 ; base special
 db NORMAL ; species type 1
 db NORMAL ; species type 2
 db 50 ; catch rate
@@ -13,14 +13,14 @@ dw WigglytuffPicFront
 dw WigglytuffPicBack
 ; attacks known at lvl 0
 db SING
-db DISABLE
+db POUND
 db DEFENSE_CURL
 db DOUBLESLAP
 db 4 ; growth rate
 ; learnset
 	tmlearn 1,5,8
-	tmlearn 11,12,13,14,15
-	tmlearn 17,18,19,22,24
+	tmlearn 13,14
+	tmlearn 18,22,24
 	tmlearn 25,29,30,31
 	tmlearn 33,38,40
 	tmlearn 44,45,46

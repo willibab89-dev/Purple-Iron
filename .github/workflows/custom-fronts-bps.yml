@@ -1,4 +1,4 @@
-name: "Clefairy and Vulpix redesigns with Moonlight"
+name: "Jigglypuff, bats and Oddish with Wake-Up Slap"
 
 on:
   workflow_dispatch:
@@ -63,6 +63,7 @@ jobs:
           python3 tools/test_new_tms.py
           python3 tools/test_backs_and_species.py
           python3 tools/test_moonlight.py
+          python3 tools/test_wake_up_slap.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -94,3 +95,4 @@ jobs:
             ${{ runner.temp }}/patches/RATTATA-FEAROW-RAICHU.md
             ${{ runner.temp }}/patches/SANDSHREW-AND-NIDOS.md
             ${{ runner.temp }}/patches/CLEFAIRY-AND-VULPIX.md
+            ${{ runner.temp }}/patches/PUFF-BATS-AND-FLOWERS.md

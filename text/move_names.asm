@@ -220,4 +220,5 @@ MoveNames::
 	db "CURSE@"
 	db "SHADOW LEECH@"
 	db "MOONLIGHT@"
+	db "WAKE-UP SLAP@"
 MoveNamesEnd:

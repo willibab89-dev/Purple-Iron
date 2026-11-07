@@ -2567,5 +2567,556 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "jigglypuff",
+    "title": "Jigglypuff",
+    "dex": 39,
+    "stats": [
+      115,
+      45,
+      20,
+      20,
+      25
+    ],
+    "start": [
+      "SING",
+      "POUND"
+    ],
+    "learn": [
+      [
+        7,
+        "DEFENSE_CURL"
+      ],
+      [
+        12,
+        "DOUBLESLAP"
+      ],
+      [
+        17,
+        "DISABLE"
+      ],
+      [
+        23,
+        "STOCKPILE"
+      ],
+      [
+        29,
+        "BODY_SLAM"
+      ],
+      [
+        35,
+        "REST"
+      ],
+      [
+        41,
+        "WAKE_UP_SLAP"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      115,
+      45,
+      20,
+      20,
+      25
+    ],
+    "before_start": [
+      "SING",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "wigglytuff",
+    "title": "Wigglytuff",
+    "dex": 40,
+    "stats": [
+      140,
+      70,
+      45,
+      45,
+      65
+    ],
+    "start": [
+      "SING",
+      "POUND",
+      "DEFENSE_CURL",
+      "DOUBLESLAP"
+    ],
+    "learn": [
+      [
+        7,
+        "DEFENSE_CURL"
+      ],
+      [
+        12,
+        "DOUBLESLAP"
+      ],
+      [
+        17,
+        "DISABLE"
+      ],
+      [
+        26,
+        "STOCKPILE"
+      ],
+      [
+        32,
+        "BODY_SLAM"
+      ],
+      [
+        38,
+        "REST"
+      ],
+      [
+        45,
+        "WAKE_UP_SLAP"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      15,
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      140,
+      70,
+      45,
+      45,
+      50
+    ],
+    "before_start": [
+      "SING",
+      "DISABLE",
+      "DEFENSE_CURL",
+      "DOUBLESLAP"
+    ]
+  },
+  {
+    "name": "zubat",
+    "title": "Zubat",
+    "dex": 41,
+    "stats": [
+      40,
+      45,
+      35,
+      55,
+      40
+    ],
+    "start": [
+      "LEECH_LIFE"
+    ],
+    "learn": [
+      [
+        5,
+        "SUPERSONIC"
+      ],
+      [
+        10,
+        "BITE"
+      ],
+      [
+        15,
+        "WING_ATTACK"
+      ],
+      [
+        20,
+        "CONFUSE_RAY"
+      ],
+      [
+        23,
+        "SCREECH"
+      ],
+      [
+        25,
+        "POISON_FANG"
+      ],
+      [
+        30,
+        "SHADOW_LEECH"
+      ],
+      [
+        35,
+        "HAZE"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      21
+    ],
+    "add": [],
+    "before_stats": [
+      40,
+      45,
+      35,
+      55,
+      40
+    ],
+    "before_start": [
+      "LEECH_LIFE",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "golbat",
+    "title": "Golbat",
+    "dex": 42,
+    "stats": [
+      75,
+      80,
+      70,
+      90,
+      75
+    ],
+    "start": [
+      "LEECH_LIFE",
+      "SUPERSONIC",
+      "BITE"
+    ],
+    "learn": [
+      [
+        5,
+        "SUPERSONIC"
+      ],
+      [
+        10,
+        "BITE"
+      ],
+      [
+        15,
+        "WING_ATTACK"
+      ],
+      [
+        20,
+        "CONFUSE_RAY"
+      ],
+      [
+        23,
+        "SCREECH"
+      ],
+      [
+        28,
+        "POISON_FANG"
+      ],
+      [
+        34,
+        "SHADOW_LEECH"
+      ],
+      [
+        39,
+        "HAZE"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      15,
+      21
+    ],
+    "add": [],
+    "before_stats": [
+      75,
+      80,
+      70,
+      90,
+      75
+    ],
+    "before_start": [
+      "LEECH_LIFE",
+      "SCREECH",
+      "BITE",
+      "0"
+    ]
+  },
+  {
+    "name": "crobat",
+    "title": "Crobat",
+    "dex": 179,
+    "stats": [
+      85,
+      90,
+      80,
+      130,
+      80
+    ],
+    "start": [
+      "LEECH_LIFE",
+      "BITE",
+      "SCREECH",
+      "CONFUSE_RAY"
+    ],
+    "learn": [
+      [
+        5,
+        "SUPERSONIC"
+      ],
+      [
+        10,
+        "BITE"
+      ],
+      [
+        15,
+        "WING_ATTACK"
+      ],
+      [
+        20,
+        "CONFUSE_RAY"
+      ],
+      [
+        23,
+        "SCREECH"
+      ],
+      [
+        28,
+        "POISON_FANG"
+      ],
+      [
+        34,
+        "SHADOW_LEECH"
+      ],
+      [
+        44,
+        "HAZE"
+      ]
+    ],
+    "remove": [
+      10,
+      50
+    ],
+    "add": [],
+    "before_stats": [
+      85,
+      90,
+      80,
+      130,
+      80
+    ],
+    "before_start": [
+      "LEECH_LIFE",
+      "SCREECH",
+      "BITE",
+      "CONFUSE_RAY"
+    ]
+  },
+  {
+    "name": "oddish",
+    "title": "Oddish",
+    "dex": 43,
+    "stats": [
+      45,
+      50,
+      55,
+      30,
+      75
+    ],
+    "start": [
+      "ABSORB"
+    ],
+    "learn": [
+      [
+        9,
+        "POISONPOWDER"
+      ],
+      [
+        12,
+        "STUN_SPORE"
+      ],
+      [
+        15,
+        "SLEEP_POWDER"
+      ],
+      [
+        19,
+        "MEGA_DRAIN"
+      ],
+      [
+        23,
+        "ACID"
+      ],
+      [
+        31,
+        "GIGA_DRAIN"
+      ],
+      [
+        37,
+        "PETAL_DANCE"
+      ],
+      [
+        43,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [
+      9,
+      10
+    ],
+    "add": [],
+    "before_stats": [
+      45,
+      50,
+      55,
+      30,
+      75
+    ],
+    "before_start": [
+      "ABSORB",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "gloom",
+    "title": "Gloom",
+    "dex": 44,
+    "stats": [
+      60,
+      65,
+      70,
+      40,
+      85
+    ],
+    "start": [
+      "ABSORB",
+      "POISONPOWDER",
+      "STUN_SPORE"
+    ],
+    "learn": [
+      [
+        9,
+        "POISONPOWDER"
+      ],
+      [
+        12,
+        "STUN_SPORE"
+      ],
+      [
+        15,
+        "SLEEP_POWDER"
+      ],
+      [
+        20,
+        "MEGA_DRAIN"
+      ],
+      [
+        26,
+        "ACID"
+      ],
+      [
+        35,
+        "GIGA_DRAIN"
+      ],
+      [
+        42,
+        "PETAL_DANCE"
+      ],
+      [
+        49,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [
+      9,
+      10
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      65,
+      70,
+      40,
+      85
+    ],
+    "before_start": [
+      "ABSORB",
+      "POISONPOWDER",
+      "STUN_SPORE",
+      "0"
+    ]
+  },
+  {
+    "name": "vileplume",
+    "title": "Vileplume",
+    "dex": 45,
+    "stats": [
+      75,
+      80,
+      85,
+      50,
+      110
+    ],
+    "start": [
+      "ABSORB",
+      "ACID",
+      "POISONPOWDER",
+      "STUN_SPORE"
+    ],
+    "learn": [
+      [
+        9,
+        "POISONPOWDER"
+      ],
+      [
+        12,
+        "STUN_SPORE"
+      ],
+      [
+        15,
+        "SLEEP_POWDER"
+      ],
+      [
+        20,
+        "MEGA_DRAIN"
+      ],
+      [
+        26,
+        "ACID"
+      ],
+      [
+        35,
+        "GIGA_DRAIN"
+      ],
+      [
+        42,
+        "PETAL_DANCE"
+      ],
+      [
+        54,
+        "SOLARBEAM"
+      ]
+    ],
+    "remove": [
+      9,
+      10,
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      75,
+      80,
+      85,
+      50,
+      100
+    ],
+    "before_start": [
+      "STUN_SPORE",
+      "SLEEP_POWDER",
+      "ACID",
+      "PETAL_DANCE"
+    ]
   }
 ]
