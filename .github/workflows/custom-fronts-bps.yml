@@ -1,4 +1,4 @@
-name: "First unique variant redesigns; Heal Bell and Charm"
+name: "Happy Ditto and Fighting variant redesigns"
 
 on:
   workflow_dispatch:
@@ -129,3 +129,4 @@ jobs:
             ${{ runner.temp }}/patches/TOXAPEX-MILTANK-SABLEYE.md
             ${{ runner.temp }}/patches/CLAYDOL-DITTWO-TYRANITAR.md
             ${{ runner.temp }}/patches/FIRST-UNIQUE-VARIANTS.md
+            ${{ runner.temp }}/patches/HAPPY-DITTO-AND-FIGHTERS.md

@@ -42,7 +42,7 @@ def validate(version):
     assert data('ExtraTMCompatibilityTable', 2 * len(PLAN['entries'])) == masks
     byname = {e['name']: set(e['tms']) for e in PLAN['entries']}
     assert byname['mew'] == set(range(51, 64))
-    for number,allowed in [(61,{'ekans','arbok','zubat','golbat','crobat','paras','parasect','mew'}),(62,{'ekans','arbok','beedrill','nidoranf','nidorina','nidoqueen','nidoranm','nidorino','nidoking','bellsprout','weepinbell','victreebel','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','spearow','fearow','pikachu','raichu','growlithe','arcanine','ponyta','rapidash','doduo','dodrio','hitmonlee','horsea','seadra','goldeen','seaking','porygon','mew'})]:
+    for number,allowed in [(61,{'ekans','arbok','zubat','golbat','crobat','paras','parasect','mew'}),(62,{'ekans','arbok','beedrill','nidoranf','nidorina','nidoqueen','nidoranm','nidorino','nidoking','bellsprout','weepinbell','victreebel','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','spearow','fearow','pikachu','raichu','growlithe','arcanine','ponyta','rapidash','doduo','dodrio','hitmonlee','horsea','seadra','goldeen','seaking','porygon','goldeen_fighting','mew'})]:
         assert {name for name,tms in byname.items() if number in tms}==allowed
     for baby, adult in (('caterpie','butterfree'),):
         assert 51 not in byname[baby] and 51 in byname[adult]

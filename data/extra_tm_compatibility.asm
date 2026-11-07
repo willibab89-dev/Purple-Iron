@@ -155,8 +155,8 @@ ExtraTMCompatibilityTable:
 	db $00, $00 ; 154: chansey_unique
 	db $02, $00 ; 155: charmander_unique
 	db $00, $00 ; 156: ditto_happy
-	db $60, $00 ; 157: geodude_fighting
-	db $02, $00 ; 158: goldeen_fighting
+	db $62, $00 ; 157: geodude_fighting
+	db $02, $10 ; 158: goldeen_fighting
 	db $08, $00 ; 159: grimer_poison
 	db $08, $00 ; 160: ivysaur_erika
 	db $40, $00 ; 161: kakuna_rock_type

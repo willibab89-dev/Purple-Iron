@@ -1,5 +1,5 @@
 db DEX_UNIQUE_DITTO_HAPPY ; pokedex id
-db 48 ; base hp
+db 80 ; base hp
 db 48 ; base attack
 db 48 ; base defense
 db 48 ; base speed

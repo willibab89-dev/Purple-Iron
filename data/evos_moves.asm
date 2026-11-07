@@ -57,13 +57,13 @@ EvosMovesPointerTable:
 	dw ElectabuzzEvosMoves
 	dw MagnetonEvosMoves
 	dw KoffingEvosMoves
-	dw DittoEvosMoves ; UNIQUE_DITTO_HAPPY
+	dw ReviewedDittoHappyEvosMoves ; UNIQUE_DITTO_HAPPY
 	dw MankeyEvosMoves
 	dw SeelEvosMoves
 	dw DiglettEvosMoves
 	dw TaurosEvosMoves
-	dw GeodudeEvosMoves ; UNIQUE_GEODUDE_FIGHTING
-	dw GoldeenEvosMoves ; UNIQUE_GOLDEEN_FIGHTING
+	dw ReviewedGeodudeFightingEvosMoves ; UNIQUE_GEODUDE_FIGHTING
+	dw ReviewedGoldeenFightingEvosMoves ; UNIQUE_GOLDEEN_FIGHTING
 	dw GrimerEvosMoves ; UNIQUE_GRIMER_POISON
 	dw FarfetchdEvosMoves
 	dw VenonatEvosMoves
@@ -2599,4 +2599,34 @@ ReviewedCharmanderUniqueEvosMoves:
 	db 42, FLAMETHROWER
 	db 49, OUTRAGE
 	db 56, FIRE_BLAST
+	db 0
+
+ReviewedDittoHappyEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 0
+
+ReviewedGeodudeFightingEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 9, LOW_KICK
+	db 17, COMET_PUNCH
+	db 25, COUNTER
+	db 33, ROCK_TOMB
+	db 41, BULK_UP
+	db 49, MEGA_PUNCH
+	db 0
+
+ReviewedGoldeenFightingEvosMoves:
+; Evolutions: no evolution; preserve the unique form.
+	db 0
+; Learnset
+	db 9, HORN_ATTACK
+	db 17, SUPERSONIC
+	db 25, PIERCE
+	db 33, WATERFALL
+	db 41, FOCUS_ENERGY
+	db 49, AGILITY
 	db 0

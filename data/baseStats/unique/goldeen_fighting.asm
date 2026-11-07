@@ -1,9 +1,9 @@
 db DEX_UNIQUE_GOLDEEN_FIGHTING ; pokedex id
-db 45 ; base hp
-db 67 ; base attack
-db 60 ; base defense
-db 63 ; base speed
-db 50 ; base special
+db 65 ; base hp
+db 95 ; base attack
+db 65 ; base defense
+db 95 ; base speed
+db 60 ; base special
 db FIGHTING ; species type 1
 db FIGHTING ; species type 2
 db 225 ; catch rate
@@ -19,10 +19,10 @@ db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 7
-	tmlearn 9,11,12,13,14
-	tmlearn 0
-	tmlearn 0
+	tmlearn 9,10,11,12
+	tmlearn 17,19
+	tmlearn 32
 	tmlearn 39,40
 	tmlearn 44
-	tmlearn 53
+	tmlearn 50,53
 db 0 ; padding

@@ -1614,19 +1614,21 @@
       "name": "geodude_fighting",
       "source": "geodude",
       "tms": [
+        52,
         56,
         57
       ],
-      "mask": 96
+      "mask": 98
     },
     {
       "dex": 158,
       "name": "goldeen_fighting",
       "source": "goldeen",
       "tms": [
-        52
+        52,
+        63
       ],
-      "mask": 2
+      "mask": 4098
     },
     {
       "dex": 159,
