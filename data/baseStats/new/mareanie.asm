@@ -11,6 +11,7 @@ db 61 ; base exp yield
 INCBIN "pic/new_species/mareanie.pic",0,1
 dw MareaniePicFront
 dw MareaniePicBack
+; attacks known at lvl 0
 db POISON_STING
 db PECK
 db 0
@@ -20,7 +21,7 @@ db 0 ; growth rate
 	tmlearn 11,12
 	tmlearn 0
 	tmlearn 0
-	tmlearn 34
+	tmlearn 0
 	tmlearn 44
 	tmlearn 50,53
 db 0 ; padding

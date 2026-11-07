@@ -9676,5 +9676,256 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "mareanie",
+    "title": "Mareanie",
+    "dex": 173,
+    "stats": [
+      50,
+      53,
+      62,
+      45,
+      48
+    ],
+    "start": [
+      "POISON_STING",
+      "PECK"
+    ],
+    "learn": [
+      [
+        8,
+        "WATER_GUN"
+      ],
+      [
+        15,
+        "BITE"
+      ],
+      [
+        22,
+        "TOXIC"
+      ],
+      [
+        29,
+        "VENOSHOCK"
+      ],
+      [
+        36,
+        "SCALD"
+      ],
+      [
+        46,
+        "BRINE"
+      ]
+    ],
+    "remove": [
+      34
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      53,
+      62,
+      45,
+      48
+    ],
+    "before_start": [
+      "POISON_STING",
+      "PECK",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "toxapex",
+    "title": "Toxapex",
+    "dex": 174,
+    "stats": [
+      50,
+      63,
+      152,
+      35,
+      100
+    ],
+    "start": [
+      "POISON_STING",
+      "PECK",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        8,
+        "WATER_GUN"
+      ],
+      [
+        15,
+        "BITE"
+      ],
+      [
+        22,
+        "TOXIC"
+      ],
+      [
+        29,
+        "VENOSHOCK"
+      ],
+      [
+        36,
+        "SCALD"
+      ],
+      [
+        39,
+        "RECOVER"
+      ],
+      [
+        46,
+        "BRINE"
+      ],
+      [
+        53,
+        "HAZE"
+      ]
+    ],
+    "remove": [
+      34
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      63,
+      152,
+      35,
+      100
+    ],
+    "before_start": [
+      "POISON_STING",
+      "PECK",
+      "HARDEN",
+      "WATER_GUN"
+    ]
+  },
+  {
+    "name": "miltank",
+    "title": "Miltank",
+    "dex": 175,
+    "stats": [
+      95,
+      80,
+      105,
+      100,
+      55
+    ],
+    "start": [
+      "TACKLE",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "DEFENSE_CURL"
+      ],
+      [
+        17,
+        "STOMP"
+      ],
+      [
+        25,
+        "BODY_SLAM"
+      ],
+      [
+        33,
+        "MILK_DRINK"
+      ],
+      [
+        41,
+        "FACADE"
+      ],
+      [
+        49,
+        "DOUBLE_EDGE"
+      ]
+    ],
+    "remove": [
+      15,
+      26,
+      34,
+      48
+    ],
+    "add": [],
+    "before_stats": [
+      95,
+      80,
+      105,
+      100,
+      55
+    ],
+    "before_start": [
+      "TACKLE",
+      "GROWL",
+      "DEFENSE_CURL",
+      "0"
+    ]
+  },
+  {
+    "name": "sableye",
+    "title": "Sableye",
+    "dex": 176,
+    "stats": [
+      50,
+      85,
+      125,
+      20,
+      85
+    ],
+    "start": [
+      "SCRATCH",
+      "LEER",
+      "SNARL"
+    ],
+    "learn": [
+      [
+        8,
+        "NIGHT_SHADE"
+      ],
+      [
+        16,
+        "CONFUSE_RAY"
+      ],
+      [
+        24,
+        "SHADOW_LEECH"
+      ],
+      [
+        32,
+        "CRUNCH"
+      ],
+      [
+        40,
+        "RECOVER"
+      ],
+      [
+        48,
+        "PUNISHMENT"
+      ]
+    ],
+    "remove": [
+      1,
+      33,
+      48
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      75,
+      75,
+      50,
+      65
+    ],
+    "before_start": [
+      "SCRATCH",
+      "LEER",
+      "ASTONISH",
+      "0"
+    ]
   }
 ]

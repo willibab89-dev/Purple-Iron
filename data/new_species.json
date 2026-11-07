@@ -29,14 +29,14 @@
       6,
       11,
       12,
-      34,
       44,
       50,
       53
     ],
     "extra": [
       53,
-      54
+      54,
+      59
     ],
     "evo": [
       "EV_LEVEL, 38, TOXAPEX"
@@ -47,36 +47,24 @@
         "WATER_GUN"
       ],
       [
-        12,
+        15,
         "BITE"
       ],
       [
-        16,
-        "PIN_MISSILE"
-      ],
-      [
-        20,
-        "POISON_FANG"
-      ],
-      [
-        26,
+        22,
         "TOXIC"
       ],
       [
-        30,
+        29,
         "VENOSHOCK"
       ],
       [
-        34,
+        36,
+        "SCALD"
+      ],
+      [
+        46,
         "BRINE"
-      ],
-      [
-        38,
-        "RECOVER"
-      ],
-      [
-        44,
-        "POISON_TAIL"
       ]
     ],
     "height": [
@@ -119,67 +107,54 @@
     "start": [
       "POISON_STING",
       "PECK",
-      "HARDEN",
       "WATER_GUN"
     ],
     "tms": [
       6,
       11,
       12,
-      34,
       44,
       50,
       53
     ],
     "extra": [
       53,
-      54
+      54,
+      59
     ],
     "evo": [],
     "learn": [
       [
-        12,
+        8,
+        "WATER_GUN"
+      ],
+      [
+        15,
         "BITE"
       ],
       [
-        16,
-        "PIN_MISSILE"
-      ],
-      [
-        20,
-        "POISON_FANG"
-      ],
-      [
-        24,
-        "BRINE"
-      ],
-      [
-        28,
+        22,
         "TOXIC"
       ],
       [
-        32,
+        29,
         "VENOSHOCK"
       ],
       [
         36,
-        "STOCKPILE"
+        "SCALD"
       ],
       [
-        40,
+        39,
         "RECOVER"
       ],
       [
-        44,
-        "POISON_TAIL"
+        46,
+        "BRINE"
       ],
       [
-        48,
-        "ACID_ARMOR"
-      ],
-      [
-        52,
-        "HYDRO_PUMP"
+        53,
+        "HAZE"
       ]
     ],
     "height": [
@@ -221,8 +196,7 @@
     "palette": "PAL_PINKMON",
     "start": [
       "TACKLE",
-      "GROWL",
-      "DEFENSE_CURL"
+      "GROWL"
     ],
     "tms": [
       1,
@@ -230,54 +204,40 @@
       8,
       9,
       10,
-      15,
       20,
-      26,
       32,
-      34,
       40,
       44,
-      48,
       54
     ],
     "extra": [
-      52,
-      56,
-      57
+      52
     ],
     "evo": [],
     "learn": [
       [
-        8,
+        9,
+        "DEFENSE_CURL"
+      ],
+      [
+        17,
         "STOMP"
       ],
       [
-        15,
-        "BIDE"
-      ],
-      [
-        22,
+        25,
         "BODY_SLAM"
       ],
       [
-        28,
+        33,
+        "MILK_DRINK"
+      ],
+      [
+        41,
         "FACADE"
       ],
       [
-        34,
-        "BULK_UP"
-      ],
-      [
-        40,
+        49,
         "DOUBLE_EDGE"
-      ],
-      [
-        46,
-        "RECOVER"
-      ],
-      [
-        52,
-        "EARTHQUAKE"
       ]
     ],
     "height": [
@@ -303,10 +263,10 @@
     "dex": 176,
     "stats": [
       50,
-      75,
-      75,
-      50,
-      65
+      85,
+      125,
+      20,
+      85
     ],
     "types": [
       "GHOST",
@@ -320,23 +280,19 @@
     "start": [
       "SCRATCH",
       "LEER",
-      "ASTONISH"
+      "SNARL"
     ],
     "tms": [
-      1,
       28,
       31,
       32,
       39,
       44,
-      48,
       50,
       54
     ],
     "extra": [
       52,
-      55,
-      57,
       58,
       60
     ],
@@ -344,14 +300,10 @@
     "learn": [
       [
         8,
-        "LICK"
-      ],
-      [
-        14,
         "NIGHT_SHADE"
       ],
       [
-        18,
+        16,
         "CONFUSE_RAY"
       ],
       [
@@ -359,24 +311,16 @@
         "SHADOW_LEECH"
       ],
       [
-        30,
-        "CURSE"
+        32,
+        "CRUNCH"
       ],
       [
-        34,
-        "PUNISHMENT"
-      ],
-      [
-        42,
+        40,
         "RECOVER"
       ],
       [
         48,
-        "SLASH"
-      ],
-      [
-        54,
-        "PSYCH_UP"
+        "PUNISHMENT"
       ]
     ],
     "height": [

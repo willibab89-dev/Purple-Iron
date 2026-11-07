@@ -11,16 +11,17 @@ db 173 ; base exp yield
 INCBIN "pic/new_species/toxapex.pic",0,1
 dw ToxapexPicFront
 dw ToxapexPicBack
+; attacks known at lvl 0
 db POISON_STING
 db PECK
-db HARDEN
 db WATER_GUN
+db 0
 db 0 ; growth rate
 	tmlearn 6
 	tmlearn 11,12
 	tmlearn 0
 	tmlearn 0
-	tmlearn 34
+	tmlearn 0
 	tmlearn 44
 	tmlearn 50,53
 db 0 ; padding

@@ -171,10 +171,10 @@ ExtraTMCompatibilityTable:
 	db $08, $00 ; 170: tangela_erika
 	db $0c, $00 ; 171: tentacool_big
 	db $08, $00 ; 172: venusaur_erika
-	db $0c, $00 ; 173: mareanie
-	db $0c, $00 ; 174: toxapex
-	db $62, $00 ; 175: miltank
-	db $d2, $02 ; 176: sableye
+	db $0c, $01 ; 173: mareanie
+	db $0c, $01 ; 174: toxapex
+	db $02, $00 ; 175: miltank
+	db $82, $02 ; 176: sableye
 	db $00, $00 ; 177: baltoy
 	db $00, $00 ; 178: claydol
 	db $18, $04 ; 179: crobat

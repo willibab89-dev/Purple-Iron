@@ -119,5 +119,27 @@
     "accuracy": 100,
     "pp": 10,
     "animation": "THRASH"
+  },
+  {
+    "id": 231,
+    "symbol": "MILK_DRINK",
+    "name": "MILK DRINK",
+    "effect": "HEAL_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "RECOVER"
+  },
+  {
+    "id": 232,
+    "symbol": "SNARL",
+    "name": "SNARL",
+    "effect": "ATTACK_AND_STAT_EFFECT",
+    "power": 40,
+    "type": "NORMAL",
+    "accuracy": 95,
+    "pp": 15,
+    "animation": "GROWL"
   }
 ]

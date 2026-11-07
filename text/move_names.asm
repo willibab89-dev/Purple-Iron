@@ -230,4 +230,6 @@ MoveNames::
 	db "VINE CRUSH@"
 	db "CRUNCH@"
 	db "OUTRAGE@"
+	db "MILK DRINK@"
+	db "SNARL@"
 MoveNamesEnd:

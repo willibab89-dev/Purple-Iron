@@ -2420,55 +2420,48 @@ VictreebelEvosMoves:
 MareanieEvosMoves:
 	db EV_LEVEL, 38, TOXAPEX
 	db 0
+; Learnset
 	db 8, WATER_GUN
-	db 12, BITE
-	db 16, PIN_MISSILE
-	db 20, POISON_FANG
-	db 26, TOXIC
-	db 30, VENOSHOCK
-	db 34, BRINE
-	db 38, RECOVER
-	db 44, POISON_TAIL
+	db 15, BITE
+	db 22, TOXIC
+	db 29, VENOSHOCK
+	db 36, SCALD
+	db 46, BRINE
 	db 0
 
 ToxapexEvosMoves:
 	db 0
-	db 12, BITE
-	db 16, PIN_MISSILE
-	db 20, POISON_FANG
-	db 24, BRINE
-	db 28, TOXIC
-	db 32, VENOSHOCK
-	db 36, STOCKPILE
-	db 40, RECOVER
-	db 44, POISON_TAIL
-	db 48, ACID_ARMOR
-	db 52, HYDRO_PUMP
+; Learnset
+	db 8, WATER_GUN
+	db 15, BITE
+	db 22, TOXIC
+	db 29, VENOSHOCK
+	db 36, SCALD
+	db 39, RECOVER
+	db 46, BRINE
+	db 53, HAZE
 	db 0
 
 MiltankEvosMoves:
 	db 0
-	db 8, STOMP
-	db 15, BIDE
-	db 22, BODY_SLAM
-	db 28, FACADE
-	db 34, BULK_UP
-	db 40, DOUBLE_EDGE
-	db 46, RECOVER
-	db 52, EARTHQUAKE
+; Learnset
+	db 9, DEFENSE_CURL
+	db 17, STOMP
+	db 25, BODY_SLAM
+	db 33, MILK_DRINK
+	db 41, FACADE
+	db 49, DOUBLE_EDGE
 	db 0
 
 SableyeEvosMoves:
 	db 0
-	db 8, LICK
-	db 14, NIGHT_SHADE
-	db 18, CONFUSE_RAY
+; Learnset
+	db 8, NIGHT_SHADE
+	db 16, CONFUSE_RAY
 	db 24, SHADOW_LEECH
-	db 30, CURSE
-	db 34, PUNISHMENT
-	db 42, RECOVER
-	db 48, SLASH
-	db 54, PSYCH_UP
+	db 32, CRUNCH
+	db 40, RECOVER
+	db 48, PUNISHMENT
 	db 0
 
 BaltoyEvosMoves:

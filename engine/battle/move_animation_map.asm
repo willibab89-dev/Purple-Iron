@@ -257,6 +257,8 @@ MoveAnimationMap:
 	db VINE_WHIP ; VINE_CRUSH
 	db BITE ; CRUNCH
 	db THRASH ; OUTRAGE
+	db RECOVER ; MILK_DRINK
+	db GROWL ; SNARL
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

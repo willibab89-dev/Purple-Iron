@@ -1766,9 +1766,10 @@
       "source": "mareanie",
       "tms": [
         53,
-        54
+        54,
+        59
       ],
-      "mask": 12
+      "mask": 268
     },
     {
       "dex": 174,
@@ -1776,20 +1777,19 @@
       "source": "toxapex",
       "tms": [
         53,
-        54
+        54,
+        59
       ],
-      "mask": 12
+      "mask": 268
     },
     {
       "dex": 175,
       "name": "miltank",
       "source": "miltank",
       "tms": [
-        52,
-        56,
-        57
+        52
       ],
-      "mask": 98
+      "mask": 2
     },
     {
       "dex": 176,
@@ -1797,12 +1797,10 @@
       "source": "sableye",
       "tms": [
         52,
-        55,
-        57,
         58,
         60
       ],
-      "mask": 722
+      "mask": 642
     },
     {
       "dex": 177,

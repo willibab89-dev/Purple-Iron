@@ -1,4 +1,4 @@
-name: "Dratini, Mewtwo and Mew redesigns"
+name: "Toxapex, Miltank and Sableye redesigns"
 
 on:
   workflow_dispatch:
@@ -71,6 +71,8 @@ jobs:
           python3 tools/test_vine_crush.py
           python3 tools/test_crunch.py
           python3 tools/test_outrage.py
+          python3 tools/test_milk_drink.py
+          python3 tools/test_snarl.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -122,3 +124,4 @@ jobs:
             ${{ runner.temp }}/patches/AERODACTYL-SNORLAX-LEGENDARY-BIRDS.md
             ${{ runner.temp }}/patches/FINAL-MOVE-DISTRIBUTION-REVIEW.md
             ${{ runner.temp }}/patches/DRAGONS-MEWTWO-MEW.md
+            ${{ runner.temp }}/patches/TOXAPEX-MILTANK-SABLEYE.md

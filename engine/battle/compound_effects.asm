@@ -147,6 +147,7 @@ CustomAttackEffect:
 
 ; move, stat (0..5; 6 = confusion), signed stage change, probability/256
 CustomAttackTable:
+	db SNARL, 3, -1, 255
 	db CRUNCH, 1, -1, 51
 	db MUD_WAVE, 4, -1, 77
 	db TONGUE_LASH, 3, -1, 255
