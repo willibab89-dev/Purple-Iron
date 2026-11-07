@@ -7605,5 +7605,320 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "goldeen",
+    "title": "Goldeen",
+    "dex": 118,
+    "stats": [
+      45,
+      67,
+      60,
+      63,
+      50
+    ],
+    "start": [
+      "PECK",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        8,
+        "SUPERSONIC"
+      ],
+      [
+        15,
+        "HORN_ATTACK"
+      ],
+      [
+        22,
+        "AQUA_JET"
+      ],
+      [
+        29,
+        "WATERFALL"
+      ],
+      [
+        42,
+        "AGILITY"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      45,
+      67,
+      60,
+      63,
+      50
+    ],
+    "before_start": [
+      "PECK",
+      "TAIL_WHIP",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "seaking",
+    "title": "Seaking",
+    "dex": 119,
+    "stats": [
+      80,
+      102,
+      65,
+      78,
+      80
+    ],
+    "start": [
+      "PECK",
+      "TAIL_WHIP",
+      "SUPERSONIC"
+    ],
+    "learn": [
+      [
+        8,
+        "SUPERSONIC"
+      ],
+      [
+        15,
+        "HORN_ATTACK"
+      ],
+      [
+        22,
+        "AQUA_JET"
+      ],
+      [
+        29,
+        "WATERFALL"
+      ],
+      [
+        35,
+        "PIERCE"
+      ],
+      [
+        42,
+        "AGILITY"
+      ],
+      [
+        49,
+        "MEGAHORN"
+      ],
+      [
+        56,
+        "HORN_DRILL"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      80,
+      92,
+      65,
+      68,
+      80
+    ],
+    "before_start": [
+      "PECK",
+      "TAIL_WHIP",
+      "SUPERSONIC",
+      "0"
+    ]
+  },
+  {
+    "name": "staryu",
+    "title": "Staryu",
+    "dex": 120,
+    "stats": [
+      30,
+      45,
+      55,
+      85,
+      70
+    ],
+    "start": [
+      "TACKLE",
+      "HARDEN"
+    ],
+    "learn": [
+      [
+        7,
+        "WATER_GUN"
+      ],
+      [
+        14,
+        "SWIFT"
+      ],
+      [
+        21,
+        "RECOVER"
+      ],
+      [
+        28,
+        "BUBBLEBEAM"
+      ],
+      [
+        35,
+        "LIGHT_SCREEN"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      25
+    ],
+    "add": [],
+    "before_stats": [
+      30,
+      45,
+      55,
+      85,
+      70
+    ],
+    "before_start": [
+      "TACKLE",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "starmie",
+    "title": "Starmie",
+    "dex": 121,
+    "stats": [
+      60,
+      75,
+      85,
+      115,
+      100
+    ],
+    "start": [
+      "TACKLE",
+      "HARDEN",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        7,
+        "WATER_GUN"
+      ],
+      [
+        14,
+        "SWIFT"
+      ],
+      [
+        21,
+        "RECOVER"
+      ],
+      [
+        28,
+        "BUBBLEBEAM"
+      ],
+      [
+        35,
+        "LIGHT_SCREEN"
+      ],
+      [
+        42,
+        "PSYCHIC_M"
+      ],
+      [
+        49,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      15,
+      25
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      75,
+      85,
+      115,
+      100
+    ],
+    "before_start": [
+      "TACKLE",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "mrmime",
+    "title": "MrMime",
+    "dex": 122,
+    "stats": [
+      50,
+      45,
+      65,
+      90,
+      100
+    ],
+    "start": [
+      "CONFUSION",
+      "BARRIER"
+    ],
+    "learn": [
+      [
+        9,
+        "MIMIC"
+      ],
+      [
+        16,
+        "LIGHT_SCREEN"
+      ],
+      [
+        23,
+        "PSYBEAM"
+      ],
+      [
+        30,
+        "SUBSTITUTE"
+      ],
+      [
+        37,
+        "MIND_BREAK"
+      ],
+      [
+        44,
+        "PSYCH_UP"
+      ],
+      [
+        51,
+        "PSYCHIC_M"
+      ]
+    ],
+    "remove": [
+      1,
+      5,
+      15,
+      17,
+      22,
+      25
+    ],
+    "add": [
+      35
+    ],
+    "before_stats": [
+      40,
+      45,
+      65,
+      90,
+      100
+    ],
+    "before_start": [
+      "CONFUSION",
+      "BARRIER",
+      "0",
+      "0"
+    ]
   }
 ]

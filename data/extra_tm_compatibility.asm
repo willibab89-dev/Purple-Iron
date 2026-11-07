@@ -116,10 +116,10 @@ ExtraTMCompatibilityTable:
 	db $02, $00 ; 115: kangaskhan
 	db $04, $10 ; 116: horsea
 	db $04, $10 ; 117: seadra
-	db $04, $00 ; 118: goldeen
-	db $04, $00 ; 119: seaking
-	db $04, $00 ; 120: staryu
-	db $04, $00 ; 121: starmie
+	db $06, $10 ; 118: goldeen
+	db $06, $10 ; 119: seaking
+	db $00, $00 ; 120: staryu
+	db $00, $00 ; 121: starmie
 	db $00, $00 ; 122: mrmime
 	db $11, $00 ; 123: scyther
 	db $00, $00 ; 124: jynx

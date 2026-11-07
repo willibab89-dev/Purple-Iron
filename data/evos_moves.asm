@@ -558,13 +558,12 @@ StaryuEvosMoves:
 	db EV_ITEM, WATER_STONE, 1, STARMIE
 	db 0
 ; Learnset
-	db 17, WATER_GUN
-	db 22, HARDEN
-	db 27, RECOVER
-	db 32, SWIFT
-	db 37, MINIMIZE
-	db 42, LIGHT_SCREEN
-	db 47, HYDRO_PUMP
+	db 7, WATER_GUN
+	db 14, SWIFT
+	db 21, RECOVER
+	db 28, BUBBLEBEAM
+	db 35, LIGHT_SCREEN
+	db 49, HYDRO_PUMP
 	db 0
 
 BlastoiseEvosMoves:
@@ -749,14 +748,13 @@ MrMimeEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 15, CONFUSION
-	db 23, LIGHT_SCREEN
-	db 31, DOUBLESLAP
-	db 32, PSYSHOCK
-	db 36, PSYCH_UP
-	db 38, MIND_BREAK
-	db 39, MEDITATE
-	db 47, SUBSTITUTE
+	db 9, MIMIC
+	db 16, LIGHT_SCREEN
+	db 23, PSYBEAM
+	db 30, SUBSTITUTE
+	db 37, MIND_BREAK
+	db 44, PSYCH_UP
+	db 51, PSYCHIC_M
 	db 0
 
 HitmonleeEvosMoves:
@@ -2057,12 +2055,13 @@ StarmieEvosMoves:
 	db 0
 ;joenote-modified for fun
 ; Learnset
-	db 21, WATER_GUN
-	db 26, HARDEN
-	db 31, RECOVER
-	db 36, SWIFT
-	db 46, LIGHT_SCREEN
-	db 51, HYDRO_PUMP
+	db 7, WATER_GUN
+	db 14, SWIFT
+	db 21, RECOVER
+	db 28, BUBBLEBEAM
+	db 35, LIGHT_SCREEN
+	db 42, PSYCHIC_M
+	db 49, HYDRO_PUMP
 	db 0
 
 BulbasaurEvosMoves:
@@ -2121,32 +2120,25 @@ GoldeenEvosMoves:
 	db EV_LEVEL, 33, SEAKING
 	db 0
 ; Learnset
-	db 19, SUPERSONIC
+	db 8, SUPERSONIC
+	db 15, HORN_ATTACK
 	db 22, AQUA_JET
-	db 24, HORN_ATTACK
-	db 25, FLAIL
-	db 30, FURY_ATTACK
-	db 34, SNIPE_SHOT
-	db 37, WATERFALL
-	db 45, HORN_DRILL
-	db 54, AGILITY
+	db 29, WATERFALL
+	db 42, AGILITY
 	db 0
 
 SeakingEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 19, SUPERSONIC
-	db 24, HORN_ATTACK
-	db 26, AQUA_JET
-	db 28, FLAIL
-	db 30, FURY_ATTACK
-	db 38, PIERCE
-	db 39, WATERFALL
-	db 40, SNIPE_SHOT
-	db 46, MEGAHORN
-	db 48, HORN_DRILL
-	db 54, AGILITY
+	db 8, SUPERSONIC
+	db 15, HORN_ATTACK
+	db 22, AQUA_JET
+	db 29, WATERFALL
+	db 35, PIERCE
+	db 42, AGILITY
+	db 49, MEGAHORN
+	db 56, HORN_DRILL
 	db 0
 
 MissingNo9FEvosMoves:

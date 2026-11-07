@@ -1,8 +1,8 @@
 db DEX_SEAKING ; pokedex id
 db 80 ; base hp
-db 92 ; base attack
+db 102 ; base attack
 db 65 ; base defense
-db 68 ; base speed
+db 78 ; base speed
 db 80 ; base special
 db WATER ; species type 1
 db WATER ; species type 2
@@ -19,7 +19,7 @@ db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 7
-	tmlearn 9,11,12,13,14,15
+	tmlearn 9,11,12,13,14
 	tmlearn 0
 	tmlearn 0
 	tmlearn 39,40

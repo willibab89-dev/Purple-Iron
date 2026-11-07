@@ -1251,36 +1251,36 @@
       "name": "goldeen",
       "source": "goldeen",
       "tms": [
-        53
+        52,
+        53,
+        63
       ],
-      "mask": 4
+      "mask": 4102
     },
     {
       "dex": 119,
       "name": "seaking",
       "source": "seaking",
       "tms": [
-        53
+        52,
+        53,
+        63
       ],
-      "mask": 4
+      "mask": 4102
     },
     {
       "dex": 120,
       "name": "staryu",
       "source": "staryu",
-      "tms": [
-        53
-      ],
-      "mask": 4
+      "tms": [],
+      "mask": 0
     },
     {
       "dex": 121,
       "name": "starmie",
       "source": "starmie",
-      "tms": [
-        53
-      ],
-      "mask": 4
+      "tms": [],
+      "mask": 0
     },
     {
       "dex": 122,

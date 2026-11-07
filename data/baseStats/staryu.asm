@@ -13,7 +13,7 @@ dw StaryuPicFront
 dw StaryuPicBack
 ; attacks known at lvl 0
 db TACKLE
-db 0
+db HARDEN
 db 0
 db 0
 db 5 ; growth rate
@@ -21,7 +21,7 @@ db 5 ; growth rate
 	tmlearn 0
 	tmlearn 11,12,13,14
 	tmlearn 24
-	tmlearn 25,29,30,32
+	tmlearn 29,30,32
 	tmlearn 33,39,40
 	tmlearn 44,45,46
 	tmlearn 49,53,55
