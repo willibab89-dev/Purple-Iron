@@ -140,7 +140,7 @@ ExtraTMCompatibilityTable:
 	db $44, $00 ; 139: omastar
 	db $44, $00 ; 140: kabuto
 	db $54, $00 ; 141: kabutops
-	db $51, $00 ; 142: aerodactyl
+	db $52, $00 ; 142: aerodactyl
 	db $02, $00 ; 143: snorlax
 	db $11, $00 ; 144: articuno
 	db $11, $00 ; 145: zapdos

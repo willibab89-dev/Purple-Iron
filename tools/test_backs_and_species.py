@@ -151,7 +151,8 @@ def validate(version):
             assert data(name+'EvosMoves',4)==bytes([1,level,target,0])
         for name,d in TUNING.items():
             index=order.index(d['dex'])+1
-            put('wPartyCount',0);put('wCurEnemyLVL',60);put('wcf91',index);call('AddPartyMon')
+            # Generate at 100 so late legendary moves (65+) are included.
+            put('wPartyCount',0);put('wCurEnemyLVL',100);put('wcf91',index);call('AddPartyMon')
             known=list(d['start'])
             for level,move in d['learn']:
                 if move not in known:known=(known+[move])[-4:]

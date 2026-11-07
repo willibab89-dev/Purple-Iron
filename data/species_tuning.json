@@ -9053,5 +9053,331 @@
       "ABSORB",
       "0"
     ]
+  },
+  {
+    "name": "aerodactyl",
+    "title": "Aerodactyl",
+    "dex": 142,
+    "stats": [
+      80,
+      105,
+      65,
+      130,
+      60
+    ],
+    "start": [
+      "WING_ATTACK",
+      "BITE"
+    ],
+    "learn": [
+      [
+        9,
+        "SUPERSONIC"
+      ],
+      [
+        17,
+        "ROCK_TOMB"
+      ],
+      [
+        25,
+        "TAKE_DOWN"
+      ],
+      [
+        33,
+        "ROCK_SLIDE"
+      ],
+      [
+        41,
+        "CRUNCH"
+      ],
+      [
+        49,
+        "STONE_EDGE"
+      ],
+      [
+        57,
+        "SKY_ATTACK"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      15,
+      23,
+      38
+    ],
+    "add": [
+      48
+    ],
+    "before_stats": [
+      80,
+      105,
+      65,
+      130,
+      60
+    ],
+    "before_start": [
+      "WING_ATTACK",
+      "AGILITY",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "snorlax",
+    "title": "Snorlax",
+    "dex": 143,
+    "stats": [
+      160,
+      110,
+      65,
+      30,
+      65
+    ],
+    "start": [
+      "HEADBUTT",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "DEFENSE_CURL"
+      ],
+      [
+        17,
+        "REST"
+      ],
+      [
+        25,
+        "BODY_SLAM"
+      ],
+      [
+        33,
+        "AMNESIA"
+      ],
+      [
+        41,
+        "CRUNCH"
+      ],
+      [
+        49,
+        "DOUBLE_EDGE"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      14,
+      15,
+      22,
+      24,
+      25,
+      27,
+      29,
+      34,
+      35,
+      36,
+      38,
+      46
+    ],
+    "add": [],
+    "before_stats": [
+      160,
+      110,
+      65,
+      30,
+      65
+    ],
+    "before_start": [
+      "HEADBUTT",
+      "AMNESIA",
+      "REST",
+      "0"
+    ]
+  },
+  {
+    "name": "articuno",
+    "title": "Articuno",
+    "dex": 144,
+    "stats": [
+      90,
+      85,
+      100,
+      85,
+      125
+    ],
+    "start": [
+      "PECK",
+      "ICE_BEAM"
+    ],
+    "learn": [
+      [
+        25,
+        "ICY_WIND"
+      ],
+      [
+        35,
+        "ICE_ARMOR"
+      ],
+      [
+        45,
+        "GALE_WIND"
+      ],
+      [
+        50,
+        "ROOST"
+      ],
+      [
+        55,
+        "BLIZZARD"
+      ],
+      [
+        65,
+        "FLASH_FREEZE"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      11,
+      12,
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      90,
+      85,
+      100,
+      85,
+      125
+    ],
+    "before_start": [
+      "PECK",
+      "ICE_BEAM",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "zapdos",
+    "title": "Zapdos",
+    "dex": 145,
+    "stats": [
+      90,
+      90,
+      85,
+      100,
+      125
+    ],
+    "start": [
+      "THUNDERSHOCK",
+      "DRILL_PECK"
+    ],
+    "learn": [
+      [
+        25,
+        "THUNDER_WAVE"
+      ],
+      [
+        35,
+        "LIGHT_SCREEN"
+      ],
+      [
+        45,
+        "THUNDERBOLT"
+      ],
+      [
+        50,
+        "ROOST"
+      ],
+      [
+        55,
+        "THUNDER"
+      ],
+      [
+        65,
+        "THUNDERCLAP"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      90,
+      90,
+      85,
+      100,
+      125
+    ],
+    "before_start": [
+      "THUNDERSHOCK",
+      "DRILL_PECK",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "moltres",
+    "title": "Moltres",
+    "dex": 146,
+    "stats": [
+      90,
+      100,
+      90,
+      90,
+      125
+    ],
+    "start": [
+      "PECK",
+      "FIRE_SPIN"
+    ],
+    "learn": [
+      [
+        25,
+        "WING_ATTACK"
+      ],
+      [
+        35,
+        "INCINERATE"
+      ],
+      [
+        45,
+        "FLAMETHROWER"
+      ],
+      [
+        50,
+        "ROOST"
+      ],
+      [
+        55,
+        "FIRE_BLAST"
+      ],
+      [
+        65,
+        "SKY_ATTACK"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      90,
+      100,
+      90,
+      90,
+      125
+    ],
+    "before_start": [
+      "PECK",
+      "FIRE_SPIN",
+      "0",
+      "0"
+    ]
   }
 ]

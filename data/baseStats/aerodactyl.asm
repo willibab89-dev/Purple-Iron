@@ -13,16 +13,16 @@ dw AerodactylPicFront
 dw AerodactylPicBack
 ; attacks known at lvl 0
 db WING_ATTACK
-db AGILITY
+db BITE
 db 0
 db 0
 db 5 ; growth rate
 ; learnset
-	tmlearn 2,4
-	tmlearn 15
-	tmlearn 20,23
+	tmlearn 0
+	tmlearn 0
+	tmlearn 20
 	tmlearn 32
-	tmlearn 33,38,39
-	tmlearn 43,44
+	tmlearn 33,39
+	tmlearn 43,44,48
 	tmlearn 52
 db 0 ; padding

@@ -1068,14 +1068,12 @@ MoltresEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 35, WILL_O_WISP
-	db 40, INCINERATE
-	db 48, GALE_WIND
+	db 25, WING_ATTACK
+	db 35, INCINERATE
+	db 45, FLAMETHROWER
 	db 50, ROOST
-	db 51, LEER
-	db 52, CAUTERIZE
-	db 55, AGILITY
-	db 60, SKY_ATTACK
+	db 55, FIRE_BLAST
+	db 65, SKY_ATTACK
 	db 0
 
 ArticunoEvosMoves:
@@ -1083,30 +1081,23 @@ ArticunoEvosMoves:
 	db 0
 ; Learnset
 	db 25, ICY_WIND
-	db 30, ICE_SHARD
-	db 40, ICE_ARMOR
-	db 42, ICICLE_SPEAR
-	db 45, FROST_BREATH
-	db 48, GALE_WIND
+	db 35, ICE_ARMOR
+	db 45, GALE_WIND
 	db 50, ROOST
-	db 51, BLIZZARD
-	db 55, AGILITY
-	db 56, FLASH_FREEZE
-	db 60, MIST
+	db 55, BLIZZARD
+	db 65, FLASH_FREEZE
 	db 0
 
 ZapdosEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 35, CHARGE
-	db 40, SHOCK_WAVE
-	db 45, THUNDERCLAP
-	db 48, GALE_WIND
+	db 25, THUNDER_WAVE
+	db 35, LIGHT_SCREEN
+	db 45, THUNDERBOLT
 	db 50, ROOST
-	db 51, THUNDER
-	db 55, AGILITY
-	db 60, LIGHT_SCREEN
+	db 55, THUNDER
+	db 65, THUNDERCLAP
 	db 0
 
 DittoEvosMoves:
@@ -1766,12 +1757,12 @@ SnorlaxEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 28, STOCKPILE
-	db 35, BODY_SLAM
-	db 40, FACADE
-	db 41, HARDEN
-	db 48, DOUBLE_EDGE
-	db 56, HYPER_BEAM
+	db 9, DEFENSE_CURL
+	db 17, REST
+	db 25, BODY_SLAM
+	db 33, AMNESIA
+	db 41, CRUNCH
+	db 49, DOUBLE_EDGE
 	db 0
 
 MagikarpEvosMoves:
@@ -2209,15 +2200,13 @@ AerodactylEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 25, ROCK_POLISH
-	db 33, SUPERSONIC
-	db 38, BITE
-	db 40, ROOST
-	db 42, AERIAL_ACE
-	db 45, TAKE_DOWN
-	db 46, GALE_WIND
-	db 48, STONE_EDGE
-	db 54, HYPER_BEAM
+	db 9, SUPERSONIC
+	db 17, ROCK_TOMB
+	db 25, TAKE_DOWN
+	db 33, ROCK_SLIDE
+	db 41, CRUNCH
+	db 49, STONE_EDGE
+	db 57, SKY_ATTACK
 	db 0
 
 MissingNoACEvosMoves:

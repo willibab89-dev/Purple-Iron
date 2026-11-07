@@ -97,5 +97,16 @@
     "accuracy": 100,
     "pp": 10,
     "animation": "VINE_WHIP"
+  },
+  {
+    "id": 229,
+    "symbol": "CRUNCH",
+    "name": "CRUNCH",
+    "effect": "ATTACK_AND_STAT_EFFECT",
+    "power": 80,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 15,
+    "animation": "BITE"
   }
 ]

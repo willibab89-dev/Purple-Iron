@@ -1470,11 +1470,11 @@
       "name": "aerodactyl",
       "source": "aerodactyl",
       "tms": [
-        51,
+        52,
         55,
         57
       ],
-      "mask": 81
+      "mask": 82
     },
     {
       "dex": 143,

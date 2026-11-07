@@ -1,4 +1,4 @@
-name: "Porygon, Omastar and Kabutops redesigns"
+name: "Aerodactyl, Snorlax and legendary bird redesigns"
 
 on:
   workflow_dispatch:
@@ -69,6 +69,7 @@ jobs:
           python3 tools/test_mud_and_shell.py
           python3 tools/test_electro_ball.py
           python3 tools/test_vine_crush.py
+          python3 tools/test_crunch.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -117,3 +118,5 @@ jobs:
             ${{ runner.temp }}/patches/PINSIR-TAUROS-GYARADOS.md
             ${{ runner.temp }}/patches/LAPRAS-DITTO-EEVEE-FAMILY.md
             ${{ runner.temp }}/patches/PORYGON-OMASTAR-KABUTOPS.md
+            ${{ runner.temp }}/patches/AERODACTYL-SNORLAX-LEGENDARY-BIRDS.md
+            ${{ runner.temp }}/patches/FINAL-MOVE-DISTRIBUTION-REVIEW.md
