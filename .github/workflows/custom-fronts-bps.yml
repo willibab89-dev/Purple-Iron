@@ -1,4 +1,4 @@
-name: "Scyther, Jynx, Electabuzz and Magmar redesigns"
+name: "Pinsir, Tauros and Gyarados redesigns"
 
 on:
   workflow_dispatch:
@@ -114,3 +114,4 @@ jobs:
             ${{ runner.temp }}/patches/CHANSEY-TANGELA-KANGASKHAN-SEADRA.md
             ${{ runner.temp }}/patches/SEAKING-STARMIE-MR-MIME.md
             ${{ runner.temp }}/patches/SCYTHER-JYNX-ELECTABUZZ-MAGMAR.md
+            ${{ runner.temp }}/patches/PINSIR-TAUROS-GYARADOS.md

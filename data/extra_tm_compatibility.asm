@@ -125,7 +125,7 @@ ExtraTMCompatibilityTable:
 	db $00, $00 ; 124: jynx
 	db $02, $00 ; 125: electabuzz
 	db $02, $00 ; 126: magmar
-	db $60, $00 ; 127: pinsir
+	db $62, $00 ; 127: pinsir
 	db $02, $00 ; 128: tauros
 	db $00, $00 ; 129: magikarp
 	db $04, $00 ; 130: gyarados

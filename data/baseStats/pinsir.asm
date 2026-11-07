@@ -13,13 +13,13 @@ dw PinsirPicFront
 dw PinsirPicBack
 ; attacks known at lvl 0
 db VICEGRIP
-db 0
+db HARDEN
 db 0
 db 0
 db 5 ; growth rate
 ; learnset
-	tmlearn 3,8
-	tmlearn 15
+	tmlearn 8
+	tmlearn 0
 	tmlearn 17,19,20
 	tmlearn 0
 	tmlearn 0

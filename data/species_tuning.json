@@ -8183,5 +8183,232 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "pinsir",
+    "title": "Pinsir",
+    "dex": 127,
+    "stats": [
+      65,
+      125,
+      100,
+      85,
+      55
+    ],
+    "start": [
+      "VICEGRIP",
+      "HARDEN"
+    ],
+    "learn": [
+      [
+        9,
+        "BIND"
+      ],
+      [
+        17,
+        "SEISMIC_TOSS"
+      ],
+      [
+        25,
+        "SHELL_BREAK"
+      ],
+      [
+        33,
+        "SUBMISSION"
+      ],
+      [
+        41,
+        "BULK_UP"
+      ],
+      [
+        49,
+        "GUILLOTINE"
+      ]
+    ],
+    "remove": [
+      3,
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      125,
+      100,
+      85,
+      55
+    ],
+    "before_start": [
+      "VICEGRIP",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "tauros",
+    "title": "Tauros",
+    "dex": 128,
+    "stats": [
+      75,
+      100,
+      95,
+      110,
+      70
+    ],
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        9,
+        "STOMP"
+      ],
+      [
+        17,
+        "HORN_ATTACK"
+      ],
+      [
+        25,
+        "RAGE"
+      ],
+      [
+        33,
+        "TAKE_DOWN"
+      ],
+      [
+        41,
+        "THRASH"
+      ],
+      [
+        49,
+        "DOUBLE_EDGE"
+      ]
+    ],
+    "remove": [
+      7,
+      13,
+      14,
+      15,
+      24,
+      25,
+      27,
+      38
+    ],
+    "add": [],
+    "before_stats": [
+      75,
+      100,
+      95,
+      110,
+      70
+    ],
+    "before_start": [
+      "TACKLE",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "magikarp",
+    "title": "Magikarp",
+    "dex": 129,
+    "stats": [
+      20,
+      10,
+      55,
+      80,
+      20
+    ],
+    "start": [
+      "SPLASH"
+    ],
+    "learn": [
+      [
+        15,
+        "TACKLE"
+      ],
+      [
+        19,
+        "FLAIL"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      20,
+      10,
+      55,
+      80,
+      20
+    ],
+    "before_start": [
+      "SPLASH",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "gyarados",
+    "title": "Gyarados",
+    "dex": 130,
+    "stats": [
+      95,
+      125,
+      79,
+      81,
+      100
+    ],
+    "start": [
+      "BITE",
+      "LEER"
+    ],
+    "learn": [
+      [
+        21,
+        "BITE"
+      ],
+      [
+        27,
+        "DRAGON_RAGE"
+      ],
+      [
+        33,
+        "THRASH"
+      ],
+      [
+        41,
+        "HYDRO_PUMP"
+      ],
+      [
+        49,
+        "DRAGON_DANCE"
+      ],
+      [
+        57,
+        "HYPER_BEAM"
+      ]
+    ],
+    "remove": [
+      13,
+      24,
+      38
+    ],
+    "add": [],
+    "before_stats": [
+      95,
+      125,
+      79,
+      81,
+      100
+    ],
+    "before_start": [
+      "BITE",
+      "DRAGON_RAGE",
+      "LEER",
+      "HYDRO_PUMP"
+    ]
   }
 ]

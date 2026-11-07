@@ -13,16 +13,16 @@ dw GyaradosPicFront
 dw GyaradosPicBack
 ; attacks known at lvl 0
 db BITE
-db DRAGON_RAGE
 db LEER
-db HYDRO_PUMP
+db 0
+db 0
 db 5 ; growth rate
 ; learnset
 	tmlearn 8
-	tmlearn 10,11,12,13,14,15
-	tmlearn 20,23,24
+	tmlearn 10,11,12,14,15
+	tmlearn 20,23
 	tmlearn 25
-	tmlearn 33,38,40
+	tmlearn 33,40
 	tmlearn 44
 	tmlearn 53,54
 db 0 ; padding

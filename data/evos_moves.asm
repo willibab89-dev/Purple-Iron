@@ -486,13 +486,12 @@ GyaradosEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 20, BITE
-	db 25, DRAGON_RAGE
-	db 30, FLAIL
-	db 32, LEER
+	db 21, BITE
+	db 27, DRAGON_RAGE
+	db 33, THRASH
 	db 41, HYDRO_PUMP
-	db 42, DRAGON_DANCE
-	db 52, HYPER_BEAM
+	db 49, DRAGON_DANCE
+	db 57, HYPER_BEAM
 	db 0
 
 ShellderEvosMoves:
@@ -579,19 +578,12 @@ PinsirEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset;joenote-modified for yellow
-	db 21, BIND
-	db 25, SEISMIC_TOSS
-	db 28, LUNGE
-	db 30, GUILLOTINE
-	db 34, X_SCISSOR
-	db 36, FOCUS_ENERGY
-	db 37, SHELL_BREAK
-	db 38, AMBUSH
-	db 40, PIERCE
-	db 43, HARDEN
-	db 48, MEGAHORN
-	db 49, SLASH
-	db 54, SWORDS_DANCE
+	db 9, BIND
+	db 17, SEISMIC_TOSS
+	db 25, SHELL_BREAK
+	db 33, SUBMISSION
+	db 41, BULK_UP
+	db 49, GUILLOTINE
 	db 0
 
 TangelaEvosMoves:
@@ -958,12 +950,12 @@ TaurosEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 21, STOMP
-	db 28, TAIL_WHIP
-	db 35, LEER
-	db 36, FACADE
-	db 44, RAGE
-	db 51, TAKE_DOWN
+	db 9, STOMP
+	db 17, HORN_ATTACK
+	db 25, RAGE
+	db 33, TAKE_DOWN
+	db 41, THRASH
+	db 49, DOUBLE_EDGE
 	db 0
 
 MissingNo3DEvosMoves:
@@ -1830,7 +1822,7 @@ MagikarpEvosMoves:
 	db 0
 ; Learnset
 	db 15, TACKLE
-	db 25, FLAIL
+	db 19, FLAIL
 	db 0
 
 MissingNo86EvosMoves:

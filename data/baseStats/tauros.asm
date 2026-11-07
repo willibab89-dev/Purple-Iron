@@ -13,16 +13,16 @@ dw TaurosPicFront
 dw TaurosPicBack
 ; attacks known at lvl 0
 db TACKLE
-db 0
+db TAIL_WHIP
 db 0
 db 0
 db 5 ; growth rate
 ; learnset
-	tmlearn 7,8
-	tmlearn 9,10,13,14,15
-	tmlearn 20,24
-	tmlearn 25,26,27,32
-	tmlearn 38,40
+	tmlearn 8
+	tmlearn 9,10
+	tmlearn 20
+	tmlearn 26,32
+	tmlearn 40
 	tmlearn 44
 	tmlearn 54
 db 0 ; padding
