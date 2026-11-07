@@ -1,6 +1,6 @@
 db DEX_DUGTRIO ; pokedex id
 db 35 ; base hp
-db 80 ; base attack
+db 95 ; base attack
 db 50 ; base defense
 db 120 ; base speed
 db 70 ; base special
@@ -18,8 +18,8 @@ db DIG
 db 0
 db 0 ; growth rate
 ; learnset
-	tmlearn 8
-	tmlearn 15
+	tmlearn 0
+	tmlearn 0
 	tmlearn 0
 	tmlearn 26,27,28,32
 	tmlearn 0

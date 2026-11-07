@@ -44,10 +44,10 @@ ExtraTMCompatibilityTable:
 	db $08, $00 ; 43: oddish
 	db $08, $00 ; 44: gloom
 	db $08, $00 ; 45: vileplume
-	db $08, $00 ; 46: paras
-	db $08, $00 ; 47: parasect
+	db $08, $04 ; 46: paras
+	db $08, $06 ; 47: parasect
 	db $08, $00 ; 48: venonat
-	db $09, $00 ; 49: venomoth
+	db $08, $00 ; 49: venomoth
 	db $40, $00 ; 50: diglett
 	db $40, $00 ; 51: dugtrio
 	db $12, $00 ; 52: meowth

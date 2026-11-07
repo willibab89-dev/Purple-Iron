@@ -3118,5 +3118,385 @@
       "ACID",
       "PETAL_DANCE"
     ]
+  },
+  {
+    "name": "paras",
+    "title": "Paras",
+    "dex": 46,
+    "stats": [
+      35,
+      70,
+      55,
+      25,
+      55
+    ],
+    "start": [
+      "SCRATCH"
+    ],
+    "learn": [
+      [
+        7,
+        "STUN_SPORE"
+      ],
+      [
+        12,
+        "LEECH_LIFE"
+      ],
+      [
+        16,
+        "POISONPOWDER"
+      ],
+      [
+        20,
+        "SLASH"
+      ],
+      [
+        23,
+        "SPORE"
+      ],
+      [
+        29,
+        "X_SCISSOR"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      35,
+      70,
+      55,
+      25,
+      55
+    ],
+    "before_start": [
+      "SCRATCH",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "parasect",
+    "title": "Parasect",
+    "dex": 47,
+    "stats": [
+      70,
+      95,
+      80,
+      30,
+      80
+    ],
+    "start": [
+      "SCRATCH",
+      "STUN_SPORE",
+      "LEECH_LIFE",
+      "POISONPOWDER"
+    ],
+    "learn": [
+      [
+        7,
+        "STUN_SPORE"
+      ],
+      [
+        12,
+        "LEECH_LIFE"
+      ],
+      [
+        16,
+        "POISONPOWDER"
+      ],
+      [
+        20,
+        "SLASH"
+      ],
+      [
+        23,
+        "SPORE"
+      ],
+      [
+        25,
+        "SHADOW_LEECH"
+      ],
+      [
+        31,
+        "X_SCISSOR"
+      ],
+      [
+        38,
+        "CURSE"
+      ],
+      [
+        43,
+        "LUNGE"
+      ]
+    ],
+    "remove": [
+      15,
+      21,
+      22
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      95,
+      80,
+      30,
+      80
+    ],
+    "before_start": [
+      "SCRATCH",
+      "STUN_SPORE",
+      "LEECH_LIFE",
+      "0"
+    ]
+  },
+  {
+    "name": "venonat",
+    "title": "Venonat",
+    "dex": 48,
+    "stats": [
+      60,
+      55,
+      50,
+      45,
+      40
+    ],
+    "start": [
+      "TACKLE",
+      "DISABLE"
+    ],
+    "learn": [
+      [
+        8,
+        "CONFUSION"
+      ],
+      [
+        13,
+        "POISONPOWDER"
+      ],
+      [
+        18,
+        "LEECH_LIFE"
+      ],
+      [
+        23,
+        "SLEEP_POWDER"
+      ],
+      [
+        28,
+        "PSYBEAM"
+      ],
+      [
+        40,
+        "PSYCHIC_M"
+      ]
+    ],
+    "remove": [
+      21,
+      22
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      55,
+      50,
+      45,
+      40
+    ],
+    "before_start": [
+      "TACKLE",
+      "DISABLE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "venomoth",
+    "title": "Venomoth",
+    "dex": 49,
+    "stats": [
+      70,
+      65,
+      60,
+      90,
+      90
+    ],
+    "start": [
+      "TACKLE",
+      "DISABLE",
+      "CONFUSION",
+      "POISONPOWDER"
+    ],
+    "learn": [
+      [
+        8,
+        "CONFUSION"
+      ],
+      [
+        13,
+        "POISONPOWDER"
+      ],
+      [
+        18,
+        "LEECH_LIFE"
+      ],
+      [
+        23,
+        "SLEEP_POWDER"
+      ],
+      [
+        28,
+        "PSYBEAM"
+      ],
+      [
+        32,
+        "QUIVER_DANCE"
+      ],
+      [
+        42,
+        "PSYCHIC_M"
+      ]
+    ],
+    "remove": [
+      2,
+      4,
+      15,
+      21,
+      22
+    ],
+    "add": [],
+    "before_stats": [
+      70,
+      65,
+      60,
+      90,
+      90
+    ],
+    "before_start": [
+      "TACKLE",
+      "DISABLE",
+      "POISONPOWDER",
+      "LEECH_LIFE"
+    ]
+  },
+  {
+    "name": "diglett",
+    "title": "Diglett",
+    "dex": 50,
+    "stats": [
+      10,
+      55,
+      25,
+      95,
+      45
+    ],
+    "start": [
+      "SCRATCH",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        5,
+        "SAND_ATTACK"
+      ],
+      [
+        12,
+        "DIG"
+      ],
+      [
+        20,
+        "SLASH"
+      ],
+      [
+        25,
+        "SCREECH"
+      ],
+      [
+        33,
+        "EARTHQUAKE"
+      ],
+      [
+        41,
+        "FISSURE"
+      ]
+    ],
+    "remove": [
+      8
+    ],
+    "add": [],
+    "before_stats": [
+      10,
+      55,
+      25,
+      95,
+      45
+    ],
+    "before_start": [
+      "SCRATCH",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "dugtrio",
+    "title": "Dugtrio",
+    "dex": 51,
+    "stats": [
+      35,
+      95,
+      50,
+      120,
+      70
+    ],
+    "start": [
+      "SCRATCH",
+      "GROWL",
+      "DIG"
+    ],
+    "learn": [
+      [
+        5,
+        "SAND_ATTACK"
+      ],
+      [
+        12,
+        "DIG"
+      ],
+      [
+        20,
+        "SLASH"
+      ],
+      [
+        27,
+        "SCREECH"
+      ],
+      [
+        37,
+        "EARTHQUAKE"
+      ],
+      [
+        47,
+        "FISSURE"
+      ]
+    ],
+    "remove": [
+      8,
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      35,
+      80,
+      50,
+      120,
+      70
+    ],
+    "before_start": [
+      "SCRATCH",
+      "GROWL",
+      "DIG",
+      "0"
+    ]
   }
 ]

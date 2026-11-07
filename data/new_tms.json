@@ -570,18 +570,21 @@
       "name": "paras",
       "source": "paras",
       "tms": [
-        54
+        54,
+        61
       ],
-      "mask": 8
+      "mask": 1032
     },
     {
       "dex": 47,
       "name": "parasect",
       "source": "parasect",
       "tms": [
-        54
+        54,
+        60,
+        61
       ],
-      "mask": 8
+      "mask": 1544
     },
     {
       "dex": 48,
@@ -597,10 +600,9 @@
       "name": "venomoth",
       "source": "venomoth",
       "tms": [
-        51,
         54
       ],
-      "mask": 9
+      "mask": 8
     },
     {
       "dex": 50,

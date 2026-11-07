@@ -248,6 +248,7 @@ MoveAnimationMap:
 	db LEECH_LIFE ; SHADOW_LEECH
 	db RECOVER ; MOONLIGHT
 	db DOUBLESLAP ; WAKE_UP_SLAP
+	db AGILITY ; QUIVER_DANCE
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

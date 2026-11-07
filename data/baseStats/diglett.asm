@@ -13,12 +13,12 @@ dw DiglettPicFront
 dw DiglettPicBack
 ; attacks known at lvl 0
 db SCRATCH
-db 0
+db GROWL
 db 0
 db 0
 db 0 ; growth rate
 ; learnset
-	tmlearn 8
+	tmlearn 0
 	tmlearn 0
 	tmlearn 0
 	tmlearn 26,27,28,32

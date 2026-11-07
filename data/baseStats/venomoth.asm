@@ -14,13 +14,13 @@ dw VenomothPicBack
 ; attacks known at lvl 0
 db TACKLE
 db DISABLE
+db CONFUSION
 db POISONPOWDER
-db LEECH_LIFE
 db 0 ; growth rate
 ; learnset;joenote-added strength from yellow
-	tmlearn 2,4,6
-	tmlearn 15
-	tmlearn 21,22
+	tmlearn 6
+	tmlearn 0
+	tmlearn 0
 	tmlearn 29,30,32
 	tmlearn 33,39
 	tmlearn 44,46

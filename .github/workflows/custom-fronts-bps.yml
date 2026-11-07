@@ -1,4 +1,4 @@
-name: "Jigglypuff, bats and Oddish with Wake-Up Slap"
+name: "Paras, Venonat and Diglett with Quiver Dance"
 
 on:
   workflow_dispatch:
@@ -64,6 +64,7 @@ jobs:
           python3 tools/test_backs_and_species.py
           python3 tools/test_moonlight.py
           python3 tools/test_wake_up_slap.py
+          python3 tools/test_quiver_dance.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -96,3 +97,4 @@ jobs:
             ${{ runner.temp }}/patches/SANDSHREW-AND-NIDOS.md
             ${{ runner.temp }}/patches/CLEFAIRY-AND-VULPIX.md
             ${{ runner.temp }}/patches/PUFF-BATS-AND-FLOWERS.md
+            ${{ runner.temp }}/patches/PARAS-VENONAT-DIGLETT.md

@@ -229,6 +229,7 @@ CustomStatusEffect:
 	ret
 
 CustomStatusTable:
+	db QUIVER_DANCE, 3, 1, 2, 1
 	db STOCKPILE, 1, 1, 3, 1
 	db BULK_UP, 0, 1, 1, 1
 	db CHARGE, 3, 1, 4, 1

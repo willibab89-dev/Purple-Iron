@@ -1,5 +1,5 @@
 db DEX_PARASECT ; pokedex id
-db 60 ; base hp
+db 70 ; base hp
 db 95 ; base attack
 db 80 ; base defense
 db 30 ; base speed
@@ -15,12 +15,12 @@ dw ParasectPicBack
 db SCRATCH
 db STUN_SPORE
 db LEECH_LIFE
-db 0
+db POISONPOWDER
 db 0 ; growth rate
 ; learnset
 	tmlearn 3,6,8
-	tmlearn 15
-	tmlearn 21,22
+	tmlearn 0
+	tmlearn 0
 	tmlearn 28
 	tmlearn 33,40
 	tmlearn 44

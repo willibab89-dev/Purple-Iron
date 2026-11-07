@@ -20,5 +20,16 @@
     "accuracy": 100,
     "pp": 15,
     "animation": "DOUBLESLAP"
+  },
+  {
+    "id": 222,
+    "symbol": "QUIVER_DANCE",
+    "name": "QUIVER DANCE",
+    "effect": "COMPOUND_STATUS_EFFECT",
+    "power": 0,
+    "type": "BUG",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "AGILITY"
   }
 ]

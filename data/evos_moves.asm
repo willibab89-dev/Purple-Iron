@@ -872,20 +872,15 @@ ParasectEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 13, STUN_SPORE
-	db 20, LEECH_LIFE
-	db 28, LUNGE
-	db 30, SPORE
-	db 32, AMBUSH
-	db 34, X_SCISSOR
-
-	db 35, INGRAIN
-
-	db 36, SHADOW_LEECH
-	db 38, SHELL_BREAK
-	db 39, SLASH
-	db 42, GIGA_DRAIN
-	db 48, GROWTH
+	db 7, STUN_SPORE
+	db 12, LEECH_LIFE
+	db 16, POISONPOWDER
+	db 20, SLASH
+	db 23, SPORE
+	db 25, SHADOW_LEECH
+	db 31, X_SCISSOR
+	db 38, CURSE
+	db 43, LUNGE
 	db 0
 
 PsyduckEvosMoves:
@@ -1051,11 +1046,12 @@ DiglettEvosMoves:
 	db EV_LEVEL, 26, DUGTRIO
 	db 0
 ; Learnset
-	db 15, GROWL
-	db 19, DIG
-	db 24, SAND_ATTACK
-	db 31, SLASH
-	db 40, EARTHQUAKE
+	db 5, SAND_ATTACK
+	db 12, DIG
+	db 20, SLASH
+	db 25, SCREECH
+	db 33, EARTHQUAKE
+	db 41, FISSURE
 	db 0
 
 TaurosEvosMoves:
@@ -1105,16 +1101,12 @@ VenonatEvosMoves:
 	db EV_LEVEL, 31, VENOMOTH
 	db 0
 ; Learnset;joenote-modified for yellow
-	db 11, SUPERSONIC
-	db 19, CONFUSION
-	db 24, POISONPOWDER
-	db 25, LUNGE
-	db 27, LEECH_LIFE
-	db 28, AMBUSH
-	db 30, STUN_SPORE
-	db 35, PSYBEAM
-	db 38, SLEEP_POWDER
-	db 43, PSYCHIC_M
+	db 8, CONFUSION
+	db 13, POISONPOWDER
+	db 18, LEECH_LIFE
+	db 23, SLEEP_POWDER
+	db 28, PSYBEAM
+	db 40, PSYCHIC_M
 	db 0
 
 DragoniteEvosMoves:
@@ -1681,20 +1673,12 @@ ParasEvosMoves:
 	db EV_LEVEL, 24, PARASECT
 	db 0
 ; Learnset
-	db 13, STUN_SPORE
-	db 20, LEECH_LIFE
-	db 24, LUNGE
-	db 27, SPORE
-	db 28, AMBUSH
-	db 30, X_SCISSOR
-
-	db 31, INGRAIN
-
-	db 32, SHADOW_LEECH
-	db 34, SLASH
-	db 35, SHELL_BREAK
-	db 38, GIGA_DRAIN
-	db 41, GROWTH
+	db 7, STUN_SPORE
+	db 12, LEECH_LIFE
+	db 16, POISONPOWDER
+	db 20, SLASH
+	db 23, SPORE
+	db 29, X_SCISSOR
 	db 0
 
 PoliwhirlEvosMoves:
@@ -1801,27 +1785,25 @@ DugtrioEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 15, GROWL
-	db 19, DIG
-	db 24, SAND_ATTACK
-	db 35, SLASH
-	db 47, EARTHQUAKE
+	db 5, SAND_ATTACK
+	db 12, DIG
+	db 20, SLASH
+	db 27, SCREECH
+	db 37, EARTHQUAKE
+	db 47, FISSURE
 	db 0
 
 VenomothEvosMoves:
 ; Evolutions
 	db 0
 ; Learnsetjoenote-modified for yellow
-	db 11, SUPERSONIC
-	db 19, CONFUSION
-	db 24, POISONPOWDER
-	db 27, LEECH_LIFE
-	db 28, LUNGE
-	db 30, STUN_SPORE
-	db 32, AMBUSH
-	db 38, PSYBEAM
-	db 43, SLEEP_POWDER
-	db 50, PSYCHIC_M
+	db 8, CONFUSION
+	db 13, POISONPOWDER
+	db 18, LEECH_LIFE
+	db 23, SLEEP_POWDER
+	db 28, PSYBEAM
+	db 32, QUIVER_DANCE
+	db 42, PSYCHIC_M
 	db 0
 
 DewgongEvosMoves:
