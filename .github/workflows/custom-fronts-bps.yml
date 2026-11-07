@@ -1,4 +1,4 @@
-name: "Seaking, Starmie and Mr. Mime redesigns"
+name: "Scyther, Jynx, Electabuzz and Magmar redesigns"
 
 on:
   workflow_dispatch:
@@ -113,3 +113,4 @@ jobs:
             ${{ runner.temp }}/patches/LICKITUNG-WEEZING-RHYDON.md
             ${{ runner.temp }}/patches/CHANSEY-TANGELA-KANGASKHAN-SEADRA.md
             ${{ runner.temp }}/patches/SEAKING-STARMIE-MR-MIME.md
+            ${{ runner.temp }}/patches/SCYTHER-JYNX-ELECTABUZZ-MAGMAR.md

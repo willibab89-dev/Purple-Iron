@@ -7920,5 +7920,268 @@
       "0",
       "0"
     ]
+  },
+  {
+    "name": "scyther",
+    "title": "Scyther",
+    "dex": 123,
+    "stats": [
+      70,
+      110,
+      80,
+      105,
+      55
+    ],
+    "start": [
+      "QUICK_ATTACK",
+      "LEER"
+    ],
+    "learn": [
+      [
+        9,
+        "LUNGE"
+      ],
+      [
+        17,
+        "WING_ATTACK"
+      ],
+      [
+        25,
+        "FOCUS_ENERGY"
+      ],
+      [
+        33,
+        "SLASH"
+      ],
+      [
+        41,
+        "X_SCISSOR"
+      ],
+      [
+        49,
+        "SWORDS_DANCE"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      70,
+      110,
+      80,
+      105,
+      55
+    ],
+    "before_start": [
+      "QUICK_ATTACK",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "jynx",
+    "title": "Jynx",
+    "dex": 124,
+    "stats": [
+      65,
+      50,
+      35,
+      95,
+      95
+    ],
+    "start": [
+      "POUND",
+      "LOVELY_KISS"
+    ],
+    "learn": [
+      [
+        9,
+        "CONFUSION"
+      ],
+      [
+        17,
+        "ICY_WIND"
+      ],
+      [
+        25,
+        "ICE_PUNCH"
+      ],
+      [
+        33,
+        "PSYBEAM"
+      ],
+      [
+        41,
+        "FROST_BREATH"
+      ],
+      [
+        49,
+        "PSYCHIC_M"
+      ],
+      [
+        57,
+        "BLIZZARD"
+      ]
+    ],
+    "remove": [
+      1,
+      5,
+      8,
+      11,
+      12,
+      15,
+      17,
+      19
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      50,
+      35,
+      95,
+      95
+    ],
+    "before_start": [
+      "POUND",
+      "LOVELY_KISS",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "electabuzz",
+    "title": "Electabuzz",
+    "dex": 125,
+    "stats": [
+      65,
+      95,
+      57,
+      105,
+      85
+    ],
+    "start": [
+      "QUICK_ATTACK",
+      "LEER"
+    ],
+    "learn": [
+      [
+        7,
+        "THUNDERSHOCK"
+      ],
+      [
+        15,
+        "LOW_KICK"
+      ],
+      [
+        23,
+        "THUNDERPUNCH"
+      ],
+      [
+        31,
+        "SCREECH"
+      ],
+      [
+        39,
+        "BRICK_BREAK"
+      ],
+      [
+        47,
+        "THUNDERCLAP"
+      ],
+      [
+        55,
+        "THUNDER"
+      ]
+    ],
+    "remove": [
+      15,
+      29,
+      30,
+      35,
+      46
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      83,
+      57,
+      105,
+      85
+    ],
+    "before_start": [
+      "QUICK_ATTACK",
+      "LEER",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "magmar",
+    "title": "Magmar",
+    "dex": 126,
+    "stats": [
+      65,
+      95,
+      57,
+      93,
+      85
+    ],
+    "start": [
+      "EMBER",
+      "LEER"
+    ],
+    "learn": [
+      [
+        9,
+        "SMOKESCREEN"
+      ],
+      [
+        17,
+        "SMOG"
+      ],
+      [
+        25,
+        "FIRE_PUNCH"
+      ],
+      [
+        33,
+        "MEGA_PUNCH"
+      ],
+      [
+        41,
+        "CAUTERIZE"
+      ],
+      [
+        49,
+        "FLAMETHROWER"
+      ],
+      [
+        57,
+        "FIRE_BLAST"
+      ]
+    ],
+    "remove": [
+      15,
+      29,
+      30,
+      35,
+      46
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      95,
+      57,
+      93,
+      85
+    ],
+    "before_start": [
+      "EMBER",
+      "0",
+      "0",
+      "0"
+    ]
   }
 ]

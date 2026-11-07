@@ -121,10 +121,10 @@ ExtraTMCompatibilityTable:
 	db $00, $00 ; 120: staryu
 	db $00, $00 ; 121: starmie
 	db $00, $00 ; 122: mrmime
-	db $11, $00 ; 123: scyther
+	db $12, $00 ; 123: scyther
 	db $00, $00 ; 124: jynx
-	db $00, $00 ; 125: electabuzz
-	db $80, $00 ; 126: magmar
+	db $02, $00 ; 125: electabuzz
+	db $02, $00 ; 126: magmar
 	db $60, $00 ; 127: pinsir
 	db $02, $00 ; 128: tauros
 	db $00, $00 ; 129: magikarp

@@ -13,16 +13,16 @@ dw MagmarPicFront
 dw MagmarPicBack
 ; attacks known at lvl 0
 db EMBER
-db 0
+db LEER
 db 0
 db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 1,5,8
-	tmlearn 15
+	tmlearn 0
 	tmlearn 17,18,19,20
-	tmlearn 29,30
-	tmlearn 35,38,40
-	tmlearn 44,46
+	tmlearn 0
+	tmlearn 38,40
+	tmlearn 44
 	tmlearn 54
 db 0 ; padding

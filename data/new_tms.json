@@ -1294,10 +1294,10 @@
       "name": "scyther",
       "source": "scyther",
       "tms": [
-        51,
+        52,
         55
       ],
-      "mask": 17
+      "mask": 18
     },
     {
       "dex": 124,
@@ -1310,17 +1310,19 @@
       "dex": 125,
       "name": "electabuzz",
       "source": "electabuzz",
-      "tms": [],
-      "mask": 0
+      "tms": [
+        52
+      ],
+      "mask": 2
     },
     {
       "dex": 126,
       "name": "magmar",
       "source": "magmar",
       "tms": [
-        58
+        52
       ],
-      "mask": 128
+      "mask": 2
     },
     {
       "dex": 127,

@@ -540,17 +540,12 @@ ScytherEvosMoves:
 ; Evolutions
 	db 0
 ; Learnsetjoenote-modified for yellow
-	db 17, LEER
-	db 20, FOCUS_ENERGY
-	db 24, DOUBLE_TEAM
-	db 28, LUNGE
-	db 29, SLASH
-	db 32, AERIAL_ACE
-	db 35, SWORDS_DANCE
-	db 36, X_SCISSOR
-	db 38, AMBUSH
-	db 42, AGILITY
-	db 50, WING_ATTACK
+	db 9, LUNGE
+	db 17, WING_ATTACK
+	db 25, FOCUS_ENERGY
+	db 33, SLASH
+	db 41, X_SCISSOR
+	db 49, SWORDS_DANCE
 	db 0
 
 StaryuEvosMoves:
@@ -859,16 +854,13 @@ MagmarEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 24, FLAME_CHARGE
-	db 26, WILL_O_WISP
-	db 30, INCINERATE
-	db 36, LEER
-	db 38, CAUTERIZE
-	db 39, CONFUSE_RAY
-	db 43, FIRE_PUNCH
-	db 48, SMOKESCREEN
-	db 52, SMOG
-	db 55, FLAMETHROWER
+	db 9, SMOKESCREEN
+	db 17, SMOG
+	db 25, FIRE_PUNCH
+	db 33, MEGA_PUNCH
+	db 41, CAUTERIZE
+	db 49, FLAMETHROWER
+	db 57, FIRE_BLAST
 	db 0
 
 MissingNo34EvosMoves:
@@ -881,14 +873,13 @@ ElectabuzzEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 24, CHARGE
-	db 32, SHOCK_WAVE
-	db 34, THUNDERSHOCK
-	db 37, SCREECH
-	db 40, THUNDERCLAP
-	db 42, THUNDERPUNCH
-	db 49, LIGHT_SCREEN
-	db 54, THUNDER
+	db 7, THUNDERSHOCK
+	db 15, LOW_KICK
+	db 23, THUNDERPUNCH
+	db 31, SCREECH
+	db 39, BRICK_BREAK
+	db 47, THUNDERCLAP
+	db 55, THUNDER
 	db 0
 
 MagnetonEvosMoves:
@@ -1080,19 +1071,13 @@ JynxEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 18, LICK
-	db 22, ICY_WIND
-	db 23, DOUBLESLAP
-	db 26, ICE_SHARD
-	db 31, ICE_PUNCH
-	db 32, PSYSHOCK
-	db 35, ICE_ARMOR
-	db 36, MIND_BREAK
-	db 39, BODY_SLAM
-	db 40, FROST_BREATH
-	db 47, THRASH
-	db 48, FLASH_FREEZE
-	db 58, BLIZZARD
+	db 9, CONFUSION
+	db 17, ICY_WIND
+	db 25, ICE_PUNCH
+	db 33, PSYBEAM
+	db 41, FROST_BREATH
+	db 49, PSYCHIC_M
+	db 57, BLIZZARD
 	db 0
 
 MoltresEvosMoves:
