@@ -888,12 +888,14 @@ PsyduckEvosMoves:
 	db EV_LEVEL, 33, GOLDUCK
 	db 0
 ; Learnset
-	db 28, TAIL_WHIP
-	db 29, SCALD
-	db 31, DISABLE
-	db 36, CONFUSION
-	db 43, FURY_SWIPES
-	db 52, HYDRO_PUMP
+	db 7, WATER_GUN
+	db 12, CONFUSION
+	db 17, DISABLE
+	db 22, BUBBLEBEAM
+	db 27, PSYBEAM
+	db 31, AMNESIA
+	db 40, HYDRO_PUMP
+	db 46, PSYCHIC_M
 	db 0
 
 DrowzeeEvosMoves:
@@ -1012,15 +1014,13 @@ MankeyEvosMoves:
 	db EV_LEVEL, 28, PRIMEAPE
 	db 0
 ; Learnset;joenote-modified for yellow
-	db 9, LOW_KICK
-	db 15, KARATE_CHOP
-	db 21, FURY_SWIPES
-	db 24, BULK_UP
+	db 7, LOW_KICK
+	db 12, KARATE_CHOP
+	db 17, FURY_SWIPES
+	db 22, RAGE
 	db 27, FOCUS_ENERGY
-	db 30, PUNISHMENT
-	db 33, SEISMIC_TOSS
-	db 39, THRASH
-	db 45, SCREECH
+	db 32, PUNISHMENT
+	db 38, THRASH
 	db 0
 
 SeelEvosMoves:
@@ -1246,12 +1246,12 @@ MeowthEvosMoves:
 	db EV_LEVEL, 28, PERSIAN
 	db 0
 ; Learnset
-	db 12, BITE
-	db 17, PAY_DAY
+	db 9, BITE
+	db 14, PAY_DAY
+	db 19, FURY_SWIPES
 	db 24, SCREECH
-	db 30, PUNISHMENT
-	db 33, FURY_SWIPES
-	db 44, SLASH
+	db 29, SLASH
+	db 35, PUNISHMENT
 	db 0
 
 KrabbyEvosMoves:
@@ -1767,18 +1767,14 @@ PrimeapeEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset;joenote-modified for yellow
-	db 9, LOW_KICK
-	db 15, KARATE_CHOP
-	db 21, FURY_SWIPES
+	db 7, LOW_KICK
+	db 12, KARATE_CHOP
+	db 17, FURY_SWIPES
+	db 22, RAGE
 	db 27, FOCUS_ENERGY
-	db 28, RAGE
-	db 29, BULK_UP
+	db 29, BRICK_BREAK
 	db 34, PUNISHMENT
-	db 37, SEISMIC_TOSS
-	db 40, BRICK_BREAK
-	db 42, DRAIN_PUNCH
-	db 45, SCREECH
-	db 46, THRASH
+	db 42, THRASH
 	db 0
 
 DugtrioEvosMoves:
@@ -1890,12 +1886,15 @@ GolduckEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 28, TAIL_WHIP
-	db 31, DISABLE
-	db 32, SCALD
-	db 39, CONFUSION
-	db 48, FURY_SWIPES
-	db 59, HYDRO_PUMP
+	db 7, WATER_GUN
+	db 12, CONFUSION
+	db 17, DISABLE
+	db 22, BUBBLEBEAM
+	db 27, PSYBEAM
+	db 31, AMNESIA
+	db 34, PSYSHOCK
+	db 44, HYDRO_PUMP
+	db 50, PSYCHIC_M
 	db 0
 
 HypnoEvosMoves:
@@ -2080,12 +2079,12 @@ PersianEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 12, BITE
-	db 17, PAY_DAY
+	db 9, BITE
+	db 14, PAY_DAY
+	db 19, FURY_SWIPES
 	db 24, SCREECH
-	db 34, PUNISHMENT
-	db 37, FURY_SWIPES
-	db 51, SLASH
+	db 31, SLASH
+	db 38, PUNISHMENT
 	db 0
 
 MarowakEvosMoves:

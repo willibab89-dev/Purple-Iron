@@ -3498,5 +3498,424 @@
       "DIG",
       "0"
     ]
+  },
+  {
+    "name": "meowth",
+    "title": "Meowth",
+    "dex": 52,
+    "stats": [
+      40,
+      45,
+      35,
+      90,
+      40
+    ],
+    "start": [
+      "SCRATCH",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "BITE"
+      ],
+      [
+        14,
+        "PAY_DAY"
+      ],
+      [
+        19,
+        "FURY_SWIPES"
+      ],
+      [
+        24,
+        "SCREECH"
+      ],
+      [
+        29,
+        "SLASH"
+      ],
+      [
+        35,
+        "PUNISHMENT"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      24,
+      25,
+      40
+    ],
+    "add": [],
+    "before_stats": [
+      40,
+      45,
+      35,
+      90,
+      40
+    ],
+    "before_start": [
+      "SCRATCH",
+      "GROWL",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "persian",
+    "title": "Persian",
+    "dex": 53,
+    "stats": [
+      65,
+      80,
+      60,
+      115,
+      65
+    ],
+    "start": [
+      "SCRATCH",
+      "GROWL",
+      "BITE",
+      "SCREECH"
+    ],
+    "learn": [
+      [
+        9,
+        "BITE"
+      ],
+      [
+        14,
+        "PAY_DAY"
+      ],
+      [
+        19,
+        "FURY_SWIPES"
+      ],
+      [
+        24,
+        "SCREECH"
+      ],
+      [
+        31,
+        "SLASH"
+      ],
+      [
+        38,
+        "PUNISHMENT"
+      ]
+    ],
+    "remove": [
+      11,
+      12,
+      15,
+      24,
+      25,
+      40
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      70,
+      60,
+      115,
+      65
+    ],
+    "before_start": [
+      "SCRATCH",
+      "GROWL",
+      "BITE",
+      "SCREECH"
+    ]
+  },
+  {
+    "name": "psyduck",
+    "title": "Psyduck",
+    "dex": 54,
+    "stats": [
+      50,
+      52,
+      48,
+      55,
+      50
+    ],
+    "start": [
+      "SCRATCH",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        7,
+        "WATER_GUN"
+      ],
+      [
+        12,
+        "CONFUSION"
+      ],
+      [
+        17,
+        "DISABLE"
+      ],
+      [
+        22,
+        "BUBBLEBEAM"
+      ],
+      [
+        27,
+        "PSYBEAM"
+      ],
+      [
+        31,
+        "AMNESIA"
+      ],
+      [
+        40,
+        "HYDRO_PUMP"
+      ],
+      [
+        46,
+        "PSYCHIC_M"
+      ]
+    ],
+    "remove": [
+      17,
+      19,
+      28,
+      40
+    ],
+    "add": [
+      29
+    ],
+    "before_stats": [
+      50,
+      52,
+      48,
+      55,
+      50
+    ],
+    "before_start": [
+      "SCRATCH",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "golduck",
+    "title": "Golduck",
+    "dex": 55,
+    "stats": [
+      80,
+      82,
+      78,
+      85,
+      80
+    ],
+    "start": [
+      "SCRATCH",
+      "TAIL_WHIP",
+      "WATER_GUN",
+      "CONFUSION"
+    ],
+    "learn": [
+      [
+        7,
+        "WATER_GUN"
+      ],
+      [
+        12,
+        "CONFUSION"
+      ],
+      [
+        17,
+        "DISABLE"
+      ],
+      [
+        22,
+        "BUBBLEBEAM"
+      ],
+      [
+        27,
+        "PSYBEAM"
+      ],
+      [
+        31,
+        "AMNESIA"
+      ],
+      [
+        34,
+        "PSYSHOCK"
+      ],
+      [
+        44,
+        "HYDRO_PUMP"
+      ],
+      [
+        50,
+        "PSYCHIC_M"
+      ]
+    ],
+    "remove": [
+      15,
+      17,
+      19,
+      28,
+      40
+    ],
+    "add": [
+      29
+    ],
+    "before_stats": [
+      80,
+      82,
+      78,
+      85,
+      80
+    ],
+    "before_start": [
+      "SCRATCH",
+      "TAIL_WHIP",
+      "DISABLE",
+      "0"
+    ]
+  },
+  {
+    "name": "mankey",
+    "title": "Mankey",
+    "dex": 56,
+    "stats": [
+      40,
+      80,
+      35,
+      70,
+      35
+    ],
+    "start": [
+      "SCRATCH",
+      "LEER"
+    ],
+    "learn": [
+      [
+        7,
+        "LOW_KICK"
+      ],
+      [
+        12,
+        "KARATE_CHOP"
+      ],
+      [
+        17,
+        "FURY_SWIPES"
+      ],
+      [
+        22,
+        "RAGE"
+      ],
+      [
+        27,
+        "FOCUS_ENERGY"
+      ],
+      [
+        32,
+        "PUNISHMENT"
+      ],
+      [
+        38,
+        "THRASH"
+      ]
+    ],
+    "remove": [
+      24,
+      25,
+      28,
+      35
+    ],
+    "add": [],
+    "before_stats": [
+      40,
+      80,
+      35,
+      70,
+      35
+    ],
+    "before_start": [
+      "SCRATCH",
+      "LEER",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "primeape",
+    "title": "Primeape",
+    "dex": 57,
+    "stats": [
+      75,
+      105,
+      60,
+      95,
+      60
+    ],
+    "start": [
+      "SCRATCH",
+      "LEER",
+      "KARATE_CHOP",
+      "FURY_SWIPES"
+    ],
+    "learn": [
+      [
+        7,
+        "LOW_KICK"
+      ],
+      [
+        12,
+        "KARATE_CHOP"
+      ],
+      [
+        17,
+        "FURY_SWIPES"
+      ],
+      [
+        22,
+        "RAGE"
+      ],
+      [
+        27,
+        "FOCUS_ENERGY"
+      ],
+      [
+        29,
+        "BRICK_BREAK"
+      ],
+      [
+        34,
+        "PUNISHMENT"
+      ],
+      [
+        42,
+        "THRASH"
+      ]
+    ],
+    "remove": [
+      15,
+      24,
+      25,
+      28,
+      35
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      105,
+      60,
+      95,
+      60
+    ],
+    "before_start": [
+      "SCRATCH",
+      "LEER",
+      "KARATE_CHOP",
+      "FURY_SWIPES"
+    ]
   }
 ]
