@@ -1,5 +1,5 @@
 db DEX_SEADRA ; pokedex id
-db 55 ; base hp
+db 65 ; base hp
 db 65 ; base attack
 db 95 ; base defense
 db 85 ; base speed
@@ -19,7 +19,7 @@ db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 0
-	tmlearn 11,12,13,14,15
+	tmlearn 11,12,13,14
 	tmlearn 0
 	tmlearn 32
 	tmlearn 39,40

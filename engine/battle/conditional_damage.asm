@@ -69,6 +69,7 @@ IsConditionalDamageMove:
 	and a
 	ret
 ConditionalDamageMoves:
+	db VINE_CRUSH, 70, GRASS
 	db ELECTRO_BALL, 40, ELECTRIC
 	db WAKE_UP_SLAP, 60, NORMAL
 	db AMBUSH, 50, BUG
@@ -525,6 +526,8 @@ ConditionalHP:
 
 ConditionalPower:
 	ld a, [wCustomMove]
+	cp VINE_CRUSH
+	jp z, .paralyzed
 	cp ELECTRO_BALL
 	jp z, ConditionalElectroBall
 	cp WAKE_UP_SLAP
@@ -552,7 +555,7 @@ ConditionalPower:
 	cp ICE_SHARD
 	jr z, .freeze
 	cp POLLUTION
-	jr z, .water
+	jp z, .water
 	ret
 .ambush
 	callab SequenceTargetBelowHalf
@@ -616,6 +619,11 @@ ConditionalPower:
 	call ConditionalTargetStatus
 	bit PSN, [hl]
 	jr nz, .double
+	ret
+.paralyzed
+	call ConditionalTargetStatus
+	bit PAR, [hl]
+	jp nz, .double
 	ret
 .freeze
 	call ConditionalTargetStatus

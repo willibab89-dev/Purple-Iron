@@ -227,4 +227,5 @@ MoveNames::
 	db "MUD WAVE@"
 	db "SHELL SMASH@"
 	db "ELECTRO BALL@"
+	db "VINE CRUSH@"
 MoveNamesEnd:

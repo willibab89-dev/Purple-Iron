@@ -42,7 +42,7 @@ def validate(version):
     assert data('ExtraTMCompatibilityTable', 2 * len(PLAN['entries'])) == masks
     byname = {e['name']: set(e['tms']) for e in PLAN['entries']}
     assert byname['mew'] == set(range(51, 64))
-    for number,allowed in [(61,{'ekans','arbok','zubat','golbat','crobat','paras','parasect','mew'}),(62,{'ekans','arbok','beedrill','nidoranf','nidorina','nidoqueen','nidoranm','nidorino','nidoking','bellsprout','weepinbell','victreebel','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','spearow','fearow','pikachu','raichu','growlithe','arcanine','ponyta','rapidash','doduo','dodrio','hitmonlee','mew'})]:
+    for number,allowed in [(61,{'ekans','arbok','zubat','golbat','crobat','paras','parasect','mew'}),(62,{'ekans','arbok','beedrill','nidoranf','nidorina','nidoqueen','nidoranm','nidorino','nidoking','bellsprout','weepinbell','victreebel','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','spearow','fearow','pikachu','raichu','growlithe','arcanine','ponyta','rapidash','doduo','dodrio','hitmonlee','horsea','seadra','mew'})]:
         assert {name for name,tms in byname.items() if number in tms}==allowed
     for baby, adult in (('dragonair','dragonite'),('caterpie','butterfree')):
         assert 51 not in byname[baby] and 51 in byname[adult]
@@ -55,6 +55,8 @@ def validate(version):
     assert {52,63} <= byname['hitmonlee'] and 56 not in byname['hitmonlee']
     assert {52,56} <= byname['hitmonchan']
     for mon in ('exeggcute','exeggutor'):assert 60 not in byname[mon]
+    assert 54 not in byname['tangela'] and 56 not in byname['kangaskhan']
+    for mon in ('horsea','seadra'):assert 63 in byname[mon]
     assert 55 in byname['charizard']
     for mon in ('spearow','fearow'):
         assert 51 not in byname[mon] and {52,55,63} <= byname[mon]
@@ -67,7 +69,7 @@ def validate(version):
     assert 51 not in byname['doduo'] and 51 not in byname['dodrio']
     assert 55 not in byname['kabuto'] and 55 in byname['kabutops']
     assert 53 not in byname['magikarp']
-    for mon in ('slowbro','starmie','lapras','gyarados','krabby','kingler'): assert 59 not in byname[mon]
+    for mon in ('slowbro','starmie','lapras','gyarados','krabby','kingler','horsea','seadra'): assert 59 not in byname[mon]
     for mon in ('krabby','kingler'):assert 52 in byname[mon]
     assert 59 in byname['vaporeon']
     assert 53 in byname['goldeen'] and 53 not in byname['goldeen_fighting'] and 52 in byname['goldeen_fighting']

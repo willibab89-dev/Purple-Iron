@@ -1,4 +1,4 @@
-name: "Lickitung, Weezing and Rhydon family redesigns"
+name: "Chansey, Tangela, Kangaskhan and Seadra redesigns"
 
 on:
   workflow_dispatch:
@@ -68,6 +68,7 @@ jobs:
           python3 tools/test_zap_and_triple.py
           python3 tools/test_mud_and_shell.py
           python3 tools/test_electro_ball.py
+          python3 tools/test_vine_crush.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -110,3 +111,4 @@ jobs:
             ${{ runner.temp }}/patches/HYPNO-KINGLER-ELECTRODE.md
             ${{ runner.temp }}/patches/EXEGGUTOR-MAROWAK-HITMONS.md
             ${{ runner.temp }}/patches/LICKITUNG-WEEZING-RHYDON.md
+            ${{ runner.temp }}/patches/CHANSEY-TANGELA-KANGASKHAN-SEADRA.md

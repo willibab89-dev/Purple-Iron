@@ -112,10 +112,10 @@ ExtraTMCompatibilityTable:
 	db $40, $00 ; 111: rhyhorn
 	db $60, $00 ; 112: rhydon
 	db $00, $00 ; 113: chansey
-	db $08, $00 ; 114: tangela
-	db $22, $00 ; 115: kangaskhan
-	db $04, $01 ; 116: horsea
-	db $04, $01 ; 117: seadra
+	db $00, $00 ; 114: tangela
+	db $02, $00 ; 115: kangaskhan
+	db $04, $10 ; 116: horsea
+	db $04, $10 ; 117: seadra
 	db $04, $00 ; 118: goldeen
 	db $04, $00 ; 119: seaking
 	db $04, $00 ; 120: staryu

@@ -13,16 +13,16 @@ dw ChanseyPicFront
 dw ChanseyPicBack
 ; attacks known at lvl 0
 db POUND
-db DOUBLESLAP
+db GROWL
 db 0
 db 0
 db 4 ; growth rate
 ; learnset
-	tmlearn 1,5,8
-	tmlearn 11,12,13,14,15
-	tmlearn 17,18,19,22,24
+	tmlearn 0
+	tmlearn 13,14
+	tmlearn 18,19,24
 	tmlearn 25,29,30,31
-	tmlearn 33,34,35,37,38,40
+	tmlearn 33,35,37,38
 	tmlearn 41,44,45,46
 	tmlearn 49,54,55
 db 0 ; padding

@@ -254,6 +254,7 @@ MoveAnimationMap:
 	db SURF ; MUD_WAVE
 	db WITHDRAW ; SHELL_SMASH
 	db THUNDERSHOCK ; ELECTRO_BALL
+	db VINE_WHIP ; VINE_CRUSH
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

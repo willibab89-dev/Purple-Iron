@@ -7293,5 +7293,317 @@
       "TAIL_WHIP",
       "FURY_ATTACK"
     ]
+  },
+  {
+    "name": "chansey",
+    "title": "Chansey",
+    "dex": 113,
+    "stats": [
+      250,
+      5,
+      5,
+      50,
+      105
+    ],
+    "start": [
+      "POUND",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "DOUBLESLAP"
+      ],
+      [
+        16,
+        "SING"
+      ],
+      [
+        23,
+        "SOFTBOILED"
+      ],
+      [
+        30,
+        "SEISMIC_TOSS"
+      ],
+      [
+        38,
+        "LIGHT_SCREEN"
+      ],
+      [
+        46,
+        "EGG_BOMB"
+      ]
+    ],
+    "remove": [
+      1,
+      5,
+      8,
+      11,
+      12,
+      15,
+      17,
+      22,
+      34,
+      40
+    ],
+    "add": [],
+    "before_stats": [
+      250,
+      5,
+      5,
+      50,
+      105
+    ],
+    "before_start": [
+      "POUND",
+      "DOUBLESLAP",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "tangela",
+    "title": "Tangela",
+    "dex": 114,
+    "stats": [
+      65,
+      55,
+      115,
+      60,
+      100
+    ],
+    "start": [
+      "CONSTRICT",
+      "ABSORB"
+    ],
+    "learn": [
+      [
+        9,
+        "BIND"
+      ],
+      [
+        17,
+        "STUN_SPORE"
+      ],
+      [
+        25,
+        "MEGA_DRAIN"
+      ],
+      [
+        33,
+        "INGRAIN"
+      ],
+      [
+        41,
+        "GROWTH"
+      ],
+      [
+        49,
+        "VINE_CRUSH"
+      ]
+    ],
+    "remove": [
+      3,
+      15,
+      34
+    ],
+    "add": [],
+    "before_stats": [
+      65,
+      55,
+      115,
+      60,
+      100
+    ],
+    "before_start": [
+      "CONSTRICT",
+      "BIND",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "kangaskhan",
+    "title": "Kangaskhan",
+    "dex": 115,
+    "stats": [
+      105,
+      95,
+      80,
+      90,
+      40
+    ],
+    "start": [
+      "POUND",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        9,
+        "BITE"
+      ],
+      [
+        17,
+        "RAGE"
+      ],
+      [
+        25,
+        "MEGA_PUNCH"
+      ],
+      [
+        33,
+        "COUNTER"
+      ],
+      [
+        41,
+        "DIZZY_PUNCH"
+      ],
+      [
+        49,
+        "FACADE"
+      ]
+    ],
+    "remove": [
+      15,
+      25,
+      26,
+      27,
+      38,
+      48
+    ],
+    "add": [],
+    "before_stats": [
+      105,
+      95,
+      80,
+      90,
+      40
+    ],
+    "before_start": [
+      "COMET_PUNCH",
+      "RAGE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "horsea",
+    "title": "Horsea",
+    "dex": 116,
+    "stats": [
+      30,
+      40,
+      70,
+      60,
+      70
+    ],
+    "start": [
+      "BUBBLE"
+    ],
+    "learn": [
+      [
+        8,
+        "SMOKESCREEN"
+      ],
+      [
+        15,
+        "WATER_GUN"
+      ],
+      [
+        22,
+        "FOCUS_ENERGY"
+      ],
+      [
+        29,
+        "SNIPE_SHOT"
+      ],
+      [
+        36,
+        "AGILITY"
+      ],
+      [
+        50,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      30,
+      40,
+      70,
+      60,
+      70
+    ],
+    "before_start": [
+      "BUBBLE",
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "seadra",
+    "title": "Seadra",
+    "dex": 117,
+    "stats": [
+      65,
+      65,
+      95,
+      85,
+      95
+    ],
+    "start": [
+      "BUBBLE",
+      "SMOKESCREEN"
+    ],
+    "learn": [
+      [
+        8,
+        "SMOKESCREEN"
+      ],
+      [
+        15,
+        "WATER_GUN"
+      ],
+      [
+        22,
+        "FOCUS_ENERGY"
+      ],
+      [
+        29,
+        "SNIPE_SHOT"
+      ],
+      [
+        36,
+        "AGILITY"
+      ],
+      [
+        43,
+        "DRAGON_RAGE"
+      ],
+      [
+        50,
+        "HYDRO_PUMP"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      55,
+      65,
+      95,
+      85,
+      95
+    ],
+    "before_start": [
+      "BUBBLE",
+      "SMOKESCREEN",
+      "0",
+      "0"
+    ]
   }
 ]

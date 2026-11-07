@@ -12,17 +12,17 @@ INCBIN KANGASKHAN_FR,0,1 ; 77, sprite dimensions
 dw KangaskhanPicFront
 dw KangaskhanPicBack
 ; attacks known at lvl 0
-db COMET_PUNCH
-db RAGE
+db POUND
+db GROWL
 db 0
 db 0
 db 0 ; growth rate
 ; learnset
 	tmlearn 1,5,8
-	tmlearn 9,10,11,12,13,14,15
+	tmlearn 9,10,11,12,13,14
 	tmlearn 17,18,19,24
-	tmlearn 25,26,27
-	tmlearn 34,38,40
-	tmlearn 44,48
+	tmlearn 0
+	tmlearn 34,40
+	tmlearn 44
 	tmlearn 53,54
 db 0 ; padding

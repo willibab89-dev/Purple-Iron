@@ -210,13 +210,12 @@ KangaskhanEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 26, BITE
-	db 31, TAIL_WHIP
-	db 36, MEGA_PUNCH
-	db 37, FACADE
-	db 41, LEER
-	db 42, BRICK_BREAK
-	db 46, DIZZY_PUNCH
+	db 9, BITE
+	db 17, RAGE
+	db 25, MEGA_PUNCH
+	db 33, COUNTER
+	db 41, DIZZY_PUNCH
+	db 49, FACADE
 	db 0
 
 NidoranMEvosMoves:
@@ -605,17 +604,12 @@ TangelaEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset	joenote-modified for yellow
-	db 27, ABSORB
-	db 29, VINE_WHIP
-
-	db 30, INGRAIN
-	db 32, POISONPOWDER
-	db 33, SYNTHESIS
-	db 36, STUN_SPORE
-	db 39, SLEEP_POWDER
-	db 42, GIGA_DRAIN
-	db 45, SLAM
-	db 49, GROWTH
+	db 9, BIND
+	db 17, STUN_SPORE
+	db 25, MEGA_DRAIN
+	db 33, INGRAIN
+	db 41, GROWTH
+	db 49, VINE_CRUSH
 	db 0
 
 MissingNo1FEvosMoves:
@@ -729,13 +723,12 @@ ChanseyEvosMoves:
 ; Evolutions
 	db 0
 ; Learnsetjoenote-modified for yellow
-	db 12, TAIL_WHIP
-	db 24, SING
-	db 30, GROWL
-	db 38, MINIMIZE
-	db 44, DEFENSE_CURL
-	db 48, LIGHT_SCREEN
-	db 54, DOUBLE_EDGE
+	db 9, DOUBLESLAP
+	db 16, SING
+	db 23, SOFTBOILED
+	db 30, SEISMIC_TOSS
+	db 38, LIGHT_SCREEN
+	db 46, EGG_BOMB
 	db 0
 
 MachokeEvosMoves:
@@ -1342,29 +1335,25 @@ HorseaEvosMoves:
 	db EV_LEVEL, 32, SEADRA
 	db 0
 ; Learnset
-	db 19, SMOKESCREEN
-	db 22, AQUA_JET
-	db 24, LEER
-	db 30, WATER_GUN
-	db 31, BRINE
-	db 37, AGILITY
-	db 38, SNIPE_SHOT
-	db 45, HYDRO_PUMP
+	db 8, SMOKESCREEN
+	db 15, WATER_GUN
+	db 22, FOCUS_ENERGY
+	db 29, SNIPE_SHOT
+	db 36, AGILITY
+	db 50, HYDRO_PUMP
 	db 0
 
 SeadraEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 19, SMOKESCREEN
-	db 24, LEER
-	db 26, AQUA_JET
-	db 30, WATER_GUN
-	db 34, BRINE
-	db 41, AGILITY
-	db 42, SNIPE_SHOT
-	db 44, DRAGON_DANCE
-	db 52, HYDRO_PUMP
+	db 8, SMOKESCREEN
+	db 15, WATER_GUN
+	db 22, FOCUS_ENERGY
+	db 29, SNIPE_SHOT
+	db 36, AGILITY
+	db 43, DRAGON_RAGE
+	db 50, HYDRO_PUMP
 	db 0
 
 MissingNo5EEvosMoves:

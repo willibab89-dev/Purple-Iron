@@ -86,5 +86,16 @@
     "accuracy": 100,
     "pp": 10,
     "animation": "THUNDERSHOCK"
+  },
+  {
+    "id": 228,
+    "symbol": "VINE_CRUSH",
+    "name": "VINE CRUSH",
+    "effect": "NO_ADDITIONAL_EFFECT",
+    "power": 70,
+    "type": "GRASS",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "VINE_WHIP"
   }
 ]

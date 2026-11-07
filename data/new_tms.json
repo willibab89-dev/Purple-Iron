@@ -1214,20 +1214,17 @@
       "dex": 114,
       "name": "tangela",
       "source": "tangela",
-      "tms": [
-        54
-      ],
-      "mask": 8
+      "tms": [],
+      "mask": 0
     },
     {
       "dex": 115,
       "name": "kangaskhan",
       "source": "kangaskhan",
       "tms": [
-        52,
-        56
+        52
       ],
-      "mask": 34
+      "mask": 2
     },
     {
       "dex": 116,
@@ -1235,9 +1232,9 @@
       "source": "horsea",
       "tms": [
         53,
-        59
+        63
       ],
-      "mask": 260
+      "mask": 4100
     },
     {
       "dex": 117,
@@ -1245,9 +1242,9 @@
       "source": "seadra",
       "tms": [
         53,
-        59
+        63
       ],
-      "mask": 260
+      "mask": 4100
     },
     {
       "dex": 118,

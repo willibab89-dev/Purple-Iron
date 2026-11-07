@@ -13,16 +13,16 @@ dw TangelaPicFront
 dw TangelaPicBack
 ; attacks known at lvl 0
 db CONSTRICT
-db BIND
+db ABSORB
 db 0
 db 0
 db 0 ; growth rate
 ; learnset
-	tmlearn 3,8
-	tmlearn 15
+	tmlearn 8
+	tmlearn 0
 	tmlearn 21,22
 	tmlearn 0
-	tmlearn 34,40
+	tmlearn 40
 	tmlearn 44
 	tmlearn 51
 db 0 ; padding
