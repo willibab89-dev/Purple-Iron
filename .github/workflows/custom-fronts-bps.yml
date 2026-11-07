@@ -1,4 +1,4 @@
-name: "Final unique variants; complete Erika team"
+name: "Move distribution 1; Crunch"
 
 on:
   workflow_dispatch:
@@ -136,3 +136,4 @@ jobs:
             ${{ runner.temp }}/patches/UNIQUE-MAROWAK-AND-NIDOKINGS.md
             ${{ runner.temp }}/patches/UNIQUE-NIDORAN-TO-RAICHU.md
             ${{ runner.temp }}/patches/FINAL-UNIQUE-VARIANTS.md
+            ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-1-CRUNCH.md

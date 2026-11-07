@@ -458,6 +458,7 @@ ArcanineEvosMoves:
 	db 25, TAKE_DOWN
 	db 31, AGILITY
 	db 37, FLAMETHROWER
+	db 40, CRUNCH
 	db 44, DOUBLE_EDGE
 	db 52, FIRE_BLAST
 	db 0
@@ -482,6 +483,7 @@ GyaradosEvosMoves:
 	db 27, DRAGON_RAGE
 	db 33, THRASH
 	db 41, HYDRO_PUMP
+	db 45, CRUNCH
 	db 49, DRAGON_DANCE
 	db 57, HYPER_BEAM
 	db 0
@@ -613,6 +615,7 @@ GrowlitheEvosMoves:
 	db 25, TAKE_DOWN
 	db 31, AGILITY
 	db 37, FLAMETHROWER
+	db 40, CRUNCH
 	db 44, DOUBLE_EDGE
 	db 0
 
@@ -767,6 +770,7 @@ ArbokEvosMoves:
 	db 17, BITE
 	db 27, GLARE
 	db 36, POISON_FANG
+	db 43, CRUNCH
 	db 47, SCREECH
 	db 54, COIL
 	db 0

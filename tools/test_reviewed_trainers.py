@@ -54,6 +54,16 @@ def validate(version):
             assert get(f'wEnemyMon{slot}')[0] == index, trainer
             assert get(f'wEnemyMon{slot}Level')[0] == level, trainer
             assert get(f'wEnemyMon{slot}Moves', 4) == bytes(MOVES[m] for m in moves), (trainer, get(f'wEnemyMon{slot}Moves', 4))
+        # Inserting Crunch shifts natural slots before old trainer overrides.
+        # Preserve Blaine's other three attacks/options without duplicate Agility.
+        load('BLAINE', 1)
+        assert get('wEnemyMon4Level')[0] == 47
+        assert get('wEnemyMon4Moves', 4) == bytes(MOVES[m] for m in ['AGILITY', 'FIRE_BLAST', 'CRUNCH', 'DOUBLE_EDGE'])
+        assert get('wEnemyMon4PP', 4)[2] == 15
+        load('AGATHA', 1)
+        assert get('wEnemyMon4Moves', 4) == bytes(MOVES[m] for m in ['POISON_FANG', 'CRUNCH', 'SCREECH', 'EARTHQUAKE'])
+        load('LANCE', 1)
+        assert get('wEnemyMon1Moves', 4) == bytes(MOVES[m] for m in ['HYDRO_PUMP', 'CRUNCH', 'FIRE_BLAST', 'HYPER_BEAM'])
         # Preserve unrelated custom moves on the same teams and another leader.
         load('GIOVANNI', 3)
         assert get('wEnemyMon2Moves')[0] == MOVES['FISSURE']
@@ -68,7 +78,7 @@ def validate(version):
         for title in ('ReviewedNidoranMUnique', 'ReviewedOmanyteUnique', 'ReviewedOnixBrock', 'ReviewedRaichuUnique', 'ReviewedSquirtleUnique', 'ReviewedTangelaErika', 'ReviewedTentacoolBig', 'ReviewedVenusaurErika'):
             bank, target = syms[title+'EvosMoves']
             assert game.memory[bank, target] == 0
-        print(f'{version}: final ReadTrainer sets for seven reviewed Gym variants, default levels, independent no-evolution records and unrelated overrides passed')
+        print(f'{version}: final ReadTrainer sets for seven reviewed Gym variants, Crunch trainer sets, default levels, independent no-evolution records and unrelated overrides passed')
     finally:
         game.stop(save=False)
 

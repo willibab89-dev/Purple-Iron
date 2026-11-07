@@ -73,8 +73,7 @@ SpecialTrainerMoves:
 	db 1,1,SWIFT
 	db 2,1,STRENGTH
 	db 3,3,TAKE_DOWN
-	db 4,2,AGILITY
-	db 4,3,FIRE_BLAST
+	db 4,2,FIRE_BLAST
 	db 0
 	
 	db GIOVANNI,$3

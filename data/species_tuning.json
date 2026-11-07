@@ -89,6 +89,10 @@
         "POISON_FANG"
       ],
       [
+        43,
+        "CRUNCH"
+      ],
+      [
         47,
         "SCREECH"
       ],
@@ -3959,6 +3963,10 @@
         "FLAMETHROWER"
       ],
       [
+        40,
+        "CRUNCH"
+      ],
+      [
         44,
         "DOUBLE_EDGE"
       ]
@@ -4021,6 +4029,10 @@
       [
         37,
         "FLAMETHROWER"
+      ],
+      [
+        40,
+        "CRUNCH"
       ],
       [
         44,
@@ -8381,6 +8393,10 @@
       [
         41,
         "HYDRO_PUMP"
+      ],
+      [
+        45,
+        "CRUNCH"
       ],
       [
         49,
