@@ -5787,5 +5787,454 @@
       "AURORA_BEAM",
       "0"
     ]
+  },
+  {
+    "name": "grimer",
+    "title": "Grimer",
+    "dex": 88,
+    "stats": [
+      80,
+      80,
+      50,
+      25,
+      40
+    ],
+    "start": [
+      "POUND",
+      "DISABLE"
+    ],
+    "learn": [
+      [
+        7,
+        "POISON_GAS"
+      ],
+      [
+        10,
+        "HARDEN"
+      ],
+      [
+        14,
+        "POLLUTION"
+      ],
+      [
+        21,
+        "SLUDGE"
+      ],
+      [
+        28,
+        "MUD_WAVE"
+      ],
+      [
+        35,
+        "SCREECH"
+      ]
+    ],
+    "remove": [
+      24,
+      25,
+      36,
+      38,
+      47
+    ],
+    "add": [],
+    "before_stats": [
+      80,
+      80,
+      50,
+      25,
+      40
+    ],
+    "before_start": [
+      "POUND",
+      "DISABLE",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "muk",
+    "title": "Muk",
+    "dex": 89,
+    "stats": [
+      105,
+      105,
+      75,
+      50,
+      65
+    ],
+    "start": [
+      "POUND",
+      "DISABLE",
+      "POISON_GAS"
+    ],
+    "learn": [
+      [
+        7,
+        "POISON_GAS"
+      ],
+      [
+        10,
+        "HARDEN"
+      ],
+      [
+        14,
+        "POLLUTION"
+      ],
+      [
+        21,
+        "SLUDGE"
+      ],
+      [
+        28,
+        "MUD_WAVE"
+      ],
+      [
+        35,
+        "SCREECH"
+      ],
+      [
+        39,
+        "ACID_ARMOR"
+      ],
+      [
+        53,
+        "TOXIC"
+      ]
+    ],
+    "remove": [
+      15,
+      24,
+      25,
+      36,
+      38,
+      47
+    ],
+    "add": [],
+    "before_stats": [
+      105,
+      105,
+      75,
+      50,
+      65
+    ],
+    "before_start": [
+      "POUND",
+      "DISABLE",
+      "POISON_GAS",
+      "0"
+    ]
+  },
+  {
+    "name": "shellder",
+    "title": "Shellder",
+    "dex": 90,
+    "stats": [
+      30,
+      65,
+      100,
+      40,
+      45
+    ],
+    "start": [
+      "TACKLE",
+      "WITHDRAW"
+    ],
+    "learn": [
+      [
+        7,
+        "WATER_GUN"
+      ],
+      [
+        13,
+        "SUPERSONIC"
+      ],
+      [
+        19,
+        "CLAMP"
+      ],
+      [
+        25,
+        "AURORA_BEAM"
+      ],
+      [
+        31,
+        "ICICLE_SPEAR"
+      ],
+      [
+        43,
+        "ICE_BEAM"
+      ]
+    ],
+    "remove": [],
+    "add": [],
+    "before_stats": [
+      30,
+      65,
+      100,
+      40,
+      45
+    ],
+    "before_start": [
+      "TACKLE",
+      "WITHDRAW",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "cloyster",
+    "title": "Cloyster",
+    "dex": 91,
+    "stats": [
+      50,
+      95,
+      180,
+      70,
+      85
+    ],
+    "start": [
+      "TACKLE",
+      "WITHDRAW",
+      "WATER_GUN"
+    ],
+    "learn": [
+      [
+        7,
+        "WATER_GUN"
+      ],
+      [
+        13,
+        "SUPERSONIC"
+      ],
+      [
+        19,
+        "CLAMP"
+      ],
+      [
+        25,
+        "AURORA_BEAM"
+      ],
+      [
+        31,
+        "ICICLE_SPEAR"
+      ],
+      [
+        37,
+        "SPIKE_CANNON"
+      ],
+      [
+        43,
+        "ICE_BEAM"
+      ],
+      [
+        49,
+        "SHELL_SMASH"
+      ]
+    ],
+    "remove": [
+      15
+    ],
+    "add": [],
+    "before_stats": [
+      50,
+      95,
+      180,
+      70,
+      85
+    ],
+    "before_start": [
+      "TACKLE",
+      "WITHDRAW",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "gastly",
+    "title": "Gastly",
+    "dex": 92,
+    "stats": [
+      30,
+      35,
+      30,
+      80,
+      100
+    ],
+    "start": [
+      "LICK",
+      "CONFUSE_RAY"
+    ],
+    "learn": [
+      [
+        8,
+        "HYPNOSIS"
+      ],
+      [
+        15,
+        "NIGHT_SHADE"
+      ],
+      [
+        22,
+        "WAILING_CRY"
+      ],
+      [
+        29,
+        "DREAM_EATER"
+      ],
+      [
+        36,
+        "CURSE"
+      ],
+      [
+        43,
+        "SHADOW_LEECH"
+      ]
+    ],
+    "remove": [
+      6,
+      36,
+      47
+    ],
+    "add": [],
+    "before_stats": [
+      30,
+      35,
+      30,
+      80,
+      100
+    ],
+    "before_start": [
+      "LICK",
+      "CONFUSE_RAY",
+      "NIGHT_SHADE",
+      "0"
+    ]
+  },
+  {
+    "name": "haunter",
+    "title": "Haunter",
+    "dex": 93,
+    "stats": [
+      45,
+      50,
+      45,
+      95,
+      115
+    ],
+    "start": [
+      "LICK",
+      "CONFUSE_RAY"
+    ],
+    "learn": [
+      [
+        8,
+        "HYPNOSIS"
+      ],
+      [
+        15,
+        "NIGHT_SHADE"
+      ],
+      [
+        22,
+        "WAILING_CRY"
+      ],
+      [
+        29,
+        "DREAM_EATER"
+      ],
+      [
+        36,
+        "CURSE"
+      ],
+      [
+        43,
+        "SHADOW_LEECH"
+      ]
+    ],
+    "remove": [
+      6,
+      36,
+      47
+    ],
+    "add": [],
+    "before_stats": [
+      45,
+      50,
+      45,
+      95,
+      115
+    ],
+    "before_start": [
+      "LICK",
+      "CONFUSE_RAY",
+      "NIGHT_SHADE",
+      "0"
+    ]
+  },
+  {
+    "name": "gengar",
+    "title": "Gengar",
+    "dex": 94,
+    "stats": [
+      60,
+      65,
+      60,
+      110,
+      130
+    ],
+    "start": [
+      "LICK",
+      "CONFUSE_RAY"
+    ],
+    "learn": [
+      [
+        8,
+        "HYPNOSIS"
+      ],
+      [
+        15,
+        "NIGHT_SHADE"
+      ],
+      [
+        22,
+        "WAILING_CRY"
+      ],
+      [
+        29,
+        "DREAM_EATER"
+      ],
+      [
+        36,
+        "CURSE"
+      ],
+      [
+        43,
+        "SHADOW_LEECH"
+      ],
+      [
+        50,
+        "PSYCHIC_M"
+      ]
+    ],
+    "remove": [
+      6,
+      15,
+      36,
+      47
+    ],
+    "add": [],
+    "before_stats": [
+      60,
+      65,
+      60,
+      110,
+      130
+    ],
+    "before_start": [
+      "LICK",
+      "CONFUSE_RAY",
+      "NIGHT_SHADE",
+      "0"
+    ]
   }
 ]

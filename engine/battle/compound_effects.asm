@@ -147,6 +147,7 @@ CustomAttackEffect:
 
 ; move, stat (0..5; 6 = confusion), signed stage change, probability/256
 CustomAttackTable:
+	db MUD_WAVE, 4, -1, 77
 	db TONGUE_LASH, 3, -1, 255
 	db LUNGE, 0, -1, 255
 	db SHELL_BREAK, 1, -1, 255
@@ -217,7 +218,15 @@ CustomStatusEffect:
 	inc hl
 	call .one
 	call .one
-	jr CustomStatusDone
+	ld a, [wCustomMove]
+	cp SHELL_SMASH
+	jp nz, CustomStatusDone
+	ld a, 1
+	ld [wCustomStat], a
+	ld a, -2
+	ld [wCustomDelta], a
+	call CustomChangeStage
+	jp CustomStatusDone
 .one
 	ld a, [hli]
 	ld [wCustomStat], a
@@ -229,6 +238,7 @@ CustomStatusEffect:
 	ret
 
 CustomStatusTable:
+	db SHELL_SMASH, 0, 2, 2, 2
 	db QUIVER_DANCE, 3, 1, 2, 1
 	db STOCKPILE, 1, 1, 3, 1
 	db BULK_UP, 0, 1, 1, 1

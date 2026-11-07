@@ -381,34 +381,27 @@ GrimerEvosMoves:
 	db EV_LEVEL, 38, MUK
 	db 0
 ; Learnset
-	db 22, POLLUTION
-	db 26, STOCKPILE
-	db 30, POISON_GAS
-	db 31, VENOSHOCK
-	db 33, MINIMIZE
-	db 37, SLUDGE
-	db 42, HARDEN
-	db 48, SCREECH
-	db 55, ACID_ARMOR
+	db 7, POISON_GAS
+	db 10, HARDEN
+	db 14, POLLUTION
+	db 21, SLUDGE
+	db 28, MUD_WAVE
+	db 35, SCREECH
 	db 0
 
 GengarEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 12, ASTONISH
-	db 29, HYPNOSIS
-	db 34, WAILING_CRY
-	db 38, DREAM_EATER
-	db 39, WILL_O_WISP
-	db 40, PUNISHMENT
-
-	db 41, CURSE
-
-	db 44, SHADOW_LEECH
+	db 8, HYPNOSIS
+	db 15, NIGHT_SHADE
+	db 22, WAILING_CRY
+	db 29, DREAM_EATER
+	db 36, CURSE
+	db 43, SHADOW_LEECH
+	db 50, PSYCHIC_M
 	db 0
 
-;joenote-modified the moveliest of nidoqueen line to be like yellow
 NidoranFEvosMoves:
 ; Evolutions
 	db EV_LEVEL, 16, NIDORINA
@@ -539,15 +532,12 @@ ShellderEvosMoves:
 	db EV_ITEM, WATER_STONE, 1, CLOYSTER
 	db 0
 ; Learnset
-	db 18, SUPERSONIC
-	db 20, ICY_WIND
-	db 23, CLAMP
-	db 24, ICE_SHARD
-	db 28, BRINE
-	db 30, AURORA_BEAM
-	db 32, ICICLE_SPEAR
-	db 39, LEER
-	db 50, ICE_BEAM
+	db 7, WATER_GUN
+	db 13, SUPERSONIC
+	db 19, CLAMP
+	db 25, AURORA_BEAM
+	db 31, ICICLE_SPEAR
+	db 43, ICE_BEAM
 	db 0
 
 TentacoolEvosMoves:
@@ -570,16 +560,12 @@ GastlyEvosMoves:
 	db EV_LEVEL, 25, HAUNTER
 	db 0
 ; Learnset
-	db 12, ASTONISH
-	db 26, WAILING_CRY
-	db 27, HYPNOSIS
-	db 30, WILL_O_WISP
-	db 32, PUNISHMENT
-
-	db 33, CURSE
-
-	db 34, SHADOW_LEECH
-	db 35, DREAM_EATER
+	db 8, HYPNOSIS
+	db 15, NIGHT_SHADE
+	db 22, WAILING_CRY
+	db 29, DREAM_EATER
+	db 36, CURSE
+	db 43, SHADOW_LEECH
 	db 0
 
 ScytherEvosMoves:
@@ -1941,15 +1927,14 @@ MukEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 26, POLLUTION
-	db 30, POISON_GAS
-	db 31, STOCKPILE
-	db 33, MINIMIZE
-	db 34, VENOSHOCK
-	db 37, SLUDGE
-	db 45, HARDEN
-	db 53, SCREECH
-	db 60, ACID_ARMOR
+	db 7, POISON_GAS
+	db 10, HARDEN
+	db 14, POLLUTION
+	db 21, SLUDGE
+	db 28, MUD_WAVE
+	db 35, SCREECH
+	db 39, ACID_ARMOR
+	db 53, TOXIC
 	db 0
 
 MissingNo8AEvosMoves:
@@ -1977,16 +1962,14 @@ CloysterEvosMoves:
 	db 0
 ;joenote - modified for fun
 ; Learnset
-	db 18, SUPERSONIC
-	db 23, CLAMP
-	db 24, ICY_WIND
-	db 28, ICE_SHARD
-	db 30, AURORA_BEAM
-	db 32, BRINE
-	db 34, ICE_ARMOR
-	db 36, ICICLE_SPEAR
-	db 48, FLASH_FREEZE
-	db 50, SPIKE_CANNON
+	db 7, WATER_GUN
+	db 13, SUPERSONIC
+	db 19, CLAMP
+	db 25, AURORA_BEAM
+	db 31, ICICLE_SPEAR
+	db 37, SPIKE_CANNON
+	db 43, ICE_BEAM
+	db 49, SHELL_SMASH
 	db 0
 
 MissingNo8CEvosMoves:
@@ -2077,16 +2060,12 @@ HaunterEvosMoves:
 	db EV_LEVEL, 45, GENGAR
 	db 0
 ; Learnset
-	db 12, ASTONISH
-	db 29, HYPNOSIS
-	db 30, WAILING_CRY
-	db 34, WILL_O_WISP
-	db 36, PUNISHMENT
-
-	db 37, CURSE
-	db 38, DREAM_EATER
-
-	db 40, SHADOW_LEECH
+	db 8, HYPNOSIS
+	db 15, NIGHT_SHADE
+	db 22, WAILING_CRY
+	db 29, DREAM_EATER
+	db 36, CURSE
+	db 43, SHADOW_LEECH
 	db 0
 
 AbraEvosMoves:

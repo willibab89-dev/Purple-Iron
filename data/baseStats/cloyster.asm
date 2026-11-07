@@ -13,16 +13,13 @@ dw CloysterPicFront
 dw CloysterPicBack
 ; attacks known at lvl 0
 db TACKLE
-;db SUPERSONIC
-;db CLAMP
-;db AURORA_BEAM
 db WITHDRAW
-db 0
+db WATER_GUN
 db 0
 db 5 ; growth rate
 ; learnset
 	tmlearn 0
-	tmlearn 11,12,13,14,15
+	tmlearn 11,12,13,14
 	tmlearn 0
 	tmlearn 30
 	tmlearn 33,34,36,39

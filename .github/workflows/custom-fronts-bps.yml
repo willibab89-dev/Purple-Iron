@@ -1,4 +1,4 @@
-name: "Magnemite, Dodrio and Dewgong family redesigns"
+name: "Muk, Cloyster and Gengar family redesigns"
 
 on:
   workflow_dispatch:
@@ -66,6 +66,7 @@ jobs:
           python3 tools/test_wake_up_slap.py
           python3 tools/test_quiver_dance.py
           python3 tools/test_zap_and_triple.py
+          python3 tools/test_mud_and_shell.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -104,3 +105,4 @@ jobs:
             ${{ runner.temp }}/patches/MACHOP-BELLSPROUT-TENTACOOL.md
             ${{ runner.temp }}/patches/GOLEM-RAPIDASH-SLOWBRO.md
             ${{ runner.temp }}/patches/MAGNETS-DODRIO-DEWGONG.md
+            ${{ runner.temp }}/patches/MUK-CLOYSTER-GENGAR.md

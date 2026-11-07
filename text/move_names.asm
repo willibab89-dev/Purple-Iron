@@ -224,4 +224,6 @@ MoveNames::
 	db "QUIVER DANCE@"
 	db "ZAP CANNON@"
 	db "TRIPLE KICK@"
+	db "MUD WAVE@"
+	db "SHELL SMASH@"
 MoveNamesEnd:

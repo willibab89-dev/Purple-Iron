@@ -53,5 +53,27 @@
     "accuracy": 95,
     "pp": 15,
     "animation": "DOUBLE_KICK"
+  },
+  {
+    "id": 225,
+    "symbol": "MUD_WAVE",
+    "name": "MUD WAVE",
+    "effect": "ATTACK_AND_STAT_EFFECT",
+    "power": 80,
+    "type": "GROUND",
+    "accuracy": 95,
+    "pp": 15,
+    "animation": "SURF"
+  },
+  {
+    "id": 226,
+    "symbol": "SHELL_SMASH",
+    "name": "SHELL SMASH",
+    "effect": "COMPOUND_STATUS_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "WITHDRAW"
   }
 ]
