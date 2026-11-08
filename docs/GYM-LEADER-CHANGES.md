@@ -1,5 +1,7 @@
 # Gym Leader teams — implemented
 
+The subsequent [Blaine and Elite Four patch](BLAINE-ELITE-FOUR-CHANGES.md) supplies Blaine’s replacement team and revises all four Elite Four teams. The seven teams documented below remain unchanged; “Blaine unchanged” below describes this earlier patch.
+
 Seven Gym Leader rosters now match the requested order, species and levels in both versions. Blaine’s roster is unchanged. The recently implemented 313 regular teams and all other excluded boss rosters are unchanged.
 
 | Leader | Team, in send-out order |

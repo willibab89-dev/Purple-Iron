@@ -1,4 +1,4 @@
-name: "Revised Gym Leaders and no Giovanni rematch; cumulative patches"
+name: "Blaine and first-challenge Elite Four teams; cumulative patches"
 
 on:
   workflow_dispatch:
@@ -145,6 +145,7 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-2-SUPPORT.md
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-3-COVERAGE.md
             ${{ runner.temp }}/patches/TRAINER-REVIEW.md
+            ${{ runner.temp }}/patches/BLAINE-ELITE-FOUR-CHANGES.md
             ${{ runner.temp }}/patches/GYM-LEADER-CHANGES.md
             ${{ runner.temp }}/patches/REGULAR-TRAINER-CHANGES.md
             ${{ runner.temp }}/patches/REGULAR-TRAINER-PROPOSALS.md

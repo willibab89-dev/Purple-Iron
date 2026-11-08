@@ -46,6 +46,12 @@ def validate(version):
         gym=json.loads((ROOT/'data/gym_leader_review.json').read_text())
         leaders={(d['trainer'],d['number']):d for d in gym['records']}
         assert len(leaders)==7 and set(leaders)<set((d['trainer'],d['number']) for d in regular['protected'])
+        elite=json.loads((ROOT/'data/blaine_elite_review.json').read_text())
+        additions={(d['trainer'],d['number']):d for d in elite['records']}
+        assert set(additions)=={(c,1) for c in ('BLAINE','LORELEI','BRUNO','AGATHA','LANCE')}
+        assert set(leaders).isdisjoint(additions)
+        assert all(len(d['after'])==6 for d in additions.values())
+        leaders.update(additions)
         source=(ROOT/'data/trainer_parties.asm').read_text()
         assert hashlib.sha256((ROOT/'data/trainer_parties.asm').read_bytes()).hexdigest()==plan['trainer_parties_sha256']
         rom=(ROOT/(version+'.gbc')).read_bytes()
@@ -87,10 +93,12 @@ def validate(version):
             roster=leaders[key]['after'] if key in leaders else d['before']
             assert records[key]==[(indexes[s],lv) for s,lv in roster],('protected/leader',key)
         assert regular['trainer_parties_sha256']==gym['previous_trainer_parties_sha256']
-        assert gym['trainer_parties_sha256']==plan['trainer_parties_sha256']
+        assert gym['trainer_parties_sha256']==elite['previous_trainer_parties_sha256']
+        assert elite['trainer_parties_sha256']==plan['trainer_parties_sha256']
         assert regular['previous_trainer_parties_sha256']==plan['previous_trainer_parties_sha256']
         assert regular['expected_roster_entries']==1178
-        assert gym['expected_roster_entries']==plan['expected_roster_entries']==1187
+        assert gym['expected_roster_entries']==1187
+        assert elite['expected_roster_entries']==plan['expected_roster_entries']==1193
         # Every override record, including Red's final record, must end before
         # the outer FF sentinel. Never interpret FF as a party slot.
         raw=data('SpecialTrainerMoves');pos=0
@@ -155,7 +163,7 @@ def validate(version):
         assert seen==set(expected) and special==1
         for title in ('ReviewedNidoranMUnique','ReviewedOmanyteUnique','ReviewedOnixBrock','ReviewedRaichuUnique','ReviewedSquirtleUnique','ReviewedTangelaErika','ReviewedTentacoolBig','ReviewedVenusaurErika'):
             bank,a=syms[title+'EvosMoves'];assert game.memory[bank,a]==0
-        print(f'{version}: {len(records)} teams/{entries} entries, 313 unchanged regular rosters, seven exact leader teams/send-outs/PP, 41 unchanged other boss rosters, {len(expected)} exact boss sets and bounded overrides passed')
+        print(f'{version}: {len(records)} teams/{entries} entries, 313 unchanged regular rosters, 12 exact Gym/Elite teams/send-outs/PP, 36 unchanged other boss rosters, {len(expected)} exact boss sets and bounded overrides passed')
     finally:
         game.stop(save=False)
 
