@@ -1,0 +1,229 @@
+[
+  {
+    "species": "MEOWTH",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_1"
+    ],
+    "level": 4,
+    "percent": 5
+  },
+  {
+    "species": "PIKACHU",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_2"
+    ],
+    "level": 5,
+    "percent": 2
+  },
+  {
+    "species": "MANKEY",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_22"
+    ],
+    "level": 4,
+    "percent": 5
+  },
+  {
+    "species": "CLEFAIRY",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_4"
+    ],
+    "level": 10,
+    "percent": 2
+  },
+  {
+    "species": "PSYDUCK",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_24",
+      "ROUTE_25"
+    ],
+    "level": 12,
+    "percent": 5
+  },
+  {
+    "species": "GROWLITHE",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_5"
+    ],
+    "level": 13,
+    "percent": 3,
+    "versions": [
+      "_RED"
+    ]
+  },
+  {
+    "species": "VULPIX",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_5"
+    ],
+    "level": 13,
+    "percent": 3,
+    "versions": [
+      "_BLUE"
+    ]
+  },
+  {
+    "species": "KRABBY",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_6"
+    ],
+    "level": 14,
+    "percent": 5
+  },
+  {
+    "species": "EEVEE",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_7"
+    ],
+    "level": 18,
+    "percent": 2
+  },
+  {
+    "species": "PONYTA",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_7"
+    ],
+    "level": 18,
+    "percent": 5
+  },
+  {
+    "species": "CUBONE",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_9"
+    ],
+    "level": 16,
+    "percent": 5
+  },
+  {
+    "species": "FARFETCHD",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_11"
+    ],
+    "level": 15,
+    "percent": 2
+  },
+  {
+    "species": "SLOWPOKE",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_12"
+    ],
+    "level": 24,
+    "percent": 5
+  },
+  {
+    "species": "TANGELA",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_15"
+    ],
+    "level": 27,
+    "percent": 5
+  },
+  {
+    "species": "RHYHORN",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_16"
+    ],
+    "level": 24,
+    "percent": 5
+  },
+  {
+    "species": "LICKITUNG",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_18"
+    ],
+    "level": 28,
+    "percent": 5
+  },
+  {
+    "species": "HORSEA",
+    "kinds": [
+      1
+    ],
+    "maps": [
+      "ROUTE_19"
+    ],
+    "level": 27,
+    "percent": 5
+  },
+  {
+    "species": "SHELLDER",
+    "kinds": [
+      1
+    ],
+    "maps": [
+      "ROUTE_20"
+    ],
+    "level": 28,
+    "percent": 5
+  },
+  {
+    "species": "STARYU",
+    "kinds": [
+      1
+    ],
+    "maps": [
+      "ROUTE_21"
+    ],
+    "level": 30,
+    "percent": 5
+  },
+  {
+    "species": "RHYDON",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_23"
+    ],
+    "level": 44,
+    "percent": 5
+  }
+]

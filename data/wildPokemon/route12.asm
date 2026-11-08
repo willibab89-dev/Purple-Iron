@@ -8,9 +8,9 @@ Route12Mons:;joenote - added farfetchd
 		db 26,VENONAT
 		db 26,ODDISH
 		db 27,PIDGEY
-		db 28,GLOOM
+		db 25,FARFETCHD
 		db 30,GLOOM
-		db 22,FARFETCHD
+		db 28,GLOOM
 	ENDC
 	IF DEF(_BLUE)
 		db 24,BELLSPROUT
@@ -20,8 +20,8 @@ Route12Mons:;joenote - added farfetchd
 		db 26,VENONAT
 		db 26,BELLSPROUT
 		db 27,PIDGEY
-		db 28,WEEPINBELL
+		db 25,FARFETCHD
 		db 30,WEEPINBELL
-		db 22,FARFETCHD
+		db 28,WEEPINBELL
 	ENDC
 	db $00

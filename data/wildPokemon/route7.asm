@@ -4,12 +4,12 @@ Route7Mons:;joenote - added ponyta
 		db 19,PIDGEY
 		db 19,ODDISH
 		db 17,MANKEY
-		db 22,ODDISH
+		db 18,MEOWTH
 		db 22,PIDGEY
-		db 18,PONYTA
+		db 20,MEOWTH
 		db 18,GROWLITHE
 		db 20,GROWLITHE
-		db 19,MANKEY
+		db 19,MEOWTH
 		db 20,MANKEY
 	ENDC
 	IF DEF(_BLUE)
@@ -18,10 +18,10 @@ Route7Mons:;joenote - added ponyta
 		db 17,MEOWTH
 		db 22,BELLSPROUT
 		db 22,PIDGEY
-		db 18,PONYTA
+		db 20,MEOWTH
 		db 18,VULPIX
 		db 20,VULPIX
-		db 19,MEOWTH
-		db 20,MEOWTH
+		db 19,PIDGEY
+		db 20,BELLSPROUT
 	ENDC
 	db $00

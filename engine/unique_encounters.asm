@@ -1,7 +1,7 @@
 SECTION "Unique encounter rules", ROMX, BANK[$33]
 
-; Roll after ordinary/Safari selection so every eligible variant gets 1/100
-; of encounters, even where several variant habitats overlap.
+; One roll after ordinary/Safari selection covers both variants and route
+; rares. Each rule retains its own rate where several habitats overlap.
 TryUniqueWildEncounter:
 	ld c, 0 ; land/cave
 	aCoord 9, 9
@@ -103,8 +103,8 @@ UniqueEncounterRoll100:
 	sub 100
 	ret
 
-; For new rule-based species, supply the Pokédex AREA map list.
-; Carry means handled; old table-based species use the original scanner.
+; Rule-based species use a generated union of pool and ordinary habitats.
+; Carry means handled; other species use the original scanner.
 FindUniqueWildLocations:
 	ld a, [wd11e]
 	ld c, a

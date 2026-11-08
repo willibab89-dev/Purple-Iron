@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 
 from pyboy import PyBoy
-from generate_unique_encounters import pools, render
+from generate_unique_encounters import pools, render, habitat_tables
 
 ROOT = Path(__file__).resolve().parents[1]
 TYPES = {name: int(value, 16) for name, value in re.findall(r'^(\w+)\s+EQU \$([\dA-F]+)', (ROOT / "constants/type_constants.asm").read_text(), re.M)}
@@ -190,6 +190,8 @@ def validate(version):
         map_names = re.findall(r"^\s*mapconst\s+(\w+),", (ROOT / "constants/map_constants.asm").read_text(), re.M)
         indexes = {entry["symbol"]: entry["index"] for entry in SPECIES}
         indexes.update({entry["symbol"]: entry["index"] for entry in json.loads((ROOT / "data/new_species.json").read_text())})
+        from test_move_patch_3 import constants
+        indexes.update(constants(ROOT / "constants/pokemon_constants.asm"))
         habitat_pools = pools("_RED" if version == "pokered" else "_BLUE")
         for species, expected_habitats in (
             ("UNIQUE_OMANYTE_UNIQUE", {("ROCK_TUNNEL_1", 0), ("ROCK_TUNNEL_2", 0)}),
@@ -256,11 +258,24 @@ def validate(version):
         assert game.register_file.A == 0 and game.memory[0xff80] == 0
         game.memory[0xff80] = saved_scratch
         game.memory[random_bank, random_address:random_address + 6] = random_original
-        # AREA must include precisely the new pools' maps, without duplicates.
+        # AREA merges pool, ordinary grass/surf and Super Rod habitats.
         expected_locations = {}
         for map_name, kind, variants in habitat_pools:
             for level, species in variants:
                 expected_locations.setdefault(species, set()).add(map_names.index(map_name))
+        tables = habitat_tables("_RED" if version == "pokered" else "_BLUE")
+        pointers = re.findall(r"^\s*dw\s+(\w+)", (ROOT / "data/wild_mons.asm").read_text().split("INCLUDE")[0], re.M)
+        for map_id, pointer in enumerate(pointers):
+            for habitat in tables[pointer]:
+                for level, species in habitat:
+                    if species in expected_locations:
+                        expected_locations[species].add(map_id)
+        fish = (ROOT / "data/super_rod.asm").read_text()
+        fish_maps = re.findall(r"dbw\s+(\w+),\s*(\w+)", fish)
+        for group, body in re.findall(r"(FishingGroup\d+):([^:]*)(?=FishingGroup\d+:|\Z)", fish):
+            for level, species in re.findall(r"db\s+(\d+),\s*(\w+)", body):
+                if species in expected_locations:
+                    expected_locations[species].update(map_names.index(m) for m, g in fish_maps if g == group)
         for species, expected_maps in expected_locations.items():
             put("wd11e", indexes[species])
             call("FindWildLocationsOfMon")

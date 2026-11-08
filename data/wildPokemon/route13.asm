@@ -8,9 +8,9 @@ Route13Mons:;joenote - added farfetchd
 		db 26,VENONAT
 		db 26,ODDISH
 		db 25,DITTO
-		db 28,GLOOM
-		db 30,GLOOM
 		db 27,FARFETCHD
+		db 30,GLOOM
+		db 28,GLOOM
 	ENDC
 	IF DEF(_BLUE)
 		db $14
@@ -21,8 +21,8 @@ Route13Mons:;joenote - added farfetchd
 		db 26,VENONAT
 		db 26,BELLSPROUT
 		db 25,DITTO
-		db 28,WEEPINBELL
-		db 30,WEEPINBELL
 		db 27,FARFETCHD
+		db 30,WEEPINBELL
+		db 28,WEEPINBELL
 	ENDC
 	db $00

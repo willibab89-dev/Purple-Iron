@@ -51,6 +51,9 @@ def pools(version):
         groups[name] = re.findall(r"db\s+(\d+),\s*(\w+)", body)
     tables = habitat_tables(version)
     rules = json.loads((ROOT / "data/unique_encounter_rules.json").read_text())
+    # One shared roll keeps approved variant rates exact when ordinary rares
+    # overlap them. Append route rules so existing variant outcomes stay put.
+    rules += json.loads((ROOT / "data/route_encounter_rules.json").read_text())
     result = []
     for map_name, pointer in zip(maps, pointers):
         land, water = tables[pointer]
@@ -63,6 +66,8 @@ def pools(version):
                 continue
             variants = []
             for rule in rules:
+                if version not in rule.get("versions", [version]):
+                    continue
                 if kind not in rule["kinds"]:
                     continue
                 if "maps" in rule and map_name not in rule["maps"]:
@@ -90,6 +95,22 @@ def render():
                 text += f"\tdb {level}, {species}\n"
                 locations.setdefault(species, set()).add(map_name)
         text += "\tdb $ff\n\nUniqueEncounterLocations:\n"
+        # AREA returns early for rule-based species. Include their ordinary
+        # grass/surf and Super Rod habitats too, so common later homes survive.
+        tables = habitat_tables(version)
+        maps = re.findall(r"^\s*mapconst\s+(\w+),", (ROOT / "constants/map_constants.asm").read_text(), re.M)
+        pointers = re.findall(r"^\s*dw\s+(\w+)", (ROOT / "data/wild_mons.asm").read_text().split("INCLUDE")[0], re.M)
+        for map_name, pointer in zip(maps, pointers):
+            for habitat in tables[pointer]:
+                for level, species in habitat:
+                    if species in locations:
+                        locations[species].add(map_name)
+        source = (ROOT / "data/super_rod.asm").read_text()
+        fishing = dict(re.findall(r"dbw\s+(\w+),\s*(\w+)", source))
+        for name, body in re.findall(r"(FishingGroup\d+):([^:]*)(?=FishingGroup\d+:|\Z)", source):
+            for level, species in re.findall(r"db\s+(\d+),\s*(\w+)", body):
+                if species in locations:
+                    locations[species].update(m for m, group in fishing.items() if group == name)
         for species, maps in locations.items():
             text += f"\tdb {species}, {len(maps)}\n\tdb " + ", ".join(sorted(maps)) + "\n"
         text += "\tdb $ff\nENDC\n"
