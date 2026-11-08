@@ -7098,33 +7098,20 @@ ApplyBadgeStatBoosts:
 	xor a
 	ld [wUnusedD71B], a
 	ret
-; multiply stat at hl by 1.125
-; cap stat at 999
+; Add floor(stat / 20), capped at 999; preserve the badge loop and stat pointer.
 .applyBoostToStat
+	push bc
+	push hl
 	ld a, [hli]
 	ld d, a
 	ld e, [hl]
-	srl d
-	rr e
-	srl d
-	rr e
-	srl d
-	rr e
-	ld a, [hl]
-	add e
-	ld [hld], a
-	ld a, [hl]
-	adc d
-	ld [hli], a
-	ld a, [hld]
-	sub 999 % $100
-	ld a, [hl]
-	sbc 999 / $100
-	ret c
-	ld a, 999 / $100
-	ld [hli], a
-	ld a, 999 % $100
-	ld [hld], a
+	callba BadgeBoostFivePercent
+	pop hl
+	ld [hl], d
+	inc hl
+	ld [hl], e
+	dec hl
+	pop bc
 	ret
 ;joenote - check for backed up stat mod address offset to selectively apply badge boosts
 .selectiveBadgeBoost

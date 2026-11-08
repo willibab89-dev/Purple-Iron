@@ -502,14 +502,44 @@ ConditionalBadgeBoost:
 	ret z
 	ld d, h
 	ld e, l
-	srl d
-	rr e
-	srl d
-	rr e
-	srl d
-	rr e
-	add hl, de
-	jp ConditionalCap999
+	call BadgeBoostFivePercent
+	ld h, d
+	ld l, e
+	ret
+
+; DE = stat (0..999); return min(999, stat + floor(stat / 20)) in DE.
+; Shared with ordinary stat initialization/rebuilding. Preserve BC.
+BadgeBoostFivePercent:
+	push bc
+	ld h, d
+	ld l, e
+	ld bc, 0
+.divide20
+	ld a, h
+	and a
+	jr nz, .subtract
+	ld a, l
+	cp 20
+	jr c, .addBonus
+.subtract
+	ld a, l
+	sub 20
+	ld l, a
+	ld a, h
+	sbc 0
+	ld h, a
+	inc bc
+	jr .divide20
+.addBonus
+	ld h, d
+	ld l, e
+	add hl, bc
+	call ConditionalCap999
+	ld d, h
+	ld e, l
+	pop bc
+	ret
+
 ConditionalStatRatios:
 	db 25,100, 28,100, 33,100, 40,100, 50,100, 66,100
 	db 1,1, 15,10, 2,1, 25,10, 3,1, 35,10, 4,1

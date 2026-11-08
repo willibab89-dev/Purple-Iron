@@ -193,11 +193,11 @@ def validate(version):
             if not turn:
                 put('wObtainedBadges', 0x55)
                 put('wBattleMonStatus', 0x50)
-                for expected in ((84, 42), (112, 56)):
+                for expected in ((78, 39), (105, 52)):
                     effect()
                     assert (readword('wBattleMonAttack'), readword('wBattleMonSpeed')) == expected
-                    assert readword('wBattleMonDefense') == 112
-                    assert readword('wBattleMonSpecial') == 112
+                    assert readword('wBattleMonDefense') == 105
+                    assert readword('wBattleMonSpecial') == 105
             # The pre-damage snapshot survives the Substitute disappearing.
             actor, target = init('SLAM', turn)
             put(f'w{target}BattleStatus2', 0x10)

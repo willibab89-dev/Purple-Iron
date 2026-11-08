@@ -1,4 +1,4 @@
-name: "Route encounter redesign; updated availability overview"
+name: "Five-percent badge boosts; cumulative game patches"
 
 on:
   workflow_dispatch:
@@ -80,6 +80,7 @@ jobs:
           python3 tools/test_support_distribution.py
           python3 tools/test_mew_gate.py
           python3 tools/test_route_encounters.py
+          python3 tools/test_badge_boosts.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -145,6 +146,7 @@ jobs:
             ${{ runner.temp }}/patches/TRAINER-REVIEW.md
             ${{ runner.temp }}/patches/MEW-DIPLOMA-GATE.md
             ${{ runner.temp }}/patches/ROUTE-ENCOUNTER-REDESIGN.md
+            ${{ runner.temp }}/patches/BADGE-BOOSTS.md
             ${{ runner.temp }}/patches/POKEMON-AVAILABILITY.md
             ${{ runner.temp }}/patches/POKEMON-AVAILABILITY.csv
             ${{ runner.temp }}/patches/POKEMON-AVAILABILITY.html

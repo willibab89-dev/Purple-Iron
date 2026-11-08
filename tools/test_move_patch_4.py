@@ -119,8 +119,8 @@ def validate(version):
             if turn:
                 for move,stat,index,badge in (('DRILL_PECK','Defense',1,4),('WATERFALL','Special',3,64)):
                     actor,target,ap,tp=init(move,turn);put('wLinkState',0);put('wObtainedBadges',badge)
-                    word(tp+stat,225);game.memory[addr(f'w{target}MonStatMods')+index]=9
-                    assert variables(turn)[1]==112,(move,'badge bypass',output())
+                    word(tp+stat,210);game.memory[addr(f'w{target}MonStatMods')+index]=9
+                    assert variables(turn)[1]==105,(move,'badge bypass',output())
                     put('wCriticalHitOrOHKO',1);assert variables(turn)[1]==100
             # Hybrid stats and screen category, then Gen 1 crit behavior.
             for move,offense in (('STONE_PRESS','Defense'),('PSYSHOCK','Special')):
@@ -138,11 +138,11 @@ def validate(version):
             put('wCriticalHitOrOHKO',1);assert variables(turn)[0]==101
             if not turn:
                 actor,target,ap,tp=init('FACADE',turn);put('wLinkState',0);put('wObtainedBadges',1)
-                put(ap+'Status',16);put(f'w{actor}MonAttackMod',8);word(ap+'Attack',84)
+                put(ap+'Status',16);put(f'w{actor}MonAttackMod',8);word(ap+'Attack',79)
                 game.memory[addr('wPlayerMonUnmodifiedAttack'):addr('wPlayerMonUnmodifiedAttack')+2]=[0,101]
-                assert variables(turn)[0]==169 and readword(ap+'Attack')==84
+                assert variables(turn)[0]==158 and readword(ap+'Attack')==79
                 put('wOptions',64);assert variables(turn)[0]==151
-                put('wIsInBattle',1);assert variables(turn)[0]==169
+                put('wIsInBattle',1);assert variables(turn)[0]==158
             # Guaranteed crits work at every RNG byte; false conditions retain normal crits.
             for move,status in (('SHOCK_WAVE',64),('POISON_TAIL',8),('FROST_BREATH',0)):
                 actor,target,ap,tp=init(move,turn)
