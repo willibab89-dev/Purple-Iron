@@ -1,5 +1,7 @@
 # Final trainer moveset review
 
+The latest [Gym Leader patch](GYM-LEADER-CHANGES.md) revises seven leader teams and their applicable overrides. Current totals are 1,187 roster entries and 82 exact boss movesets; the tables below record the earlier boss-moves review.
+
 This records the earlier boss-moves patch. The subsequent [regular trainer patch](REGULAR-TRAINER-CHANGES.md) expands the total to 1,178 roster entries while preserving every excluded boss roster and all 63 exact reviewed or preserved boss movesets. Counts and checksum-preservation statements below describe the earlier patch.
 
 Cumulative Red/Blue patches retain all previous sprites, species, stats, moves, TMs and encounters. Species count remains 183; move count remains 236 including Struggle. Existing 183-species saves remain compatible.

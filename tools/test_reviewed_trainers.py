@@ -43,6 +43,9 @@ def validate(version):
     try:
         plan=json.loads((ROOT/'data/trainer_review.json').read_text())
         regular=json.loads((ROOT/'data/regular_trainer_review.json').read_text())
+        gym=json.loads((ROOT/'data/gym_leader_review.json').read_text())
+        leaders={(d['trainer'],d['number']):d for d in gym['records']}
+        assert len(leaders)==7 and set(leaders)<set((d['trainer'],d['number']) for d in regular['protected'])
         source=(ROOT/'data/trainer_parties.asm').read_text()
         assert hashlib.sha256((ROOT/'data/trainer_parties.asm').read_bytes()).hexdigest()==plan['trainer_parties_sha256']
         rom=(ROOT/(version+'.gbc')).read_bytes()
@@ -81,10 +84,13 @@ def validate(version):
             assert max(lv for s,lv in d['after'])==max(lv for s,lv in d['before'])-added,key
             assert 1<=len(d['after'])<=6
         for key,d in protected.items():
-            assert records[key]==[(indexes[s],lv) for s,lv in d['before']],('protected',key)
-        assert regular['trainer_parties_sha256']==plan['trainer_parties_sha256']
+            roster=leaders[key]['after'] if key in leaders else d['before']
+            assert records[key]==[(indexes[s],lv) for s,lv in roster],('protected/leader',key)
+        assert regular['trainer_parties_sha256']==gym['previous_trainer_parties_sha256']
+        assert gym['trainer_parties_sha256']==plan['trainer_parties_sha256']
         assert regular['previous_trainer_parties_sha256']==plan['previous_trainer_parties_sha256']
-        assert regular['expected_roster_entries']==plan['expected_roster_entries']==1178
+        assert regular['expected_roster_entries']==1178
+        assert gym['expected_roster_entries']==plan['expected_roster_entries']==1187
         # Every override record, including Red's final record, must end before
         # the outer FF sentinel. Never interpret FF as a party slot.
         raw=data('SpecialTrainerMoves');pos=0
@@ -120,7 +126,8 @@ def validate(version):
                 if key in expected:
                     d=expected[key];seen.add(key)
                     assert dex==d['dex'] and level==d['level'],key
-                    assert moves==[MOVES[m] for m in d['moves']],(key,moves,d['moves'])
+                    pinned=[MOVES[m] if m!='0' else 0 for m in d['moves']]
+                    assert moves==pinned+[0]*(4-len(pinned)),(key,moves,d['moves'])
                 if not dex:
                     assert key==('CHIEF',2,1) and index==182 and level==128
                     special+=1;continue
@@ -136,11 +143,19 @@ def validate(version):
                 allowed|={machines[n-1] for n in tms[dex]['new'] if n<=55}
                 allowed|={machines[55+n-51] for n in extras[dex]['tms']}
                 assert set(nonzero)<=allowed,('outside reviewed lists',key,set(nonzero)-allowed)
+                if (trainer,number) in leaders:
+                    put('wWhichPokemon',slot-1);put('wEnemyMonPartyPos',slot-1)
+                    put('wEnemyMonSpecies2',index);put('wCurEnemyLVL',level)
+                    for n in ('wEnemyBattleStatus3','wFontLoaded','wOptions'):put(n,0)
+                    call('LoadEnemyMonData')
+                    assert get('wEnemyMonSpecies')[0]==index and get('wEnemyMonLevel')[0]==level,key
+                    assert list(get('wEnemyMonMoves',4))==moves,('send-out moves',key)
+                    assert list(get('wEnemyMonPP',4))==[move_data[(m-1)*6+5] if m else 0 for m in moves],('send-out PP',key)
         assert len(records)==plan['expected_teams'] and entries==plan['expected_roster_entries']
         assert seen==set(expected) and special==1
         for title in ('ReviewedNidoranMUnique','ReviewedOmanyteUnique','ReviewedOnixBrock','ReviewedRaichuUnique','ReviewedSquirtleUnique','ReviewedTangelaErika','ReviewedTentacoolBig','ReviewedVenusaurErika'):
             bank,a=syms[title+'EvosMoves'];assert game.memory[bank,a]==0
-        print(f'{version}: {len(records)} teams/{entries} entries, 313 exact regular rosters, level reductions, natural attacks/PP, 48 protected boss rosters, {len(expected)} exact boss sets, bounded overrides and preserved special encounter passed')
+        print(f'{version}: {len(records)} teams/{entries} entries, 313 unchanged regular rosters, seven exact leader teams/send-outs/PP, 41 unchanged other boss rosters, {len(expected)} exact boss sets and bounded overrides passed')
     finally:
         game.stop(save=False)
 

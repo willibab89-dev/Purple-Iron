@@ -101,7 +101,7 @@
     "display_name": "P.GRIMER",
     "front": "pic/unique/grimer_poison.png",
     "type_override": "POISON",
-    "availability": "Koga (level 39)"
+    "availability": "Koga, Fuchsia Gym (level 39); trainer-only"
   },
   {
     "symbol": "UNIQUE_IVYSAUR_ERIKA",
@@ -114,7 +114,7 @@
     "display_name": "E.IVYSAUR",
     "front": "pic/unique/ivysaur_erika.png",
     "type_override": null,
-    "availability": "Erika (level 33)"
+    "availability": "Erika, Celadon Gym (level 34); trainer-only"
   },
   {
     "symbol": "UNIQUE_KAKUNA_ROCK_TYPE",
@@ -153,7 +153,7 @@
     "display_name": "NIDOKING U",
     "front": "pic/unique/nidoking_unique.png",
     "type_override": null,
-    "availability": "Giovanni, Viridian Gym (level 47)"
+    "availability": "Giovanni, Viridian Gym (level 45); trainer-only"
   },
   {
     "symbol": "UNIQUE_NIDOKING_UNIQUE2",
@@ -205,7 +205,7 @@
     "display_name": "B.ONIX",
     "front": "pic/unique/onix_brock.png",
     "type_override": null,
-    "availability": "Brock (level 15)"
+    "availability": "Brock, Pewter Gym (level 14); trainer-only"
   },
   {
     "symbol": "UNIQUE_RAICHU_UNIQUE",
@@ -218,7 +218,7 @@
     "display_name": "RAICHU U",
     "front": "pic/unique/raichu_unique.png",
     "type_override": null,
-    "availability": "Lt. Surge (level 25)"
+    "availability": "Lt. Surge, Vermilion Gym (level 24); trainer-only"
   },
   {
     "symbol": "UNIQUE_SQUIRTLE_UNIQUE",
@@ -244,7 +244,7 @@
     "display_name": "E.TANGELA",
     "front": "pic/unique/tangela_erika.png",
     "type_override": null,
-    "availability": "Erika (level 29)"
+    "availability": "Unassigned after Erika roster revision; no current acquisition method"
   },
   {
     "symbol": "UNIQUE_TENTACOOL_BIG",
@@ -271,6 +271,6 @@
     "display_name": "E.VENUSAUR",
     "front": "pic/unique/venusaur_erika.png",
     "type_override": null,
-    "availability": "Erika (level 33)"
+    "availability": "Unassigned after Erika roster revision; no current acquisition method"
   }
 ]

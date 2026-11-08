@@ -1,5 +1,7 @@
 # Regular trainer teams — implemented
 
+The subsequent [Gym Leader patch](GYM-LEADER-CHANGES.md) changes seven previously excluded leader rosters. All 313 regular teams described here remain unchanged; counts and protected-roster statements below describe this earlier regular-trainer patch.
+
 The approved [before/after roster list](REGULAR-TRAINER-PROPOSALS.md) and [spreadsheet](REGULAR-TRAINER-PROPOSALS.csv), including the level reductions approved at proposal commit `0e6ba04`, are now implemented in both versions.
 
 ## Changes

@@ -59,24 +59,18 @@ SpecialTrainerMoves:
 	
 	db KOGA,$1
 	db 1,1,EXPLOSION
-	db 3,1,SUBSTITUTE
-	db 4,1,TOXIC
-	db 4,2,POISON_GAS
-	db 4,3,INCINERATE
-	db 4,4,HAZE
+	db 3,1,TOXIC
+	db 3,2,POISON_GAS
+	db 3,3,INCINERATE
+	db 3,4,HAZE
 	db 0
 	
 	db SABRINA,$1
 	db 1,1,REFLECT
-	db 4,1,PSYWAVE
 	db 2,1,LIGHT_SCREEN
 	db 2,2,PSYBEAM
 	db 2,3,SUBSTITUTE
 	db 2,4,MIND_BREAK
-	db 3,1,LEECH_LIFE
-	db 3,2,SLEEP_POWDER
-	db 3,3,PSYBEAM
-	db 3,4,QUIVER_DANCE
 	db 0
 	
 	db BLAINE,$1
@@ -92,10 +86,10 @@ SpecialTrainerMoves:
 	db 3,2,POISON_FANG
 	db 3,3,THUNDERBOLT
 	db 3,4,BULK_UP
-	db 5,1,ROCK_SLIDE
-	db 5,2,PIERCE
-	db 5,3,EARTHQUAKE
-	db 5,4,MEGAHORN
+	db 6,1,ROCK_SLIDE
+	db 6,2,PIERCE
+	db 6,3,EARTHQUAKE
+	db 6,4,MEGAHORN
 	db 0
 	
 	db LORELEI,$1
