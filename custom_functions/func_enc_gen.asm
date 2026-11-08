@@ -1,20 +1,25 @@
 ;replace random mew encounters with ditto if dex diploma not attained
 DisallowMew:
 	CheckEvent EVENT_90B
-	ret nz	;if event 90B is set, then diploma has been granted so return from this function. mew is allowed.
-	ld a, [wcf91]	;else get the current pokemon in question
-	cp MEW	;is it mew? zet zero flag if true
-	ret nz	;if not mew, then return
-	ld a, [wIsInBattle]	;else we have a mew. now load the battle type (1 is wild battle, 2+ is trainer battle)
-	dec a	;zero flag set here if in wild battle
-	ld a, DITTO	;load the ditto constant
-	ld [wcf91], a	;overwrite mew with ditto
-	ret nz	
+	ret nz ; diploma obtained: allow Mew
+	ld a, [wcf91]
+	cp MEW
+	ret nz
+	ld a, DITTO
+	ld [wcf91], a
+	; Wild selection runs before wIsInBattle becomes 1. Keep the actual
+	; opponent in sync there too, without overwriting trainer-class data
+	; while generating randomized trainer parties.
+	ld a, [wIsInBattle]
+	cp 2
+	ret nc
+	ld a, [wEnemyMonSpecies2]
+	cp MEW
+	ret nz
+	ld a, DITTO
 	ld [wEnemyMonSpecies2], a
 	ret
 
-	
-	
 
 CheckIfPkmnReal:
 ;set the carry if pokemon number in 'a' is found on the list of legit pokemon
