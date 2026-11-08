@@ -1,4 +1,4 @@
-name: "Move distribution 3; thematic coverage"
+name: "Final trainer review; Gym, Champion and extra bosses"
 
 on:
   workflow_dispatch:
@@ -140,3 +140,4 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-1-CRUNCH.md
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-2-SUPPORT.md
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-3-COVERAGE.md
+            ${{ runner.temp }}/patches/TRAINER-REVIEW.md

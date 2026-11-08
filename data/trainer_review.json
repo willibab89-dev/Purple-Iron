@@ -1,0 +1,1222 @@
+{
+  "scope": "Default unscaled stored trainer parties; approved final moves only.",
+  "trainer_parties_sha256": "f4e3710e87bf1dbd6e98aecf69879001339a3bab9f22f30478627b6327a90c21",
+  "expected_teams": 361,
+  "expected_roster_entries": 949,
+  "changes": [
+    {
+      "trainer": "AGATHA",
+      "number": 1,
+      "slot": 2,
+      "name": "gengar",
+      "dex": 94,
+      "level": 56,
+      "before": [
+        "DREAM_EATER",
+        "SUBSTITUTE",
+        "THUNDERBOLT",
+        "MEGA_DRAIN"
+      ],
+      "moves": [
+        "HYPNOSIS",
+        "DREAM_EATER",
+        "SUBSTITUTE",
+        "THUNDERBOLT"
+      ]
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 1,
+      "slot": 3,
+      "name": "golbat",
+      "dex": 42,
+      "level": 56,
+      "before": [
+        "SCREECH",
+        "POISON_FANG",
+        "SCREECH",
+        "TOXIC"
+      ],
+      "moves": [
+        "SCREECH",
+        "POISON_FANG",
+        "SHADOW_LEECH",
+        "TOXIC"
+      ]
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 1,
+      "slot": 4,
+      "name": "arbok",
+      "dex": 24,
+      "level": 58,
+      "before": [
+        "POISON_FANG",
+        "CRUNCH",
+        "SCREECH",
+        "EARTHQUAKE"
+      ],
+      "moves": [
+        "POISON_FANG",
+        "CRUNCH",
+        "SCREECH",
+        "COIL"
+      ]
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 1,
+      "slot": 5,
+      "name": "gengar",
+      "dex": 94,
+      "level": 60,
+      "before": [
+        "DREAM_EATER",
+        "PSYCHIC_M",
+        "SHADOW_LEECH",
+        "PSYCHIC_M"
+      ],
+      "moves": [
+        "CONFUSE_RAY",
+        "CURSE",
+        "SHADOW_LEECH",
+        "PSYCHIC_M"
+      ]
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 1,
+      "slot": 2,
+      "name": "hitmonchan",
+      "dex": 107,
+      "level": 55,
+      "before": [
+        "ICE_PUNCH",
+        "THUNDERPUNCH",
+        "FIRE_PUNCH",
+        "SUBMISSION"
+      ],
+      "moves": [
+        "ICE_PUNCH",
+        "THUNDERPUNCH",
+        "FIRE_PUNCH",
+        "BRICK_BREAK"
+      ]
+    },
+    {
+      "trainer": "CHIEF",
+      "number": 1,
+      "slot": 1,
+      "name": "kangaskhan",
+      "level": 72,
+      "before": [
+        "BODY_SLAM",
+        "SUBMISSION",
+        "FIRE_BLAST",
+        "HYPER_BEAM"
+      ],
+      "moves": [
+        "BODY_SLAM",
+        "SUBMISSION",
+        "COUNTER",
+        "ICE_BEAM"
+      ],
+      "dex": 115
+    },
+    {
+      "trainer": "CHIEF",
+      "number": 1,
+      "slot": 2,
+      "name": "rhydon",
+      "level": 73,
+      "before": [
+        "THUNDERBOLT",
+        "ROCK_SLIDE",
+        "SUBSTITUTE",
+        "EARTHQUAKE"
+      ],
+      "moves": [
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "MEGAHORN",
+        "BULK_UP"
+      ],
+      "dex": 112
+    },
+    {
+      "trainer": "CHIEF",
+      "number": 1,
+      "slot": 3,
+      "name": "golduck",
+      "level": 73,
+      "before": [
+        "AMNESIA",
+        "BLIZZARD",
+        "SURF",
+        "MIMIC"
+      ],
+      "moves": [
+        "AMNESIA",
+        "SURF",
+        "PSYCHIC_M",
+        "ICE_BEAM"
+      ],
+      "dex": 55
+    },
+    {
+      "trainer": "CHIEF",
+      "number": 1,
+      "slot": 4,
+      "name": "pinsir",
+      "level": 74,
+      "before": [
+        "SLASH",
+        "SWORDS_DANCE",
+        "SEISMIC_TOSS",
+        "BODY_SLAM"
+      ],
+      "moves": [
+        "BULK_UP",
+        "SHELL_BREAK",
+        "SUBMISSION",
+        "BODY_SLAM"
+      ],
+      "dex": 127
+    },
+    {
+      "trainer": "CHIEF",
+      "number": 1,
+      "slot": 5,
+      "name": "scyther",
+      "level": 74,
+      "before": [
+        "SWORDS_DANCE",
+        "SLASH",
+        "AGILITY",
+        "DOUBLE_EDGE"
+      ],
+      "moves": [
+        "SWORDS_DANCE",
+        "SLASH",
+        "WING_ATTACK",
+        "X_SCISSOR"
+      ],
+      "dex": 123
+    },
+    {
+      "trainer": "CHIEF",
+      "number": 1,
+      "slot": 6,
+      "name": "tauros",
+      "level": 76,
+      "before": [
+        "HYPER_BEAM",
+        "DOUBLE_EDGE",
+        "STOMP",
+        "REST"
+      ],
+      "moves": [
+        "FACADE",
+        "DOUBLE_EDGE",
+        "STOMP",
+        "REST"
+      ],
+      "dex": 128
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 5,
+      "slot": 1,
+      "name": "marowak",
+      "level": 69,
+      "before": [
+        "BONEMERANG",
+        "BODY_SLAM",
+        "SEISMIC_TOSS",
+        "BLIZZARD"
+      ],
+      "moves": [
+        "BONEMERANG",
+        "BODY_SLAM",
+        "SEISMIC_TOSS",
+        "WAILING_CRY"
+      ],
+      "dex": 105
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 5,
+      "slot": 2,
+      "name": "omastar",
+      "level": 70,
+      "before": [
+        "HYDRO_PUMP",
+        "ICE_BEAM",
+        "REFLECT",
+        "TOXIC"
+      ],
+      "moves": [
+        "HYDRO_PUMP",
+        "ICE_BEAM",
+        "REFLECT",
+        "STONE_PRESS"
+      ],
+      "dex": 139
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 5,
+      "slot": 3,
+      "name": "kabutops",
+      "level": 70,
+      "before": [
+        "SWORDS_DANCE",
+        "SURF",
+        "SLASH",
+        "DOUBLE_EDGE"
+      ],
+      "moves": [
+        "SWORDS_DANCE",
+        "SURF",
+        "SLASH",
+        "STONE_EDGE"
+      ],
+      "dex": 141
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 5,
+      "slot": 4,
+      "name": "aerodactyl",
+      "level": 71,
+      "before": [
+        "SKY_ATTACK",
+        "REFLECT",
+        "HYPER_BEAM",
+        "SUPERSONIC"
+      ],
+      "moves": [
+        "SKY_ATTACK",
+        "REFLECT",
+        "CRUNCH",
+        "ROCK_SLIDE"
+      ],
+      "dex": 142
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 5,
+      "slot": 5,
+      "name": "arcanine",
+      "level": 73,
+      "before": [
+        "FIRE_BLAST",
+        "BODY_SLAM",
+        "MIMIC",
+        "HYPER_BEAM"
+      ],
+      "moves": [
+        "FIRE_BLAST",
+        "BODY_SLAM",
+        "CRUNCH",
+        "REST"
+      ],
+      "dex": 59
+    },
+    {
+      "trainer": "GIOVANNI",
+      "number": 3,
+      "slot": 3,
+      "name": "nidoqueen",
+      "dex": 31,
+      "level": 46,
+      "before": [
+        "EARTHQUAKE",
+        "POISON_FANG",
+        "THUNDER",
+        "BULK_UP"
+      ],
+      "moves": [
+        "EARTHQUAKE",
+        "POISON_FANG",
+        "THUNDERBOLT",
+        "BULK_UP"
+      ]
+    },
+    {
+      "trainer": "GIOVANNI",
+      "number": 3,
+      "slot": 5,
+      "name": "rhydon",
+      "dex": 112,
+      "level": 50,
+      "before": [
+        "ROCK_SLIDE",
+        "PIERCE",
+        "EARTHQUAKE",
+        "EARTHQUAKE"
+      ],
+      "moves": [
+        "ROCK_SLIDE",
+        "PIERCE",
+        "EARTHQUAKE",
+        "MEGAHORN"
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 9,
+      "slot": 1,
+      "name": "lapras",
+      "level": 83,
+      "before": [
+        "BLIZZARD",
+        "THUNDERBOLT",
+        "BODY_SLAM",
+        "CONFUSE_RAY"
+      ],
+      "moves": [
+        "HYDRO_PUMP",
+        "ICE_BEAM",
+        "THUNDERBOLT",
+        "HEAL_BELL"
+      ],
+      "dex": 131
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 9,
+      "slot": 2,
+      "name": "venusaur",
+      "level": 85,
+      "before": [
+        "RAZOR_LEAF",
+        "SLEEP_POWDER",
+        "BODY_SLAM",
+        "SWORDS_DANCE"
+      ],
+      "moves": [
+        "SLEEP_POWDER",
+        "GROWTH",
+        "PETAL_DANCE",
+        "SLUDGE"
+      ],
+      "dex": 3
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 9,
+      "slot": 3,
+      "name": "charizard",
+      "level": 85,
+      "before": [
+        "FIRE_BLAST",
+        "EARTHQUAKE",
+        "SWORDS_DANCE",
+        "HYPER_BEAM"
+      ],
+      "moves": [
+        "FIRE_BLAST",
+        "WING_ATTACK",
+        "DRAGON_DANCE",
+        "HYPER_BEAM"
+      ],
+      "dex": 6
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 9,
+      "slot": 4,
+      "name": "blastoise",
+      "level": 85,
+      "before": [
+        "HYDRO_PUMP",
+        "BLIZZARD",
+        "BODY_SLAM",
+        "EARTHQUAKE"
+      ],
+      "moves": [
+        "HYDRO_PUMP",
+        "ICE_BEAM",
+        "SPIKE_CANNON",
+        "REFLECT"
+      ],
+      "dex": 9
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 9,
+      "slot": 5,
+      "name": "snorlax",
+      "level": 87,
+      "before": [
+        "HYPER_BEAM",
+        "REST",
+        "BODY_SLAM",
+        "EARTHQUAKE"
+      ],
+      "moves": [
+        "CRUNCH",
+        "REST",
+        "BODY_SLAM",
+        "EARTHQUAKE"
+      ],
+      "dex": 143
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 9,
+      "slot": 6,
+      "name": "pikachu",
+      "level": 88,
+      "before": [
+        "THUNDER",
+        "THUNDER_WAVE",
+        "SURF",
+        "DOUBLE_TEAM"
+      ],
+      "moves": [
+        "THUNDER_WAVE",
+        "THUNDER",
+        "THUNDERCLAP",
+        "LIGHT_SCREEN"
+      ],
+      "dex": 25
+    },
+    {
+      "trainer": "KOGA",
+      "number": 1,
+      "slot": 4,
+      "name": "weezing",
+      "dex": 110,
+      "level": 43,
+      "before": [
+        "TOXIC",
+        "POISON_GAS",
+        "INCINERATE",
+        "MIMIC"
+      ],
+      "moves": [
+        "TOXIC",
+        "POISON_GAS",
+        "INCINERATE",
+        "HAZE"
+      ]
+    },
+    {
+      "trainer": "LANCE",
+      "number": 1,
+      "slot": 1,
+      "name": "gyarados",
+      "dex": 130,
+      "level": 58,
+      "before": [
+        "CRUNCH",
+        "DRAGON_DANCE",
+        "FIRE_BLAST",
+        "HYPER_BEAM"
+      ],
+      "moves": [
+        "CRUNCH",
+        "DRAGON_DANCE",
+        "OUTRAGE",
+        "HYPER_BEAM"
+      ]
+    },
+    {
+      "trainer": "LANCE",
+      "number": 1,
+      "slot": 4,
+      "name": "aerodactyl",
+      "dex": 142,
+      "level": 60,
+      "before": [
+        "WING_ATTACK",
+        "SWIFT",
+        "FLY",
+        "SKY_ATTACK"
+      ],
+      "moves": [
+        "ROCK_SLIDE",
+        "CRUNCH",
+        "STONE_EDGE",
+        "SKY_ATTACK"
+      ]
+    },
+    {
+      "trainer": "LANCE",
+      "number": 1,
+      "slot": 5,
+      "name": "dragonite",
+      "dex": 149,
+      "level": 62,
+      "before": [
+        "BLIZZARD",
+        "FIRE_BLAST",
+        "THUNDER",
+        "DRAGON_DANCE"
+      ],
+      "moves": [
+        "DRAGON_DANCE",
+        "BODY_SLAM",
+        "WING_ATTACK",
+        "THUNDER"
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 19,
+      "slot": 1,
+      "name": "clefable",
+      "level": 80,
+      "before": [
+        "PSYCHIC_M",
+        "SING",
+        "METRONOME",
+        "DOUBLE_EDGE"
+      ],
+      "moves": [
+        "PSYCHIC_M",
+        "SING",
+        "METRONOME",
+        "MOONLIGHT"
+      ],
+      "dex": 36
+    },
+    {
+      "trainer": "LASS",
+      "number": 19,
+      "slot": 2,
+      "name": "gengar",
+      "level": 82,
+      "before": [
+        "THUNDERBOLT",
+        "HYPNOSIS",
+        "MEGA_DRAIN",
+        "CONFUSE_RAY"
+      ],
+      "moves": [
+        "THUNDERBOLT",
+        "HYPNOSIS",
+        "DREAM_EATER",
+        "CONFUSE_RAY"
+      ],
+      "dex": 94
+    },
+    {
+      "trainer": "LASS",
+      "number": 19,
+      "slot": 4,
+      "name": "ninetales",
+      "level": 83,
+      "before": [
+        "FIRE_BLAST",
+        "REFLECT",
+        "HYPER_BEAM",
+        "CONFUSE_RAY"
+      ],
+      "moves": [
+        "FIRE_BLAST",
+        "REFLECT",
+        "WAILING_CRY",
+        "CONFUSE_RAY"
+      ],
+      "dex": 38
+    },
+    {
+      "trainer": "LASS",
+      "number": 19,
+      "slot": 5,
+      "name": "kangaskhan",
+      "level": 84,
+      "before": [
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "SUBMISSION",
+        "HYPER_BEAM"
+      ],
+      "moves": [
+        "DIZZY_PUNCH",
+        "COUNTER",
+        "ICE_BEAM",
+        "FACADE"
+      ],
+      "dex": 115
+    },
+    {
+      "trainer": "LASS",
+      "number": 19,
+      "slot": 6,
+      "name": "blastoise",
+      "level": 85,
+      "before": [
+        "SURF",
+        "BLIZZARD",
+        "SEISMIC_TOSS",
+        "MIMIC"
+      ],
+      "moves": [
+        "SNIPE_SHOT",
+        "ICE_BEAM",
+        "SPIKE_CANNON",
+        "REFLECT"
+      ],
+      "dex": 9
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 1,
+      "slot": 3,
+      "name": "slowbro",
+      "dex": 80,
+      "level": 55,
+      "before": [
+        "SURF",
+        "ICE_BEAM",
+        "PSYCHIC_M",
+        "SURF"
+      ],
+      "moves": [
+        "REST",
+        "ICE_BEAM",
+        "PSYCHIC_M",
+        "SURF"
+      ]
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 1,
+      "slot": 4,
+      "name": "jynx",
+      "dex": 124,
+      "level": 56,
+      "before": [
+        "PSYCHIC_M",
+        "PSYBEAM",
+        "LOVELY_KISS",
+        "PSYCHIC_M"
+      ],
+      "moves": [
+        "CHARM",
+        "LOVELY_KISS",
+        "FROST_BREATH",
+        "PSYCHIC_M"
+      ]
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 1,
+      "slot": 5,
+      "name": "lapras",
+      "dex": 131,
+      "level": 56,
+      "before": [
+        "CONFUSE_RAY",
+        "ICE_BEAM",
+        "BLIZZARD",
+        "HYDRO_PUMP"
+      ],
+      "moves": [
+        "CONFUSE_RAY",
+        "ICE_BEAM",
+        "HEAL_BELL",
+        "HYDRO_PUMP"
+      ]
+    },
+    {
+      "trainer": "MISTY",
+      "number": 1,
+      "slot": 2,
+      "name": "starmie",
+      "dex": 121,
+      "level": 22,
+      "before": [
+        "HARDEN",
+        "WATER_GUN",
+        "HARDEN",
+        "BUBBLEBEAM"
+      ],
+      "moves": [
+        "HARDEN",
+        "WATER_GUN",
+        "SWIFT",
+        "BUBBLEBEAM"
+      ]
+    },
+    {
+      "trainer": "PROF_OAK",
+      "number": 1,
+      "slot": 1,
+      "name": "tauros",
+      "level": 66,
+      "before": [
+        "RAGE",
+        "EARTHQUAKE",
+        "THUNDERBOLT",
+        "DOUBLE_EDGE"
+      ],
+      "moves": [
+        "RAGE",
+        "EARTHQUAKE",
+        "FACADE",
+        "DOUBLE_EDGE"
+      ],
+      "dex": 128
+    },
+    {
+      "trainer": "PROF_OAK",
+      "number": 2,
+      "slot": 1,
+      "name": "tauros",
+      "level": 66,
+      "before": [
+        "RAGE",
+        "EARTHQUAKE",
+        "THUNDERBOLT",
+        "DOUBLE_EDGE"
+      ],
+      "moves": [
+        "RAGE",
+        "EARTHQUAKE",
+        "FACADE",
+        "DOUBLE_EDGE"
+      ],
+      "dex": 128
+    },
+    {
+      "trainer": "PROF_OAK",
+      "number": 3,
+      "slot": 1,
+      "name": "tauros",
+      "level": 66,
+      "before": [
+        "RAGE",
+        "EARTHQUAKE",
+        "THUNDERBOLT",
+        "DOUBLE_EDGE"
+      ],
+      "moves": [
+        "RAGE",
+        "EARTHQUAKE",
+        "FACADE",
+        "DOUBLE_EDGE"
+      ],
+      "dex": 128
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 1,
+      "slot": 2,
+      "name": "mrmime",
+      "dex": 122,
+      "level": 37,
+      "before": [
+        "LIGHT_SCREEN",
+        "PSYBEAM",
+        "SUBSTITUTE",
+        "MEGA_PUNCH"
+      ],
+      "moves": [
+        "LIGHT_SCREEN",
+        "PSYBEAM",
+        "SUBSTITUTE",
+        "MIND_BREAK"
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 1,
+      "slot": 3,
+      "name": "venomoth",
+      "dex": 49,
+      "level": 38,
+      "before": [
+        "SUPERSONIC",
+        "SLEEP_POWDER",
+        "PSYBEAM",
+        "QUIVER_DANCE"
+      ],
+      "moves": [
+        "LEECH_LIFE",
+        "SLEEP_POWDER",
+        "PSYBEAM",
+        "QUIVER_DANCE"
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 1,
+      "slot": 1,
+      "name": "pidgeot",
+      "level": 59,
+      "before": [
+        "SKY_ATTACK",
+        "TRI_ATTACK",
+        "MIMIC",
+        "DOUBLE_TEAM"
+      ],
+      "moves": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "dex": 18
+    },
+    {
+      "trainer": "SONY3",
+      "number": 1,
+      "slot": 3,
+      "name": "rhydon",
+      "dex": 112,
+      "level": 61,
+      "before": [
+        "THUNDERBOLT",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "moves": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 1,
+      "slot": 4,
+      "name": "arcanine",
+      "dex": 59,
+      "level": 61,
+      "before": [
+        "FLAMETHROWER",
+        "REST",
+        "DOUBLE_EDGE",
+        "TOXIC"
+      ],
+      "moves": [
+        "FLAMETHROWER",
+        "REST",
+        "DOUBLE_EDGE",
+        "CRUNCH"
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 1,
+      "slot": 5,
+      "name": "exeggutor",
+      "level": 63,
+      "before": [
+        "STOMP",
+        "SLEEP_POWDER",
+        "SOLARBEAM",
+        "LEECH_SEED"
+      ],
+      "moves": [
+        "HYPNOSIS",
+        "LEECH_SEED",
+        "PSYCHIC_M",
+        "BARRAGE"
+      ],
+      "dex": 103
+    },
+    {
+      "trainer": "SONY3",
+      "number": 2,
+      "slot": 1,
+      "name": "pidgeot",
+      "level": 59,
+      "before": [
+        "SKY_ATTACK",
+        "TRI_ATTACK",
+        "MIMIC",
+        "DOUBLE_TEAM"
+      ],
+      "moves": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "dex": 18
+    },
+    {
+      "trainer": "SONY3",
+      "number": 2,
+      "slot": 3,
+      "name": "rhydon",
+      "dex": 112,
+      "level": 61,
+      "before": [
+        "THUNDERBOLT",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "moves": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 2,
+      "slot": 4,
+      "name": "gyarados",
+      "level": 61,
+      "before": [
+        "ICE_BEAM",
+        "BODY_SLAM",
+        "OUTRAGE",
+        "HYPER_BEAM"
+      ],
+      "moves": [
+        "DRAGON_DANCE",
+        "CRUNCH",
+        "HYDRO_PUMP",
+        "OUTRAGE"
+      ],
+      "dex": 130
+    },
+    {
+      "trainer": "SONY3",
+      "number": 2,
+      "slot": 5,
+      "name": "arcanine",
+      "dex": 59,
+      "level": 63,
+      "before": [
+        "FLAMETHROWER",
+        "REST",
+        "DOUBLE_EDGE",
+        "TOXIC"
+      ],
+      "moves": [
+        "FLAMETHROWER",
+        "REST",
+        "DOUBLE_EDGE",
+        "CRUNCH"
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 3,
+      "slot": 1,
+      "name": "pidgeot",
+      "level": 59,
+      "before": [
+        "SKY_ATTACK",
+        "TRI_ATTACK",
+        "MIMIC",
+        "DOUBLE_TEAM"
+      ],
+      "moves": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "dex": 18
+    },
+    {
+      "trainer": "SONY3",
+      "number": 3,
+      "slot": 3,
+      "name": "rhydon",
+      "dex": 112,
+      "level": 61,
+      "before": [
+        "THUNDERBOLT",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "moves": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 3,
+      "slot": 4,
+      "name": "exeggutor",
+      "level": 61,
+      "before": [
+        "STOMP",
+        "LEER",
+        "SOLARBEAM",
+        "LEECH_SEED"
+      ],
+      "moves": [
+        "HYPNOSIS",
+        "LEECH_SEED",
+        "PSYCHIC_M",
+        "BARRAGE"
+      ],
+      "dex": 103
+    },
+    {
+      "trainer": "SONY3",
+      "number": 3,
+      "slot": 5,
+      "name": "gyarados",
+      "level": 63,
+      "before": [
+        "ICE_BEAM",
+        "BODY_SLAM",
+        "OUTRAGE",
+        "HYPER_BEAM"
+      ],
+      "moves": [
+        "DRAGON_DANCE",
+        "CRUNCH",
+        "HYDRO_PUMP",
+        "OUTRAGE"
+      ],
+      "dex": 130
+    },
+    {
+      "trainer": "SONY3",
+      "number": 3,
+      "slot": 6,
+      "name": "charizard",
+      "dex": 6,
+      "level": 65,
+      "before": [
+        "SWORDS_DANCE",
+        "FLAMETHROWER",
+        "FIRE_SPIN",
+        "DRAGON_DANCE"
+      ],
+      "moves": [
+        "WING_ATTACK",
+        "FLAMETHROWER",
+        "FIRE_SPIN",
+        "DRAGON_DANCE"
+      ]
+    }
+  ],
+  "preserved": [
+    {
+      "trainer": "BROCK",
+      "number": 1,
+      "slot": 2,
+      "name": "onix_brock",
+      "dex": 167,
+      "level": 15,
+      "moves": [
+        "TACKLE",
+        "SCREECH",
+        "HARDEN",
+        "WRAP"
+      ]
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 1,
+      "slot": 3,
+      "name": "raichu_unique",
+      "dex": 168,
+      "level": 25,
+      "moves": [
+        "GROWL",
+        "QUICK_ATTACK",
+        "THUNDER_WAVE",
+        "THUNDERPUNCH"
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 1,
+      "slot": 1,
+      "name": "tangela_erika",
+      "dex": 170,
+      "level": 29,
+      "moves": [
+        "ABSORB",
+        "BIND",
+        "LEECH_LIFE",
+        "SLEEP_POWDER"
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 1,
+      "slot": 2,
+      "name": "ivysaur_erika",
+      "dex": 160,
+      "level": 33,
+      "moves": [
+        "STUN_SPORE",
+        "LEECH_SEED",
+        "REFLECT",
+        "VINE_CRUSH"
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 1,
+      "slot": 3,
+      "name": "venusaur_erika",
+      "dex": 172,
+      "level": 33,
+      "moves": [
+        "VINE_WHIP",
+        "POISONPOWDER",
+        "GROWTH",
+        "PETAL_DANCE"
+      ]
+    },
+    {
+      "trainer": "GIOVANNI",
+      "number": 3,
+      "slot": 4,
+      "name": "nidoking_unique",
+      "dex": 163,
+      "level": 47,
+      "moves": [
+        "STOMP",
+        "CRUNCH",
+        "EARTHQUAKE",
+        "POISON_FANG"
+      ]
+    },
+    {
+      "trainer": "KOGA",
+      "number": 1,
+      "slot": 2,
+      "name": "grimer_poison",
+      "dex": 159,
+      "level": 39,
+      "moves": [
+        "SLUDGE",
+        "DISABLE",
+        "TOXIC",
+        "ACID_ARMOR"
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 1,
+      "slot": 4,
+      "name": "arcanine",
+      "dex": 59,
+      "level": 47,
+      "moves": [
+        "AGILITY",
+        "FIRE_BLAST",
+        "CRUNCH",
+        "DOUBLE_EDGE"
+      ]
+    }
+  ]
+}
