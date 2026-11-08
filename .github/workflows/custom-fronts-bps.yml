@@ -1,4 +1,4 @@
-name: "Move distribution 2; Charm, Heal Bell and Snarl"
+name: "Move distribution 3; thematic coverage"
 
 on:
   workflow_dispatch:
@@ -139,3 +139,4 @@ jobs:
             ${{ runner.temp }}/patches/FINAL-UNIQUE-VARIANTS.md
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-1-CRUNCH.md
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-2-SUPPORT.md
+            ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-3-COVERAGE.md

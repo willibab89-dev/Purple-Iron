@@ -487,6 +487,7 @@ GyaradosEvosMoves:
 	db 41, HYDRO_PUMP
 	db 45, CRUNCH
 	db 49, DRAGON_DANCE
+	db 53, OUTRAGE
 	db 57, HYPER_BEAM
 	db 0
 
@@ -750,6 +751,7 @@ HitmonleeEvosMoves:
 	db 23, FOCUS_ENERGY
 	db 31, BRICK_BREAK
 	db 39, HI_JUMP_KICK
+	db 43, TRIPLE_KICK
 	db 47, MEGA_KICK
 	db 0
 
@@ -2197,6 +2199,7 @@ PorygonEvosMoves:
 	db 25, TRI_ATTACK
 	db 33, AGILITY
 	db 41, PSYCH_UP
+	db 45, ZAP_CANNON
 	db 49, HYPER_BEAM
 	db 0
 
@@ -2426,6 +2429,7 @@ VictreebelEvosMoves:
 	db 33, SLAM
 	db 39, POISON_FANG
 	db 45, CLAMP
+	db 51, VINE_CRUSH
 	db 0
 
 MareanieEvosMoves:
@@ -2482,6 +2486,7 @@ BaltoyEvosMoves:
 	db 9, ROCK_THROW
 	db 17, NIGHT_SHADE
 	db 25, PSYBEAM
+	db 29, MUD_WAVE
 	db 33, REFLECT
 	db 45, WAILING_CRY
 	db 0
@@ -2494,6 +2499,7 @@ ClaydolEvosMoves:
 	db 25, PSYBEAM
 	db 33, REFLECT
 	db 37, STONE_PRESS
+	db 41, MUD_WAVE
 	db 45, WAILING_CRY
 	db 53, LIGHT_SCREEN
 	db 0

@@ -4816,6 +4816,10 @@
       [
         45,
         "CLAMP"
+      ],
+      [
+        51,
+        "VINE_CRUSH"
       ]
     ],
     "remove": [
@@ -6927,6 +6931,10 @@
         "HI_JUMP_KICK"
       ],
       [
+        43,
+        "TRIPLE_KICK"
+      ],
+      [
         47,
         "MEGA_KICK"
       ]
@@ -8423,6 +8431,10 @@
         "DRAGON_DANCE"
       ],
       [
+        53,
+        "OUTRAGE"
+      ],
+      [
         57,
         "HYPER_BEAM"
       ]
@@ -8844,6 +8856,10 @@
       [
         41,
         "PSYCH_UP"
+      ],
+      [
+        45,
+        "ZAP_CANNON"
       ],
       [
         49,
@@ -10001,6 +10017,10 @@
         "PSYBEAM"
       ],
       [
+        29,
+        "MUD_WAVE"
+      ],
+      [
         33,
         "REFLECT"
       ],
@@ -10068,6 +10088,10 @@
       [
         37,
         "STONE_PRESS"
+      ],
+      [
+        41,
+        "MUD_WAVE"
       ],
       [
         45,

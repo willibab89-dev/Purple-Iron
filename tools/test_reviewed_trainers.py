@@ -63,7 +63,7 @@ def validate(version):
         load('AGATHA', 1)
         assert get('wEnemyMon4Moves', 4) == bytes(MOVES[m] for m in ['POISON_FANG', 'CRUNCH', 'SCREECH', 'EARTHQUAKE'])
         load('LANCE', 1)
-        assert get('wEnemyMon1Moves', 4) == bytes(MOVES[m] for m in ['HYDRO_PUMP', 'CRUNCH', 'FIRE_BLAST', 'HYPER_BEAM'])
+        assert get('wEnemyMon1Moves', 4) == bytes(MOVES[m] for m in ['CRUNCH', 'DRAGON_DANCE', 'FIRE_BLAST', 'HYPER_BEAM'])
         # Preserve unrelated custom moves on the same teams and another leader.
         load('GIOVANNI', 3)
         assert get('wEnemyMon2Moves')[0] == MOVES['FISSURE']
