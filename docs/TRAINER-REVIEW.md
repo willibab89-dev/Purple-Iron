@@ -1,5 +1,7 @@
 # Final trainer moveset review
 
+This records the earlier boss-moves patch. The subsequent [regular trainer patch](REGULAR-TRAINER-CHANGES.md) expands the total to 1,178 roster entries while preserving every excluded boss roster and all 63 exact reviewed or preserved boss movesets. Counts and checksum-preservation statements below describe the earlier patch.
+
 Cumulative Red/Blue patches retain all previous sprites, species, stats, moves, TMs and encounters. Species count remains 183; move count remains 236 including Struggle. Existing 183-species saves remain compatible.
 
 This patch updates final boss movesets only: 55 Pokémon across the Gym, Elite Four, Champion, Professor Oak, Silph Chief, Mr. Fuji, Seiga and Red records. Species rosters, levels, species stats, rewards and encounter scripts are unchanged. The exact plan and preserved sets are recorded in data/trainer_review.json.

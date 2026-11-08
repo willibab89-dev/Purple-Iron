@@ -1,0 +1,10523 @@
+{
+  "scope": "Approved regular-trainer rosters from proposals at 0e6ba04; +1 party member = -1 level, +2 = -2 levels. Excluded boss records preserved.",
+  "previous_trainer_parties_sha256": "f4e3710e87bf1dbd6e98aecf69879001339a3bab9f22f30478627b6327a90c21",
+  "trainer_parties_sha256": "fb175b26972fe4756384b1bf636f3e48903030036e8901102d9941f9a7cb5267",
+  "expected_teams": 361,
+  "expected_roster_entries": 1178,
+  "records": [
+    {
+      "trainer": "YOUNGSTER",
+      "number": 1,
+      "before": [
+        [
+          "RATTATA",
+          11
+        ],
+        [
+          "EKANS",
+          11
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          10
+        ],
+        [
+          "EKANS",
+          10
+        ],
+        [
+          "SPEAROW",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 2,
+      "before": [
+        [
+          "SPEAROW",
+          14
+        ]
+      ],
+      "after": [
+        [
+          "SPEAROW",
+          12
+        ],
+        [
+          "RATTATA",
+          12
+        ],
+        [
+          "MANKEY",
+          12
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 3,
+      "before": [
+        [
+          "RATTATA",
+          10
+        ],
+        [
+          "RATTATA",
+          10
+        ],
+        [
+          "ZUBAT",
+          10
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          10
+        ],
+        [
+          "EKANS",
+          10
+        ],
+        [
+          "ZUBAT",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 4,
+      "before": [
+        [
+          "RATTATA",
+          14
+        ],
+        [
+          "EKANS",
+          14
+        ],
+        [
+          "ZUBAT",
+          14
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          14
+        ],
+        [
+          "EKANS",
+          14
+        ],
+        [
+          "ZUBAT",
+          14
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 5,
+      "before": [
+        [
+          "RATTATA",
+          15
+        ],
+        [
+          "SPEAROW",
+          15
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          14
+        ],
+        [
+          "SPEAROW",
+          14
+        ],
+        [
+          "NIDORAN_M",
+          14
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 6,
+      "before": [
+        [
+          "SLOWPOKE",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "SLOWPOKE",
+          15
+        ],
+        [
+          "SANDSHREW",
+          15
+        ],
+        [
+          "PARAS",
+          15
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 7,
+      "before": [
+        [
+          "EKANS",
+          14
+        ],
+        [
+          "SANDSHREW",
+          14
+        ]
+      ],
+      "after": [
+        [
+          "EKANS",
+          13
+        ],
+        [
+          "SANDSHREW",
+          13
+        ],
+        [
+          "MANKEY",
+          13
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 8,
+      "before": [
+        [
+          "NIDORAN_M",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "NIDORINO",
+          19
+        ],
+        [
+          "RATICATE",
+          19
+        ],
+        [
+          "PIKACHU",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 9,
+      "before": [
+        [
+          "EKANS",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "EKANS",
+          19
+        ],
+        [
+          "SANDSHREW",
+          19
+        ],
+        [
+          "DROWZEE",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 10,
+      "before": [
+        [
+          "SANDSHREW",
+          19
+        ],
+        [
+          "ZUBAT",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "SANDSHREW",
+          18
+        ],
+        [
+          "ZUBAT",
+          18
+        ],
+        [
+          "SPEAROW",
+          18
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 11,
+      "before": [
+        [
+          "RATTATA",
+          17
+        ],
+        [
+          "RATTATA",
+          17
+        ],
+        [
+          "RATICATE",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          17
+        ],
+        [
+          "EKANS",
+          17
+        ],
+        [
+          "RATICATE",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "YOUNGSTER",
+      "number": 12,
+      "before": [
+        [
+          "NIDORAN_M",
+          18
+        ],
+        [
+          "NIDORINO",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "NIDORAN_M",
+          17
+        ],
+        [
+          "NIDORINO",
+          17
+        ],
+        [
+          "SPEAROW",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 1,
+      "before": [
+        [
+          "WEEDLE",
+          6
+        ],
+        [
+          "CATERPIE",
+          6
+        ]
+      ],
+      "after": [
+        [
+          "WEEDLE",
+          6
+        ],
+        [
+          "CATERPIE",
+          6
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 2,
+      "before": [
+        [
+          "WEEDLE",
+          7
+        ],
+        [
+          "KAKUNA",
+          7
+        ],
+        [
+          "WEEDLE",
+          7
+        ]
+      ],
+      "after": [
+        [
+          "WEEDLE",
+          7
+        ],
+        [
+          "CATERPIE",
+          7
+        ],
+        [
+          "PARAS",
+          7
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 3,
+      "before": [
+        [
+          "WEEDLE",
+          9
+        ]
+      ],
+      "after": [
+        [
+          "WEEDLE",
+          8
+        ],
+        [
+          "CATERPIE",
+          7
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 4,
+      "before": [
+        [
+          "CATERPIE",
+          10
+        ],
+        [
+          "WEEDLE",
+          10
+        ],
+        [
+          "CATERPIE",
+          10
+        ]
+      ],
+      "after": [
+        [
+          "CATERPIE",
+          10
+        ],
+        [
+          "WEEDLE",
+          10
+        ],
+        [
+          "BUTTERFREE",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 5,
+      "before": [
+        [
+          "WEEDLE",
+          9
+        ],
+        [
+          "KAKUNA",
+          9
+        ],
+        [
+          "CATERPIE",
+          9
+        ],
+        [
+          "METAPOD",
+          9
+        ]
+      ],
+      "after": [
+        [
+          "CATERPIE",
+          9
+        ],
+        [
+          "WEEDLE",
+          9
+        ],
+        [
+          "PARAS",
+          9
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 6,
+      "before": [
+        [
+          "CATERPIE",
+          11
+        ],
+        [
+          "METAPOD",
+          11
+        ]
+      ],
+      "after": [
+        [
+          "PARAS",
+          10
+        ],
+        [
+          "CATERPIE",
+          10
+        ],
+        [
+          "BUTTERFREE",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 7,
+      "before": [
+        [
+          "WEEDLE",
+          11
+        ],
+        [
+          "KAKUNA",
+          11
+        ]
+      ],
+      "after": [
+        [
+          "WEEDLE",
+          10
+        ],
+        [
+          "PARAS",
+          10
+        ],
+        [
+          "BEEDRILL",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 8,
+      "before": [
+        [
+          "CATERPIE",
+          10
+        ],
+        [
+          "METAPOD",
+          10
+        ],
+        [
+          "CATERPIE",
+          10
+        ]
+      ],
+      "after": [
+        [
+          "CATERPIE",
+          10
+        ],
+        [
+          "WEEDLE",
+          10
+        ],
+        [
+          "BUTTERFREE",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 9,
+      "before": [
+        [
+          "CATERPIE",
+          14
+        ],
+        [
+          "WEEDLE",
+          14
+        ]
+      ],
+      "after": [
+        [
+          "BUTTERFREE",
+          13
+        ],
+        [
+          "BEEDRILL",
+          13
+        ],
+        [
+          "PARAS",
+          13
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 10,
+      "before": [
+        [
+          "WEEDLE",
+          16
+        ],
+        [
+          "CATERPIE",
+          16
+        ],
+        [
+          "WEEDLE",
+          16
+        ]
+      ],
+      "after": [
+        [
+          "BEEDRILL",
+          16
+        ],
+        [
+          "BUTTERFREE",
+          16
+        ],
+        [
+          "VENONAT",
+          16
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 11,
+      "before": [
+        [
+          "BUTTERFREE",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "BEEDRILL",
+          17
+        ],
+        [
+          "BUTTERFREE",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 12,
+      "before": [
+        [
+          "BEEDRILL",
+          19
+        ],
+        [
+          "BEEDRILL",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "BEEDRILL",
+          18
+        ],
+        [
+          "VENONAT",
+          18
+        ],
+        [
+          "PARAS",
+          18
+        ]
+      ]
+    },
+    {
+      "trainer": "BUG_CATCHER",
+      "number": 13,
+      "before": [
+        [
+          "CATERPIE",
+          20
+        ],
+        [
+          "WEEDLE",
+          20
+        ],
+        [
+          "VENONAT",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "BUTTERFREE",
+          20
+        ],
+        [
+          "BEEDRILL",
+          20
+        ],
+        [
+          "VENONAT",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 1,
+      "before": [
+        [
+          "PIDGEY",
+          9
+        ],
+        [
+          "PIDGEY",
+          9
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEY",
+          8
+        ],
+        [
+          "RATTATA",
+          8
+        ],
+        [
+          "NIDORAN_F",
+          8
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 2,
+      "before": [
+        [
+          "RATTATA",
+          10
+        ],
+        [
+          "NIDORAN_M",
+          10
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          9
+        ],
+        [
+          "NIDORAN_M",
+          9
+        ],
+        [
+          "PIDGEY",
+          9
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 3,
+      "before": [
+        [
+          "JIGGLYPUFF",
+          14
+        ]
+      ],
+      "after": [
+        [
+          "JIGGLYPUFF",
+          12
+        ],
+        [
+          "PIDGEY",
+          12
+        ],
+        [
+          "CLEFAIRY",
+          12
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 4,
+      "before": [
+        [
+          "PARAS",
+          31
+        ],
+        [
+          "PARAS",
+          31
+        ],
+        [
+          "PARASECT",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "PARASECT",
+          31
+        ],
+        [
+          "VENOMOTH",
+          31
+        ],
+        [
+          "TANGELA",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 5,
+      "before": [
+        [
+          "ODDISH",
+          11
+        ],
+        [
+          "BELLSPROUT",
+          11
+        ]
+      ],
+      "after": [
+        [
+          "ODDISH",
+          10
+        ],
+        [
+          "BELLSPROUT",
+          10
+        ],
+        [
+          "PARAS",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 6,
+      "before": [
+        [
+          "CLEFAIRY",
+          14
+        ]
+      ],
+      "after": [
+        [
+          "CLEFAIRY",
+          12
+        ],
+        [
+          "JIGGLYPUFF",
+          12
+        ],
+        [
+          "PIKACHU",
+          12
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 7,
+      "before": [
+        [
+          "PIDGEY",
+          16
+        ],
+        [
+          "NIDORAN_F",
+          16
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEY",
+          15
+        ],
+        [
+          "NIDORAN_F",
+          15
+        ],
+        [
+          "JIGGLYPUFF",
+          15
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 8,
+      "before": [
+        [
+          "PIDGEY",
+          14
+        ],
+        [
+          "NIDORAN_F",
+          14
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEY",
+          13
+        ],
+        [
+          "NIDORAN_F",
+          13
+        ],
+        [
+          "ODDISH",
+          13
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 9,
+      "before": [
+        [
+          "NIDORAN_M",
+          15
+        ],
+        [
+          "NIDORAN_F",
+          15
+        ]
+      ],
+      "after": [
+        [
+          "NIDORAN_M",
+          14
+        ],
+        [
+          "NIDORAN_F",
+          14
+        ],
+        [
+          "CLEFAIRY",
+          14
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 10,
+      "before": [
+        [
+          "ODDISH",
+          13
+        ],
+        [
+          "PIDGEY",
+          13
+        ],
+        [
+          "ODDISH",
+          13
+        ]
+      ],
+      "after": [
+        [
+          "ODDISH",
+          13
+        ],
+        [
+          "PIDGEY",
+          13
+        ],
+        [
+          "BELLSPROUT",
+          13
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 11,
+      "before": [
+        [
+          "PIDGEY",
+          18
+        ],
+        [
+          "NIDORAN_F",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          17
+        ],
+        [
+          "NIDORAN_F",
+          17
+        ],
+        [
+          "MEOWTH",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 12,
+      "before": [
+        [
+          "RATTATA",
+          18
+        ],
+        [
+          "PIKACHU",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          17
+        ],
+        [
+          "PIKACHU",
+          17
+        ],
+        [
+          "CLEFAIRY",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 13,
+      "before": [
+        [
+          "NIDORAN_F",
+          23
+        ],
+        [
+          "NIDORINA",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "NIDORINA",
+          22
+        ],
+        [
+          "CLEFAIRY",
+          22
+        ],
+        [
+          "MEOWTH",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 14,
+      "before": [
+        [
+          "MEOWTH",
+          24
+        ],
+        [
+          "JIGGLYPUFF",
+          24
+        ],
+        [
+          "EEVEE",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "MEOWTH",
+          24
+        ],
+        [
+          "JIGGLYPUFF",
+          24
+        ],
+        [
+          "EEVEE",
+          24
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 15,
+      "before": [
+        [
+          "PIDGEY",
+          19
+        ],
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "NIDORAN_M",
+          19
+        ],
+        [
+          "MEOWTH",
+          19
+        ],
+        [
+          "PIKACHU",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          19
+        ],
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "NIDORAN_M",
+          19
+        ],
+        [
+          "MEOWTH",
+          19
+        ],
+        [
+          "PIKACHU",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 16,
+      "before": [
+        [
+          "CLEFAIRY",
+          22
+        ],
+        [
+          "CLEFABLE",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "CLEFAIRY",
+          22
+        ],
+        [
+          "CLEFABLE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 17,
+      "before": [
+        [
+          "BELLSPROUT",
+          23
+        ],
+        [
+          "WEEPINBELL",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "BELLSPROUT",
+          22
+        ],
+        [
+          "WEEPINBELL",
+          22
+        ],
+        [
+          "EXEGGCUTE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "LASS",
+      "number": 18,
+      "before": [
+        [
+          "ODDISH",
+          23
+        ],
+        [
+          "GLOOM",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "ODDISH",
+          22
+        ],
+        [
+          "GLOOM",
+          22
+        ],
+        [
+          "PARAS",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "SAILOR",
+      "number": 1,
+      "before": [
+        [
+          "MACHOP",
+          18
+        ],
+        [
+          "SHELLDER",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          17
+        ],
+        [
+          "SHELLDER",
+          17
+        ],
+        [
+          "HORSEA",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "SAILOR",
+      "number": 2,
+      "before": [
+        [
+          "MACHOP",
+          17
+        ],
+        [
+          "TENTACOOL",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          16
+        ],
+        [
+          "TENTACOOL",
+          16
+        ],
+        [
+          "KRABBY",
+          16
+        ]
+      ]
+    },
+    {
+      "trainer": "SAILOR",
+      "number": 3,
+      "before": [
+        [
+          "SHELLDER",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "SHELLDER",
+          19
+        ],
+        [
+          "MACHOP",
+          19
+        ],
+        [
+          "STARYU",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "SAILOR",
+      "number": 4,
+      "before": [
+        [
+          "HORSEA",
+          17
+        ],
+        [
+          "SHELLDER",
+          17
+        ],
+        [
+          "TENTACOOL",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "HORSEA",
+          17
+        ],
+        [
+          "SHELLDER",
+          17
+        ],
+        [
+          "TENTACOOL",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "SAILOR",
+      "number": 5,
+      "before": [
+        [
+          "TENTACOOL",
+          18
+        ],
+        [
+          "STARYU",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "TENTACOOL",
+          17
+        ],
+        [
+          "STARYU",
+          17
+        ],
+        [
+          "KRABBY",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "SAILOR",
+      "number": 6,
+      "before": [
+        [
+          "HORSEA",
+          17
+        ],
+        [
+          "HORSEA",
+          17
+        ],
+        [
+          "HORSEA",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "HORSEA",
+          17
+        ],
+        [
+          "SHELLDER",
+          17
+        ],
+        [
+          "KRABBY",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "SAILOR",
+      "number": 7,
+      "before": [
+        [
+          "MACHOP",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          18
+        ],
+        [
+          "POLIWAG",
+          18
+        ],
+        [
+          "KRABBY",
+          18
+        ]
+      ]
+    },
+    {
+      "trainer": "SAILOR",
+      "number": 8,
+      "before": [
+        [
+          "PIKACHU",
+          21
+        ],
+        [
+          "PIKACHU",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "PIKACHU",
+          20
+        ],
+        [
+          "MAGNEMITE",
+          20
+        ],
+        [
+          "VOLTORB",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 1,
+      "before": [
+        [
+          "DIGLETT",
+          11
+        ],
+        [
+          "SANDSHREW",
+          11
+        ]
+      ],
+      "after": [
+        [
+          "DIGLETT",
+          11
+        ],
+        [
+          "SANDSHREW",
+          11
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 2,
+      "before": [
+        [
+          "RATTATA",
+          14
+        ],
+        [
+          "EKANS",
+          14
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          13
+        ],
+        [
+          "EKANS",
+          13
+        ],
+        [
+          "SPEAROW",
+          13
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 3,
+      "before": [
+        [
+          "MANKEY",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "MANKEY",
+          16
+        ],
+        [
+          "MACHOP",
+          16
+        ],
+        [
+          "SANDSHREW",
+          16
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 4,
+      "before": [
+        [
+          "SQUIRTLE",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "WARTORTLE",
+          18
+        ],
+        [
+          "PIKACHU",
+          18
+        ],
+        [
+          "FEAROW",
+          18
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 5,
+      "before": [
+        [
+          "SPEAROW",
+          16
+        ],
+        [
+          "RATICATE",
+          16
+        ]
+      ],
+      "after": [
+        [
+          "SPEAROW",
+          15
+        ],
+        [
+          "EKANS",
+          15
+        ],
+        [
+          "RATICATE",
+          15
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 6,
+      "before": [
+        [
+          "GROWLITHE",
+          21
+        ],
+        [
+          "CHARMANDER",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "GROWLITHE",
+          20
+        ],
+        [
+          "CHARMELEON",
+          20
+        ],
+        [
+          "MANKEY",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 7,
+      "before": [
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "DIGLETT",
+          19
+        ],
+        [
+          "EKANS",
+          19
+        ],
+        [
+          "SANDSHREW",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "DIGLETT",
+          19
+        ],
+        [
+          "EKANS",
+          19
+        ],
+        [
+          "SANDSHREW",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 8,
+      "before": [
+        [
+          "NIDORAN_M",
+          29
+        ],
+        [
+          "NIDORINO",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "NIDORINO",
+          28
+        ],
+        [
+          "NIDORINA",
+          28
+        ],
+        [
+          "RATICATE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 1,
+      "before": [
+        [
+          "GOLDEEN",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          17
+        ],
+        [
+          "HORSEA",
+          17
+        ],
+        [
+          "POLIWAG",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 2,
+      "before": [
+        [
+          "RATTATA",
+          16
+        ],
+        [
+          "PIKACHU",
+          16
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          15
+        ],
+        [
+          "PIKACHU",
+          15
+        ],
+        [
+          "MEOWTH",
+          15
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 3,
+      "before": [
+        [
+          "PIDGEY",
+          16
+        ],
+        [
+          "PIDGEY",
+          16
+        ],
+        [
+          "PIDGEY",
+          16
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEY",
+          16
+        ],
+        [
+          "SPEAROW",
+          16
+        ],
+        [
+          "NIDORAN_F",
+          16
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 4,
+      "before": [
+        [
+          "ODDISH",
+          18
+        ],
+        [
+          "BELLSPROUT",
+          18
+        ],
+        [
+          "ODDISH",
+          18
+        ],
+        [
+          "BELLSPROUT",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "ODDISH",
+          18
+        ],
+        [
+          "BELLSPROUT",
+          18
+        ],
+        [
+          "PARAS",
+          18
+        ],
+        [
+          "EXEGGCUTE",
+          18
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 5,
+      "before": [
+        [
+          "MEOWTH",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "MEOWTH",
+          21
+        ],
+        [
+          "CLEFAIRY",
+          21
+        ],
+        [
+          "PIKACHU",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 6,
+      "before": [
+        [
+          "PIKACHU",
+          20
+        ],
+        [
+          "CLEFAIRY",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "PIKACHU",
+          19
+        ],
+        [
+          "CLEFAIRY",
+          19
+        ],
+        [
+          "JIGGLYPUFF",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 7,
+      "before": [
+        [
+          "PIDGEY",
+          21
+        ],
+        [
+          "PIDGEOTTO",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          20
+        ],
+        [
+          "MEOWTH",
+          20
+        ],
+        [
+          "NIDORINA",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 8,
+      "before": [
+        [
+          "JIGGLYPUFF",
+          21
+        ],
+        [
+          "PIDGEY",
+          21
+        ],
+        [
+          "MEOWTH",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "JIGGLYPUFF",
+          21
+        ],
+        [
+          "PIDGEOTTO",
+          21
+        ],
+        [
+          "MEOWTH",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 9,
+      "before": [
+        [
+          "ODDISH",
+          22
+        ],
+        [
+          "BULBASAUR",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GLOOM",
+          21
+        ],
+        [
+          "IVYSAUR",
+          21
+        ],
+        [
+          "PARAS",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 10,
+      "before": [
+        [
+          "BULBASAUR",
+          24
+        ],
+        [
+          "IVYSAUR",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "BULBASAUR",
+          23
+        ],
+        [
+          "IVYSAUR",
+          23
+        ],
+        [
+          "EXEGGCUTE",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 11,
+      "before": [
+        [
+          "PIDGEY",
+          24
+        ],
+        [
+          "MEOWTH",
+          24
+        ],
+        [
+          "RATTATA",
+          24
+        ],
+        [
+          "PIKACHU",
+          24
+        ],
+        [
+          "DRATINI",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          24
+        ],
+        [
+          "MEOWTH",
+          24
+        ],
+        [
+          "RATICATE",
+          24
+        ],
+        [
+          "PIKACHU",
+          24
+        ],
+        [
+          "DRATINI",
+          24
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 12,
+      "before": [
+        [
+          "POLIWAG",
+          30
+        ],
+        [
+          "POLIWAG",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "POLIWHIRL",
+          29
+        ],
+        [
+          "GOLDEEN",
+          29
+        ],
+        [
+          "HORSEA",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 13,
+      "before": [
+        [
+          "PIDGEY",
+          27
+        ],
+        [
+          "MEOWTH",
+          27
+        ],
+        [
+          "PIDGEY",
+          27
+        ],
+        [
+          "PIDGEOTTO",
+          27
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          27
+        ],
+        [
+          "MEOWTH",
+          27
+        ],
+        [
+          "NIDORINA",
+          27
+        ],
+        [
+          "VENONAT",
+          27
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 14,
+      "before": [
+        [
+          "GOLDEEN",
+          28
+        ],
+        [
+          "POLIWAG",
+          28
+        ],
+        [
+          "HORSEA",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          28
+        ],
+        [
+          "POLIWHIRL",
+          28
+        ],
+        [
+          "HORSEA",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 15,
+      "before": [
+        [
+          "GOLDEEN",
+          31
+        ],
+        [
+          "SEAKING",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          30
+        ],
+        [
+          "SEAKING",
+          30
+        ],
+        [
+          "STARYU",
+          30
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 16,
+      "before": [
+        [
+          "TENTACOOL",
+          30
+        ],
+        [
+          "HORSEA",
+          30
+        ],
+        [
+          "SEEL",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "TENTACRUEL",
+          30
+        ],
+        [
+          "HORSEA",
+          30
+        ],
+        [
+          "SEEL",
+          30
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 17,
+      "before": [
+        [
+          "BELLSPROUT",
+          22
+        ],
+        [
+          "CLEFAIRY",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "WEEPINBELL",
+          21
+        ],
+        [
+          "CLEFAIRY",
+          21
+        ],
+        [
+          "PARAS",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 18,
+      "before": [
+        [
+          "MEOWTH",
+          20
+        ],
+        [
+          "ODDISH",
+          20
+        ],
+        [
+          "PIDGEY",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "MEOWTH",
+          20
+        ],
+        [
+          "ODDISH",
+          20
+        ],
+        [
+          "PIDGEOTTO",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 19,
+      "before": [
+        [
+          "PIDGEY",
+          19
+        ],
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "BELLSPROUT",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          19
+        ],
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "SPEAROW",
+          19
+        ],
+        [
+          "BELLSPROUT",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 20,
+      "before": [
+        [
+          "GLOOM",
+          28
+        ],
+        [
+          "ODDISH",
+          28
+        ],
+        [
+          "ODDISH",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "GLOOM",
+          28
+        ],
+        [
+          "WEEPINBELL",
+          28
+        ],
+        [
+          "PARASECT",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 21,
+      "before": [
+        [
+          "PIKACHU",
+          29
+        ],
+        [
+          "RAICHU",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "PIKACHU",
+          28
+        ],
+        [
+          "RAICHU",
+          28
+        ],
+        [
+          "CLEFAIRY",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 22,
+      "before": [
+        [
+          "CLEFAIRY",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "CLEFAIRY",
+          31
+        ],
+        [
+          "JIGGLYPUFF",
+          31
+        ],
+        [
+          "RAICHU",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_F",
+      "number": 23,
+      "before": [
+        [
+          "BELLSPROUT",
+          29
+        ],
+        [
+          "ODDISH",
+          29
+        ],
+        [
+          "TANGELA",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "WEEPINBELL",
+          29
+        ],
+        [
+          "GLOOM",
+          29
+        ],
+        [
+          "TANGELA",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "POKEMANIAC",
+      "number": 1,
+      "before": [
+        [
+          "RHYHORN",
+          30
+        ],
+        [
+          "LICKITUNG",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "RHYHORN",
+          29
+        ],
+        [
+          "LICKITUNG",
+          29
+        ],
+        [
+          "SLOWPOKE",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "POKEMANIAC",
+      "number": 2,
+      "before": [
+        [
+          "CUBONE",
+          20
+        ],
+        [
+          "SLOWPOKE",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "CUBONE",
+          19
+        ],
+        [
+          "SLOWPOKE",
+          19
+        ],
+        [
+          "BALTOY",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "POKEMANIAC",
+      "number": 3,
+      "before": [
+        [
+          "SLOWPOKE",
+          20
+        ],
+        [
+          "SLOWPOKE",
+          20
+        ],
+        [
+          "SLOWPOKE",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "SLOWPOKE",
+          20
+        ],
+        [
+          "CUBONE",
+          20
+        ],
+        [
+          "LICKITUNG",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "POKEMANIAC",
+      "number": 4,
+      "before": [
+        [
+          "CHARMANDER",
+          22
+        ],
+        [
+          "CUBONE",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "CHARMELEON",
+          21
+        ],
+        [
+          "CUBONE",
+          21
+        ],
+        [
+          "SABLEYE",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "POKEMANIAC",
+      "number": 5,
+      "before": [
+        [
+          "SLOWPOKE",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "SLOWPOKE",
+          23
+        ],
+        [
+          "CUBONE",
+          23
+        ],
+        [
+          "SABLEYE",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "POKEMANIAC",
+      "number": 6,
+      "before": [
+        [
+          "CHARMELEON",
+          40
+        ],
+        [
+          "LAPRAS",
+          40
+        ],
+        [
+          "LICKITUNG",
+          40
+        ]
+      ],
+      "after": [
+        [
+          "CHARIZARD",
+          39
+        ],
+        [
+          "LAPRAS",
+          39
+        ],
+        [
+          "LICKITUNG",
+          39
+        ],
+        [
+          "PUPITAR",
+          39
+        ]
+      ]
+    },
+    {
+      "trainer": "POKEMANIAC",
+      "number": 7,
+      "before": [
+        [
+          "CUBONE",
+          23
+        ],
+        [
+          "SLOWPOKE",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "CUBONE",
+          22
+        ],
+        [
+          "SLOWPOKE",
+          22
+        ],
+        [
+          "SABLEYE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 1,
+      "before": [
+        [
+          "MAGNEMITE",
+          11
+        ],
+        [
+          "VOLTORB",
+          11
+        ]
+      ],
+      "after": [
+        [
+          "MAGNEMITE",
+          10
+        ],
+        [
+          "VOLTORB",
+          10
+        ],
+        [
+          "GRIMER",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 2,
+      "before": [
+        [
+          "GRIMER",
+          12
+        ],
+        [
+          "VOLTORB",
+          12
+        ],
+        [
+          "KOFFING",
+          12
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          12
+        ],
+        [
+          "VOLTORB",
+          12
+        ],
+        [
+          "KOFFING",
+          12
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 3,
+      "before": [
+        [
+          "VOLTORB",
+          20
+        ],
+        [
+          "KOFFING",
+          20
+        ],
+        [
+          "VOLTORB",
+          20
+        ],
+        [
+          "MAGNEMITE",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "VOLTORB",
+          20
+        ],
+        [
+          "KOFFING",
+          20
+        ],
+        [
+          "MAGNEMITE",
+          20
+        ],
+        [
+          "PORYGON",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 4,
+      "before": [
+        [
+          "GRIMER",
+          22
+        ],
+        [
+          "MUK",
+          22
+        ],
+        [
+          "GRIMER",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          22
+        ],
+        [
+          "KOFFING",
+          22
+        ],
+        [
+          "ARBOK",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 5,
+      "before": [
+        [
+          "KOFFING",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          24
+        ],
+        [
+          "GRIMER",
+          24
+        ],
+        [
+          "MAGNEMITE",
+          24
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 6,
+      "before": [
+        [
+          "VULPIX",
+          36
+        ],
+        [
+          "NINETALES",
+          36
+        ],
+        [
+          "FLAREON",
+          36
+        ]
+      ],
+      "after": [
+        [
+          "VULPIX",
+          36
+        ],
+        [
+          "NINETALES",
+          36
+        ],
+        [
+          "FLAREON",
+          36
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 7,
+      "before": [
+        [
+          "PONYTA",
+          34
+        ],
+        [
+          "CHARMANDER",
+          34
+        ],
+        [
+          "VULPIX",
+          34
+        ],
+        [
+          "GROWLITHE",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "PONYTA",
+          34
+        ],
+        [
+          "CHARMELEON",
+          34
+        ],
+        [
+          "VULPIX",
+          34
+        ],
+        [
+          "ARCANINE",
+          34
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 8,
+      "before": [
+        [
+          "RAPIDASH",
+          41
+        ]
+      ],
+      "after": [
+        [
+          "RAPIDASH",
+          41
+        ]
+      ]
+    },
+    {
+      "trainer": "SUPER_NERD",
+      "number": 9,
+      "before": [
+        [
+          "GROWLITHE",
+          37
+        ],
+        [
+          "VULPIX",
+          37
+        ]
+      ],
+      "after": [
+        [
+          "GROWLITHE",
+          36
+        ],
+        [
+          "NINETALES",
+          36
+        ],
+        [
+          "MAGMAR",
+          36
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 1,
+      "before": [
+        [
+          "GEODUDE",
+          10
+        ],
+        [
+          "GEODUDE",
+          10
+        ],
+        [
+          "ONIX",
+          10
+        ]
+      ],
+      "after": [
+        [
+          "GEODUDE",
+          10
+        ],
+        [
+          "MACHOP",
+          10
+        ],
+        [
+          "ONIX",
+          10
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 2,
+      "before": [
+        [
+          "MACHOP",
+          15
+        ],
+        [
+          "GEODUDE",
+          15
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          14
+        ],
+        [
+          "GEODUDE",
+          14
+        ],
+        [
+          "SANDSHREW",
+          14
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 3,
+      "before": [
+        [
+          "GEODUDE",
+          13
+        ],
+        [
+          "GEODUDE",
+          13
+        ],
+        [
+          "MACHOP",
+          13
+        ],
+        [
+          "GEODUDE",
+          13
+        ]
+      ],
+      "after": [
+        [
+          "GEODUDE",
+          13
+        ],
+        [
+          "SANDSHREW",
+          13
+        ],
+        [
+          "MACHOP",
+          13
+        ],
+        [
+          "ONIX",
+          13
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 4,
+      "before": [
+        [
+          "ONIX",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "ONIX",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 5,
+      "before": [
+        [
+          "GEODUDE",
+          21
+        ],
+        [
+          "ONIX",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "GEODUDE",
+          20
+        ],
+        [
+          "ONIX",
+          20
+        ],
+        [
+          "MACHOP",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 6,
+      "before": [
+        [
+          "GEODUDE",
+          20
+        ],
+        [
+          "MACHOP",
+          20
+        ],
+        [
+          "GEODUDE",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "GEODUDE",
+          20
+        ],
+        [
+          "MACHOP",
+          20
+        ],
+        [
+          "SANDSHREW",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 7,
+      "before": [
+        [
+          "GEODUDE",
+          21
+        ],
+        [
+          "ONIX",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "GEODUDE",
+          20
+        ],
+        [
+          "ONIX",
+          20
+        ],
+        [
+          "BALTOY",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 8,
+      "before": [
+        [
+          "ONIX",
+          19
+        ],
+        [
+          "GRAVELER",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "ONIX",
+          18
+        ],
+        [
+          "GRAVELER",
+          18
+        ],
+        [
+          "SANDSHREW",
+          18
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 9,
+      "before": [
+        [
+          "GEODUDE",
+          21
+        ],
+        [
+          "GEODUDE",
+          21
+        ],
+        [
+          "GRAVELER",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "GEODUDE",
+          21
+        ],
+        [
+          "MACHOP",
+          21
+        ],
+        [
+          "ONIX",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 10,
+      "before": [
+        [
+          "GEODUDE",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "GRAVELER",
+          23
+        ],
+        [
+          "ONIX",
+          23
+        ],
+        [
+          "MACHOP",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 11,
+      "before": [
+        [
+          "MACHOP",
+          20
+        ],
+        [
+          "ONIX",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          19
+        ],
+        [
+          "ONIX",
+          19
+        ],
+        [
+          "BALTOY",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 12,
+      "before": [
+        [
+          "GEODUDE",
+          19
+        ],
+        [
+          "MACHOP",
+          19
+        ],
+        [
+          "GEODUDE",
+          19
+        ],
+        [
+          "GEODUDE",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "GEODUDE",
+          19
+        ],
+        [
+          "MACHOP",
+          19
+        ],
+        [
+          "SANDSHREW",
+          19
+        ],
+        [
+          "ONIX",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 13,
+      "before": [
+        [
+          "ONIX",
+          20
+        ],
+        [
+          "ONIX",
+          20
+        ],
+        [
+          "GEODUDE",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "ONIX",
+          20
+        ],
+        [
+          "GEODUDE",
+          20
+        ],
+        [
+          "MACHOP",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "HIKER",
+      "number": 14,
+      "before": [
+        [
+          "GEODUDE",
+          21
+        ],
+        [
+          "GRAVELER",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "GEODUDE",
+          20
+        ],
+        [
+          "ONIX",
+          20
+        ],
+        [
+          "BALTOY",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 1,
+      "before": [
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 2,
+      "before": [
+        [
+          "KOFFING",
+          29
+        ],
+        [
+          "GRIMER",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "RATICATE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 3,
+      "before": [
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "WEEZING",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "GRIMER",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "GRIMER",
+          25
+        ],
+        [
+          "GOLBAT",
+          25
+        ],
+        [
+          "ARBOK",
+          25
+        ],
+        [
+          "WEEZING",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 4,
+      "before": [
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "WEEZING",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 5,
+      "before": [
+        [
+          "GRIMER",
+          29
+        ],
+        [
+          "KOFFING",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "ARBOK",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 6,
+      "before": [
+        [
+          "WEEZING",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          31
+        ],
+        [
+          "GOLBAT",
+          31
+        ],
+        [
+          "WEEZING",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 7,
+      "before": [
+        [
+          "GRIMER",
+          26
+        ],
+        [
+          "GRIMER",
+          26
+        ],
+        [
+          "GRIMER",
+          26
+        ],
+        [
+          "GRIMER",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          26
+        ],
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "RATICATE",
+          26
+        ],
+        [
+          "ARBOK",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 8,
+      "before": [
+        [
+          "WEEZING",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "WEEZING",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "WEEZING",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 9,
+      "before": [
+        [
+          "MUK",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          31
+        ],
+        [
+          "ARBOK",
+          31
+        ],
+        [
+          "MUK",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 10,
+      "before": [
+        [
+          "VOLTORB",
+          29
+        ],
+        [
+          "VOLTORB",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "VOLTORB",
+          28
+        ],
+        [
+          "MAGNEMITE",
+          28
+        ],
+        [
+          "RATICATE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 11,
+      "before": [
+        [
+          "WEEZING",
+          29
+        ],
+        [
+          "MUK",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "GOLBAT",
+          28
+        ],
+        [
+          "WEEZING",
+          28
+        ],
+        [
+          "MUK",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 12,
+      "before": [
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "WEEZING",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "WEEZING",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "GRIMER",
+          25
+        ],
+        [
+          "ARBOK",
+          25
+        ],
+        [
+          "GOLBAT",
+          25
+        ],
+        [
+          "WEEZING",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 13,
+      "before": [
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "GRIMER",
+          26
+        ],
+        [
+          "KOFFING",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "GRIMER",
+          26
+        ],
+        [
+          "ARBOK",
+          26
+        ],
+        [
+          "GOLBAT",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 14,
+      "before": [
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "ARBOK",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIKER",
+      "number": 15,
+      "before": [
+        [
+          "KOFFING",
+          29
+        ],
+        [
+          "MUK",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "ARBOK",
+          28
+        ],
+        [
+          "MUK",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BURGLAR",
+      "number": 1,
+      "before": [
+        [
+          "GROWLITHE",
+          36
+        ],
+        [
+          "VULPIX",
+          36
+        ],
+        [
+          "NINETALES",
+          36
+        ]
+      ],
+      "after": [
+        [
+          "GROWLITHE",
+          36
+        ],
+        [
+          "VULPIX",
+          36
+        ],
+        [
+          "NINETALES",
+          36
+        ]
+      ]
+    },
+    {
+      "trainer": "BURGLAR",
+      "number": 2,
+      "before": [
+        [
+          "PONYTA",
+          41
+        ]
+      ],
+      "after": [
+        [
+          "PONYTA",
+          39
+        ],
+        [
+          "GROWLITHE",
+          39
+        ],
+        [
+          "RAPIDASH",
+          39
+        ]
+      ]
+    },
+    {
+      "trainer": "BURGLAR",
+      "number": 3,
+      "before": [
+        [
+          "VULPIX",
+          37
+        ],
+        [
+          "GROWLITHE",
+          37
+        ]
+      ],
+      "after": [
+        [
+          "NINETALES",
+          36
+        ],
+        [
+          "GROWLITHE",
+          36
+        ],
+        [
+          "PERSIAN",
+          36
+        ]
+      ]
+    },
+    {
+      "trainer": "BURGLAR",
+      "number": 4,
+      "before": [
+        [
+          "CHARMANDER",
+          34
+        ],
+        [
+          "CHARMELEON",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "CHARMELEON",
+          33
+        ],
+        [
+          "GROWLITHE",
+          33
+        ],
+        [
+          "VULPIX",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "BURGLAR",
+      "number": 5,
+      "before": [
+        [
+          "NINETALES",
+          38
+        ]
+      ],
+      "after": [
+        [
+          "NINETALES",
+          37
+        ],
+        [
+          "PERSIAN",
+          37
+        ]
+      ]
+    },
+    {
+      "trainer": "BURGLAR",
+      "number": 6,
+      "before": [
+        [
+          "GROWLITHE",
+          34
+        ],
+        [
+          "PONYTA",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "GROWLITHE",
+          33
+        ],
+        [
+          "PONYTA",
+          33
+        ],
+        [
+          "CHARMELEON",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "ENGINEER",
+      "number": 1,
+      "before": [
+        [
+          "PORYGON",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "PORYGON",
+          19
+        ],
+        [
+          "MAGNEMITE",
+          19
+        ],
+        [
+          "VOLTORB",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "ENGINEER",
+      "number": 2,
+      "before": [
+        [
+          "DITTO",
+          18
+        ],
+        [
+          "ELECTRODE",
+          18
+        ],
+        [
+          "MAGNETON",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "DITTO",
+          18
+        ],
+        [
+          "ELECTRODE",
+          18
+        ],
+        [
+          "MAGNETON",
+          18
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 1,
+      "before": [
+        [
+          "GOLDEEN",
+          17
+        ],
+        [
+          "TENTACOOL",
+          17
+        ],
+        [
+          "GOLDEEN",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          17
+        ],
+        [
+          "TENTACOOL",
+          17
+        ],
+        [
+          "HORSEA",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 2,
+      "before": [
+        [
+          "TENTACOOL",
+          17
+        ],
+        [
+          "STARYU",
+          17
+        ],
+        [
+          "SHELLDER",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "TENTACOOL",
+          17
+        ],
+        [
+          "STARYU",
+          17
+        ],
+        [
+          "SHELLDER",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 3,
+      "before": [
+        [
+          "GOLDEEN",
+          22
+        ],
+        [
+          "POLIWAG",
+          22
+        ],
+        [
+          "GOLDEEN",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          22
+        ],
+        [
+          "POLIWAG",
+          22
+        ],
+        [
+          "KRABBY",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 4,
+      "before": [
+        [
+          "TENTACOOL",
+          24
+        ],
+        [
+          "GOLDEEN",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "TENTACOOL",
+          23
+        ],
+        [
+          "GOLDEEN",
+          23
+        ],
+        [
+          "SHELLDER",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 5,
+      "before": [
+        [
+          "GOLDEEN",
+          27
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          25
+        ],
+        [
+          "POLIWHIRL",
+          25
+        ],
+        [
+          "KRABBY",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 6,
+      "before": [
+        [
+          "POLIWAG",
+          21
+        ],
+        [
+          "SHELLDER",
+          21
+        ],
+        [
+          "GOLDEEN",
+          21
+        ],
+        [
+          "HORSEA",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "POLIWAG",
+          21
+        ],
+        [
+          "SHELLDER",
+          21
+        ],
+        [
+          "GOLDEEN",
+          21
+        ],
+        [
+          "HORSEA",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 7,
+      "before": [
+        [
+          "SEAKING",
+          28
+        ],
+        [
+          "GOLDEEN",
+          28
+        ],
+        [
+          "SEAKING",
+          28
+        ],
+        [
+          "SEAKING",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "SEAKING",
+          28
+        ],
+        [
+          "GOLDEEN",
+          28
+        ],
+        [
+          "KINGLER",
+          28
+        ],
+        [
+          "TENTACOOL",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 8,
+      "before": [
+        [
+          "SHELLDER",
+          31
+        ],
+        [
+          "CLOYSTER",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "SHELLDER",
+          30
+        ],
+        [
+          "CLOYSTER",
+          30
+        ],
+        [
+          "STARYU",
+          30
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 9,
+      "before": [
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ]
+      ],
+      "after": [
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ],
+        [
+          "MAGIKARP",
+          27
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 10,
+      "before": [
+        [
+          "SEAKING",
+          33
+        ],
+        [
+          "GOLDEEN",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "SEAKING",
+          32
+        ],
+        [
+          "GOLDEEN",
+          32
+        ],
+        [
+          "SEADRA",
+          32
+        ]
+      ]
+    },
+    {
+      "trainer": "FISHER",
+      "number": 11,
+      "before": [
+        [
+          "MAGIKARP",
+          24
+        ],
+        [
+          "MAGIKARP",
+          24
+        ],
+        [
+          "OMANYTE",
+          24
+        ],
+        [
+          "KABUTO",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "GYARADOS",
+          24
+        ],
+        [
+          "POLIWAG",
+          24
+        ],
+        [
+          "OMANYTE",
+          24
+        ],
+        [
+          "KABUTO",
+          24
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 1,
+      "before": [
+        [
+          "HORSEA",
+          16
+        ],
+        [
+          "SHELLDER",
+          16
+        ]
+      ],
+      "after": [
+        [
+          "HORSEA",
+          15
+        ],
+        [
+          "SHELLDER",
+          15
+        ],
+        [
+          "POLIWAG",
+          15
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 2,
+      "before": [
+        [
+          "TENTACOOL",
+          30
+        ],
+        [
+          "SHELLDER",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "TENTACRUEL",
+          29
+        ],
+        [
+          "SHELLDER",
+          29
+        ],
+        [
+          "KINGLER",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 3,
+      "before": [
+        [
+          "GOLDEEN",
+          29
+        ],
+        [
+          "HORSEA",
+          29
+        ],
+        [
+          "STARYU",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          29
+        ],
+        [
+          "HORSEA",
+          29
+        ],
+        [
+          "STARYU",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 4,
+      "before": [
+        [
+          "POLIWAG",
+          30
+        ],
+        [
+          "POLIWHIRL",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "POLIWHIRL",
+          29
+        ],
+        [
+          "HORSEA",
+          29
+        ],
+        [
+          "STARYU",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 5,
+      "before": [
+        [
+          "HORSEA",
+          27
+        ],
+        [
+          "TENTACOOL",
+          27
+        ],
+        [
+          "TENTACOOL",
+          27
+        ],
+        [
+          "GOLDEEN",
+          27
+        ]
+      ],
+      "after": [
+        [
+          "HORSEA",
+          27
+        ],
+        [
+          "TENTACOOL",
+          27
+        ],
+        [
+          "GOLDEEN",
+          27
+        ],
+        [
+          "MAREANIE",
+          27
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 6,
+      "before": [
+        [
+          "GOLDEEN",
+          29
+        ],
+        [
+          "SHELLDER",
+          29
+        ],
+        [
+          "SEAKING",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          29
+        ],
+        [
+          "SHELLDER",
+          29
+        ],
+        [
+          "SEAKING",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 7,
+      "before": [
+        [
+          "HORSEA",
+          30
+        ],
+        [
+          "HORSEA",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "HORSEA",
+          29
+        ],
+        [
+          "STARYU",
+          29
+        ],
+        [
+          "KINGLER",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 8,
+      "before": [
+        [
+          "TENTACOOL",
+          27
+        ],
+        [
+          "TENTACOOL",
+          27
+        ],
+        [
+          "STARYU",
+          27
+        ],
+        [
+          "HORSEA",
+          27
+        ],
+        [
+          "TENTACRUEL",
+          27
+        ]
+      ],
+      "after": [
+        [
+          "TENTACOOL",
+          27
+        ],
+        [
+          "GOLDEEN",
+          27
+        ],
+        [
+          "STARYU",
+          27
+        ],
+        [
+          "HORSEA",
+          27
+        ],
+        [
+          "TENTACRUEL",
+          27
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 9,
+      "before": [
+        [
+          "SHELLDER",
+          31
+        ],
+        [
+          "CLOYSTER",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "SHELLDER",
+          30
+        ],
+        [
+          "CLOYSTER",
+          30
+        ],
+        [
+          "HORSEA",
+          30
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 10,
+      "before": [
+        [
+          "STARYU",
+          35
+        ]
+      ],
+      "after": [
+        [
+          "STARYU",
+          33
+        ],
+        [
+          "SEADRA",
+          33
+        ],
+        [
+          "SEAKING",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 11,
+      "before": [
+        [
+          "HORSEA",
+          28
+        ],
+        [
+          "HORSEA",
+          28
+        ],
+        [
+          "SEADRA",
+          28
+        ],
+        [
+          "HORSEA",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "HORSEA",
+          28
+        ],
+        [
+          "GOLDEEN",
+          28
+        ],
+        [
+          "STARYU",
+          28
+        ],
+        [
+          "SEADRA",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 12,
+      "before": [
+        [
+          "SEADRA",
+          33
+        ],
+        [
+          "TENTACRUEL",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "SEADRA",
+          32
+        ],
+        [
+          "TENTACRUEL",
+          32
+        ],
+        [
+          "SHELLDER",
+          32
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 13,
+      "before": [
+        [
+          "STARMIE",
+          37
+        ]
+      ],
+      "after": [
+        [
+          "STARMIE",
+          37
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 14,
+      "before": [
+        [
+          "STARYU",
+          33
+        ],
+        [
+          "WARTORTLE",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "STARYU",
+          32
+        ],
+        [
+          "WARTORTLE",
+          32
+        ],
+        [
+          "KINGLER",
+          32
+        ]
+      ]
+    },
+    {
+      "trainer": "SWIMMER",
+      "number": 15,
+      "before": [
+        [
+          "POLIWHIRL",
+          32
+        ],
+        [
+          "TENTACOOL",
+          32
+        ],
+        [
+          "SEADRA",
+          32
+        ]
+      ],
+      "after": [
+        [
+          "POLIWHIRL",
+          32
+        ],
+        [
+          "TENTACRUEL",
+          32
+        ],
+        [
+          "SEADRA",
+          32
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 1,
+      "before": [
+        [
+          "MACHOP",
+          28
+        ],
+        [
+          "MANKEY",
+          28
+        ],
+        [
+          "MACHOP",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          28
+        ],
+        [
+          "PRIMEAPE",
+          28
+        ],
+        [
+          "RATICATE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 2,
+      "before": [
+        [
+          "MANKEY",
+          29
+        ],
+        [
+          "MACHOP",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "PRIMEAPE",
+          28
+        ],
+        [
+          "MACHOKE",
+          28
+        ],
+        [
+          "RATICATE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 3,
+      "before": [
+        [
+          "MACHOP",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          31
+        ],
+        [
+          "PRIMEAPE",
+          31
+        ],
+        [
+          "GROWLITHE",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 4,
+      "before": [
+        [
+          "MANKEY",
+          29
+        ],
+        [
+          "PRIMEAPE",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "MANKEY",
+          28
+        ],
+        [
+          "PRIMEAPE",
+          28
+        ],
+        [
+          "RATICATE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 5,
+      "before": [
+        [
+          "MACHOP",
+          29
+        ],
+        [
+          "MACHOKE",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          28
+        ],
+        [
+          "MACHOKE",
+          28
+        ],
+        [
+          "PRIMEAPE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 6,
+      "before": [
+        [
+          "MACHOKE",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          31
+        ],
+        [
+          "PRIMEAPE",
+          31
+        ],
+        [
+          "RATICATE",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 7,
+      "before": [
+        [
+          "MANKEY",
+          26
+        ],
+        [
+          "MANKEY",
+          26
+        ],
+        [
+          "MACHOKE",
+          26
+        ],
+        [
+          "MACHOP",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "MANKEY",
+          26
+        ],
+        [
+          "MACHOP",
+          26
+        ],
+        [
+          "RATICATE",
+          26
+        ],
+        [
+          "ARBOK",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 8,
+      "before": [
+        [
+          "PRIMEAPE",
+          29
+        ],
+        [
+          "MACHOKE",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "PRIMEAPE",
+          28
+        ],
+        [
+          "MACHOKE",
+          28
+        ],
+        [
+          "TAUROS",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "CUE_BALL",
+      "number": 9,
+      "before": [
+        [
+          "TENTACOOL",
+          31
+        ],
+        [
+          "TENTACOOL",
+          31
+        ],
+        [
+          "TENTACRUEL",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "TENTACOOL",
+          31
+        ],
+        [
+          "SHELLDER",
+          31
+        ],
+        [
+          "TENTACRUEL",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "GAMBLER",
+      "number": 1,
+      "before": [
+        [
+          "POLIWAG",
+          18
+        ],
+        [
+          "HORSEA",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "POLIWAG",
+          17
+        ],
+        [
+          "HORSEA",
+          17
+        ],
+        [
+          "GOLDEEN",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "GAMBLER",
+      "number": 2,
+      "before": [
+        [
+          "BELLSPROUT",
+          18
+        ],
+        [
+          "ODDISH",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "BELLSPROUT",
+          17
+        ],
+        [
+          "ODDISH",
+          17
+        ],
+        [
+          "PARAS",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "GAMBLER",
+      "number": 3,
+      "before": [
+        [
+          "VOLTORB",
+          18
+        ],
+        [
+          "MAGNEMITE",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "VOLTORB",
+          17
+        ],
+        [
+          "MAGNEMITE",
+          17
+        ],
+        [
+          "PIKACHU",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "GAMBLER",
+      "number": 4,
+      "before": [
+        [
+          "GROWLITHE",
+          18
+        ],
+        [
+          "VULPIX",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "GROWLITHE",
+          17
+        ],
+        [
+          "VULPIX",
+          17
+        ],
+        [
+          "PONYTA",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "GAMBLER",
+      "number": 5,
+      "before": [
+        [
+          "POLIWAG",
+          22
+        ],
+        [
+          "POLIWAG",
+          22
+        ],
+        [
+          "POLIWHIRL",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "POLIWAG",
+          22
+        ],
+        [
+          "POLIWHIRL",
+          22
+        ],
+        [
+          "KRABBY",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "GAMBLER",
+      "number": 6,
+      "before": [
+        [
+          "GROWLITHE",
+          24
+        ],
+        [
+          "VULPIX",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "GROWLITHE",
+          23
+        ],
+        [
+          "VULPIX",
+          23
+        ],
+        [
+          "EEVEE",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 1,
+      "before": [
+        [
+          "ODDISH",
+          21
+        ],
+        [
+          "BELLSPROUT",
+          21
+        ],
+        [
+          "ODDISH",
+          21
+        ],
+        [
+          "BELLSPROUT",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "GLOOM",
+          21
+        ],
+        [
+          "WEEPINBELL",
+          21
+        ],
+        [
+          "PARAS",
+          21
+        ],
+        [
+          "EXEGGCUTE",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 2,
+      "before": [
+        [
+          "BELLSPROUT",
+          24
+        ],
+        [
+          "BELLSPROUT",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "WEEPINBELL",
+          23
+        ],
+        [
+          "GLOOM",
+          23
+        ],
+        [
+          "PARASECT",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 3,
+      "before": [
+        [
+          "EXEGGCUTE",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "EXEGGCUTE",
+          24
+        ],
+        [
+          "GLOOM",
+          24
+        ],
+        [
+          "WEEPINBELL",
+          24
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 4,
+      "before": [
+        [
+          "RATTATA",
+          27
+        ],
+        [
+          "PIKACHU",
+          27
+        ],
+        [
+          "RATTATA",
+          27
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          27
+        ],
+        [
+          "PIKACHU",
+          27
+        ],
+        [
+          "MEOWTH",
+          27
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 5,
+      "before": [
+        [
+          "CLEFAIRY",
+          29
+        ],
+        [
+          "MEOWTH",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "CLEFAIRY",
+          28
+        ],
+        [
+          "PERSIAN",
+          28
+        ],
+        [
+          "MILTANK",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 6,
+      "before": [
+        [
+          "VAPOREON",
+          35
+        ]
+      ],
+      "after": [
+        [
+          "VAPOREON",
+          35
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 7,
+      "before": [
+        [
+          "SHELLDER",
+          30
+        ],
+        [
+          "SHELLDER",
+          30
+        ],
+        [
+          "CLOYSTER",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "SHELLDER",
+          30
+        ],
+        [
+          "STARYU",
+          30
+        ],
+        [
+          "CLOYSTER",
+          30
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 8,
+      "before": [
+        [
+          "POLIWAG",
+          31
+        ],
+        [
+          "SEAKING",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "POLIWHIRL",
+          30
+        ],
+        [
+          "SEAKING",
+          30
+        ],
+        [
+          "HORSEA",
+          30
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 9,
+      "before": [
+        [
+          "PIDGEOTTO",
+          29
+        ],
+        [
+          "WIGGLYTUFF",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          28
+        ],
+        [
+          "WIGGLYTUFF",
+          28
+        ],
+        [
+          "CLEFAIRY",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 10,
+      "before": [
+        [
+          "BULBASAUR",
+          29
+        ],
+        [
+          "IVYSAUR",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "IVYSAUR",
+          28
+        ],
+        [
+          "GLOOM",
+          28
+        ],
+        [
+          "TANGELA",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 11,
+      "before": [
+        [
+          "POLIWAG",
+          27
+        ],
+        [
+          "GOLDEEN",
+          27
+        ],
+        [
+          "SEAKING",
+          27
+        ],
+        [
+          "GOLDEEN",
+          27
+        ],
+        [
+          "POLIWAG",
+          27
+        ]
+      ],
+      "after": [
+        [
+          "POLIWHIRL",
+          27
+        ],
+        [
+          "GOLDEEN",
+          27
+        ],
+        [
+          "SEAKING",
+          27
+        ],
+        [
+          "KRABBY",
+          27
+        ],
+        [
+          "STARYU",
+          27
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 12,
+      "before": [
+        [
+          "GOLDEEN",
+          30
+        ],
+        [
+          "SEAKING",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "GOLDEEN",
+          29
+        ],
+        [
+          "SEAKING",
+          29
+        ],
+        [
+          "STARYU",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 13,
+      "before": [
+        [
+          "STARYU",
+          29
+        ],
+        [
+          "STARYU",
+          29
+        ],
+        [
+          "STARYU",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "STARYU",
+          29
+        ],
+        [
+          "GOLDEEN",
+          29
+        ],
+        [
+          "HORSEA",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "BEAUTY",
+      "number": 14,
+      "before": [
+        [
+          "SEADRA",
+          30
+        ],
+        [
+          "HORSEA",
+          30
+        ],
+        [
+          "SEADRA",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "SEADRA",
+          30
+        ],
+        [
+          "STARYU",
+          30
+        ],
+        [
+          "KINGLER",
+          30
+        ]
+      ]
+    },
+    {
+      "trainer": "PSYCHIC_TR",
+      "number": 1,
+      "before": [
+        [
+          "KADABRA",
+          31
+        ],
+        [
+          "SLOWPOKE",
+          31
+        ],
+        [
+          "MR_MIME",
+          31
+        ],
+        [
+          "KADABRA",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "KADABRA",
+          31
+        ],
+        [
+          "MR_MIME",
+          31
+        ],
+        [
+          "HYPNO",
+          31
+        ],
+        [
+          "SLOWPOKE",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "PSYCHIC_TR",
+      "number": 2,
+      "before": [
+        [
+          "MR_MIME",
+          34
+        ],
+        [
+          "KADABRA",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "MR_MIME",
+          33
+        ],
+        [
+          "KADABRA",
+          33
+        ],
+        [
+          "HYPNO",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "PSYCHIC_TR",
+      "number": 3,
+      "before": [
+        [
+          "SLOWPOKE",
+          33
+        ],
+        [
+          "SLOWPOKE",
+          33
+        ],
+        [
+          "SLOWBRO",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "SLOWPOKE",
+          33
+        ],
+        [
+          "HYPNO",
+          33
+        ],
+        [
+          "SLOWBRO",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "PSYCHIC_TR",
+      "number": 4,
+      "before": [
+        [
+          "SLOWBRO",
+          38
+        ]
+      ],
+      "after": [
+        [
+          "SLOWBRO",
+          38
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKER",
+      "number": 1,
+      "before": [
+        [
+          "VOLTORB",
+          20
+        ],
+        [
+          "MAGNEMITE",
+          20
+        ],
+        [
+          "PIKACHU",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "VOLTORB",
+          20
+        ],
+        [
+          "MAGNEMITE",
+          20
+        ],
+        [
+          "PIKACHU",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKER",
+      "number": 2,
+      "before": [
+        [
+          "ELECTABUZZ",
+          29
+        ],
+        [
+          "JOLTEON",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "ELECTABUZZ",
+          29
+        ],
+        [
+          "JOLTEON",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "JUGGLER",
+      "number": 1,
+      "before": [
+        [
+          "KADABRA",
+          29
+        ],
+        [
+          "MR_MIME",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "KADABRA",
+          28
+        ],
+        [
+          "MR_MIME",
+          28
+        ],
+        [
+          "HYPNO",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "JUGGLER",
+      "number": 2,
+      "before": [
+        [
+          "DROWZEE",
+          41
+        ],
+        [
+          "HYPNO",
+          41
+        ],
+        [
+          "KADABRA",
+          41
+        ],
+        [
+          "KADABRA",
+          41
+        ]
+      ],
+      "after": [
+        [
+          "HYPNO",
+          41
+        ],
+        [
+          "MR_MIME",
+          41
+        ],
+        [
+          "KADABRA",
+          41
+        ],
+        [
+          "SABLEYE",
+          41
+        ]
+      ]
+    },
+    {
+      "trainer": "JUGGLER",
+      "number": 3,
+      "before": [
+        [
+          "TANGELA",
+          48
+        ],
+        [
+          "GOLEM",
+          48
+        ]
+      ],
+      "after": [
+        [
+          "TANGELA",
+          47
+        ],
+        [
+          "GOLEM",
+          47
+        ],
+        [
+          "CLAYDOL",
+          47
+        ]
+      ]
+    },
+    {
+      "trainer": "JUGGLER",
+      "number": 4,
+      "before": [
+        [
+          "ODDISH",
+          33
+        ],
+        [
+          "GASTLY",
+          33
+        ],
+        [
+          "VENONAT",
+          33
+        ],
+        [
+          "KOFFING",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "GLOOM",
+          33
+        ],
+        [
+          "HAUNTER",
+          33
+        ],
+        [
+          "VENOMOTH",
+          33
+        ],
+        [
+          "KOFFING",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "JUGGLER",
+      "number": 5,
+      "before": [
+        [
+          "EXEGGCUTE",
+          38
+        ],
+        [
+          "EXEGGCUTE",
+          38
+        ]
+      ],
+      "after": [
+        [
+          "EXEGGCUTE",
+          37
+        ],
+        [
+          "HYPNO",
+          37
+        ],
+        [
+          "VENOMOTH",
+          37
+        ]
+      ]
+    },
+    {
+      "trainer": "JUGGLER",
+      "number": 6,
+      "before": [
+        [
+          "DROWZEE",
+          34
+        ],
+        [
+          "HYPNO",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "DROWZEE",
+          33
+        ],
+        [
+          "HYPNO",
+          33
+        ],
+        [
+          "MR_MIME",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "TAMER",
+      "number": 1,
+      "before": [
+        [
+          "SANDSLASH",
+          34
+        ],
+        [
+          "ARBOK",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "SANDSLASH",
+          33
+        ],
+        [
+          "ARBOK",
+          33
+        ],
+        [
+          "PERSIAN",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "TAMER",
+      "number": 2,
+      "before": [
+        [
+          "ARBOK",
+          33
+        ],
+        [
+          "SANDSLASH",
+          33
+        ],
+        [
+          "ARBOK",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "ARBOK",
+          33
+        ],
+        [
+          "SANDSLASH",
+          33
+        ],
+        [
+          "TAUROS",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "TAMER",
+      "number": 3,
+      "before": [
+        [
+          "RHYHORN",
+          43
+        ]
+      ],
+      "after": [
+        [
+          "RHYDON",
+          41
+        ],
+        [
+          "SANDSLASH",
+          41
+        ],
+        [
+          "ARBOK",
+          41
+        ]
+      ]
+    },
+    {
+      "trainer": "TAMER",
+      "number": 4,
+      "before": [
+        [
+          "ARBOK",
+          39
+        ],
+        [
+          "TAUROS",
+          39
+        ]
+      ],
+      "after": [
+        [
+          "ARBOK",
+          39
+        ],
+        [
+          "TAUROS",
+          39
+        ]
+      ]
+    },
+    {
+      "trainer": "TAMER",
+      "number": 5,
+      "before": [
+        [
+          "PERSIAN",
+          44
+        ],
+        [
+          "GOLDUCK",
+          44
+        ]
+      ],
+      "after": [
+        [
+          "PERSIAN",
+          42
+        ],
+        [
+          "GOLDUCK",
+          42
+        ],
+        [
+          "ARBOK",
+          42
+        ],
+        [
+          "RHYDON",
+          42
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 1,
+      "before": [
+        [
+          "PIDGEY",
+          29
+        ],
+        [
+          "PIDGEOTTO",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          28
+        ],
+        [
+          "FEAROW",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 2,
+      "before": [
+        [
+          "SPEAROW",
+          25
+        ],
+        [
+          "PIDGEY",
+          25
+        ],
+        [
+          "PIDGEY",
+          25
+        ],
+        [
+          "SPEAROW",
+          25
+        ],
+        [
+          "SPEAROW",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "SPEAROW",
+          25
+        ],
+        [
+          "PIDGEOTTO",
+          25
+        ],
+        [
+          "DODUO",
+          25
+        ],
+        [
+          "FEAROW",
+          25
+        ],
+        [
+          "FARFETCHD",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 3,
+      "before": [
+        [
+          "PIDGEY",
+          26
+        ],
+        [
+          "PIDGEOTTO",
+          26
+        ],
+        [
+          "SPEAROW",
+          26
+        ],
+        [
+          "FEAROW",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          26
+        ],
+        [
+          "DODUO",
+          26
+        ],
+        [
+          "FARFETCHD",
+          26
+        ],
+        [
+          "FEAROW",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 4,
+      "before": [
+        [
+          "FARFETCHD",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "FARFETCHD",
+          31
+        ],
+        [
+          "FEAROW",
+          31
+        ],
+        [
+          "DODRIO",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 5,
+      "before": [
+        [
+          "SPEAROW",
+          29
+        ],
+        [
+          "FEAROW",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "SPEAROW",
+          28
+        ],
+        [
+          "FEAROW",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 6,
+      "before": [
+        [
+          "PIDGEOTTO",
+          26
+        ],
+        [
+          "FARFETCHD",
+          26
+        ],
+        [
+          "DODUO",
+          26
+        ],
+        [
+          "PIDGEY",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          26
+        ],
+        [
+          "FARFETCHD",
+          26
+        ],
+        [
+          "DODUO",
+          26
+        ],
+        [
+          "FEAROW",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 7,
+      "before": [
+        [
+          "DODRIO",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "DODRIO",
+          28
+        ],
+        [
+          "FEAROW",
+          28
+        ],
+        [
+          "PIDGEOTTO",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 8,
+      "before": [
+        [
+          "SPEAROW",
+          29
+        ],
+        [
+          "FEAROW",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "SPEAROW",
+          28
+        ],
+        [
+          "FEAROW",
+          28
+        ],
+        [
+          "PIDGEOTTO",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 9,
+      "before": [
+        [
+          "DODRIO",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "DODRIO",
+          33
+        ],
+        [
+          "FARFETCHD",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 10,
+      "before": [
+        [
+          "SPEAROW",
+          26
+        ],
+        [
+          "SPEAROW",
+          26
+        ],
+        [
+          "FEAROW",
+          26
+        ],
+        [
+          "SPEAROW",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "SPEAROW",
+          26
+        ],
+        [
+          "DODUO",
+          26
+        ],
+        [
+          "PIDGEOTTO",
+          26
+        ],
+        [
+          "FEAROW",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 11,
+      "before": [
+        [
+          "FEAROW",
+          30
+        ],
+        [
+          "FEAROW",
+          30
+        ],
+        [
+          "PIDGEOTTO",
+          30
+        ]
+      ],
+      "after": [
+        [
+          "FEAROW",
+          30
+        ],
+        [
+          "DODUO",
+          30
+        ],
+        [
+          "PIDGEOTTO",
+          30
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 12,
+      "before": [
+        [
+          "PIDGEY",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ],
+        [
+          "PIDGEOTTO",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ],
+        [
+          "FEAROW",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 13,
+      "before": [
+        [
+          "PIDGEY",
+          26
+        ],
+        [
+          "SPEAROW",
+          26
+        ],
+        [
+          "PIDGEY",
+          26
+        ],
+        [
+          "FEAROW",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          26
+        ],
+        [
+          "SPEAROW",
+          26
+        ],
+        [
+          "FARFETCHD",
+          26
+        ],
+        [
+          "FEAROW",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 14,
+      "before": [
+        [
+          "PIDGEOTTO",
+          29
+        ],
+        [
+          "FEAROW",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "PIDGEOTTO",
+          28
+        ],
+        [
+          "FEAROW",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BIRD_KEEPER",
+      "number": 15,
+      "before": [
+        [
+          "SPEAROW",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ],
+        [
+          "FEAROW",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "SPEAROW",
+          28
+        ],
+        [
+          "DODUO",
+          28
+        ],
+        [
+          "FEAROW",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 2,
+      "before": [
+        [
+          "MANKEY",
+          31
+        ],
+        [
+          "MANKEY",
+          31
+        ],
+        [
+          "PRIMEAPE",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "MANKEY",
+          31
+        ],
+        [
+          "MACHOKE",
+          31
+        ],
+        [
+          "PRIMEAPE",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 3,
+      "before": [
+        [
+          "MACHOP",
+          32
+        ],
+        [
+          "MACHOKE",
+          32
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          31
+        ],
+        [
+          "MACHOKE",
+          31
+        ],
+        [
+          "PRIMEAPE",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 4,
+      "before": [
+        [
+          "POLIWRATH",
+          36
+        ]
+      ],
+      "after": [
+        [
+          "POLIWRATH",
+          36
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 5,
+      "before": [
+        [
+          "MACHOP",
+          31
+        ],
+        [
+          "MANKEY",
+          31
+        ],
+        [
+          "PRIMEAPE",
+          31
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          31
+        ],
+        [
+          "PRIMEAPE",
+          31
+        ],
+        [
+          "ELECTABUZZ",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 6,
+      "before": [
+        [
+          "MACHOP",
+          40
+        ],
+        [
+          "MACHOKE",
+          40
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          39
+        ],
+        [
+          "MACHOKE",
+          39
+        ],
+        [
+          "PRIMEAPE",
+          39
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 7,
+      "before": [
+        [
+          "MACHOKE",
+          43
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          41
+        ],
+        [
+          "PRIMEAPE",
+          41
+        ],
+        [
+          "HITMONCHAN",
+          41
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 8,
+      "before": [
+        [
+          "MACHOKE",
+          38
+        ],
+        [
+          "MACHOP",
+          38
+        ],
+        [
+          "MACHOKE",
+          38
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          38
+        ],
+        [
+          "PRIMEAPE",
+          38
+        ],
+        [
+          "HITMONLEE",
+          38
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 9,
+      "before": [
+        [
+          "MACHOKE",
+          43
+        ],
+        [
+          "MACHOP",
+          43
+        ],
+        [
+          "MACHOKE",
+          43
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          42
+        ],
+        [
+          "PRIMEAPE",
+          42
+        ],
+        [
+          "POLIWRATH",
+          42
+        ],
+        [
+          "HITMONLEE",
+          42
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 1,
+      "before": [
+        [
+          "GRIMER",
+          26
+        ],
+        [
+          "WEEZING",
+          26
+        ],
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "WEEZING",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          26
+        ],
+        [
+          "MAGNEMITE",
+          26
+        ],
+        [
+          "WEEZING",
+          26
+        ],
+        [
+          "PORYGON",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 2,
+      "before": [
+        [
+          "MAGNEMITE",
+          28
+        ],
+        [
+          "VOLTORB",
+          28
+        ],
+        [
+          "MAGNETON",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "MAGNEMITE",
+          28
+        ],
+        [
+          "VOLTORB",
+          28
+        ],
+        [
+          "MAGNETON",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 3,
+      "before": [
+        [
+          "ELECTRODE",
+          29
+        ],
+        [
+          "WEEZING",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "ELECTRODE",
+          28
+        ],
+        [
+          "MAGNEMITE",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 4,
+      "before": [
+        [
+          "ELECTRODE",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "ELECTRODE",
+          31
+        ],
+        [
+          "MAGNETON",
+          31
+        ],
+        [
+          "PORYGON",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 5,
+      "before": [
+        [
+          "MAGNETON",
+          26
+        ],
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "WEEZING",
+          26
+        ],
+        [
+          "MAGNEMITE",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "MAGNETON",
+          26
+        ],
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "WEEZING",
+          26
+        ],
+        [
+          "PORYGON",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 6,
+      "before": [
+        [
+          "VOLTORB",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "MAGNETON",
+          25
+        ],
+        [
+          "MAGNEMITE",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "VOLTORB",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "MAGNETON",
+          25
+        ],
+        [
+          "PORYGON",
+          25
+        ],
+        [
+          "GRIMER",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 7,
+      "before": [
+        [
+          "ELECTRODE",
+          29
+        ],
+        [
+          "MUK",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "ELECTRODE",
+          28
+        ],
+        [
+          "MUK",
+          28
+        ],
+        [
+          "PORYGON",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 8,
+      "before": [
+        [
+          "GRIMER",
+          29
+        ],
+        [
+          "ELECTRODE",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "ELECTRODE",
+          28
+        ],
+        [
+          "MAGNEMITE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 9,
+      "before": [
+        [
+          "VOLTORB",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "MAGNETON",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "VOLTORB",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "MAGNETON",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 10,
+      "before": [
+        [
+          "MAGNEMITE",
+          29
+        ],
+        [
+          "KOFFING",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "MAGNEMITE",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "PORYGON",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 11,
+      "before": [
+        [
+          "MAGNEMITE",
+          33
+        ],
+        [
+          "MAGNETON",
+          33
+        ],
+        [
+          "VOLTORB",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "MAGNEMITE",
+          33
+        ],
+        [
+          "MAGNETON",
+          33
+        ],
+        [
+          "ELECTRODE",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 12,
+      "before": [
+        [
+          "MAGNEMITE",
+          34
+        ],
+        [
+          "ELECTRODE",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "MAGNETON",
+          33
+        ],
+        [
+          "ELECTRODE",
+          33
+        ],
+        [
+          "GRIMER",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "SCIENTIST",
+      "number": 13,
+      "before": [
+        [
+          "KOFFING",
+          34
+        ],
+        [
+          "VOLTORB",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          33
+        ],
+        [
+          "ELECTRODE",
+          33
+        ],
+        [
+          "PORYGON",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 1,
+      "before": [
+        [
+          "RATTATA",
+          13
+        ],
+        [
+          "ZUBAT",
+          13
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          12
+        ],
+        [
+          "ZUBAT",
+          12
+        ],
+        [
+          "EKANS",
+          12
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 2,
+      "before": [
+        [
+          "SANDSHREW",
+          11
+        ],
+        [
+          "RATTATA",
+          11
+        ],
+        [
+          "ZUBAT",
+          11
+        ]
+      ],
+      "after": [
+        [
+          "SANDSHREW",
+          11
+        ],
+        [
+          "RATTATA",
+          11
+        ],
+        [
+          "ZUBAT",
+          11
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 3,
+      "before": [
+        [
+          "ZUBAT",
+          12
+        ],
+        [
+          "EKANS",
+          12
+        ]
+      ],
+      "after": [
+        [
+          "ZUBAT",
+          11
+        ],
+        [
+          "EKANS",
+          11
+        ],
+        [
+          "SANDSHREW",
+          11
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 4,
+      "before": [
+        [
+          "RATICATE",
+          16
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          14
+        ],
+        [
+          "ZUBAT",
+          14
+        ],
+        [
+          "EKANS",
+          14
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 5,
+      "before": [
+        [
+          "MACHOP",
+          17
+        ],
+        [
+          "DROWZEE",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          16
+        ],
+        [
+          "DROWZEE",
+          16
+        ],
+        [
+          "EKANS",
+          16
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 6,
+      "before": [
+        [
+          "EKANS",
+          15
+        ],
+        [
+          "ZUBAT",
+          15
+        ]
+      ],
+      "after": [
+        [
+          "EKANS",
+          14
+        ],
+        [
+          "ZUBAT",
+          14
+        ],
+        [
+          "RATTATA",
+          14
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 7,
+      "before": [
+        [
+          "RATICATE",
+          20
+        ],
+        [
+          "ZUBAT",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          19
+        ],
+        [
+          "ZUBAT",
+          19
+        ],
+        [
+          "KOFFING",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 8,
+      "before": [
+        [
+          "DROWZEE",
+          21
+        ],
+        [
+          "MACHOP",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "DROWZEE",
+          20
+        ],
+        [
+          "MACHOP",
+          20
+        ],
+        [
+          "GRIMER",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 9,
+      "before": [
+        [
+          "RATICATE",
+          21
+        ],
+        [
+          "RATICATE",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          20
+        ],
+        [
+          "ZUBAT",
+          20
+        ],
+        [
+          "DROWZEE",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 10,
+      "before": [
+        [
+          "GRIMER",
+          20
+        ],
+        [
+          "KOFFING",
+          20
+        ],
+        [
+          "KOFFING",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          20
+        ],
+        [
+          "KOFFING",
+          20
+        ],
+        [
+          "DROWZEE",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 11,
+      "before": [
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "RATICATE",
+          19
+        ],
+        [
+          "RATICATE",
+          19
+        ],
+        [
+          "RATTATA",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "RATTATA",
+          19
+        ],
+        [
+          "EKANS",
+          19
+        ],
+        [
+          "ZUBAT",
+          19
+        ],
+        [
+          "RATICATE",
+          19
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 12,
+      "before": [
+        [
+          "GRIMER",
+          22
+        ],
+        [
+          "KOFFING",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GRIMER",
+          21
+        ],
+        [
+          "KOFFING",
+          21
+        ],
+        [
+          "RATICATE",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 13,
+      "before": [
+        [
+          "ZUBAT",
+          17
+        ],
+        [
+          "KOFFING",
+          17
+        ],
+        [
+          "GRIMER",
+          17
+        ],
+        [
+          "ZUBAT",
+          17
+        ],
+        [
+          "RATICATE",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "ZUBAT",
+          17
+        ],
+        [
+          "KOFFING",
+          17
+        ],
+        [
+          "GRIMER",
+          17
+        ],
+        [
+          "EKANS",
+          17
+        ],
+        [
+          "RATTATA",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 14,
+      "before": [
+        [
+          "RATTATA",
+          20
+        ],
+        [
+          "RATICATE",
+          20
+        ],
+        [
+          "DROWZEE",
+          20
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          20
+        ],
+        [
+          "DROWZEE",
+          20
+        ],
+        [
+          "KOFFING",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 15,
+      "before": [
+        [
+          "MACHOP",
+          21
+        ],
+        [
+          "MACHOP",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          20
+        ],
+        [
+          "DROWZEE",
+          20
+        ],
+        [
+          "RATICATE",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 16,
+      "before": [
+        [
+          "SANDSHREW",
+          23
+        ],
+        [
+          "EKANS",
+          23
+        ],
+        [
+          "SANDSLASH",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "SANDSHREW",
+          23
+        ],
+        [
+          "DROWZEE",
+          23
+        ],
+        [
+          "SANDSLASH",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 17,
+      "before": [
+        [
+          "EKANS",
+          23
+        ],
+        [
+          "SANDSHREW",
+          23
+        ],
+        [
+          "ARBOK",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "EKANS",
+          23
+        ],
+        [
+          "GRIMER",
+          23
+        ],
+        [
+          "ARBOK",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 18,
+      "before": [
+        [
+          "KOFFING",
+          21
+        ],
+        [
+          "ZUBAT",
+          21
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          20
+        ],
+        [
+          "ZUBAT",
+          20
+        ],
+        [
+          "DROWZEE",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 19,
+      "before": [
+        [
+          "ZUBAT",
+          25
+        ],
+        [
+          "ZUBAT",
+          25
+        ],
+        [
+          "GOLBAT",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "ZUBAT",
+          25
+        ],
+        [
+          "RATICATE",
+          25
+        ],
+        [
+          "GOLBAT",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 20,
+      "before": [
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "DROWZEE",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "HYPNO",
+          25
+        ],
+        [
+          "GOLBAT",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 21,
+      "before": [
+        [
+          "ZUBAT",
+          23
+        ],
+        [
+          "RATTATA",
+          23
+        ],
+        [
+          "RATICATE",
+          23
+        ],
+        [
+          "ZUBAT",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "GOLBAT",
+          23
+        ],
+        [
+          "RATTATA",
+          23
+        ],
+        [
+          "RATICATE",
+          23
+        ],
+        [
+          "DROWZEE",
+          23
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 22,
+      "before": [
+        [
+          "CUBONE",
+          29
+        ],
+        [
+          "ZUBAT",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "MAROWAK",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 23,
+      "before": [
+        [
+          "GOLBAT",
+          25
+        ],
+        [
+          "ZUBAT",
+          25
+        ],
+        [
+          "ZUBAT",
+          25
+        ],
+        [
+          "RATICATE",
+          25
+        ],
+        [
+          "ZUBAT",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "GOLBAT",
+          25
+        ],
+        [
+          "RATICATE",
+          25
+        ],
+        [
+          "DROWZEE",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ],
+        [
+          "ARBOK",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 24,
+      "before": [
+        [
+          "RATICATE",
+          28
+        ],
+        [
+          "HYPNO",
+          28
+        ],
+        [
+          "RATICATE",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          28
+        ],
+        [
+          "HYPNO",
+          28
+        ],
+        [
+          "ARBOK",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 25,
+      "before": [
+        [
+          "MACHOP",
+          29
+        ],
+        [
+          "DROWZEE",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          28
+        ],
+        [
+          "HYPNO",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 26,
+      "before": [
+        [
+          "EKANS",
+          28
+        ],
+        [
+          "ZUBAT",
+          28
+        ],
+        [
+          "CUBONE",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "ARBOK",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ],
+        [
+          "MAROWAK",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 27,
+      "before": [
+        [
+          "ARBOK",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "ARBOK",
+          31
+        ],
+        [
+          "GOLBAT",
+          31
+        ],
+        [
+          "GRIMER",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 28,
+      "before": [
+        [
+          "HYPNO",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "HYPNO",
+          31
+        ],
+        [
+          "RATICATE",
+          31
+        ],
+        [
+          "KOFFING",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 29,
+      "before": [
+        [
+          "MACHOP",
+          29
+        ],
+        [
+          "MACHOKE",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "MACHOP",
+          28
+        ],
+        [
+          "MACHOKE",
+          28
+        ],
+        [
+          "HYPNO",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 30,
+      "before": [
+        [
+          "ZUBAT",
+          28
+        ],
+        [
+          "ZUBAT",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "ZUBAT",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 31,
+      "before": [
+        [
+          "RATICATE",
+          26
+        ],
+        [
+          "ARBOK",
+          26
+        ],
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "GOLBAT",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          26
+        ],
+        [
+          "ARBOK",
+          26
+        ],
+        [
+          "KOFFING",
+          26
+        ],
+        [
+          "GOLBAT",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 32,
+      "before": [
+        [
+          "CUBONE",
+          29
+        ],
+        [
+          "CUBONE",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "MAROWAK",
+          28
+        ],
+        [
+          "HYPNO",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 33,
+      "before": [
+        [
+          "SANDSHREW",
+          29
+        ],
+        [
+          "SANDSLASH",
+          29
+        ]
+      ],
+      "after": [
+        [
+          "SANDSHREW",
+          28
+        ],
+        [
+          "SANDSLASH",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 34,
+      "before": [
+        [
+          "RATICATE",
+          26
+        ],
+        [
+          "ZUBAT",
+          26
+        ],
+        [
+          "GOLBAT",
+          26
+        ],
+        [
+          "RATTATA",
+          26
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          26
+        ],
+        [
+          "ZUBAT",
+          26
+        ],
+        [
+          "GOLBAT",
+          26
+        ],
+        [
+          "GRIMER",
+          26
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 35,
+      "before": [
+        [
+          "WEEZING",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ],
+        [
+          "KOFFING",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "KOFFING",
+          28
+        ],
+        [
+          "GOLBAT",
+          28
+        ],
+        [
+          "WEEZING",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 36,
+      "before": [
+        [
+          "DROWZEE",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "MACHOP",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "HYPNO",
+          28
+        ],
+        [
+          "GRIMER",
+          28
+        ],
+        [
+          "MACHOKE",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 37,
+      "before": [
+        [
+          "GOLBAT",
+          28
+        ],
+        [
+          "DROWZEE",
+          28
+        ],
+        [
+          "HYPNO",
+          28
+        ]
+      ],
+      "after": [
+        [
+          "GOLBAT",
+          28
+        ],
+        [
+          "DROWZEE",
+          28
+        ],
+        [
+          "HYPNO",
+          28
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 38,
+      "before": [
+        [
+          "MACHOKE",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "MACHOKE",
+          31
+        ],
+        [
+          "GOLBAT",
+          31
+        ],
+        [
+          "ARBOK",
+          31
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 39,
+      "before": [
+        [
+          "RATTATA",
+          25
+        ],
+        [
+          "RATTATA",
+          25
+        ],
+        [
+          "ZUBAT",
+          25
+        ],
+        [
+          "RATTATA",
+          25
+        ],
+        [
+          "EKANS",
+          25
+        ]
+      ],
+      "after": [
+        [
+          "RATICATE",
+          25
+        ],
+        [
+          "GOLBAT",
+          25
+        ],
+        [
+          "ARBOK",
+          25
+        ],
+        [
+          "DROWZEE",
+          25
+        ],
+        [
+          "KOFFING",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "ROCKET",
+      "number": 40,
+      "before": [
+        [
+          "CUBONE",
+          32
+        ],
+        [
+          "DROWZEE",
+          32
+        ],
+        [
+          "MAROWAK",
+          32
+        ]
+      ],
+      "after": [
+        [
+          "CUBONE",
+          32
+        ],
+        [
+          "HYPNO",
+          32
+        ],
+        [
+          "MAROWAK",
+          32
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_M",
+      "number": 1,
+      "before": [
+        [
+          "NIDORINO",
+          39
+        ],
+        [
+          "NIDOKING",
+          39
+        ]
+      ],
+      "after": [
+        [
+          "NIDORINO",
+          38
+        ],
+        [
+          "NIDOKING",
+          38
+        ],
+        [
+          "SANDSLASH",
+          38
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_M",
+      "number": 2,
+      "before": [
+        [
+          "EXEGGUTOR",
+          43
+        ],
+        [
+          "CLOYSTER",
+          43
+        ],
+        [
+          "ARCANINE",
+          43
+        ]
+      ],
+      "after": [
+        [
+          "EXEGGUTOR",
+          42
+        ],
+        [
+          "CLOYSTER",
+          42
+        ],
+        [
+          "ARCANINE",
+          42
+        ],
+        [
+          "CLAYDOL",
+          42
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_M",
+      "number": 3,
+      "before": [
+        [
+          "KINGLER",
+          43
+        ],
+        [
+          "TENTACRUEL",
+          43
+        ],
+        [
+          "BLASTOISE",
+          43
+        ]
+      ],
+      "after": [
+        [
+          "KINGLER",
+          42
+        ],
+        [
+          "LAPRAS",
+          42
+        ],
+        [
+          "BLASTOISE",
+          42
+        ],
+        [
+          "TOXAPEX",
+          42
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_M",
+      "number": 4,
+      "before": [
+        [
+          "IVYSAUR",
+          42
+        ],
+        [
+          "WARTORTLE",
+          42
+        ],
+        [
+          "CHARMELEON",
+          42
+        ],
+        [
+          "CHARIZARD",
+          42
+        ]
+      ],
+      "after": [
+        [
+          "VENUSAUR",
+          41
+        ],
+        [
+          "BLASTOISE",
+          41
+        ],
+        [
+          "CHARMELEON",
+          41
+        ],
+        [
+          "CHARIZARD",
+          41
+        ],
+        [
+          "PUPITAR",
+          41
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_M",
+      "number": 5,
+      "before": [
+        [
+          "SANDSLASH",
+          39
+        ],
+        [
+          "DUGTRIO",
+          39
+        ]
+      ],
+      "after": [
+        [
+          "SANDSLASH",
+          38
+        ],
+        [
+          "DUGTRIO",
+          38
+        ],
+        [
+          "RHYHORN",
+          38
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_M",
+      "number": 6,
+      "before": [
+        [
+          "RHYHORN",
+          43
+        ]
+      ],
+      "after": [
+        [
+          "RHYDON",
+          41
+        ],
+        [
+          "SANDSLASH",
+          38
+        ],
+        [
+          "ARBOK",
+          38
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_F",
+      "number": 1,
+      "before": [
+        [
+          "WEEPINBELL",
+          24
+        ],
+        [
+          "GLOOM",
+          24
+        ],
+        [
+          "IVYSAUR",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "WEEPINBELL",
+          24
+        ],
+        [
+          "GLOOM",
+          24
+        ],
+        [
+          "IVYSAUR",
+          24
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_F",
+      "number": 2,
+      "before": [
+        [
+          "BELLSPROUT",
+          43
+        ],
+        [
+          "WEEPINBELL",
+          43
+        ],
+        [
+          "VICTREEBEL",
+          43
+        ]
+      ],
+      "after": [
+        [
+          "VICTREEBEL",
+          42
+        ],
+        [
+          "PARASECT",
+          42
+        ],
+        [
+          "TANGELA",
+          42
+        ],
+        [
+          "VENOMOTH",
+          42
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_F",
+      "number": 3,
+      "before": [
+        [
+          "PARASECT",
+          43
+        ],
+        [
+          "DEWGONG",
+          43
+        ],
+        [
+          "CHANSEY",
+          43
+        ]
+      ],
+      "after": [
+        [
+          "PARASECT",
+          42
+        ],
+        [
+          "DEWGONG",
+          42
+        ],
+        [
+          "CHANSEY",
+          42
+        ],
+        [
+          "MR_MIME",
+          42
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_F",
+      "number": 4,
+      "before": [
+        [
+          "PERSIAN",
+          44
+        ],
+        [
+          "NINETALES",
+          44
+        ]
+      ],
+      "after": [
+        [
+          "PERSIAN",
+          42
+        ],
+        [
+          "NINETALES",
+          42
+        ],
+        [
+          "RAICHU",
+          42
+        ],
+        [
+          "TANGELA",
+          42
+        ]
+      ]
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 1,
+      "before": [
+        [
+          "GROWLITHE",
+          18
+        ],
+        [
+          "GROWLITHE",
+          18
+        ]
+      ],
+      "after": [
+        [
+          "GROWLITHE",
+          17
+        ],
+        [
+          "PONYTA",
+          17
+        ],
+        [
+          "VULPIX",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 2,
+      "before": [
+        [
+          "NIDORAN_M",
+          19
+        ],
+        [
+          "NIDORAN_F",
+          19
+        ]
+      ],
+      "after": [
+        [
+          "NIDORAN_M",
+          18
+        ],
+        [
+          "NIDORAN_F",
+          18
+        ],
+        [
+          "PONYTA",
+          18
+        ]
+      ]
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 3,
+      "before": [
+        [
+          "PIKACHU",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "PIKACHU",
+          21
+        ],
+        [
+          "MAGNEMITE",
+          21
+        ],
+        [
+          "VOLTORB",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 4,
+      "before": [
+        [
+          "GROWLITHE",
+          17
+        ],
+        [
+          "PONYTA",
+          17
+        ]
+      ],
+      "after": [
+        [
+          "GROWLITHE",
+          16
+        ],
+        [
+          "PONYTA",
+          16
+        ],
+        [
+          "EEVEE",
+          16
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 1,
+      "before": [
+        [
+          "GASTLY",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          21
+        ],
+        [
+          "CUBONE",
+          21
+        ],
+        [
+          "DROWZEE",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 2,
+      "before": [
+        [
+          "GASTLY",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "DROWZEE",
+          22
+        ],
+        [
+          "EXEGGCUTE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 3,
+      "before": [
+        [
+          "GASTLY",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          20
+        ],
+        [
+          "CUBONE",
+          20
+        ],
+        [
+          "EXEGGCUTE",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 4,
+      "before": [
+        [
+          "GASTLY",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "CUBONE",
+          22
+        ],
+        [
+          "SABLEYE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 5,
+      "before": [
+        [
+          "GASTLY",
+          23
+        ],
+        [
+          "GASTLY",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "DROWZEE",
+          22
+        ],
+        [
+          "CUBONE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 6,
+      "before": [
+        [
+          "GASTLY",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          20
+        ],
+        [
+          "EXEGGCUTE",
+          20
+        ],
+        [
+          "DROWZEE",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 7,
+      "before": [
+        [
+          "HAUNTER",
+          23
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "HAUNTER",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 8,
+      "before": [
+        [
+          "GASTLY",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          20
+        ],
+        [
+          "CUBONE",
+          20
+        ],
+        [
+          "DROWZEE",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 9,
+      "before": [
+        [
+          "GASTLY",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "EXEGGCUTE",
+          22
+        ],
+        [
+          "SABLEYE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 10,
+      "before": [
+        [
+          "HAUNTER",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          21
+        ],
+        [
+          "HAUNTER",
+          21
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 11,
+      "before": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "GASTLY",
+          22
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "DROWZEE",
+          22
+        ],
+        [
+          "CUBONE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 12,
+      "before": [
+        [
+          "GASTLY",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "CUBONE",
+          22
+        ],
+        [
+          "EXEGGCUTE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 13,
+      "before": [
+        [
+          "GASTLY",
+          24
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          22
+        ],
+        [
+          "DROWZEE",
+          22
+        ],
+        [
+          "SABLEYE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 14,
+      "before": [
+        [
+          "GASTLY",
+          34
+        ],
+        [
+          "HAUNTER",
+          34
+        ]
+      ],
+      "after": [
+        [
+          "GASTLY",
+          33
+        ],
+        [
+          "HAUNTER",
+          33
+        ],
+        [
+          "MAROWAK",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 15,
+      "before": [
+        [
+          "HAUNTER",
+          38
+        ]
+      ],
+      "after": [
+        [
+          "HAUNTER",
+          36
+        ],
+        [
+          "SABLEYE",
+          36
+        ],
+        [
+          "HYPNO",
+          36
+        ]
+      ]
+    },
+    {
+      "trainer": "CHANNELER",
+      "number": 16,
+      "before": [
+        [
+          "GASTLY",
+          33
+        ],
+        [
+          "GASTLY",
+          33
+        ],
+        [
+          "HAUNTER",
+          33
+        ]
+      ],
+      "after": [
+        [
+          "HAUNTER",
+          33
+        ],
+        [
+          "PARASECT",
+          33
+        ],
+        [
+          "HYPNO",
+          33
+        ]
+      ]
+    }
+  ],
+  "protected": [
+    {
+      "trainer": "LASS",
+      "number": 19,
+      "before": [
+        [
+          "CLEFABLE",
+          80
+        ],
+        [
+          "GENGAR",
+          82
+        ],
+        [
+          "VICTREEBEL",
+          83
+        ],
+        [
+          "NINETALES",
+          83
+        ],
+        [
+          "KANGASKHAN",
+          84
+        ],
+        [
+          "BLASTOISE",
+          85
+        ]
+      ]
+    },
+    {
+      "trainer": "JR_TRAINER_M",
+      "number": 9,
+      "before": [
+        [
+          "LAPRAS",
+          83
+        ],
+        [
+          "VENUSAUR",
+          85
+        ],
+        [
+          "CHARIZARD",
+          85
+        ],
+        [
+          "BLASTOISE",
+          85
+        ],
+        [
+          "SNORLAX",
+          87
+        ],
+        [
+          "PIKACHU",
+          88
+        ]
+      ]
+    },
+    {
+      "trainer": "BLACKBELT",
+      "number": 1,
+      "before": [
+        [
+          "HITMONLEE",
+          37
+        ],
+        [
+          "HITMONCHAN",
+          37
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 1,
+      "before": [
+        [
+          "SQUIRTLE",
+          5
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 2,
+      "before": [
+        [
+          "BULBASAUR",
+          5
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 3,
+      "before": [
+        [
+          "CHARMANDER",
+          5
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 4,
+      "before": [
+        [
+          "PIDGEY",
+          9
+        ],
+        [
+          "SQUIRTLE",
+          8
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 5,
+      "before": [
+        [
+          "PIDGEY",
+          9
+        ],
+        [
+          "BULBASAUR",
+          8
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 6,
+      "before": [
+        [
+          "PIDGEY",
+          9
+        ],
+        [
+          "CHARMANDER",
+          8
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 7,
+      "before": [
+        [
+          "PIDGEOTTO",
+          18
+        ],
+        [
+          "ABRA",
+          15
+        ],
+        [
+          "RATTATA",
+          15
+        ],
+        [
+          "SQUIRTLE",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 8,
+      "before": [
+        [
+          "PIDGEOTTO",
+          18
+        ],
+        [
+          "ABRA",
+          15
+        ],
+        [
+          "RATTATA",
+          15
+        ],
+        [
+          "BULBASAUR",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY1",
+      "number": 9,
+      "before": [
+        [
+          "PIDGEOTTO",
+          18
+        ],
+        [
+          "ABRA",
+          15
+        ],
+        [
+          "RATTATA",
+          15
+        ],
+        [
+          "CHARMANDER",
+          17
+        ]
+      ]
+    },
+    {
+      "trainer": "PROF_OAK",
+      "number": 1,
+      "before": [
+        [
+          "TAUROS",
+          66
+        ],
+        [
+          "EXEGGUTOR",
+          67
+        ],
+        [
+          "ARCANINE",
+          68
+        ],
+        [
+          "BLASTOISE",
+          69
+        ],
+        [
+          "GYARADOS",
+          70
+        ]
+      ]
+    },
+    {
+      "trainer": "PROF_OAK",
+      "number": 2,
+      "before": [
+        [
+          "TAUROS",
+          66
+        ],
+        [
+          "EXEGGUTOR",
+          67
+        ],
+        [
+          "ARCANINE",
+          68
+        ],
+        [
+          "VENUSAUR",
+          69
+        ],
+        [
+          "GYARADOS",
+          70
+        ]
+      ]
+    },
+    {
+      "trainer": "PROF_OAK",
+      "number": 3,
+      "before": [
+        [
+          "TAUROS",
+          66
+        ],
+        [
+          "EXEGGUTOR",
+          67
+        ],
+        [
+          "ARCANINE",
+          68
+        ],
+        [
+          "CHARIZARD",
+          69
+        ],
+        [
+          "GYARADOS",
+          70
+        ]
+      ]
+    },
+    {
+      "trainer": "CHIEF",
+      "number": 1,
+      "before": [
+        [
+          "KANGASKHAN",
+          72
+        ],
+        [
+          "RHYDON",
+          73
+        ],
+        [
+          "GOLDUCK",
+          73
+        ],
+        [
+          "PINSIR",
+          74
+        ],
+        [
+          "SCYTHER",
+          74
+        ],
+        [
+          "TAUROS",
+          76
+        ]
+      ]
+    },
+    {
+      "trainer": "CHIEF",
+      "number": 2,
+      "before": [
+        [
+          "FOSSIL_KABUTOPS",
+          128
+        ]
+      ]
+    },
+    {
+      "trainer": "GIOVANNI",
+      "number": 1,
+      "before": [
+        [
+          "ONIX",
+          25
+        ],
+        [
+          "RHYHORN",
+          24
+        ],
+        [
+          "KANGASKHAN",
+          29
+        ]
+      ]
+    },
+    {
+      "trainer": "GIOVANNI",
+      "number": 2,
+      "before": [
+        [
+          "NIDORINO",
+          37
+        ],
+        [
+          "KANGASKHAN",
+          35
+        ],
+        [
+          "RHYHORN",
+          37
+        ],
+        [
+          "NIDOQUEEN",
+          41
+        ]
+      ]
+    },
+    {
+      "trainer": "GIOVANNI",
+      "number": 3,
+      "before": [
+        [
+          "RHYHORN",
+          45
+        ],
+        [
+          "DUGTRIO",
+          45
+        ],
+        [
+          "NIDOQUEEN",
+          46
+        ],
+        [
+          "UNIQUE_NIDOKING_UNIQUE",
+          47
+        ],
+        [
+          "RHYDON",
+          50
+        ]
+      ]
+    },
+    {
+      "trainer": "COOLTRAINER_F",
+      "number": 5,
+      "before": [
+        [
+          "GOLBAT",
+          34
+        ],
+        [
+          "VENOMOTH",
+          34
+        ]
+      ]
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 1,
+      "before": [
+        [
+          "ONIX",
+          53
+        ],
+        [
+          "HITMONCHAN",
+          55
+        ],
+        [
+          "HITMONLEE",
+          55
+        ],
+        [
+          "ONIX",
+          56
+        ],
+        [
+          "MACHAMP",
+          58
+        ]
+      ]
+    },
+    {
+      "trainer": "BROCK",
+      "number": 1,
+      "before": [
+        [
+          "GEODUDE",
+          12
+        ],
+        [
+          "UNIQUE_ONIX_BROCK",
+          15
+        ]
+      ]
+    },
+    {
+      "trainer": "MISTY",
+      "number": 1,
+      "before": [
+        [
+          "STARYU",
+          18
+        ],
+        [
+          "STARMIE",
+          22
+        ]
+      ]
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 1,
+      "before": [
+        [
+          "PIKACHU",
+          18
+        ],
+        [
+          "VOLTORB",
+          21
+        ],
+        [
+          "UNIQUE_RAICHU_UNIQUE",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 1,
+      "before": [
+        [
+          "UNIQUE_TANGELA_ERIKA",
+          29
+        ],
+        [
+          "UNIQUE_IVYSAUR_ERIKA",
+          33
+        ],
+        [
+          "UNIQUE_VENUSAUR_ERIKA",
+          33
+        ]
+      ]
+    },
+    {
+      "trainer": "KOGA",
+      "number": 1,
+      "before": [
+        [
+          "KOFFING",
+          37
+        ],
+        [
+          "UNIQUE_GRIMER_POISON",
+          39
+        ],
+        [
+          "KOFFING",
+          37
+        ],
+        [
+          "WEEZING",
+          43
+        ]
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 1,
+      "before": [
+        [
+          "NINETALES",
+          40
+        ],
+        [
+          "MAGMAR",
+          43
+        ],
+        [
+          "RAPIDASH",
+          43
+        ],
+        [
+          "ARCANINE",
+          47
+        ]
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 1,
+      "before": [
+        [
+          "KADABRA",
+          37
+        ],
+        [
+          "MR_MIME",
+          37
+        ],
+        [
+          "VENOMOTH",
+          38
+        ],
+        [
+          "ALAKAZAM",
+          43
+        ]
+      ]
+    },
+    {
+      "trainer": "GENTLEMAN",
+      "number": 5,
+      "before": [
+        [
+          "MAROWAK",
+          69
+        ],
+        [
+          "OMASTAR",
+          70
+        ],
+        [
+          "KABUTOPS",
+          70
+        ],
+        [
+          "AERODACTYL",
+          71
+        ],
+        [
+          "ARCANINE",
+          73
+        ],
+        [
+          "DITTO",
+          100
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 1,
+      "before": [
+        [
+          "PIDGEOTTO",
+          19
+        ],
+        [
+          "RATICATE",
+          16
+        ],
+        [
+          "KADABRA",
+          18
+        ],
+        [
+          "WARTORTLE",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 2,
+      "before": [
+        [
+          "PIDGEOTTO",
+          19
+        ],
+        [
+          "RATICATE",
+          16
+        ],
+        [
+          "KADABRA",
+          18
+        ],
+        [
+          "IVYSAUR",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 3,
+      "before": [
+        [
+          "PIDGEOTTO",
+          19
+        ],
+        [
+          "RATICATE",
+          16
+        ],
+        [
+          "KADABRA",
+          18
+        ],
+        [
+          "CHARMELEON",
+          20
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 4,
+      "before": [
+        [
+          "PIDGEOTTO",
+          25
+        ],
+        [
+          "GROWLITHE",
+          23
+        ],
+        [
+          "EXEGGCUTE",
+          22
+        ],
+        [
+          "KADABRA",
+          20
+        ],
+        [
+          "WARTORTLE",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 5,
+      "before": [
+        [
+          "PIDGEOTTO",
+          25
+        ],
+        [
+          "GYARADOS",
+          23
+        ],
+        [
+          "GROWLITHE",
+          22
+        ],
+        [
+          "KADABRA",
+          20
+        ],
+        [
+          "IVYSAUR",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 6,
+      "before": [
+        [
+          "PIDGEOTTO",
+          25
+        ],
+        [
+          "EXEGGCUTE",
+          23
+        ],
+        [
+          "GYARADOS",
+          22
+        ],
+        [
+          "KADABRA",
+          20
+        ],
+        [
+          "CHARMELEON",
+          25
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 7,
+      "before": [
+        [
+          "PIDGEOT",
+          37
+        ],
+        [
+          "GROWLITHE",
+          38
+        ],
+        [
+          "EXEGGCUTE",
+          35
+        ],
+        [
+          "ALAKAZAM",
+          35
+        ],
+        [
+          "UNIQUE_BLASTOISE_UNIQUE",
+          40
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 8,
+      "before": [
+        [
+          "PIDGEOT",
+          37
+        ],
+        [
+          "GYARADOS",
+          38
+        ],
+        [
+          "GROWLITHE",
+          35
+        ],
+        [
+          "ALAKAZAM",
+          35
+        ],
+        [
+          "VENUSAUR",
+          40
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 9,
+      "before": [
+        [
+          "PIDGEOT",
+          37
+        ],
+        [
+          "EXEGGCUTE",
+          38
+        ],
+        [
+          "GYARADOS",
+          35
+        ],
+        [
+          "ALAKAZAM",
+          35
+        ],
+        [
+          "CHARIZARD",
+          40
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 10,
+      "before": [
+        [
+          "PIDGEOT",
+          47
+        ],
+        [
+          "RHYHORN",
+          45
+        ],
+        [
+          "GROWLITHE",
+          45
+        ],
+        [
+          "EXEGGCUTE",
+          47
+        ],
+        [
+          "ALAKAZAM",
+          50
+        ],
+        [
+          "UNIQUE_BLASTOISE_UNIQUE",
+          53
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 11,
+      "before": [
+        [
+          "PIDGEOT",
+          47
+        ],
+        [
+          "RHYHORN",
+          45
+        ],
+        [
+          "GYARADOS",
+          45
+        ],
+        [
+          "GROWLITHE",
+          47
+        ],
+        [
+          "ALAKAZAM",
+          50
+        ],
+        [
+          "VENUSAUR",
+          53
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY2",
+      "number": 12,
+      "before": [
+        [
+          "PIDGEOT",
+          47
+        ],
+        [
+          "RHYHORN",
+          45
+        ],
+        [
+          "EXEGGCUTE",
+          45
+        ],
+        [
+          "GYARADOS",
+          47
+        ],
+        [
+          "ALAKAZAM",
+          50
+        ],
+        [
+          "CHARIZARD",
+          53
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 1,
+      "before": [
+        [
+          "PIDGEOT",
+          59
+        ],
+        [
+          "ALAKAZAM",
+          61
+        ],
+        [
+          "RHYDON",
+          61
+        ],
+        [
+          "ARCANINE",
+          61
+        ],
+        [
+          "EXEGGUTOR",
+          63
+        ],
+        [
+          "UNIQUE_BLASTOISE_UNIQUE",
+          65
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 2,
+      "before": [
+        [
+          "PIDGEOT",
+          59
+        ],
+        [
+          "ALAKAZAM",
+          61
+        ],
+        [
+          "RHYDON",
+          61
+        ],
+        [
+          "GYARADOS",
+          61
+        ],
+        [
+          "ARCANINE",
+          63
+        ],
+        [
+          "VENUSAUR",
+          65
+        ]
+      ]
+    },
+    {
+      "trainer": "SONY3",
+      "number": 3,
+      "before": [
+        [
+          "PIDGEOT",
+          59
+        ],
+        [
+          "ALAKAZAM",
+          61
+        ],
+        [
+          "RHYDON",
+          61
+        ],
+        [
+          "EXEGGUTOR",
+          61
+        ],
+        [
+          "GYARADOS",
+          63
+        ],
+        [
+          "CHARIZARD",
+          65
+        ]
+      ]
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 1,
+      "before": [
+        [
+          "DEWGONG",
+          54
+        ],
+        [
+          "CLOYSTER",
+          54
+        ],
+        [
+          "SLOWBRO",
+          55
+        ],
+        [
+          "JYNX",
+          56
+        ],
+        [
+          "LAPRAS",
+          56
+        ]
+      ]
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 1,
+      "before": [
+        [
+          "HAUNTER",
+          55
+        ],
+        [
+          "GENGAR",
+          56
+        ],
+        [
+          "GOLBAT",
+          56
+        ],
+        [
+          "ARBOK",
+          58
+        ],
+        [
+          "GENGAR",
+          60
+        ]
+      ]
+    },
+    {
+      "trainer": "LANCE",
+      "number": 1,
+      "before": [
+        [
+          "GYARADOS",
+          58
+        ],
+        [
+          "DRAGONAIR",
+          56
+        ],
+        [
+          "DRAGONAIR",
+          56
+        ],
+        [
+          "AERODACTYL",
+          60
+        ],
+        [
+          "DRAGONITE",
+          62
+        ]
+      ]
+    }
+  ]
+}

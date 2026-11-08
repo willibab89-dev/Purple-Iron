@@ -1,6 +1,6 @@
 # Regular trainer proposals
 
-**Planning only. No trainer parties, moves, levels, AI, rewards, scripts or ROMs have been changed.** Based on the implemented game at commit `761bc58` (5% badge boosts and the route redesign included).
+**Approved roster plan — now implemented.** See [implementation details and verification](REGULAR-TRAINER-CHANGES.md). “Current” below means the pre-patch team; “Proposed” is the now-implemented team. The baseline was commit `761bc58` (5% badge boosts and the route redesign included).
 
 [Full before/after spreadsheet](REGULAR-TRAINER-PROPOSALS.csv). The expandable sections below specify every proposed team; numbers after Pokémon names are levels.
 

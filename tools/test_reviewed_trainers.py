@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Verify final Gym parties after natural learnsets and special-move overrides."""
+"""Load every trainer party and verify regular rosters and protected boss sets."""
 import re
 import json
 import hashlib
 from pyboy import PyBoy
 from test_unique_species import ROOT, TUNING, symbols
-from test_move_patch_3 import MOVES
+from test_move_patch_3 import MOVES, constants
 
 TRAINERS = {name: i for i, name in enumerate(re.findall(r'^\s*trainer_const (\w+)', (ROOT/'constants/trainer_constants.asm').read_text(), re.M), 1)}
 
@@ -42,6 +42,7 @@ def validate(version):
         call('ReadTrainer')
     try:
         plan=json.loads((ROOT/'data/trainer_review.json').read_text())
+        regular=json.loads((ROOT/'data/regular_trainer_review.json').read_text())
         source=(ROOT/'data/trainer_parties.asm').read_text()
         assert hashlib.sha256((ROOT/'data/trainer_parties.asm').read_bytes()).hexdigest()==plan['trainer_parties_sha256']
         rom=(ROOT/(version+'.gbc')).read_bytes()
@@ -66,6 +67,24 @@ def validate(version):
                     while raw[pos]:
                         party.append((raw[pos],level));pos+=1
                 pos+=1;records[trainer,number]=party
+        indexes=constants(ROOT/'constants/pokemon_constants.asm')
+        revised={(d['trainer'],d['number']):d for d in regular['records']}
+        protected={(d['trainer'],d['number']):d for d in regular['protected']}
+        assert len(revised)==313 and len(protected)==48
+        assert set(revised).isdisjoint(protected) and set(revised)|set(protected)==set(records)
+        assert sum(d['before']!=d['after'] for d in revised.values())==281
+        assert sum(len(d['after'])>len(d['before']) for d in revised.values())==183
+        assert sum(len(d['after'])<=2 for d in revised.values())==17
+        for key,d in revised.items():
+            assert records[key]==[(indexes[s],lv) for s,lv in d['after']],key
+            added=max(0,len(d['after'])-len(d['before']))
+            assert max(lv for s,lv in d['after'])==max(lv for s,lv in d['before'])-added,key
+            assert 1<=len(d['after'])<=6
+        for key,d in protected.items():
+            assert records[key]==[(indexes[s],lv) for s,lv in d['before']],('protected',key)
+        assert regular['trainer_parties_sha256']==plan['trainer_parties_sha256']
+        assert regular['previous_trainer_parties_sha256']==plan['previous_trainer_parties_sha256']
+        assert regular['expected_roster_entries']==plan['expected_roster_entries']==1178
         # Every override record, including Red's final record, must end before
         # the outer FF sentinel. Never interpret FF as a party slot.
         raw=data('SpecialTrainerMoves');pos=0
@@ -87,6 +106,7 @@ def validate(version):
         extraplan=json.loads((ROOT/'data/new_tms.json').read_text())
         extras={d['dex']:d for d in extraplan['entries']}
         machines=data('TechnicalMachines')[:55+len(extraplan['new_tms'])]
+        move_data=data('Moves')[:max(MOVES.values())*6]
         expected={(d['trainer'],d['number'],d['slot']):d for d in plan['changes']+plan['preserved']}
         seen=set();entries=0;special=0
         for (trainer,number),party in records.items():
@@ -106,6 +126,11 @@ def validate(version):
                     special+=1;continue
                 nonzero=[m for m in moves if m]
                 assert len(nonzero)==len(set(nonzero)),('duplicate',key,moves)
+                if (trainer,number) in revised:
+                    pp=list(get(f'wEnemyMon{slot}PP',4))
+                    assert pp==[move_data[(m-1)*6+5] if m else 0 for m in moves],('PP',key,moves,pp)
+                    # Ditto's automatic transformation supplies its offense.
+                    assert index==indexes['DITTO'] or any(move_data[(m-1)*6+2]>0 for m in nonzero),('no attack',key,moves)
                 d=tune[dex]
                 allowed={MOVES[m] for m in d['start']}|{MOVES[m] for lv,m in d['learn'] if lv<=level}
                 allowed|={machines[n-1] for n in tms[dex]['new'] if n<=55}
@@ -115,7 +140,7 @@ def validate(version):
         assert seen==set(expected) and special==1
         for title in ('ReviewedNidoranMUnique','ReviewedOmanyteUnique','ReviewedOnixBrock','ReviewedRaichuUnique','ReviewedSquirtleUnique','ReviewedTangelaErika','ReviewedTentacoolBig','ReviewedVenusaurErika'):
             bank,a=syms[title+'EvosMoves'];assert game.memory[bank,a]==0
-        print(f'{version}: {len(records)} final teams/{entries} entries, {len(expected)} exact reviewed sets, zero regular-species duplicates or coverage violations, unchanged rosters/levels, bounded override records and preserved special encounter passed')
+        print(f'{version}: {len(records)} teams/{entries} entries, 313 exact regular rosters, level reductions, natural attacks/PP, 48 protected boss rosters, {len(expected)} exact boss sets, bounded overrides and preserved special encounter passed')
     finally:
         game.stop(save=False)
 

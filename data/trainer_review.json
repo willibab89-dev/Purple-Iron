@@ -1,8 +1,8 @@
 {
   "scope": "Default unscaled stored trainer parties; approved final moves only.",
-  "trainer_parties_sha256": "f4e3710e87bf1dbd6e98aecf69879001339a3bab9f22f30478627b6327a90c21",
+  "trainer_parties_sha256": "fb175b26972fe4756384b1bf636f3e48903030036e8901102d9941f9a7cb5267",
   "expected_teams": 361,
-  "expected_roster_entries": 949,
+  "expected_roster_entries": 1178,
   "changes": [
     {
       "trainer": "AGATHA",
@@ -1218,5 +1218,7 @@
         "DOUBLE_EDGE"
       ]
     }
-  ]
+  ],
+  "previous_trainer_parties_sha256": "f4e3710e87bf1dbd6e98aecf69879001339a3bab9f22f30478627b6327a90c21",
+  "roster_revision": "regular_trainer_review.json"
 }

@@ -1,4 +1,4 @@
-name: "Five-percent badge boosts; cumulative game patches"
+name: "Regular trainer teams with lower levels; cumulative patches"
 
 on:
   workflow_dispatch:
@@ -144,6 +144,9 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-2-SUPPORT.md
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-3-COVERAGE.md
             ${{ runner.temp }}/patches/TRAINER-REVIEW.md
+            ${{ runner.temp }}/patches/REGULAR-TRAINER-CHANGES.md
+            ${{ runner.temp }}/patches/REGULAR-TRAINER-PROPOSALS.md
+            ${{ runner.temp }}/patches/REGULAR-TRAINER-PROPOSALS.csv
             ${{ runner.temp }}/patches/MEW-DIPLOMA-GATE.md
             ${{ runner.temp }}/patches/ROUTE-ENCOUNTER-REDESIGN.md
             ${{ runner.temp }}/patches/BADGE-BOOSTS.md
