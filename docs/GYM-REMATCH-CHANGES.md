@@ -1,5 +1,7 @@
 # Post-League Gym rematches — implemented
 
+The subsequent [League rematch patch](LEAGUE-REMATCH-CHANGES.md) adds separate Elite Four/Champion rematches. All seven Gym rematch teams below remain unchanged; counts below describe this earlier patch.
+
 Seven separate five-Pokémon Gym rematch teams now match the requested order, species and levels. All first-challenge Gym teams, the Elite Four, Champion and 313 regular teams are preserved.
 
 ## Unlock and behavior

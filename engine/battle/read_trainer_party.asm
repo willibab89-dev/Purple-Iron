@@ -5,6 +5,7 @@ ReadTrainer:
 	and a
 	ret nz
 	call SelectPostLeagueGymRematch
+	call SelectLeagueRematch
 
 ; set [wEnemyPartyCount] to 0, [wEnemyPartyMons] to FF
 ; XXX first is total enemy pokemon?
@@ -307,3 +308,37 @@ PostLeagueGymRematchFlags:
 	dw wEventFlags + EVENT_BEAT_BLAINE / 8
 	db 1 << (EVENT_BEAT_BLAINE % 8)
 	db $ff
+
+; League scripts request Elite Four record 1 and Champion records 1..3.
+; After the first Hall of Fame, use Elite record 2 / Champion records 4..6.
+; Already-selected rematch IDs stay unchanged, so repeated reads never stack.
+SelectLeagueRematch:
+	CheckEvent EVENT_908
+	ret z
+	ld a, [wTrainerClass]
+	cp SONY3
+	jr z, .champion
+	cp LORELEI
+	jr z, .elite
+	cp BRUNO
+	jr z, .elite
+	cp AGATHA
+	jr z, .elite
+	cp LANCE
+	ret nz
+.elite
+	ld a, [wTrainerNo]
+	cp 1
+	ret nz
+	ld a, 2
+	ld [wTrainerNo], a
+	ret
+.champion
+	ld a, [wTrainerNo]
+	cp 1
+	ret c
+	cp 4
+	ret nc
+	add 3
+	ld [wTrainerNo], a
+	ret
