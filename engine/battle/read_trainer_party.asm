@@ -4,6 +4,7 @@ ReadTrainer:
 	ld a, [wLinkState]
 	and a
 	ret nz
+	call SelectPostLeagueGymRematch
 
 ; set [wEnemyPartyCount] to 0, [wEnemyPartyMons] to FF
 ; XXX first is total enemy pokemon?
@@ -247,3 +248,62 @@ ReadTrainer:
 	dec b
 	jr nz, .LastLoop ; repeat wCurEnemyLVL times
 	ret
+
+; Gym scripts always request their normal record 1. Select record 2 only
+; after the Hall of Fame and this leader's first defeat. Existing rematch
+; prompts, random-party options, scaling and reward handling stay in place.
+SelectPostLeagueGymRematch:
+	CheckEvent EVENT_908
+	ret z
+	ld a, [wTrainerNo]
+	cp 1
+	ret nz
+	ld a, [wTrainerClass]
+	ld c, a
+	ld hl, PostLeagueGymRematchFlags
+.scan
+	ld a, [hli]
+	cp $ff
+	ret z
+	cp c
+	jr z, .found
+	inc hl
+	inc hl
+	inc hl
+	jr .scan
+.found
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [de]
+	and [hl]
+	ret z
+	ld a, 2
+	ld [wTrainerNo], a
+	ret
+
+; Trainer class, first-defeat event address, event mask. Giovanni excluded.
+PostLeagueGymRematchFlags:
+	db BROCK
+	dw wEventFlags + EVENT_BEAT_BROCK / 8
+	db 1 << (EVENT_BEAT_BROCK % 8)
+	db MISTY
+	dw wEventFlags + EVENT_BEAT_MISTY / 8
+	db 1 << (EVENT_BEAT_MISTY % 8)
+	db LT_SURGE
+	dw wEventFlags + EVENT_BEAT_LT_SURGE / 8
+	db 1 << (EVENT_BEAT_LT_SURGE % 8)
+	db ERIKA
+	dw wEventFlags + EVENT_BEAT_ERIKA / 8
+	db 1 << (EVENT_BEAT_ERIKA % 8)
+	db KOGA
+	dw wEventFlags + EVENT_BEAT_KOGA / 8
+	db 1 << (EVENT_BEAT_KOGA % 8)
+	db SABRINA
+	dw wEventFlags + EVENT_BEAT_SABRINA / 8
+	db 1 << (EVENT_BEAT_SABRINA % 8)
+	db BLAINE
+	dw wEventFlags + EVENT_BEAT_BLAINE / 8
+	db 1 << (EVENT_BEAT_BLAINE % 8)
+	db $ff

@@ -1,4 +1,4 @@
-name: "Blaine and first-challenge Elite Four teams; cumulative patches"
+name: "Post-League Gym rematch teams; cumulative patches"
 
 on:
   workflow_dispatch:
@@ -78,6 +78,7 @@ jobs:
           python3 tools/test_cocoon.py
           python3 tools/test_reviewed_trainers.py
           python3 tools/test_giovanni_no_rematch.py
+          python3 tools/test_gym_rematches.py
           python3 tools/test_support_distribution.py
           python3 tools/test_mew_gate.py
           python3 tools/test_route_encounters.py
@@ -145,6 +146,7 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-2-SUPPORT.md
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-3-COVERAGE.md
             ${{ runner.temp }}/patches/TRAINER-REVIEW.md
+            ${{ runner.temp }}/patches/GYM-REMATCH-CHANGES.md
             ${{ runner.temp }}/patches/BLAINE-ELITE-FOUR-CHANGES.md
             ${{ runner.temp }}/patches/GYM-LEADER-CHANGES.md
             ${{ runner.temp }}/patches/REGULAR-TRAINER-CHANGES.md

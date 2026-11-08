@@ -1,5 +1,7 @@
 # Final trainer moveset review
 
+The latest [post-League Gym rematch patch](GYM-REMATCH-CHANGES.md) brings current totals to 368 teams, 1,228 roster entries and 135 exact boss movesets. Earlier patch counts below are historical.
+
 The latest [Blaine and Elite Four patch](BLAINE-ELITE-FOUR-CHANGES.md) brings the current totals to 1,193 roster entries and 100 exact boss movesets. Earlier patch counts below are historical.
 
 The latest [Gym Leader patch](GYM-LEADER-CHANGES.md) revises seven leader teams and their applicable overrides. Current totals are 1,187 roster entries and 82 exact boss movesets; the tables below record the earlier boss-moves review.

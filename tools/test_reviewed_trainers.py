@@ -52,6 +52,12 @@ def validate(version):
         assert set(leaders).isdisjoint(additions)
         assert all(len(d['after'])==6 for d in additions.values())
         leaders.update(additions)
+        rematch=json.loads((ROOT/'data/gym_rematch_review.json').read_text())
+        rematches={(d['trainer'],d['number']):d for d in rematch['records']}
+        assert len(rematches)==7 and all(n==2 for c,n in rematches)
+        assert all(len(d['after'])==5 for d in rematches.values())
+        assert set(leaders).isdisjoint(rematches)
+        leaders.update(rematches)
         source=(ROOT/'data/trainer_parties.asm').read_text()
         assert hashlib.sha256((ROOT/'data/trainer_parties.asm').read_bytes()).hexdigest()==plan['trainer_parties_sha256']
         rom=(ROOT/(version+'.gbc')).read_bytes()
@@ -80,7 +86,9 @@ def validate(version):
         revised={(d['trainer'],d['number']):d for d in regular['records']}
         protected={(d['trainer'],d['number']):d for d in regular['protected']}
         assert len(revised)==313 and len(protected)==48
-        assert set(revised).isdisjoint(protected) and set(revised)|set(protected)==set(records)
+        assert set(revised).isdisjoint(protected)
+        assert (set(revised)|set(protected)).isdisjoint(rematches)
+        assert set(revised)|set(protected)|set(rematches)==set(records)
         assert sum(d['before']!=d['after'] for d in revised.values())==281
         assert sum(len(d['after'])>len(d['before']) for d in revised.values())==183
         assert sum(len(d['after'])<=2 for d in revised.values())==17
@@ -92,13 +100,17 @@ def validate(version):
         for key,d in protected.items():
             roster=leaders[key]['after'] if key in leaders else d['before']
             assert records[key]==[(indexes[s],lv) for s,lv in roster],('protected/leader',key)
+        for key,d in rematches.items():
+            assert records[key]==[(indexes[s],lv) for s,lv in d['after']],('rematch',key)
         assert regular['trainer_parties_sha256']==gym['previous_trainer_parties_sha256']
         assert gym['trainer_parties_sha256']==elite['previous_trainer_parties_sha256']
-        assert elite['trainer_parties_sha256']==plan['trainer_parties_sha256']
+        assert elite['trainer_parties_sha256']==rematch['previous_trainer_parties_sha256']
+        assert rematch['trainer_parties_sha256']==plan['trainer_parties_sha256']
         assert regular['previous_trainer_parties_sha256']==plan['previous_trainer_parties_sha256']
         assert regular['expected_roster_entries']==1178
         assert gym['expected_roster_entries']==1187
-        assert elite['expected_roster_entries']==plan['expected_roster_entries']==1193
+        assert elite['expected_roster_entries']==1193
+        assert rematch['expected_roster_entries']==plan['expected_roster_entries']==1228
         # Every override record, including Red's final record, must end before
         # the outer FF sentinel. Never interpret FF as a party slot.
         raw=data('SpecialTrainerMoves');pos=0
@@ -163,7 +175,7 @@ def validate(version):
         assert seen==set(expected) and special==1
         for title in ('ReviewedNidoranMUnique','ReviewedOmanyteUnique','ReviewedOnixBrock','ReviewedRaichuUnique','ReviewedSquirtleUnique','ReviewedTangelaErika','ReviewedTentacoolBig','ReviewedVenusaurErika'):
             bank,a=syms[title+'EvosMoves'];assert game.memory[bank,a]==0
-        print(f'{version}: {len(records)} teams/{entries} entries, 313 unchanged regular rosters, 12 exact Gym/Elite teams/send-outs/PP, 36 unchanged other boss rosters, {len(expected)} exact boss sets and bounded overrides passed')
+        print(f'{version}: {len(records)} teams/{entries} entries, 313 unchanged regular rosters, 12 base Gym/Elite and seven rematch teams/send-outs/PP, 36 unchanged other boss rosters, {len(expected)} exact boss sets and bounded overrides passed')
     finally:
         game.stop(save=False)
 

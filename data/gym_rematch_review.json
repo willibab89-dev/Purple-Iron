@@ -1,0 +1,690 @@
+{
+  "scope": "Seven post-Hall-of-Fame Gym rematch teams. Select record 2 only after EVENT_908 and that leader\u2019s first defeat; preserve all base records and Giovanni no-rematch.",
+  "previous_trainer_parties_sha256": "db7af2e66a70afee374caf13a8f88ff883173f5015200932ff92c78c0f66dde5",
+  "trainer_parties_sha256": "fbe777bfb7d9a4f9709104cf60eb0cc850b791f1316a95fe4a8ed9ec85c3902d",
+  "expected_teams": 368,
+  "expected_roster_entries": 1228,
+  "records": [
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "after": [
+        [
+          "GOLEM",
+          64
+        ],
+        [
+          "NINETALES",
+          66
+        ],
+        [
+          "CROBAT",
+          64
+        ],
+        [
+          "CHANSEY",
+          62
+        ],
+        [
+          "ONIX",
+          67
+        ]
+      ],
+      "defeat_event": "EVENT_BEAT_BROCK"
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "after": [
+        [
+          "STARMIE",
+          62
+        ],
+        [
+          "GOLDUCK",
+          66
+        ],
+        [
+          "SEADRA",
+          64
+        ],
+        [
+          "SEAKING",
+          65
+        ],
+        [
+          "VAPOREON",
+          66
+        ]
+      ],
+      "defeat_event": "EVENT_BEAT_MISTY"
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "after": [
+        [
+          "ELECTRODE",
+          66
+        ],
+        [
+          "MAGNETON",
+          64
+        ],
+        [
+          "UNIQUE_RAICHU_UNIQUE",
+          62
+        ],
+        [
+          "ELECTABUZZ",
+          68
+        ],
+        [
+          "JOLTEON",
+          65
+        ]
+      ],
+      "defeat_event": "EVENT_BEAT_LT_SURGE"
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "after": [
+        [
+          "VICTREEBEL",
+          66
+        ],
+        [
+          "UNIQUE_VENUSAUR_ERIKA",
+          68
+        ],
+        [
+          "UNIQUE_TANGELA_ERIKA",
+          62
+        ],
+        [
+          "VILEPLUME",
+          68
+        ],
+        [
+          "EXEGGUTOR",
+          66
+        ]
+      ],
+      "defeat_event": "EVENT_BEAT_ERIKA"
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "after": [
+        [
+          "WEEZING",
+          63
+        ],
+        [
+          "MUK",
+          65
+        ],
+        [
+          "ARBOK",
+          62
+        ],
+        [
+          "TENTACRUEL",
+          68
+        ],
+        [
+          "CROBAT",
+          64
+        ]
+      ],
+      "defeat_event": "EVENT_BEAT_KOGA"
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "after": [
+        [
+          "ALAKAZAM",
+          62
+        ],
+        [
+          "MR_MIME",
+          62
+        ],
+        [
+          "HYPNO",
+          66
+        ],
+        [
+          "JYNX",
+          68
+        ],
+        [
+          "SLOWBRO",
+          65
+        ]
+      ],
+      "defeat_event": "EVENT_BEAT_SABRINA"
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "after": [
+        [
+          "CHARIZARD",
+          65
+        ],
+        [
+          "ARCANINE",
+          63
+        ],
+        [
+          "RAPIDASH",
+          62
+        ],
+        [
+          "MAGMAR",
+          62
+        ],
+        [
+          "FLAREON",
+          66
+        ]
+      ],
+      "defeat_event": "EVENT_BEAT_BLAINE"
+    }
+  ],
+  "sets": [
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 1,
+      "name": "golem",
+      "dex": 76,
+      "level": 64,
+      "moves": [
+        "STONE_PRESS",
+        "EARTHQUAKE",
+        "STONE_EDGE",
+        "EXPLOSION"
+      ]
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 2,
+      "name": "ninetales",
+      "dex": 38,
+      "level": 66,
+      "moves": [
+        "WAILING_CRY",
+        "FLAMETHROWER",
+        "CAUTERIZE",
+        "FIRE_SPIN"
+      ]
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 3,
+      "name": "crobat",
+      "dex": 179,
+      "level": 64,
+      "moves": [
+        "WING_ATTACK",
+        "POISON_FANG",
+        "SHADOW_LEECH",
+        "HAZE"
+      ]
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 4,
+      "name": "chansey",
+      "dex": 113,
+      "level": 62,
+      "moves": [
+        "SOFTBOILED",
+        "SEISMIC_TOSS",
+        "LIGHT_SCREEN",
+        "EGG_BOMB"
+      ]
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 5,
+      "name": "onix",
+      "dex": 95,
+      "level": 67,
+      "moves": [
+        "RAGE",
+        "SLAM",
+        "STONE_PRESS",
+        "COIL"
+      ]
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 1,
+      "name": "starmie",
+      "dex": 121,
+      "level": 62,
+      "moves": [
+        "BUBBLEBEAM",
+        "LIGHT_SCREEN",
+        "PSYCHIC_M",
+        "HYDRO_PUMP"
+      ]
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 2,
+      "name": "golduck",
+      "dex": 55,
+      "level": 66,
+      "moves": [
+        "AMNESIA",
+        "PSYSHOCK",
+        "HYDRO_PUMP",
+        "PSYCHIC_M"
+      ]
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 3,
+      "name": "seadra",
+      "dex": 117,
+      "level": 64,
+      "moves": [
+        "SNIPE_SHOT",
+        "AGILITY",
+        "DRAGON_RAGE",
+        "HYDRO_PUMP"
+      ]
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 4,
+      "name": "seaking",
+      "dex": 119,
+      "level": 65,
+      "moves": [
+        "PIERCE",
+        "AGILITY",
+        "MEGAHORN",
+        "HORN_DRILL"
+      ]
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 5,
+      "name": "vaporeon",
+      "dex": 134,
+      "level": 66,
+      "moves": [
+        "SCALD",
+        "ACID_ARMOR",
+        "HAZE",
+        "HYDRO_PUMP"
+      ]
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 1,
+      "name": "electrode",
+      "dex": 101,
+      "level": 66,
+      "moves": [
+        "LIGHT_SCREEN",
+        "ELECTRO_BALL",
+        "SWIFT",
+        "EXPLOSION"
+      ]
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 2,
+      "name": "magneton",
+      "dex": 82,
+      "level": 64,
+      "moves": [
+        "CHARGE",
+        "SHOCK_WAVE",
+        "LIGHT_SCREEN",
+        "ZAP_CANNON"
+      ]
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 3,
+      "name": "raichu_unique",
+      "dex": 168,
+      "level": 62,
+      "moves": [
+        "MEGA_PUNCH",
+        "BODY_SLAM",
+        "LIGHT_SCREEN",
+        "ZAP_CANNON"
+      ]
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 4,
+      "name": "electabuzz",
+      "dex": 125,
+      "level": 68,
+      "moves": [
+        "SCREECH",
+        "BRICK_BREAK",
+        "THUNDERCLAP",
+        "THUNDER"
+      ]
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 5,
+      "name": "jolteon",
+      "dex": 135,
+      "level": 65,
+      "moves": [
+        "PIN_MISSILE",
+        "THUNDER_WAVE",
+        "SHOCK_WAVE",
+        "THUNDER"
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 1,
+      "name": "victreebel",
+      "dex": 71,
+      "level": 66,
+      "moves": [
+        "SLAM",
+        "POISON_FANG",
+        "CLAMP",
+        "VINE_CRUSH"
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 2,
+      "name": "venusaur_erika",
+      "dex": 172,
+      "level": 68,
+      "moves": [
+        "PETAL_DANCE",
+        "SLUDGE",
+        "SYNTHESIS",
+        "VENOSHOCK"
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 3,
+      "name": "tangela_erika",
+      "dex": 170,
+      "level": 62,
+      "moves": [
+        "SLEEP_POWDER",
+        "INGRAIN",
+        "VICEGRIP",
+        "STOCKPILE"
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 4,
+      "name": "vileplume",
+      "dex": 45,
+      "level": 68,
+      "moves": [
+        "ACID",
+        "GIGA_DRAIN",
+        "PETAL_DANCE",
+        "SOLARBEAM"
+      ]
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 5,
+      "name": "exeggutor",
+      "dex": 103,
+      "level": 66,
+      "moves": [
+        "PSYBEAM",
+        "EGG_BOMB",
+        "PSYCHIC_M",
+        "SOLARBEAM"
+      ]
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 1,
+      "name": "weezing",
+      "dex": 110,
+      "level": 63,
+      "moves": [
+        "POISON_GAS",
+        "INCINERATE",
+        "HAZE",
+        "EXPLOSION"
+      ]
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 2,
+      "name": "muk",
+      "dex": 89,
+      "level": 65,
+      "moves": [
+        "MUD_WAVE",
+        "SCREECH",
+        "ACID_ARMOR",
+        "TOXIC"
+      ]
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 3,
+      "name": "arbok",
+      "dex": 24,
+      "level": 62,
+      "moves": [
+        "POISON_FANG",
+        "CRUNCH",
+        "SCREECH",
+        "COIL"
+      ]
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 4,
+      "name": "tentacruel",
+      "dex": 73,
+      "level": 68,
+      "moves": [
+        "BRINE",
+        "BARRIER",
+        "VENOSHOCK",
+        "HYDRO_PUMP"
+      ]
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 5,
+      "name": "crobat",
+      "dex": 179,
+      "level": 64,
+      "moves": [
+        "WING_ATTACK",
+        "POISON_FANG",
+        "SHADOW_LEECH",
+        "HAZE"
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 1,
+      "name": "alakazam",
+      "dex": 65,
+      "level": 62,
+      "moves": [
+        "KINESIS",
+        "PSYCHIC_M",
+        "PSYCH_UP",
+        "MIND_BREAK"
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 2,
+      "name": "mrmime",
+      "dex": 122,
+      "level": 62,
+      "moves": [
+        "SUBSTITUTE",
+        "MIND_BREAK",
+        "PSYCH_UP",
+        "PSYCHIC_M"
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 3,
+      "name": "hypno",
+      "dex": 97,
+      "level": 66,
+      "moves": [
+        "DREAM_EATER",
+        "PSYBEAM",
+        "PSYCHIC_M",
+        "AMNESIA"
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 4,
+      "name": "jynx",
+      "dex": 124,
+      "level": 68,
+      "moves": [
+        "PSYBEAM",
+        "FROST_BREATH",
+        "PSYCHIC_M",
+        "BLIZZARD"
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 5,
+      "name": "slowbro",
+      "dex": 80,
+      "level": 65,
+      "moves": [
+        "REST",
+        "WITHDRAW",
+        "PSYCHIC_M",
+        "SURF"
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 1,
+      "name": "charizard",
+      "dex": 6,
+      "level": 65,
+      "moves": [
+        "WING_ATTACK",
+        "FLAMETHROWER",
+        "FIRE_SPIN",
+        "DRAGON_DANCE"
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 2,
+      "name": "arcanine",
+      "dex": 59,
+      "level": 63,
+      "moves": [
+        "FLAMETHROWER",
+        "CRUNCH",
+        "DOUBLE_EDGE",
+        "FIRE_BLAST"
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 3,
+      "name": "rapidash",
+      "dex": 78,
+      "level": 62,
+      "moves": [
+        "HORN_ATTACK",
+        "FLAMETHROWER",
+        "PIERCE",
+        "HORN_DRILL"
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 4,
+      "name": "magmar",
+      "dex": 126,
+      "level": 62,
+      "moves": [
+        "MEGA_PUNCH",
+        "CAUTERIZE",
+        "FLAMETHROWER",
+        "FIRE_BLAST"
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 5,
+      "name": "flareon",
+      "dex": 136,
+      "level": 66,
+      "moves": [
+        "FIRE_SPIN",
+        "FLAMETHROWER",
+        "CAUTERIZE",
+        "FIRE_BLAST"
+      ]
+    }
+  ]
+}

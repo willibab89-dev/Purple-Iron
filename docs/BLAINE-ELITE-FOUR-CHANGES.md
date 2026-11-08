@@ -1,5 +1,7 @@
 # Blaine and Elite Four teams — implemented
 
+The subsequent [post-League Gym rematches](GYM-REMATCH-CHANGES.md) add separate Gym rematch teams; Blaine’s first team and all four Elite Four teams below remain unchanged.
+
 Blaine and the four first-challenge Elite Four base teams now match the requested species, levels and send-out order in both versions. Each team has six Pokémon. Earlier Gym changes, all 313 regular teams and the Champion are unchanged.
 
 | Trainer | Team, in send-out order |

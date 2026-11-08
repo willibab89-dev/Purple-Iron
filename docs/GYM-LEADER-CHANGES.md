@@ -1,5 +1,7 @@
 # Gym Leader teams — implemented
 
+The latest [post-League Gym rematch patch](GYM-REMATCH-CHANGES.md) adds seven separate rematch teams and restores Erika’s unique Venusaur/Tangela as rematch opponents. First-challenge teams below are preserved; the unassigned-variant statements below describe the earlier intermediate patch.
+
 The subsequent [Blaine and Elite Four patch](BLAINE-ELITE-FOUR-CHANGES.md) supplies Blaine’s replacement team and revises all four Elite Four teams. The seven teams documented below remain unchanged; “Blaine unchanged” below describes this earlier patch.
 
 Seven Gym Leader rosters now match the requested order, species and levels in both versions. Blaine’s roster is unchanged. The recently implemented 313 regular teams and all other excluded boss rosters are unchanged.
