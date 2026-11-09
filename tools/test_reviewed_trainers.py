@@ -54,12 +54,27 @@ def validate(version):
         leaders.update(additions)
         rematch=json.loads((ROOT/'data/gym_rematch_review.json').read_text())
         rematches={(d['trainer'],d['number']):d for d in rematch['records']}
+        aces=json.loads((ROOT/'data/postgame_ace_review.json').read_text())
+        revised_aces={(d['trainer'],d['number']):d for d in aces['records']}
+        assert set(revised_aces)==set(rematches)
+        for key,d in revised_aces.items():
+            assert d['before']==rematches[key]['after'] and d['after'][-1][1]==70
+            assert sorted(s for s,lv in d['before'])==sorted(s for s,lv in d['after'])
+            ace=d['after'][-1][0]
+            assert ace=={'BROCK':'ONIX','MISTY':'STARMIE','LT_SURGE':'UNIQUE_RAICHU_UNIQUE','ERIKA':'UNIQUE_VENUSAUR_ERIKA','KOGA':'ARBOK','SABRINA':'ALAKAZAM','BLAINE':'MAGMAR'}[key[0]]
+            assert [p for p in d['after'] if p[0]!=ace]==[p for p in d['before'] if p[0]!=ace]
+        rematches.update(revised_aces)
         assert len(rematches)==7 and all(n==2 for c,n in rematches)
         assert all(len(d['after'])==5 for d in rematches.values())
         assert set(leaders).isdisjoint(rematches)
         leaders.update(rematches)
         league=json.loads((ROOT/'data/league_rematch_review.json').read_text())
         league_rematches={(d['trainer'],d['number']):d for d in league['records']}
+        for d in aces['league_adjustments']:
+            key=d['trainer'],d['number']
+            assert d['before']==league_rematches[key]['after']
+            assert [s for s,lv in d['before']]==[s for s,lv in d['after']]
+            league_rematches[key]=d
         assert len(league_rematches)==7 and all(len(d['after'])==6 for d in league_rematches.values())
         assert set(leaders).isdisjoint(league_rematches)
         leaders.update(league_rematches)
@@ -114,7 +129,8 @@ def validate(version):
         assert gym['trainer_parties_sha256']==elite['previous_trainer_parties_sha256']
         assert elite['trainer_parties_sha256']==rematch['previous_trainer_parties_sha256']
         assert rematch['trainer_parties_sha256']==league['previous_trainer_parties_sha256']
-        assert league['trainer_parties_sha256']==plan['trainer_parties_sha256']
+        assert league['trainer_parties_sha256']==aces['previous_trainer_parties_sha256']
+        assert aces['trainer_parties_sha256']==plan['trainer_parties_sha256']
         assert regular['previous_trainer_parties_sha256']==plan['previous_trainer_parties_sha256']
         assert regular['expected_roster_entries']==1178
         assert gym['expected_roster_entries']==1187

@@ -218,7 +218,7 @@
     "display_name": "RAICHU U",
     "front": "pic/unique/raichu_unique.png",
     "type_override": null,
-    "availability": "Lt. Surge, Vermilion Gym: first challenge level 24; post-Hall-of-Fame rematch level 62; trainer-only"
+    "availability": "Lt. Surge, Vermilion Gym: first challenge level 24; post-Hall-of-Fame rematch final ace level 70; trainer-only"
   },
   {
     "symbol": "UNIQUE_SQUIRTLE_UNIQUE",
@@ -271,6 +271,6 @@
     "display_name": "E.VENUSAUR",
     "front": "pic/unique/venusaur_erika.png",
     "type_override": null,
-    "availability": "Erika, Celadon Gym: post-Hall-of-Fame rematch level 68; trainer-only"
+    "availability": "Erika, Celadon Gym: post-Hall-of-Fame rematch final ace level 70; trainer-only"
   }
 ]

@@ -1,5 +1,7 @@
 # Elite Four and Champion rematches — implemented
 
+The [postgame ace update](POSTGAME-ACE-CHANGES.md) revises second Lance’s Tyranitar/Dragonite to 82/90; the table below reflects those levels.
+
 The second-clear League teams now match the requested levels and order. The first-clear teams, seven postgame Gym teams, other bosses and 313 regular teams remain unchanged.
 
 ## Unlock
@@ -11,12 +13,12 @@ After the first completed Hall of Fame, the League’s normal scripts automatica
 | Lorelei | Dewgong 84 → Cloyster 83 → Slowbro 84 → Jynx 86 → Lapras 86 → Unique Omanyte 80 |
 | Bruno | Hitmonchan 85 → Hitmonlee 85 → Machamp 88 → Poliwrath 87 → Pinsir 86 → Primeape 88 |
 | Agatha | Marowak 85 → Claydol 88 → Sableye 80 → Gengar 86 → Ninetales 86 → Parasect 88 |
-| Lance | Gyarados 88 → Dragonair 86 → Lapras 88 → Tyranitar 80 → Aerodactyl 80 → Dragonite 82 |
+| Lance | Gyarados 88 → Dragonair 86 → Lapras 88 → Tyranitar 82 → Aerodactyl 80 → Dragonite 90 |
 | Champion — Blastoise branch | Pidgeot 84 → Alakazam 86 → Rhydon 86 → Arcanine 86 → Exeggutor 88 → Unique Blastoise 90 |
 | Champion — Venusaur branch | Pidgeot 84 → Alakazam 86 → Rhydon 86 → Gyarados 86 → Arcanine 88 → Venusaur 90 |
 | Champion — Charizard branch | Pidgeot 84 → Alakazam 86 → Rhydon 86 → Exeggutor 86 → Gyarados 88 → Charizard 90 |
 
-The level-80 members and Lance’s level-82 Dragonite are intentional and retained exactly as requested. Dragonair remains Dragonair at level 86 in the default, unscaled team.
+The level-80 members are intentional. Lance’s second team has since been updated to Tyranitar 82 and Dragonite 90, with all other members unchanged. Dragonair remains Dragonair at level 86 in the default, unscaled team.
 
 ## Moves
 

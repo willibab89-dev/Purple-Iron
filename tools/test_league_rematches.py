@@ -11,6 +11,10 @@ def validate(version):
     syms=symbols(ROOT/(version+'.sym'))
     plan=json.loads((ROOT/'data/league_rematch_review.json').read_text())
     rematches={(d['trainer'],d['number']):d['after'] for d in plan['records']}
+    for d in json.loads((ROOT/'data/postgame_ace_review.json').read_text())['league_adjustments']:
+        rematches[d['trainer'],d['number']]=d['after']
+    assert next(lv for s,lv in rematches['LANCE',2] if s=='TYRANITAR')==82
+    assert next(lv for s,lv in rematches['LANCE',2] if s=='DRAGONITE')==90
     base={(d['trainer'],d['number']):d['after'] for d in json.loads((ROOT/'data/blaine_elite_review.json').read_text())['records'] if d['trainer']!='BLAINE'}
     base.update({('SONY3',d['number']):d['after'] for d in plan['champion_base']})
     assert set(rematches)=={(c,2) for c in ('LORELEI','BRUNO','AGATHA','LANCE')}|{('SONY3',n) for n in (4,5,6)}

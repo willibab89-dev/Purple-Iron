@@ -11,6 +11,8 @@ def validate(version):
     syms=symbols(ROOT/(version+'.sym'))
     rematch=json.loads((ROOT/'data/gym_rematch_review.json').read_text())
     rows={d['trainer']:d for d in rematch['records']}
+    aces=json.loads((ROOT/'data/postgame_ace_review.json').read_text())
+    for d in aces['records']:rows[d['trainer']]=d
     base={}
     for file in ('gym_leader_review','blaine_elite_review'):
         for d in json.loads((ROOT/f'data/{file}.json').read_text())['records']:
@@ -69,6 +71,12 @@ def validate(version):
             put('wEngagedTrainerSet',1);put('wTrainerNo',99)
             call('InitBattleEnemyParameters');assert get('wTrainerNo')==1
             call('ReadTrainer');assert get('wTrainerNo')==2 and party()==expect(row['after'])
+            # Use the actual class money table, not the harness's fake base.
+            init(cls);event('EVENT_908');event(own)
+            call('GetTrainerInformation');call('ReadTrainer')
+            raw=list(game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3])
+            assert raw==[0,0x69,0x30],(cls,'payout',raw)
+            assert party()[-1][1]==70
             # Optional scaling still applies; zero RNG gives deterministic level 80.
             init(cls);event('EVENT_908');event(own);event('EVENT_90C');call('ReadTrainer')
             assert get('wTrainerNo')==2

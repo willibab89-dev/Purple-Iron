@@ -10,7 +10,7 @@ Current implemented game, including the repaired Mew diploma gate. The route enc
 
 ## Availability gaps to review
 
-175 species have a player-acquisition route in each version. Eight variants are trainer-only: unique Blastoise, Koga’s Grimer, Erika’s Ivysaur, Giovanni’s Nidoking, Brock’s Onix, Surge’s Raichu, Erika’s Tangela and Erika’s Venusaur. The latter two appear in Erika’s post-Hall-of-Fame rematch at levels 62 and 68; they are no longer unassigned. All eight lack postgame Safari/evolution access. Mewtwo requires postgame Cerulean Cave access; Mew additionally requires the original-150 diploma.
+175 species have a player-acquisition route in each version. Eight variants are trainer-only: unique Blastoise, Koga’s Grimer, Erika’s Ivysaur, Giovanni’s Nidoking, Brock’s Onix, Surge’s Raichu, Erika’s Tangela and Erika’s Venusaur. The latter two appear in Erika’s post-Hall-of-Fame rematch at levels 62 and 70; they are no longer unassigned. All eight lack postgame Safari/evolution access. Mewtwo requires postgame Cerulean Cave access; Mew additionally requires the original-150 diploma.
 
 ## All species
 
@@ -183,11 +183,11 @@ Current implemented game, including the repaired Mew diploma gate. The route enc
 | 165 | Unique Nidoran♂ | Obtainable | Safari Zone Center (Lv 24, 1.16%); Route 22 (Lv 3, 1.00%); Safari Zone Area 1 (East) (Lv 24, 1.00%); Safari Zone Area 2 (North) (Lv 22, 1.00%); Safari Zone Area 3 (West) (Lv 25, 1.00%); Safari Zone Center (Lv 22, 1.00%) | — |
 | 166 | Unique Omanyte | Obtainable | Rock Tunnel 1F (Lv 20, 1.00%); Rock Tunnel B1F (Lv 20, 1.00%) | — |
 | 167 | Brock’s Onix | Trainer-only | Trainer appearances only: Brock, Pewter Gym (level 14); trainer-only | — |
-| 168 | Surge’s Raichu | Trainer-only | Trainer appearances only: Lt. Surge, Vermilion Gym: first challenge level 24; post-Hall-of-Fame rematch level 62; trainer-only | — |
+| 168 | Surge’s Raichu | Trainer-only | Trainer appearances only: Lt. Surge, Vermilion Gym: first challenge level 24; post-Hall-of-Fame rematch final ace level 70; trainer-only | — |
 | 169 | Unique Squirtle | Obtainable | Route 24 (Lv 10, 1.00%); Route 25 (Lv 10, 1.00%) | — |
 | 170 | Erika’s Tangela | Trainer-only | Trainer appearances only: Erika, Celadon Gym: post-Hall-of-Fame rematch level 62; trainer-only | — |
 | 171 | Big Tentacool | Obtainable | Surf: Route 19 (Lv 20, 1.00%); Route 20 (Lv 20, 1.00%); Route 21 (Lv 20, 1.00%)<br>Fishing: Super Rod — Route 12 (Lv 5, 1.00%); Super Rod — Route 13 (Lv 5, 1.00%); Super Rod — Route 17 (Lv 5, 1.00%); Super Rod — Route 18 (Lv 5, 1.00%) | — |
-| 172 | Erika’s Venusaur | Trainer-only | Trainer appearances only: Erika, Celadon Gym: post-Hall-of-Fame rematch level 68; trainer-only | — |
+| 172 | Erika’s Venusaur | Trainer-only | Trainer appearances only: Erika, Celadon Gym: post-Hall-of-Fame rematch final ace level 70; trainer-only | — |
 | 173 | Mareanie | Obtainable | Fishing: Super Rod — Route 19 (Lv 25, 5.00%); Super Rod — Route 20 (Lv 25, 5.00%) | — |
 | 174 | Toxapex | Obtainable | From Mareanie — level 38 | — |
 | 175 | Miltank | Obtainable | Route 14 (Lv 28, 2.00%); Route 15 (Lv 28, 2.00%) | — |
