@@ -34,7 +34,7 @@ StartMenu_Pokemon:
 	ld [wTextBoxID], a
 	call DisplayTextBoxID ; display pokemon menu options
 	ld hl, wFieldMoves
-	lb bc, 3, 10 ; four normal actions; field moves appear above them
+	lb bc, 4, 8 ; five actions; compact spacing when four field moves exist
 	ld e, 5
 .adjustMenuVariablesLoop
 	dec e
@@ -47,6 +47,17 @@ StartMenu_Pokemon:
 	dec c
 	jr .adjustMenuVariablesLoop
 .storeMenuVariables
+	ld a, [hFlags_0xFFF6]
+	res 1, a
+	ld [hFlags_0xFFF6], a
+	ld a, b
+	cp 8
+	jr nz, .normalActionSpacing
+	ld c, 8
+	ld a, [hFlags_0xFFF6]
+	set 1, a
+	ld [hFlags_0xFFF6], a
+.normalActionSpacing
 	ld hl, wTopMenuItemY
 	ld a, c
 	ld [hli], a ; top menu item Y
@@ -63,6 +74,9 @@ StartMenu_Pokemon:
 	ld [hl], a
 	call HandleMenuInput
 	push af
+	ld a, [hFlags_0xFFF6]
+	res 1, a
+	ld [hFlags_0xFFF6], a
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
 	pop af
 	bit 1, a ; was the B button pressed?
@@ -73,6 +87,9 @@ StartMenu_Pokemon:
 	ld a, [wCurrentMenuItem] ; menu selection
 	cp b
 	jp z, .exitMenu ; if the player chose Cancel
+	dec b
+	cp b
+	jr z, .choseNature
 	dec b
 	cp b
 	jr z, .choseAbility
@@ -87,6 +104,9 @@ StartMenu_Pokemon:
 	ld hl, wFieldMoves
 	add hl, bc
 	jp .choseOutOfBattleMove
+.choseNature
+	abilitycall PartyNaturePanel
+	jp .loop
 .choseAbility
 	abilitycall PartyAbilityPanel
 	jp .loop

@@ -161,6 +161,13 @@ NatureInitializeEnemy:
 	call NatureEnsureAtHL
 	jr .cache
 .wild
+	ld a, [wIsInBattle]
+	cp 1
+	jr nz, .freshWild
+	ld a, [wNatureMode]
+	bit 1, a
+	ret nz ; capture reloads the same wild mon before constructing its record
+.freshWild
 	call NatureRollSlot
 	call NatureRoll
 .cache
@@ -751,3 +758,151 @@ NatureAdjustCriticalChance:
 .store
 	ld [wNatureResult], a
 	ret
+
+; No nature names or hand-written descriptions: decode the two ROM masks.
+PartyNaturePanel:
+	call ClearSprites
+	call SaveScreenTilesToBuffer1
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	call NatureEnsureAtHL
+	ld a, [wNatureID]
+	add a
+	ld l, a
+	ld h, 0
+	jr nc, .definition
+	inc h
+.definition
+	ld de, NatureDefinitions
+	add hl, de
+	ld a, [hli]
+	ld [wNaturePosMask], a
+	ld a, [hl]
+	ld [wNatureNegMask], a
+	call ClearScreen
+	coord hl, 0, 0
+	lb bc, 16, 18
+	call TextBoxBorder
+	ld hl, wPartyMonNicks
+	ld a, [wWhichPokemon]
+	call SkipFixedLengthTextEntries
+	ld d, h
+	ld e, l
+	coord hl, 2, 2
+	call PlaceString
+	coord hl, 2, 4
+	ld de, NatureHeading
+	call PlaceString
+	coord hl, 2, 6
+	ld de, NatureRaises
+	ld a, [wNaturePosMask]
+	call NaturePrintMask
+	coord hl, 2, 10
+	ld de, NatureLowers
+	ld a, [wNatureNegMask]
+	call NaturePrintMask
+	coord hl, 2, 15
+	ld de, NatureCloseHelp
+	call PlaceString
+.wait
+	call DelayFrame
+	call JoypadLowSensitivity
+	ld a, [hJoy5]
+	and A_BUTTON | B_BUTTON | SELECT
+	jr z, .wait
+	jp LoadScreenTilesFromBuffer1
+
+; A=mask, HL=first row, DE=Raises/Lowers prefix. At most two set bits.
+NaturePrintMask:
+	ld [wNatureTemp], a
+	ld a, h
+	ld [wNatureOldHP], a
+	ld a, l
+	ld [wNatureOldHP + 1], a
+	call PlaceString
+	ld h, b
+	ld l, c
+	ld [hl], " "
+	inc hl
+	ld a, h
+	ld [wNatureOldMax], a
+	ld a, l
+	ld [wNatureOldMax + 1], a
+	xor a
+	ld [wNatureAttr], a
+.scan
+	ld a, [wNatureTemp]
+	srl a
+	ld [wNatureTemp], a
+	jr nc, .nextAttribute
+	ld a, [wNatureAttr]
+	add a
+	ld c, a
+	ld b, 0
+	ld hl, NatureAttributePointers
+	add hl, bc
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
+	ld a, [wNatureOldMax]
+	ld h, a
+	ld a, [wNatureOldMax + 1]
+	ld l, a
+	call PlaceString
+	ld a, [wNatureTemp]
+	and a
+	ret z
+	ld a, [wNatureOldHP]
+	ld h, a
+	ld a, [wNatureOldHP + 1]
+	ld l, a
+	ld bc, 2 * SCREEN_WIDTH
+	add hl, bc
+	ld a, h
+	ld [wNatureOldHP], a
+	ld a, l
+	ld [wNatureOldHP + 1], a
+	ld de, NatureAnd
+	call PlaceString
+	ld h, b
+	ld l, c
+	ld [hl], " "
+	inc hl
+	ld a, h
+	ld [wNatureOldMax], a
+	ld a, l
+	ld [wNatureOldMax + 1], a
+.nextAttribute
+	ld hl, wNatureAttr
+	inc [hl]
+	jr .scan
+NatureHeading:
+	db "NATURE@"
+NatureRaises:
+	db "Raises@"
+NatureLowers:
+	db "Lowers@"
+NatureAnd:
+	db "and@"
+NatureCloseHelp:
+	db "A/B CLOSE@"
+NatureAttributePointers:
+	dw NatureHP, NatureAttack, NatureDefense, NatureSpeed, NatureSpecial, NatureAccuracy, NatureCrit, NatureEvasion
+NatureHP:
+	db "HP@"
+NatureAttack:
+	db "ATTACK@"
+NatureDefense:
+	db "DEFENSE@"
+NatureSpeed:
+	db "SPEED@"
+NatureSpecial:
+	db "SPECIAL@"
+NatureAccuracy:
+	db "ACCURACY@"
+NatureCrit:
+	db "CRIT@"
+NatureEvasion:
+	db "EVASION@"

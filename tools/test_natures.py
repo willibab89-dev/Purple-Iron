@@ -3,7 +3,8 @@
 from collections import Counter
 from pathlib import Path
 from pyboy import PyBoy
-from generate_natures import definitions,render,ROOT
+from generate_natures import definitions,render,ROOT,ATTRIBUTES
+import os
 from test_unique_species import symbols,TYPES
 from test_move_patch_3 import constants,MOVES
 
@@ -177,6 +178,80 @@ def validate(version):
             game.memory[addr('wNatureIDs')+turn]=id_for(6,90)
             put('w'+actor+'MoveNum',MOVES['SHOCK_WAVE']);put('w'+actor+'MovePower',40);put('w'+actor+'MoveType',TYPES['ELECTRIC'])
             put(target+'Status',64);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==1
+        # Every nameless description is generated from the selected mon's masks.
+        patch('DelayFrame',[0xc9]);patch('JoypadLowSensitivity',[0xc9]);jb,ja=syms['JoypadLowSensitivity']
+        frames=[];ui={'key':2}
+        def close_panel(s):
+            frames.append(bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360]))
+            game.memory[0xffb5]=s['key']
+        game.hook_register(jb,ja,close_panel,ui)
+        def decode(raw):
+            def char(v):
+                if 128<=v<=153:return chr(ord('A')+v-128)
+                if 160<=v<=185:return chr(ord('a')+v-160)
+                if 246<=v<=255:return chr(ord('0')+v-246)
+                return {127:' ',243:'/',232:'.'}.get(v,'?')
+            return ''.join(char(v) for v in raw).rstrip()
+        put('wWhichPokemon',1);put('wIsInBattle',0);put('wActionResultOrTookBattleTurn',0)
+        game.memory[addr('wPartyMonNicks')+11:addr('wPartyMonNicks')+21]=[129,148,139,129,128,146,128,148,145,80]
+        active=bytes(game.memory[addr('wNatureIDs'):addr('wNatureIDs')+2])
+        abilities=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])
+        game.memory[addr('wTileMapBackup2'):addr('wTileMapBackup2')+360]=[0x66]*360
+        examples={}
+        for id,(up,down) in enumerate(table):
+            stored('wPartyMon2',id,4,22,3);ui['key']=(1,2,4)[id%3]
+            before=bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360]);call('PartyNaturePanel')
+            frame=frames[-1];pos=[ATTRIBUTES[i] for i in range(8) if up&(1<<i)];neg=[ATTRIBUTES[i] for i in range(8) if down&(1<<i)]
+            assert decode(frame[6*20+2:6*20+19])=='Raises '+pos[0],id
+            assert decode(frame[10*20+2:10*20+19])=='Lowers '+neg[0],id
+            assert decode(frame[8*20+2:8*20+19])==('and '+pos[1] if len(pos)==2 else ''),id
+            assert decode(frame[12*20+2:12*20+19])==('and '+neg[1] if len(neg)==2 else ''),id
+            assert get('wWhichPokemon')==1 and get('wPartyMon2CatchRate')==id
+            assert bytes(game.memory[addr('wNatureIDs'):addr('wNatureIDs')+2])==active
+            assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==abilities
+            assert bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360])==before
+            assert bytes(game.memory[addr('wTileMapBackup2'):addr('wTileMapBackup2')+360])==bytes([0x66]*360)
+            if id==0:examples['simple']=frame
+            if len(pos)==2 and 'ACCURACY' in pos and 'EVASION' in neg:examples.setdefault('complex',frame)
+        game.hook_deregister(jb,ja)
+        if os.environ.get('NATURE_SCREENSHOTS') and version=='pokered':
+            out=Path(os.environ['NATURE_SCREENSHOTS']);out.mkdir(parents=True,exist_ok=True)
+            game.memory[0xff40]=0;call('LoadFontTilePatterns');call('LoadTextBoxTilePatterns')
+            for label,tiles in examples.items():
+                game.memory[0xff40]=0
+                for row in range(18):game.memory[0x9800+32*row:0x9800+32*row+20]=tiles[row*20:row*20+20]
+                game.memory[0xff4f]=1;game.memory[0x9800:0x9c00]=[0]*1024;game.memory[0xff4f]=0
+                game.memory[0xff68]=0x80
+                for c in [255,127,181,86,74,41,0,0]:game.memory[0xff69]=c
+                game.memory[0xff47]=0xe4;game.memory[0xff42]=game.memory[0xff43]=0
+                game.memory[0xff40]=0x81;game.tick(3,True)
+                game.screen.image.save(out/f'nature-panel-{label}.png')
+        # Real party/PC/daycare paths copy the nature together with its Pokémon.
+        put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0);put('wCurEnemyLVL',20);put('wcf91',ids['BULBASAUR']);rng(4,91,2,3)
+        call('AddPartyMon');first=inspect('wPartyMon1');initial_max=readword('wPartyMon1MaxHP')
+        put('wNumInBox',0);put('wWhichPokemon',0);put('wMoveMonType',1);call('MoveMon')
+        assert inspect('wBoxMon1')==first
+        put('wRemoveMonFromBox',0);call('RemovePokemon');assert get('wPartyCount')==0
+        put('wMoveMonType',0);put('wWhichPokemon',0);put('wcf91',ids['BULBASAUR']);call('MoveMon')
+        assert inspect('wPartyMon1')==first and readword('wPartyMon1MaxHP')==initial_max
+        put('wRemoveMonFromBox',1);call('RemovePokemon');assert get('wNumInBox')==0
+        put('wMoveMonType',3);put('wWhichPokemon',0);put('wcf91',ids['BULBASAUR']);call('MoveMon')
+        assert inspect('wDayCareMon')==first
+        put('wRemoveMonFromBox',0);call('RemovePokemon');put('wDayCareInUse',1)
+        for _ in range(10):call('IncrementDayCareMonExp')
+        assert inspect('wDayCareMon')==first
+        put('wMoveMonType',2);put('wWhichPokemon',0);put('wcf91',ids['BULBASAUR']);call('MoveMon');assert inspect('wPartyMon1')==first
+        # Existing native party swap copies the entire individual prefix.
+        put('wMonDataLocation',0x80);put('wIsInBattle',0);put('wCurEnemyLVL',30);put('wcf91',ids['CHARMANDER']);rng(1,137,2,3)
+        call('AddPartyMon');second=inspect('wPartyMon2')
+        put('wMenuItemToSwap',0);put('wWhichPokemon',0);call('SwitchPartyMon_InitVarOrSwapData')
+        put('wCurrentMenuItem',1);call('SwitchPartyMon_InitVarOrSwapData')
+        assert inspect('wPartyMon1')==second and inspect('wPartyMon2')==first
+        # Wild capture reload must not reroll an existing nature or ability slot.
+        put('wNatureMode',0);put('wIsInBattle',1);rng(2,87);call('NatureInitializeEnemy')
+        wild=(game.memory[addr('wNatureIDs')+1],get('wNatureEnemySlot'));assert wild==(87,3)
+        rng(4,99);call('NatureInitializeEnemy');assert state['index']==0
+        assert (game.memory[addr('wNatureIDs')+1],get('wNatureEnemySlot'))==wild
         # Save block sizes/checksums remain native and both fields survive reload.
         stored('wPartyMon1',194,2)
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2');put('wPartyMon1CatchRate',0)

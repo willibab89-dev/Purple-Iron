@@ -563,6 +563,7 @@ TwoOptionMenuStrings:
 
 DisplayFieldMoveMonMenu:
 	xor a
+	ld [wNatureUiPage], a
 	ld hl, wFieldMoves
 	ld [hli], a ; wFieldMoves
 	ld [hli], a ; wFieldMoves + 1
@@ -576,29 +577,31 @@ DisplayFieldMoveMonMenu:
 	jr nz, .fieldMovesExist
 
 ; no field moves
-	coord hl, 10, 9
-	ld b, 7
+	coord hl, 10, 7
+	ld b, 9
 	ld c, 8
 	call TextBoxBorder
 	call UpdateSprites
 	ld a, 11
 	ld [hFieldMoveMonMenuTopMenuItemX], a
-	coord hl, 12, 10
+	coord hl, 12, 8
 	ld de, PokemonMenuEntries
-	jp PlaceString
+	jp PlacePartyMenuEntries
 
 .fieldMovesExist
+	cp 4
+	jp z, .compactFieldLayout
 	push af
 
 ; Calculate the text box position and dimensions based on the leftmost X coord
 ; of the field move names before adjusting for the number of field moves.
-	coord hl, 0, 9
+	coord hl, 0, 7
 	ld a, [wFieldMovesLeftmostXCoord]
 	dec a
 	ld e, a
 	ld d, 0
 	add hl, de
-	ld b, 7
+	ld b, 9
 	ld a, 18
 	sub e
 	ld c, a
@@ -623,7 +626,7 @@ DisplayFieldMoveMonMenu:
 	call UpdateSprites
 
 ; Calculate the position of the first field move name to print.
-	coord hl, 0, 10
+	coord hl, 0, 8
 	ld a, [wFieldMovesLeftmostXCoord]
 	inc a
 	ld e, a
@@ -636,6 +639,7 @@ DisplayFieldMoveMonMenu:
 	dec a
 	jr nz, .calcFirstFieldMoveYLoop
 
+.beginPrintingNames
 	xor a
 	ld [wNumFieldMoves], a
 	ld de, wFieldMoves
@@ -664,6 +668,11 @@ DisplayFieldMoveMonMenu:
 	ld e, c
 	call PlaceString
 	ld bc, SCREEN_WIDTH * 2
+	ld a, [wNatureUiPage]
+	and a
+	jr z, .advanceName
+	ld bc, SCREEN_WIDTH
+.advanceName
 	add hl, bc
 	pop de
 	jr .printNamesLoop
@@ -672,14 +681,44 @@ DisplayFieldMoveMonMenu:
 	pop hl
 	ld a, [wFieldMovesLeftmostXCoord]
 	ld [hFieldMoveMonMenuTopMenuItemX], a
-	coord hl, 0, 10
+	coord hl, 0, 8
+	ld a, [wNatureUiPage]
+	and a
+	jr z, .actionPosition
+	ld de, 4 * SCREEN_WIDTH
+	add hl, de
+.actionPosition
 	ld a, [wFieldMovesLeftmostXCoord]
 	inc a
 	ld e, a
 	ld d, 0
 	add hl, de
 	ld de, PokemonMenuEntries
-	jp PlaceString
+	jp PlacePartyMenuEntries
+
+
+.compactFieldLayout
+	ld a, 1
+	ld [wNatureUiPage], a
+	coord hl, 0, 7
+	ld a, [wFieldMovesLeftmostXCoord]
+	dec a
+	ld e, a
+	ld d, 0
+	add hl, de
+	ld a, 18
+	sub e
+	ld c, a
+	ld b, 9
+	call TextBoxBorder
+	call UpdateSprites
+	coord hl, 0, 8
+	ld a, [wFieldMovesLeftmostXCoord]
+	inc a
+	ld e, a
+	ld d, 0
+	add hl, de
+	jp .beginPrintingNames
 
 FieldMoveNames:
 	db "CUT@"
@@ -696,7 +735,25 @@ PokemonMenuEntries:
 	db   "STATS"
 	next "SWITCH"
 	next "ABILITY"
+	next "NATURE"
 	next "CANCEL@"
+
+PlacePartyMenuEntries:
+	ld a, [hFlags_0xFFF6]
+	push af
+	res 2, a
+	ld b, a
+	ld a, [wNatureUiPage]
+	and a
+	ld a, b
+	jr z, .spacing
+	set 2, a
+.spacing
+	ld [hFlags_0xFFF6], a
+	call PlaceString
+	pop af
+	ld [hFlags_0xFFF6], a
+	ret
 
 GetMonFieldMoves:
 	ld a, [wWhichPokemon]

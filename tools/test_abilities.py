@@ -216,9 +216,9 @@ def validate(version):
             call('DisplayFieldMoveMonMenu')
             tiles=bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360]);menus.append(tiles)
             x=game.memory[0xfff7]+1
-            for row,text in ((10,'STATS'),(12,'SWITCH'),(14,'ABILITY'),(16,'CANCEL')):
+            for row,text in (((8,'STATS'),(10,'SWITCH'),(12,'ABILITY'),(14,'NATURE'),(16,'CANCEL')) if count<4 else ((12,'STATS'),(13,'SWITCH'),(14,'ABILITY'),(15,'NATURE'),(16,'CANCEL'))):
                 assert tiles[row*20+x:row*20+x+len(text)]==encoded(text)[:-1],(count,row,x)
-            assert 10-2*count>=2 and 3+count<=7
+            assert (8-2*count>=2 if count<4 else True) and 4+count<=8
         snapshots.extend([party_snapshots[0],menus[0],menus[4]])
         # Exercise the real action dispatcher with each possible field-move count.
         for n in ('DisplayPartyMenu','DisplayTextBoxID','GBPalWhiteOutWithDelay3',
@@ -233,13 +233,13 @@ def validate(version):
         seen=[]
         # This RGBDS version omits labels referenced only by relative jumps.
         bank,start=syms['StartMenu_Pokemon']
-        raw=bytes(game.memory[bank,start:start+180])
+        raw=bytes(game.memory[bank,start:start+256])
         jumps=[i for i in range(len(raw)-3) if raw[i:i+3]==bytes([5,0xb8,0x28])]
-        assert len(jumps)==2
-        for label,i in zip(('choseAbility','choseSwitch'),jumps):
+        assert len(jumps)==3
+        for label,i in zip(('choseNature','choseAbility','choseSwitch'),jumps):
             offset=raw[i+3] if raw[i+3]<128 else raw[i+3]-256
             syms['StartMenu_Pokemon.'+label]=(bank,start+i+4+offset)
-        labels=('choseStats','choseSwitch','choseAbility','choseOutOfBattleMove')
+        labels=('choseStats','choseSwitch','choseAbility','choseNature','choseOutOfBattleMove')
         for label in labels:
             full='StartMenu_Pokemon.'+label
             if label!='choseAbility':patch(full,[0xc9])
@@ -250,13 +250,13 @@ def validate(version):
         for count in range(5):
             put('wWhichPokemon',1)
             game.memory[addr('wFieldMoves'):addr('wFieldMoves')+4]=list(range(1,count+1))+[0]*(4-count)
-            for offset,label in ((0,'choseStats'),(1,'choseSwitch'),(2,'choseAbility')):
+            for offset,label in ((0,'choseStats'),(1,'choseSwitch'),(2,'choseAbility'),(3,'choseNature')):
                 seen.clear();choice['index']=count+offset;call('StartMenu_Pokemon')
                 assert seen==[label],(count,offset,seen)
             for index in range(count):
                 seen.clear();choice['index']=index;call('StartMenu_Pokemon')
                 assert seen==['choseOutOfBattleMove'],(count,index,seen)
-            seen.clear();choice['index']=count+3;call('StartMenu_Pokemon');assert not seen
+            seen.clear();choice['index']=count+4;call('StartMenu_Pokemon');assert not seen
         game.hook_deregister(b,a);game.hook_deregister(mb,ma)
         # Ordinary save routines retain the tag without changing party layouts.
         put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1Type1',160);put('wPartyMon1Type2',224);put('wPartyMon1CatchRate',195)
