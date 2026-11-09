@@ -5707,6 +5707,7 @@ CalcHitChance:
 	ld b, c
 	dec d
 	jr nz, .loop
+	abilitycall NatureApplyHitChance
 	ld a, [H_QUOTIENT + 2]
 	and a ; is the calculated hit chance over 0xFF?
 	ld a, [H_QUOTIENT + 3]

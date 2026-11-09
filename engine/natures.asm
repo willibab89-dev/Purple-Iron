@@ -279,6 +279,9 @@ NatureCriticalHitTest:
 .capcritical
 	ld b, $ff					 ; cap at 255/256
 .finishcalc
+	call NatureAdjustCriticalChance
+	ld a, [wNatureResult]
+	ld b, a
 	push bc
 	callab CustomRandomInBattleBank
 	pop bc
@@ -673,4 +676,78 @@ NatureStoreMigratedHP:
 	ld [hl], d
 	inc hl
 	ld [hl], e
+	ret
+
+; A=side -> that Pokémon's permanent nature, or FF for an uninitialized
+; synthetic battle fixture. Copied battle stats do not copy this identity.
+NatureReadSideID:
+	and a
+	jr nz, .enemy
+	ld a, [wNatureMode]
+	bit 0, a
+	jr z, .none
+	ld a, [wNatureIDs]
+	jr .store
+.enemy
+	ld a, [wNatureMode]
+	bit 1, a
+	jr z, .none
+	ld a, [wNatureIDs + 1]
+	jr .store
+.none
+	ld a, $ff
+.store
+	ld [wNatureID], a
+	ret
+
+NatureApplyHitChance:
+	ld a, [H_WHOSETURN]
+	call NatureReadSideID
+	ld a, NATURE_ACCURACY
+	call NatureGetRatio
+	ld [wNatureAttRatio], a
+	ld a, [H_WHOSETURN]
+	xor 1
+	call NatureReadSideID
+	ld a, NATURE_EVASION
+	call NatureGetRatio
+	ld [wNatureDefRatio], a
+	ld b, a
+	ld a, [wNatureAttRatio]
+	cp b
+	ret z ; equal factors cancel without a rounding loss
+	ld [H_MULTIPLIER], a
+	xor a
+	ld [H_MULTIPLICAND], a
+	call Multiply
+	ld a, [wNatureDefRatio]
+	ld [H_DIVISOR], a
+	ld b, 4
+	jp Divide
+
+NatureAdjustCriticalChance:
+	ld a, b
+	ld [wNatureResult], a
+	ld a, [H_WHOSETURN]
+	call NatureReadSideID
+	ld a, NATURE_CRIT
+	call NatureGetRatio
+	ld [H_MULTIPLIER], a
+	xor a
+	ld [H_MULTIPLICAND], a
+	ld [H_MULTIPLICAND + 1], a
+	ld a, [wNatureResult]
+	ld [H_MULTIPLICAND + 2], a
+	call Multiply
+	ld a, 100
+	ld [H_DIVISOR], a
+	ld b, 4
+	call Divide
+	ld a, [H_QUOTIENT + 2]
+	and a
+	ld a, [H_QUOTIENT + 3]
+	jr z, .store
+	ld a, 255
+.store
+	ld [wNatureResult], a
 	ret

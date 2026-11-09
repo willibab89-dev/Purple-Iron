@@ -133,6 +133,50 @@ def validate(version):
             source('wBoxMon1');rng(0,7);call('NaturePrepareOldBox');newmax=baseline[0]*90//100
             assert inspect('wBoxMon1')==(7,1)
             assert readword('wBoxMon1HP')==(0 if hp==0 else max(1,newmax-(baseline[0]-hp)))
+        # Accuracy/Evasion are a single multiplicative ratio on the wide chance.
+        def ratio(id,attr):
+            up,down=table[id];return 110 if up&(1<<attr) else 90 if down&(1<<attr) else 100
+        def id_for(attr,r):return next(i for i in range(196) if ratio(i,attr)==r)
+        put('wNatureMode',3)
+        for turn in (0,1):
+            put('turn',turn)
+            for ar in (90,100,110):
+                for er in (90,100,110):
+                    game.memory[addr('wNatureIDs')+turn]=id_for(5,ar)
+                    game.memory[addr('wNatureIDs')+1-turn]=id_for(7,er)
+                    for chance in (1,80,128,204,255,2000):
+                        game.memory[0xff96:0xff99]=[0,chance>>8,chance&255]
+                        call('NatureApplyHitChance')
+                        got=game.memory[0xff97]*256+game.memory[0xff98]
+                        assert got==chance*ar//er,(turn,chance,ar,er,got)
+                    for side in ('Player','Enemy'):
+                        put('w'+side+'MonAccuracyMod',7);put('w'+side+'MonEvasionMod',7);put('w'+side+'MoveAccuracy',204)
+                    call('CalcHitChance')
+                    assert get('w'+('Enemy' if turn else 'Player')+'MoveAccuracy')==min(255,204*ar//er)
+            for id in range(196):
+                game.memory[addr('wNatureIDs')+turn]=id
+                for threshold in (0,1,64,128,232,255):
+                    call('NatureAdjustCriticalChance',BC=threshold<<8)
+                    assert get('wNatureResult')==min(255,threshold*ratio(id,6)//100),(turn,id,threshold)
+        # A guaranteed hit still bypasses nature probability changes.
+        for turn in (0,1):
+            put('turn',turn);put('wMoveMissed',0)
+            for side in ('Player','Enemy'):
+                put('w'+side+'MoveEffect',17);put('w'+side+'MoveAccuracy',1)
+            rng(255);call('MoveHitTest');assert get('wMoveMissed')==0
+            for side in ('Player','Enemy'):
+                put('w'+side+'MoveEffect',0);put('w'+side+'MoveNum',MOVES['TACKLE']);put('w'+side+'MovePower',40)
+                put('w'+side+'MoveAccuracy',255);put('w'+side+'BattleStatus1',0);put('w'+side+'BattleStatus2',0)
+                put('w'+side+'MonAccuracyMod',7);put('w'+side+'MonEvasionMod',7)
+            game.memory[addr('wNatureIDs'):addr('wNatureIDs')+2]=[0,0]
+            put('wMoveMissed',0);rng(255);call('MoveHitTest');assert get('wMoveMissed')==0
+            game.memory[addr('wNatureIDs')+turn]=id_for(5,90)
+            game.memory[addr('wNatureIDs')+1-turn]=id_for(7,110)
+            put('wMoveMissed',0);rng(255);call('MoveHitTest');assert get('wMoveMissed')==1
+            actor='Enemy' if turn else 'Player';target='wBattleMon' if turn else 'wEnemyMon'
+            game.memory[addr('wNatureIDs')+turn]=id_for(6,90)
+            put('w'+actor+'MoveNum',MOVES['SHOCK_WAVE']);put('w'+actor+'MovePower',40);put('w'+actor+'MoveType',TYPES['ELECTRIC'])
+            put(target+'Status',64);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==1
         # Save block sizes/checksums remain native and both fields survive reload.
         stored('wPartyMon1',194,2)
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2');put('wPartyMon1CatchRate',0)
