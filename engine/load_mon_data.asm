@@ -44,6 +44,7 @@ LoadMonData_:
 	call AddNTimes
 
 .copyMonData
+	naturecall NaturePrepareLoadedMon
 	ld de, wLoadedMon
 	ld bc, wPartyMon2 - wPartyMon1
 	jp CopyData

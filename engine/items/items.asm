@@ -3013,6 +3013,7 @@ SendNewMonToBox:
 	ld [de], a
 	dec b
 	jr nz, .asm_e8b1
+	abilitycall NatureInitializeCapturedBox
 	ret
 
 	

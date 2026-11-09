@@ -209,3 +209,28 @@ abilitycall: MACRO
 	pop bc
 	pop af
 ENDM
+
+; Nature hooks capture their source registers before switching banks.
+naturecall: MACRO
+	push af
+	push bc
+	push de
+	push hl
+	ld a, h
+	ld [wNatureInputHL], a
+	ld a, l
+	ld [wNatureInputHL + 1], a
+	ld a, d
+	ld [wNatureInputDE], a
+	ld a, e
+	ld [wNatureInputDE + 1], a
+	ld a, b
+	ld [wNatureInputBC], a
+	ld a, c
+	ld [wNatureInputBC + 1], a
+	callab \1
+	pop hl
+	pop de
+	pop bc
+	pop af
+ENDM

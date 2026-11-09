@@ -1868,6 +1868,10 @@ LoadBattleMonFromParty:
 	ld a, [wBattleMonSpecies2]
 	ld [wd0b5], a
 	call GetMonHeader
+	ld a, [wMonHType1]
+	ld [wBattleMonType1], a
+	ld a, [wMonHType2]
+	ld [wBattleMonType2], a
 	ld hl, wPartyMonNicks
 	ld a, [wPlayerMonNumber]
 	call SkipFixedLengthTextEntries
@@ -4753,107 +4757,8 @@ JumpToOHKOMoveEffect:
 ; among the most popular) tend to CH about 20 to 25% of the time."
 ;joenote - re-wrote this a bit to clean it up and fix focus energy
 CriticalHitTest:
-	xor a
-	ld [wCriticalHitOrOHKO], a
-	callab ConditionalCriticalCheck
-	jr nc, .ordinary
-	ld a, 1
-	ld [wCriticalHitOrOHKO], a
-	ret
-.ordinary
-	ld a, [H_WHOSETURN]
-	and a
-	ld a, [wEnemyMonSpecies]
-	jr nz, .handleEnemy
-	ld a, [wBattleMonSpecies]
-.handleEnemy
-	ld [wd0b5], a
-	call GetMonHeader
-	ld a, [wMonHBaseSpeed]
-	ld b, a
-	srl b                        ; /2 for regular move (effective (base speed / 2)) --> base crit rate
-	ld a, [H_WHOSETURN]
-	and a
-	ld a, [wPlayerMoveEffect]	;joenote - begin storing player move effect
-	ld hl, wPlayerMovePower
-	ld de, wPlayerBattleStatus2
-	jr z, .calcCriticalHitProbability
-	ld a, [wEnemyMoveEffect]	;joenote - begin storing enemy move effect
-	ld hl, wEnemyMovePower
-	ld de, wEnemyBattleStatus2
-.calcCriticalHitProbability
-;normal hit is (base speed) / 2
-;Focus Energy/Dire Hit multiplies the base threshold by 2, 3, or 4.
-;High-crit moves multiply that threshold by 2, including when focused.
-;;;;;;;;;;;;
-;joenote - do not do a critical hit if a special damage move is being used (dragon rage, seismic toss, etc)
-	cp SPECIAL_DAMAGE_EFFECT
-	ret z
-;;;;;;;;;;;;
-	ld a, [hld]                  ; read base power from RAM
-	and a
-	ret z                        ; do nothing if zero
-	dec hl
-	ld c, [hl]                   ; read move id
-	ld a, [de]
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	bit GETTING_PUMPED, a        ; test for focus energy
-	jr z, .noFocusEnergyUsed	 ;if getting pumped bit not set, then focus energy not used
-	inc de ; corresponding BattleStatus3
-	ld a, [de]
-	and FOCUS_BOOST_MASK
-	jr z, .noFocusEnergyUsed
-	swap a ; number of extra base thresholds to add (1..3)
-	ld h, a
-	ld a, b
-.focusMultiply
-	add b
-	jr c, .capcritical
-	dec h
-	jr nz, .focusMultiply
-	ld b, a
-.noFocusEnergyUsed
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	ld hl, HighCriticalMoves     ; table of high critical hit moves
-.Loop
-	ld a, [hli]                  ; read move from move table
-	cp c                         ; does it match the move about to be used?
-	jr z, .HighCritical          ; if so, the move about to be used is a high critical hit ratio move
-	inc a                        ; move on to the next move, FF terminates loop
-	jr nz, .Loop                 ; check the next move in HighCriticalMoves
-	jr .finishcalc         		 ; continue as a normal move
-.HighCritical
-	sla b ; high-crit moves have a x2 multiplier
-	jr nc, .finishcalc
-.capcritical
-	ld b, $ff					 ; cap at 255/256
-.finishcalc
-	call BattleRandom            ; generates a random value, in "a"
-	rlc a
-	rlc a
-	rlc a
-	cp b                         ; check a against calculated crit rate
-	ret nc                       ; no critical hit if no borrow
-	ld a, $1
-	ld [wCriticalHitOrOHKO], a   ; set critical hit flag
-	ret
+	jpab NatureCriticalHitTest
 
-; high critical hit moves
-HighCriticalMoves:
-	db ICICLE_SPEAR
-	db X_SCISSOR
-	db STONE_EDGE
-	db KARATE_CHOP
-	db RAZOR_LEAF
-	db CRABHAMMER
-	db SLASH
-	db DOUBLESLAP
-	db DRAGON_RAGE
-	db $FF
-
-
-;joenote
-; function to determine if Counter hits and if so, how much damage it does
 HandleCounterMove:
 	jpab UtilityCounter
 
@@ -6476,6 +6381,7 @@ LoadEnemyMonData:
 	ld [wEnemyMonSpecies], a
 	ld [wd0b5], a
 	call GetMonHeader
+	abilitycall NatureInitializeEnemy
 	ld a, [wEnemyBattleStatus3]
 	bit TRANSFORMED, a ; is enemy mon transformed?
 	ld hl, wTransformedEnemyMonOriginalDVs ; original DVs before transforming

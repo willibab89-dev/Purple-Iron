@@ -3379,8 +3379,33 @@ wAbilityPlayerSpeed:: ds 2
 wAbilityEnemySpeed:: ds 2
 wAbilityTemp:: ds 2
 wAbilityScratchEnd::
-SECTION "Stack", WRAM0[$df22]
-	ds $dd
+SECTION "Nature scratch", WRAM0[$df22]
+wNatureInputHL:: ds 2
+wNatureInputDE:: ds 2
+wNatureInputBC:: ds 2
+wNatureID:: ds 1
+wNatureSlot:: ds 1
+wNatureIDs:: ds 2
+wNatureStatSources:: ds 2
+wNatureEnemySlot:: ds 1
+wNatureResult:: ds 1
+wNatureAttr:: ds 1
+wNaturePosMask:: ds 1
+wNatureNegMask:: ds 1
+wNatureRatio:: ds 1
+wNatureAttRatio:: ds 1
+wNatureDefRatio:: ds 1
+wNatureOldMax:: ds 2
+wNatureOldHP:: ds 2
+wNatureMonPtr:: ds 2
+wNatureIndex:: ds 1
+wNatureMode:: ds 1
+wNatureOverride:: ds 1
+wNatureTemp:: ds 2
+wNatureUiPage:: ds 1
+wNatureScratchEnd::
+SECTION "Stack", WRAM0[$df42]
+	ds $bd
 wStack:: ; dfff
 
 

@@ -1,9 +1,7 @@
 SECTION "Starter ability prototype", ROMX, BANK[$3a]
 
-; One persistent slot, not an ability ID. The otherwise unused Gen 1 stored
-; catch-rate byte carries tags F9..FD. Actual capture odds use the species
-; header's separate wEnemyMonActualCatchRate. No saved structs are enlarged.
-; Untagged existing starters are assigned when next sent out.
+; Persistent ability slots share the versioned nature record. Legacy F9..FD
+; tags are migrated by NatureEnsureMon without rerolling the ability slot.
 AbilityFamily:
 	cp BULBASAUR
 	jr z, .grass
@@ -26,54 +24,26 @@ AbilityFamily:
 	ld a, 6
 	ret
 
-; Five equal buckets, with rejection so every slot has exactly equal odds.
-AbilityRollSlot:
-	call Random
-	cp 255
-	jr z, AbilityRollSlot
-.loop
-	cp 5
-	jr c, .done
-	sub 5
-	jr .loop
-.done
-	add $f9
-	ret
-
-; HL points at the stored species; return ID in A and tag in B.
+; Nature format keeps the persistent ability slot in stored Type1 high bits.
 AbilityEnsureMon:
-	push hl
+	naturecall NatureEnsureMon
 	ld a, [hl]
 	call AbilityFamily
 	and a
 	jr z, .none
-	push af
-	ld bc, 7
-	add hl, bc
-	ld a, [hl]
-	cp $f9
-	jr c, .assign
-	cp $fe
-	jr c, .ready
-.assign
-	push hl
-	call AbilityRollSlot
-	pop hl
-	ld [hl], a
-.ready
-	ld b, a
-	sub $f9
 	ld c, a
-	pop af
+	ld a, [wNatureSlot]
+	ld b, a
+	dec a
 	add c
-	pop hl
 	ret
 .none
 	ld b, 0
-	pop hl
 	ret
 
 AbilityResetBattle:
+	xor a
+	ld [wNatureMode], a
 	ld hl, wAbilityFlags
 	ld b, 14
 	xor a
@@ -84,45 +54,7 @@ AbilityResetBattle:
 	ret
 
 AbilityAssignNewMon:
-	push af
-	push bc
-	push de
-	push hl
-	ld hl, wPartyMon1
-	ld a, [wMonDataLocation]
-	and $f
-	ld a, [wPartyCount]
-	jr z, .party
-	ld hl, wEnemyMon1
-	ld a, [wEnemyPartyCount]
-.party
-	dec a
-	ld bc, wPartyMon2 - wPartyMon1
-	call AddNTimes
-	; A caught wild starter keeps the ability it had in battle.
-	ld a, [wIsInBattle]
-	cp 1
-	jr nz, .ensure
-	ld a, [wMonDataLocation]
-	and $f
-	jr nz, .ensure
-	ld a, [wEnemyMonCatchRate]
-	cp $f9
-	jr c, .ensure
-	cp $fe
-	jr nc, .ensure
-	push hl
-	ld bc, 7
-	add hl, bc
-	ld [hl], a
-	pop hl
-.ensure
-	call AbilityEnsureMon
-	pop hl
-	pop de
-	pop bc
-	pop af
-	ret
+	ret ; NatureInitializeNewMon assigns the shared record before stat generation.
 
 AbilityLoadPlayer:
 	push af
@@ -137,6 +69,14 @@ AbilityLoadPlayer:
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
 	call AbilityEnsureMon
+	push af
+	ld a, [wNatureID]
+	ld [wNatureIDs], a
+	ld [wNatureStatSources], a
+	ld a, [wNatureMode]
+	or 1
+	ld [wNatureMode], a
+	pop af
 	jr .store
 .disabled
 	xor a
@@ -148,54 +88,20 @@ AbilityLoadPlayer:
 	pop af
 	ret
 
-; Return the replacement catch-rate byte in A, preserving the copy registers.
+; Nature initialization has already cached the stable enemy slot.
 AbilityLoadEnemy:
-	ld a, [wAbilityTemp]
-	push bc
-	push de
-	push hl
-	push af
-	ld a, [wLinkState]
-	cp LINK_STATE_BATTLING
-	jr z, .none
-	ld a, [wIsInBattle]
-	cp 2
-	jr nz, .wild
-	ld a, [wEnemyMonPartyPos]
-	ld hl, wEnemyMon1
-	ld bc, wEnemyMon2 - wEnemyMon1
-	call AddNTimes
-	call AbilityEnsureMon
-	jr .resolved
-.wild
 	ld a, [wEnemyMonSpecies2]
 	call AbilityFamily
 	and a
-	jr z, .none
-	push af
-	call AbilityRollSlot
-	ld b, a
-	sub $f9
+	jr z, .store
 	ld c, a
-	pop af
+	ld a, [wNatureEnemySlot]
+	dec a
 	add c
-.resolved
+.store
 	ld [wActiveAbilities + 1], a
-	and a
-	jr z, .untagged
-	pop af
-	ld a, b
-	jr .return
-.none
-	xor a
-	ld [wActiveAbilities + 1], a
-.untagged
-	pop af
-.return
+	ld a, [wNatureIDs + 1]
 	ld [wAbilityTemp], a
-	pop hl
-	pop de
-	pop bc
 	ret
 
 AbilityGet:

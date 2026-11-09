@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf22:0xdf42]=[0xa5]*32
+        game.memory[0xdf42:0xdf62]=[0xa5]*32
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf22:0xdf42])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf42:0xdf62])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -63,25 +63,25 @@ def validate(version):
         # Exact equal buckets and rejection at 255.
         counts=Counter()
         for n in range(255):
-            rng(n);call('AbilityRollSlot');counts[game.register_file.A]+=1
-        assert counts=={n:51 for n in range(249,254)},counts
-        rng(255,4);call('AbilityRollSlot');assert game.register_file.A==253 and state['index']==2
+            rng(n);call('NatureRollSlot');counts[get('wNatureSlot')]+=1
+        assert counts=={n:51 for n in range(1,6)},counts
+        rng(255,4);call('NatureRollSlot');assert get('wNatureSlot')==5 and state['index']==2
         # Saved slot survives species changes; unrelated species are untouched.
         for slot in range(5):
             for species,base in [('BULBASAUR',1),('IVYSAUR',1),('VENUSAUR',1),('CHARMANDER',6),('CHARMELEON',6),('CHARIZARD',6)]:
-                put('wPartyMon1Species',ids[species]);put('wPartyMon1CatchRate',249+slot)
+                put('wPartyMon1Species',ids[species]);put('wPartyMon1Type1',0);put('wPartyMon1Type2',0);put('wPartyMon1CatchRate',249+slot)
                 call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==base+slot
-                assert get('wPartyMon1CatchRate')==249+slot
+                assert get('wPartyMon1Type1')>>5==slot+1 and get('wPartyMon1CatchRate')<196
         put('wPartyMon1Species',ids['SQUIRTLE']);put('wPartyMon1CatchRate',45)
         call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==0 and get('wPartyMon1CatchRate')==45
-        put('wPartyMon1Species',ids['BULBASAUR']);rng(3)
-        call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert get('wPartyMon1CatchRate')==252
+        put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1Type1',0);put('wPartyMon1Type2',0);rng(3)
+        call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert get('wPartyMon1Type1')>>5==4
         # Player load resolves original party identity, including after Transform.
         put('wWhichPokemon',0);put('wLinkState',0);call('AbilityLoadPlayer');assert get('wActiveAbilities')==4
         put('wBattleMonSpecies',ids['CHARIZARD']);assert get('wActiveAbilities')==4
         # Trainer load resolves its own party tag; no reroll on switching.
         put('wEnemyMon1Species',ids['CHARMANDER']);put('wEnemyMon1CatchRate',251);put('wIsInBattle',2);put('wEnemyMonPartyPos',0)
-        put('wAbilityTemp',45);call('AbilityLoadEnemy');assert get('wAbilityTemp')==251 and game.memory[addr('wActiveAbilities')+1]==8
+        put('wEnemyMonSpecies2',ids['CHARMANDER']);put('wNatureEnemySlot',3);game.memory[addr('wNatureIDs')+1]=31;call('AbilityLoadEnemy');assert get('wAbilityTemp')==31 and game.memory[addr('wActiveAbilities')+1]==8
         for turn in (0,1):
             # Dynamic damage: no stage replacement, correct types/full HP/thresholds.
             ap,tp=init(turn)
@@ -160,13 +160,13 @@ def validate(version):
         # New gifts use the real party-generation entry; the rival has Charmander.
         put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0)
         put('wCurEnemyLVL',5);put('wcf91',ids['BULBASAUR']);rng(2)
-        call('AddPartyMon');assert get('wPartyMon1Species')==ids['BULBASAUR'] and get('wPartyMon1CatchRate')==251
+        call('AddPartyMon');assert get('wPartyMon1Species')==ids['BULBASAUR'] and get('wPartyMon1Type1')>>5==3
         put('wWhichPokemon',0);put('wPlayerMonNumber',0);put('wBattleMonSpecies2',ids['BULBASAUR'])
         call('LoadBattleMonFromParty');assert get('wActiveAbilities')==3
         from test_reviewed_trainers import TRAINERS
         put('wLinkState',0);put('wIsInBattle',2);put('wTrainerClass',TRAINERS['SONY1']);put('wTrainerNo',3)
         call('ReadTrainer');assert get('wEnemyMon1Species')==ids['CHARMANDER']
-        assert 249<=get('wEnemyMon1CatchRate')<=253
+        assert get('wEnemyMon1CatchRate')<196 and 1<=get('wEnemyMon1Type1')>>5<=5
         put('wWhichPokemon',0);put('wEnemyMonPartyPos',0);put('wEnemyMonSpecies2',ids['CHARMANDER']);put('wCurEnemyLVL',5)
         for n in ('wEnemyBattleStatus3','wFontLoaded','wOptions'):put(n,0)
         call('LoadEnemyMonData');assert 6<=game.memory[addr('wActiveAbilities')+1]<=10
@@ -186,7 +186,7 @@ def validate(version):
         assert get('wActionResultOrTookBattleTurn')==0
         game.hook_deregister(b,a)
         # Outside battle, inspect the selected party member rather than the active one.
-        put('wWhichPokemon',1);put('wPartyMon2Species',ids['CHARMANDER']);put('wPartyMon2CatchRate',253)
+        put('wWhichPokemon',1);put('wPartyMon2Species',ids['CHARMANDER']);put('wPartyMon2Type1',160);put('wPartyMon2Type2',224);put('wPartyMon2CatchRate',195)
         def encoded(text):return bytes(0x80+ord(c)-ord('A') for c in text)+bytes([0x50])
         nick=encoded('CHARMANDER')
         game.memory[addr('wPartyMonNicks')+11:addr('wPartyMonNicks')+11+len(nick)]=nick
@@ -259,9 +259,9 @@ def validate(version):
             seen.clear();choice['index']=count+3;call('StartMenu_Pokemon');assert not seen
         game.hook_deregister(b,a);game.hook_deregister(mb,ma)
         # Ordinary save routines retain the tag without changing party layouts.
-        put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1CatchRate',253)
+        put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1Type1',160);put('wPartyMon1Type2',224);put('wPartyMon1CatchRate',195)
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2');put('wPartyMon1CatchRate',45)
-        call('LoadSAV0');call('LoadSAV2');assert get('wPartyMon1CatchRate')==253
+        call('LoadSAV0');call('LoadSAV2');assert get('wPartyMon1CatchRate')==195 and get('wPartyMon1Type1')>>5==5
         assert addr('wPartyMon2')-addr('wPartyMon1')==44
         if os.environ.get('ABILITY_SCREENSHOTS') and version=='pokered':
             from pathlib import Path

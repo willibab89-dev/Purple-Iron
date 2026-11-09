@@ -303,6 +303,7 @@ Serial_SendZeroByte::
 	ret
 
 Serial_TryEstablishingExternallyClockedConnection::
+	ret ; nature records are not compatible with the legacy link protocol
 	ld a, ESTABLISH_CONNECTION_WITH_EXTERNAL_CLOCK
 	ld [rSB], a
 	xor a

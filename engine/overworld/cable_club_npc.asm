@@ -1,4 +1,5 @@
 CableClubNPC:
+	jpab NatureLinkUnsupported
 	ld hl, CableClubNPCWelcomeText
 	call PrintText
 	CheckEvent EVENT_GOT_POKEDEX

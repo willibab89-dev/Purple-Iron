@@ -72,6 +72,7 @@ _AddPartyMon:
 	ld [de], a ; species
 	inc de
 	pop hl
+	naturecall NatureInitializeNewMon
 	push hl
 	ld a, [wMonDataLocation]
 	and $f
@@ -163,15 +164,9 @@ _AddPartyMon:
 	ld [de], a
 	inc de
 .copyMonTypesAndMoves
-	ld hl, wMonHTypes
-	ld a, [hli]       ; type 1
-	ld [de], a
+	naturecall NatureRefreshNewTypes
 	inc de
-	ld a, [hli]       ; type 2
-	ld [de], a
 	inc de
-	ld a, [hli]       ; catch rate (held item in gen 2)
-	ld [de], a
 	ld hl, wMonHMoves
 	ld a, [hli]
 	inc de
@@ -410,6 +405,7 @@ _MoveMon:
 	ld a, [wWhichPokemon]
 	call AddNTimes
 .copyMonData
+	naturecall NaturePrepareTransferMon
 	push hl
 	push de
 	ld bc, wBoxMon2 - wBoxMon1

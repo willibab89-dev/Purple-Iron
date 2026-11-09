@@ -2,6 +2,7 @@
 ; In the Colosseum, it starts a battle. In the Trade Center, it displays the trade selection screen.
 ; Before doing either action, it swaps random numbers, trainer names and party data with the other gameboy.
 CableClub_DoBattleOrTrade:
+	jpab NatureLinkUnsupported
 	ld c, 80
 	call DelayFrames
 	call ClearScreen

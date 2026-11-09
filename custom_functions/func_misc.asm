@@ -21,7 +21,10 @@ Mon1BCDScore:
 .next1
 	cp 1
 	jr nz, .default
-	ld a, [wPartyMon1CatchRate]
+	ld a, [wPartyMon1Species]
+	ld [wd0b5], a
+	call GetMonHeader
+	ld a, [wMonHCatchRate]
 	ld b, a
 	ld a, $FF
 	sub b

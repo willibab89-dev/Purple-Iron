@@ -151,7 +151,7 @@ def validate(version):
                     put(f"w{side}MoveNum", move)
                     for speed in range(256):
                         put("wMonHBaseSpeed", speed)
-                        call("CriticalHitTest")
+                        call("NatureCriticalHitTest")
                         expected = min(255, (speed // 2) * (stage + 1) * (2 if high else 1))
                         assert game.register_file.B == expected, (side, stage, move, speed, game.register_file.B, expected)
                         assert get("wCriticalHitOrOHKO") == int(expected > 0)
@@ -163,17 +163,17 @@ def validate(version):
                     count = 0
                     for rng in range(256):
                         patch("BattleRandom", [0x3e, rng, 0xc9])
-                        call("CriticalHitTest")
+                        call("NatureCriticalHitTest")
                         count += get("wCriticalHitOrOHKO")
                     assert count == min(255, 50 * (stage + 1) * (2 if high else 1))
                 # Status and fixed-damage moves still cannot critically hit.
                 patch("BattleRandom", [0x3e, 0, 0xc9])
                 put(f"w{side}MovePower", 0)
-                call("CriticalHitTest")
+                call("NatureCriticalHitTest")
                 assert get("wCriticalHitOrOHKO") == 0
                 put(f"w{side}MovePower", 50)
                 put(f"w{side}MoveEffect", 0x29)
-                call("CriticalHitTest")
+                call("NatureCriticalHitTest")
                 assert get("wCriticalHitOrOHKO") == 0
         restore("GetMonHeader")
         restore("BattleRandom")

@@ -2189,3 +2189,5 @@ INCLUDE "engine/battle/abilities.asm"
 
 SECTION "Nature definitions", ROMX, BANK[$3b]
 INCLUDE "data/natures.asm"
+
+INCLUDE "engine/natures.asm"
