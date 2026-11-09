@@ -831,13 +831,15 @@ ConditionalElectroBall:
 	ld a, [wCustomSide]
 	ld b, 0
 	ld c, 2
-	call ConditionalReadStat
+	ld [wAbilitySide], a
+	callab AbilityOneSpeed
 	push hl
 	ld a, [wCustomSide]
 	xor 1
 	ld b, 0
 	ld c, 2
-	call ConditionalReadStat
+	ld [wAbilitySide], a
+	callab AbilityOneSpeed
 	ld b, h
 	ld c, l
 	ld a, b

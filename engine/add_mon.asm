@@ -244,6 +244,7 @@ _AddPartyMon:
 	ld b, $0
 	call CalcStats         ; calculate fresh set of stats
 .done
+	abilitycall AbilityAssignNewMon
 	scf
 	ret
 

@@ -196,3 +196,16 @@ ENDM
 ldPal: MACRO
 	ld \1, \2 << 6 | \3 << 4 | \4 << 2 | \5
 ENDM
+
+; Ability event hooks do not alter the interrupted routine's registers/flags.
+abilitycall: MACRO
+	push af
+	push bc
+	push de
+	push hl
+	callab \1
+	pop hl
+	pop de
+	pop bc
+	pop af
+ENDM

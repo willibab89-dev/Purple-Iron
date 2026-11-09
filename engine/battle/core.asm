@@ -529,8 +529,9 @@ MainInBattleLoop:
 	callba CheckLowerEnemyPriority	;joenote - custom function now used
 	jr z, .playerMovesFirst ; if enemy used Counter and player didn't
 .compareSpeed
-	ld de, wBattleMonSpeed ; player speed value
-	ld hl, wEnemyMonSpeed ; enemy speed value
+	abilitycall AbilityPrepareSpeeds
+	ld de, wAbilityPlayerSpeed
+	ld hl, wAbilityEnemySpeed
 	ld c, $2
 	call StringCmp ; compare speed values
 	jr z, .speedEqual
@@ -616,6 +617,7 @@ MainInBattleLoop:
 	jp ResidualRoundComplete
 
 ResidualRoundComplete:
+	abilitycall AbilityEndRound
 	callab ResidualEndRound
 	ld hl, wBattleMonHP
 	ld a, [hli]
@@ -1709,6 +1711,9 @@ NoWillText:
 ; try to run from battle (hl = player speed, de = enemy speed)
 ; stores whether the attempt was successful in carry flag
 TryRunningFromBattle:
+	abilitycall AbilityPrepareSpeeds
+	ld hl, wAbilityPlayerSpeed
+	ld de, wAbilityEnemySpeed
 	call IsGhostBattle
 	jp z, .canEscape ; jump if it's a ghost battle
 	ld a, [wBattleType]
@@ -1839,6 +1844,7 @@ GotAwayText:
 
 ; copies from party data to battle mon data when sending out a new player mon
 LoadBattleMonFromParty:
+	abilitycall AbilityLoadPlayer
 	callab ResidualClearPlayer
 	callab ClearCounterRecord
 	ld a, [wWhichPokemon]
@@ -2309,8 +2315,7 @@ DisplayBattleMenu:
 	ld a, $1
 	ld [hli], a ; wMaxMenuItem
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;joenote - adding SELECT.
-;Aim is to play enemy pokemon's cry if it has been already caught when select is pressed
+; SELECT inspects either active ability without using a turn.
 	ld [hl], D_RIGHT | A_BUTTON | SELECT ; wMenuWatchedKeys	
 	call HandleMenuInput
 	bit 4, a ; check if right was pressed
@@ -2320,7 +2325,7 @@ DisplayBattleMenu:
 	jr nz, .AButtonPressed 
 	push bc
 	push hl
-	callba CryIfOwned
+	abilitycall AbilityPanel
 	pop hl
 	pop bc
 	jp .leftColumn
@@ -2353,9 +2358,14 @@ DisplayBattleMenu:
 	inc hl
 	ld a, $1
 	ld [hli], a ; wMaxMenuItem
-	ld a, D_LEFT | A_BUTTON
+	ld a, D_LEFT | A_BUTTON | SELECT
 	ld [hli], a ; wMenuWatchedKeys
 	call HandleMenuInput
+	bit 2, a
+	jr z, .rightNoAbility
+	abilitycall AbilityPanel
+	jr .rightColumn_WaitForInput
+.rightNoAbility
 	bit 5, a ; check if left was pressed
 	jp nz, .leftColumn ; if left was pressed, jump
 	ld a, [wCurrentMenuItem]
@@ -3358,7 +3368,11 @@ LinkBattleExchangeData:
 	ret
 
 ExecutePlayerMove:
+	xor a
+	ld [H_WHOSETURN], a
+	abilitycall AbilityBeforeAction
 	call ExecutePlayerMoveBody
+	abilitycall AbilityAfterAction
 	push af
 	push bc
 	push de
@@ -3461,6 +3475,7 @@ PlayerCalcMoveDamage:
 	               ; for these moves, accuracy tests will only occur if they are called as part of the effect itself
 .static_skiphere	;joenote - skip here if a static damage move
 	call AdjustDamageForMoveType
+	abilitycall AbilityDamageBoost
 	call RandomizeDamage
 .moveHitTest
 	call MoveHitTest
@@ -3545,6 +3560,7 @@ MirrorMoveCheck:
 	callab CaptureCustomTargetSubstitute
 	call ApplyAttackToEnemyPokemon
 	callab RecordCounterHit
+	abilitycall AbilityAfterHit
 	call PrintCriticalOHKOText
 	callab DisplayEffectiveness
 	ld a, 1
@@ -3579,6 +3595,7 @@ MirrorMoveCheck:
 	call GetDamageVarsForPlayerAttack
 	call CalculateDamage
 	call AdjustDamageForMoveType
+	abilitycall AbilityDamageBoost
 	call RandomizeDamage
 	pop hl
 	pop de
@@ -5835,7 +5852,11 @@ RandomizeDamage:
 
 ; for more detailed commentary, see equivalent function for player side (ExecutePlayerMove)
 ExecuteEnemyMove:
+	ld a, 1
+	ld [H_WHOSETURN], a
+	abilitycall AbilityBeforeAction
 	call ExecuteEnemyMoveBody
+	abilitycall AbilityAfterAction
 	push af
 	push bc
 	push de
@@ -5946,6 +5967,7 @@ EnemyCalcMoveDamage:
 	jp z, EnemyCheckIfFlyOrChargeEffect
 .static_skiphere	;joenote - skip here if a static damage move
 	call AdjustDamageForMoveType
+	abilitycall AbilityDamageBoost
 	call RandomizeDamage
 
 EnemyMoveHitTest:
@@ -6038,6 +6060,7 @@ EnemyCheckIfMirrorMoveEffect:
 	callab CaptureCustomTargetSubstitute
 	call ApplyAttackToPlayerPokemon
 	callab RecordCounterHit
+	abilitycall AbilityAfterHit
 	call PrintCriticalOHKOText
 	callab DisplayEffectiveness
 	callab PlayerBideAccum
@@ -6074,6 +6097,7 @@ EnemyCheckIfMirrorMoveEffect:
 	call SwapPlayerAndEnemyLevels
 	call CalculateDamage
 	call AdjustDamageForMoveType
+	abilitycall AbilityDamageBoost
 	call RandomizeDamage
 	pop hl
 	pop de
@@ -6650,6 +6674,9 @@ LoadEnemyMonData:
 	ld [de], a
 	inc de
 	ld a, [hli]            ; copy catch rate
+	ld [wAbilityTemp], a
+	abilitycall AbilityLoadEnemy
+	ld a, [wAbilityTemp]
 	ld [de], a
 	inc de
 	ld a, [wIsInBattle]

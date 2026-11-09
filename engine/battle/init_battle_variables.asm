@@ -1,4 +1,5 @@
 InitBattleVariables:
+	abilitycall AbilityResetBattle
 	callab ResidualClearAll
 	callab ClearCounterRecord
 	ld a, [hTilesetType]

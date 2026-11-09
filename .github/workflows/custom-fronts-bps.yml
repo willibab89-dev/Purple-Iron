@@ -1,4 +1,4 @@
-name: "Level-70 Gym rematch aces and second Lance update"
+name: "Starter ability prototype and cumulative game patches"
 
 on:
   workflow_dispatch:
@@ -85,6 +85,7 @@ jobs:
           python3 tools/test_route_encounters.py
           python3 tools/test_badge_boosts.py
           python3 tools/test_type_chart.py
+          python3 tools/test_abilities.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -160,6 +161,9 @@ jobs:
             ${{ runner.temp }}/patches/REGULAR-TRAINER-PROPOSALS.csv
             ${{ runner.temp }}/patches/MEW-DIPLOMA-GATE.md
             ${{ runner.temp }}/patches/ROUTE-ENCOUNTER-REDESIGN.md
+            ${{ runner.temp }}/patches/ABILITY-PROTOTYPE.md
+            ${{ runner.temp }}/patches/ABILITY-PANEL-PLAYER.png
+            ${{ runner.temp }}/patches/ABILITY-PANEL-ENEMY.png
             ${{ runner.temp }}/patches/TYPE-CHART-CHANGES.md
             ${{ runner.temp }}/patches/BADGE-BOOSTS.md
             ${{ runner.temp }}/patches/POKEMON-AVAILABILITY.md

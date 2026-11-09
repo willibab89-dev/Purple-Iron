@@ -3364,9 +3364,23 @@ wCustomRandomValue:: ds 1
 wCounterDamage:: ds 2
 wCounterRecipient:: ds 1
 
-; Expanded dex flags consume two bytes; retain the same stack top.
-SECTION "Stack", WRAM0[$df02]
-	ds $fd
+; Ability prototype scratch occupies the former bottom of the stack.
+; Saved Pokémon structs and the stack top remain unchanged.
+SECTION "Ability scratch", WRAM0[$df02]
+wAbilityFlags:: ds 12 ; six per side; bit 0 Hot Temper, bit 1 Confident
+wActiveAbilities:: ds 2
+wAbilitySide:: ds 1
+wAbilityID:: ds 1
+wAbilityOldStatus:: ds 1
+wAbilityHit:: ds 1
+wAbilityMoveType:: ds 1
+wAbilityPanelSide:: ds 1
+wAbilityPlayerSpeed:: ds 2
+wAbilityEnemySpeed:: ds 2
+wAbilityTemp:: ds 2
+wAbilityScratchEnd::
+SECTION "Stack", WRAM0[$df22]
+	ds $dd
 wStack:: ; dfff
 
 
