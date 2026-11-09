@@ -134,6 +134,14 @@ def validate(version):
             source('wBoxMon1');rng(0,7);call('NaturePrepareOldBox');newmax=baseline[0]*90//100
             assert inspect('wBoxMon1')==(7,1)
             assert readword('wBoxMon1HP')==(0 if hp==0 else max(1,newmax-(baseline[0]-hp)))
+        # Save-load daycare migration must convert HP before setting its marker.
+        for hp in (0,baseline[0]):
+            prefix=bytes(game.memory[addr('wBoxMon1'):addr('wBoxMon1')+33])
+            game.memory[addr('wDayCareMon'):addr('wDayCareMon')+33]=prefix
+            put('wDayCareMonType1',22);put('wDayCareMonType2',3);put('wDayCareMonCatchRate',45);word('wDayCareMonHP',hp)
+            put('wPartyCount',0);put('wDayCareInUse',1);put('wSaveFileStatus',2);rng(0,7)
+            call('NatureMigrateParty');assert inspect('wDayCareMon')==(7,1)
+            assert readword('wDayCareMonHP')==(0 if hp==0 else baseline[0]*90//100)
         # Accuracy/Evasion are a single multiplicative ratio on the wide chance.
         def ratio(id,attr):
             up,down=table[id];return 110 if up&(1<<attr) else 90 if down&(1<<attr) else 100
@@ -149,11 +157,11 @@ def validate(version):
                         game.memory[0xff96:0xff99]=[0,chance>>8,chance&255]
                         call('NatureApplyHitChance')
                         got=game.memory[0xff97]*256+game.memory[0xff98]
-                        assert got==chance*ar//er,(turn,chance,ar,er,got)
+                        assert got==max(0,(chance+1)*ar//er-1),(turn,chance,ar,er,got)
                     for side in ('Player','Enemy'):
                         put('w'+side+'MonAccuracyMod',7);put('w'+side+'MonEvasionMod',7);put('w'+side+'MoveAccuracy',204)
                     call('CalcHitChance')
-                    assert get('w'+('Enemy' if turn else 'Player')+'MoveAccuracy')==min(255,204*ar//er)
+                    assert get('w'+('Enemy' if turn else 'Player')+'MoveAccuracy')==min(255,max(0,205*ar//er-1))
             for id in range(196):
                 game.memory[addr('wNatureIDs')+turn]=id
                 for threshold in (0,1,64,128,232,255):
@@ -252,12 +260,55 @@ def validate(version):
         wild=(game.memory[addr('wNatureIDs')+1],get('wNatureEnemySlot'));assert wild==(87,3)
         rng(4,99);call('NatureInitializeEnemy');assert state['index']==0
         assert (game.memory[addr('wNatureIDs')+1],get('wNatureEnemySlot'))==wild
+        # Evolution's type refresh preserves both metadata fields.
+        stored('wPartyMon1',137,4,22,3);put('wPartyMon1Species',ids['MAROWAK']);put('wd11e',ids['MAROWAK'])
+        source('wPartyMon1');call('NatureRefreshEvolvedTypes')
+        assert inspect('wPartyMon1')==(137,4) and get('wPartyMon1Type1')&31==4 and get('wPartyMon1Type2')&31==8
+        # The NPC trade's OT/nickname copy cannot overwrite the new fields.
+        put('wPartyCount',1);before=inspect('wPartyMon1');call('InGameTrade_CopyDataToReceivedMon');assert inspect('wPartyMon1')==before
+        # Transform copies already-adjusted underlying stats, not nature identity.
+        for n in ('PrintText','PrintButItFailedText_','PlayCurrentMoveAnimation','AnimationTransformMon',
+                  'HideSubstituteShowMonAnim','ReshowSubstituteAnim','CustomPrintStatName'):
+            patch(n,[0xc9])
+        for turn in (0,1):
+            put('turn',turn);put('wIsInBattle',1);put('wNatureMode',3);put('wOptions',0);put('wObtainedBadges',0);put('wUnusedC000',0)
+            game.memory[addr('wNatureIDs'):addr('wNatureIDs')+2]=[0,7]
+            game.memory[addr('wNatureStatSources'):addr('wNatureStatSources')+2]=[0,7]
+            game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]=[2,9]
+            ap,tp=('wEnemyMon','wBattleMon') if turn else ('wBattleMon','wEnemyMon')
+            for side,prefix,party in (('Player','wBattleMon','wPartyMon1'),('Enemy','wEnemyMon','wEnemyMon1')):
+                for i in (1,2,3):put('w'+side+'BattleStatus'+str(i),0)
+                for i in range(6):game.memory[addr('w'+side+'MonStatMods')+i]=7
+                put(prefix+'Species',ids['BULBASAUR'] if side=='Player' else ids['CHARMANDER'])
+                put(prefix+'Level',50);put(prefix+'Status',0);word(prefix+'HP',100);word(prefix+'MaxHP',200)
+                for i,stat in enumerate(('Attack','Defense','Speed','Special')):
+                    value=220 if prefix==tp and stat=='Attack' else 100
+                    word(prefix+stat,value);word(party+stat,50 if prefix==ap else value)
+                    game.memory[addr('w'+side+'MonUnmodifiedAttack')+2*i:addr('w'+side+'MonUnmodifiedAttack')+2*i+2]=[value>>8,value&255]
+                game.memory[addr(prefix+'Moves'):addr(prefix+'Moves')+4]=[MOVES['TACKLE'],MOVES['EMBER'],0,0]
+                put('w'+side+'MovePower',40);put('w'+side+'MoveType',TYPES['NORMAL'])
+            put('wPlayerMonNumber',0);put('wEnemyMonPartyPos',0)
+            call('TransformEffect_');assert readword(ap+'Attack')==220,(turn,'copied nature stat')
+            assert bytes(game.memory[addr('wNatureIDs'):addr('wNatureIDs')+2])==bytes([0,7])
+            assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==bytes([2,9])
+            put('wCriticalHitOrOHKO',1)
+            call('LegacyEnemyDamageVars' if turn else 'LegacyPlayerDamageVars')
+            assert game.register_file.B==220,(turn,'transformed critical',game.register_file.B)
+        # Healing preserves identity; unsupported external links cannot send records.
+        stored('wPartyMon1',194,2);put('wPartyCount',1)
+        game.memory[addr('wPartySpecies'):addr('wPartySpecies')+2]=[ids['BULBASAUR'],255]
+        word('wPartyMon1HP',0);before=inspect('wPartyMon1');call('HealParty')
+        assert inspect('wPartyMon1')==before and readword('wPartyMon1HP')==readword('wPartyMon1MaxHP')
+        put('wLinkState',0);snapshot=bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+44])
+        call('CableClubNPC');call('CableClub_DoBattleOrTrade')
+        assert get('wLinkState')==0 and bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+44])==snapshot
+        assert data('Serial_TryEstablishingExternallyClockedConnection',1)==bytes([0xc9])
         # Save block sizes/checksums remain native and both fields survive reload.
         stored('wPartyMon1',194,2)
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2');put('wPartyMon1CatchRate',0)
         call('LoadSAV0');call('LoadSAV2');assert inspect('wPartyMon1')==(194,2)
         assert addr('wPartyMon2')-addr('wPartyMon1')==44 and addr('wBoxMon2')-addr('wBoxMon1')==33
-        print(f'{version}: nature table/balance, all 980 ID/slot combinations, unbiased rolls, legacy migration, gift/trainer/capture identity, stored copies and save passed')
+        print(f'{version}: 196 balanced definitions, 980 ID/slot combinations, multiplicative stats/probabilities, migration/HP, gifts/capture/PC/daycare/swaps/evolution/trade/healing/Transform, 196 descriptions, link guards and saves passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

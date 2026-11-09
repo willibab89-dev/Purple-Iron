@@ -490,7 +490,7 @@ NatureMigrateParty:
 	and a
 	ret z
 	ld hl, wDayCareMon
-	jp NatureEnsureAtHL
+	jp NaturePrepareOldBoxAtHL
 
 NatureMigrateOne:
 	ld a, [wNatureMonPtr]
@@ -591,6 +591,7 @@ NaturePrepareTransferMon:
 ; unchanged species/DVs/EVs/deposit level before assigning an old record's ID.
 NaturePrepareOldBox:
 	call NatureInputHL
+NaturePrepareOldBoxAtHL:
 	push hl
 	ld de, 6
 	add hl, de
@@ -724,13 +725,35 @@ NatureApplyHitChance:
 	cp b
 	ret z ; equal factors cancel without a rounding loss
 	ld [H_MULTIPLIER], a
+	; Shin hits on RNG <= threshold. Scale the number of successful
+	; outcomes (threshold+1), then translate back to an inclusive threshold.
+	ld a, [H_MULTIPLICAND + 2]
+	inc a
+	ld [H_MULTIPLICAND + 2], a
+	jr nz, .countReady
+	ld a, [H_MULTIPLICAND + 1]
+	inc a
+	ld [H_MULTIPLICAND + 1], a
+.countReady
 	xor a
 	ld [H_MULTIPLICAND], a
 	call Multiply
 	ld a, [wNatureDefRatio]
 	ld [H_DIVISOR], a
 	ld b, 4
-	jp Divide
+	call Divide
+	ld a, [H_QUOTIENT + 2]
+	ld b, a
+	ld a, [H_QUOTIENT + 3]
+	or b
+	ret z
+	ld a, [H_QUOTIENT + 3]
+	sub 1
+	ld [H_QUOTIENT + 3], a
+	ld a, [H_QUOTIENT + 2]
+	sbc 0
+	ld [H_QUOTIENT + 2], a
+	ret
 
 NatureAdjustCriticalChance:
 	ld a, b
@@ -803,7 +826,10 @@ PartyNaturePanel:
 	ld de, NatureLowers
 	ld a, [wNatureNegMask]
 	call NaturePrintMask
-	coord hl, 2, 15
+	coord hl, 2, 14
+	ld de, NatureStrengthText
+	call PlaceString
+	coord hl, 2, 16
 	ld de, NatureCloseHelp
 	call PlaceString
 .wait
@@ -886,6 +912,8 @@ NatureLowers:
 	db "Lowers@"
 NatureAnd:
 	db "and@"
+NatureStrengthText:
+	db "10 percent each@"
 NatureCloseHelp:
 	db "A/B CLOSE@"
 NatureAttributePointers:

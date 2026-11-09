@@ -6,7 +6,7 @@ This cumulative test patch adds one active ability to the standard Bulbasaur/Ivy
 
 Choose Bulbasaur: the rival already chooses Charmander. Each Pokémon receives one of its five slots with equal 20% odds. The normal starting moves and levels are preserved: Bulbasaur first learns Vine Whip at level 10, Charmander Ember at level 7. The opening level-5 fight therefore tests the panel and only those effects that its moves/HP can trigger. Automated higher-level battles cover the attacking effects.
 
-At the battle command menu, press **Select** to inspect abilities. **Left/Right** changes between player and opponent; **B or Select** closes the panel. Inspecting does not spend a turn, PP or an item. Both abilities are immediately visible. This replaces Select's old opponent-cry shortcut. Map a keyboard key to the emulator's Game Boy Select button; the ROM cannot directly read keyboard 1/2/Esc. Outside battle, open **POKéMON**, choose a party member, then choose **ABILITY**. The panel shows that selected Pokémon’s nickname, ability and description. **A, B or Select** closes it. The action menu now lists STATS, SWITCH, ABILITY and CANCEL, below any field moves. Nature and held-item systems are not added by this patch.
+At the battle command menu, press **Select** to inspect abilities. **Left/Right** changes between player and opponent; **B or Select** closes the panel. Inspecting does not spend a turn, PP or an item. Both abilities are immediately visible. This replaces Select's old opponent-cry shortcut. Map a keyboard key to the emulator's Game Boy Select button; the ROM cannot directly read keyboard 1/2/Esc. Outside battle, open **POKéMON**, choose a party member, then choose **ABILITY**. The panel shows that selected Pokémon’s nickname, ability and description. **A, B or Select** closes it. The action menu now lists STATS, SWITCH, ABILITY, NATURE and CANCEL, below any field moves. The nature system is now available through NATURE; held items remain a later feature.
 
 ![Player ability inspection](ABILITY-PANEL-PLAYER.png)
 
@@ -48,9 +48,10 @@ Chlorophyll updates without accumulating stat stages, affects turn order, escape
 
 The stored slot survives evolution, saving and normal party/box/daycare copies. This prototype's two evolution lines use the same five abilities throughout. The slot-based storage also supports replacing a slot's ability in a later evolution when more species tables are added.
 
-The otherwise unused Gen 1 stored catch-rate byte encodes a slot with tags F9–FD. No party/box/save structure grows; capture odds still read the separate species-header catch rate. Untagged existing starter Pokémon receive a slot on next send-out. The byte must not simultaneously be repurposed as a Gen 2 held item; cross-version/Gen 2 trading is outside this prototype. Enemy trainer parties roll when generated, so the rival is not guaranteed the same slot in a later encounter. Abilities are disabled in link battles pending a synchronized multiplayer design. Opponent AI retains its existing move-scoring rules; ability-specific tactical scoring is a later pass.
+The nature update supersedes the prototype’s old F9–FD catch-rate tags. Nature IDs now use that byte; ability slots use the stored first type’s high bits, with a version marker in the second type. Legacy ability slots migrate without rerolling. Actual battle types and capture odds remain separate from this metadata. See [the nature guide](NATURE-SYSTEM.md) for save compatibility and storage details.
 
-Transient flags occupy 26 bytes from the former unused bottom of the stack; the stack top and saved data addresses are unchanged. The remaining stack allocation is 221 bytes. Automated battle tests pass, but longer playtesting is still needed before expanding to the full roster.
+Enemy trainer parties roll when generated, so the rival is not guaranteed the same ability slot in a later encounter. External Cable Club play is blocked with an explanation because its old protocol cannot safely carry the new metadata; NPC trades remain available. Ability-specific tactical AI scoring is a later pass. Nature scratch and ability scratch share former stack space; the stack top remains unchanged and the remaining allocation is 189 bytes, checked with emulator stack guards.
+
 
 ## Validation
 

@@ -59,7 +59,9 @@ def validate(version):
         call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack');return output()
     def power(move,turn):init(move,turn);return variables(turn)[2]
     try:
-        assert hashlib.sha256((ROOT/'engine/battle/legacy_damage_vars.asm').read_bytes()).hexdigest()==PLAN['legacy_damage_source_sha256']
+        nature=json.loads((ROOT/'data/nature_compatibility.json').read_text())
+        assert nature['previous_legacy_damage_source_sha256']==PLAN['legacy_damage_source_sha256']
+        assert hashlib.sha256((ROOT/'engine/battle/legacy_damage_vars.asm').read_bytes()).hexdigest()==nature['legacy_damage_source_sha256']
         # Full move-table delta, including unchanged legacy moves/new patch-3 IDs.
         bank,start=syms['Moves'];updates={x['id']:x['after'] for x in PLAN['existing_changes']}
         patch5=json.loads((ROOT/'data/move_patch_5.json').read_text())

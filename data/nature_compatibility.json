@@ -1,0 +1,10 @@
+{
+  "format_version": 1,
+  "marker": 224,
+  "nature_count": 196,
+  "party_bytes": 44,
+  "box_bytes": 33,
+  "previous_legacy_damage_source_sha256": "d80617cc1da90e590733071f4b18553c1c7f76f1e2f5707fd0394db8e80b5c80",
+  "legacy_damage_source_sha256": "f6ce5d4e93ef1ab993ad2fb992483478c0943e08070262ca95aaa001dc85706d",
+  "reason": "Transformed critical hits read the copied nature-adjusted underlying stats instead of the original species party stats."
+}
