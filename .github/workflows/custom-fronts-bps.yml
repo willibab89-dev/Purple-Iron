@@ -44,6 +44,7 @@ jobs:
           set -euo pipefail
           export PATH="$RUNNER_TEMP/old/bin:$PATH"
           make -j2 red blue
+          python3 tools/export_movepools.py
           python3 tools/package_bps.py --originals "$RUNNER_TEMP/originals" --output "$RUNNER_TEMP/patches" --flips "$RUNNER_TEMP/flips/flips"
       - name: Test species, moves and battle mechanics in PyBoy
         run: |
@@ -164,6 +165,9 @@ jobs:
             ${{ runner.temp }}/patches/REGULAR-TRAINER-PROPOSALS.csv
             ${{ runner.temp }}/patches/MEW-DIPLOMA-GATE.md
             ${{ runner.temp }}/patches/ROUTE-ENCOUNTER-REDESIGN.md
+            ${{ runner.temp }}/patches/ALL-POKEMON-MOVEPOOLS.md
+            ${{ runner.temp }}/patches/ALL-POKEMON-MOVEPOOLS.html
+            ${{ runner.temp }}/patches/ALL-POKEMON-MOVEPOOLS.csv
             ${{ runner.temp }}/patches/HEALING-ITEM-PRICES.md
             ${{ runner.temp }}/patches/CURATED-LOOT-AND-SUPPLIES.md
             ${{ runner.temp }}/patches/STATUS-AND-WALKING-CHANGES.md
