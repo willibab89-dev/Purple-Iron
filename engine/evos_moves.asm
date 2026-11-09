@@ -276,12 +276,20 @@ Evolution_PartyMonLoop: ; loop over party mons
 	sbc b
 	ld b, a
 	ld hl, wLoadedMonHP + 1
+	ld a, [hld]
+	or [hl]
+	inc hl
+	jr z, .natureKeepEvolutionFainted
 	ld a, [hl]
 	add c
 	ld [hld], a
 	ld a, [hl]
 	adc b
 	ld [hl], a
+	jr .natureEvolutionHPDone
+.natureKeepEvolutionFainted
+	dec hl
+.natureEvolutionHPDone
 	dec hl
 	pop bc
 	call CopyData

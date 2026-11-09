@@ -44,6 +44,11 @@ LegacyPlayerDamageVars:
 	ld a, [wPlayerMonNumber]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
+	ld a, [wPlayerBattleStatus3]
+	bit TRANSFORMED, a
+	jr z, .natureCopiedAttack1
+	ld hl, wPlayerMonUnmodifiedAttack
+.natureCopiedAttack1
 	pop bc
 	jr .scaleStats
 .specialAttack
@@ -79,6 +84,11 @@ LegacyPlayerDamageVars:
 	ld a, [wPlayerMonNumber]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
+	ld a, [wPlayerBattleStatus3]
+	bit TRANSFORMED, a
+	jr z, .natureCopiedSpecial1
+	ld hl, wPlayerMonUnmodifiedSpecial
+.natureCopiedSpecial1
 	pop bc
 ; if either the offensive or defensive stat is too large to store in a byte, scale both stats by dividing them by 4
 ; this allows values with up to 10 bits (values up to 1023) to be handled
@@ -165,6 +175,11 @@ LegacyEnemyDamageVars:
 	ld a, [wPlayerMonNumber]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
+	ld a, [wPlayerBattleStatus3]
+	bit TRANSFORMED, a
+	jr z, .natureCopiedDefense1
+	ld hl, wPlayerMonUnmodifiedDefense
+.natureCopiedDefense1
 	ld a, [hli]
 	ld b, a
 	ld c, [hl]
@@ -200,6 +215,11 @@ LegacyEnemyDamageVars:
 	ld a, [wPlayerMonNumber]
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
+	ld a, [wPlayerBattleStatus3]
+	bit TRANSFORMED, a
+	jr z, .natureCopiedSpecial2
+	ld hl, wPlayerMonUnmodifiedSpecial
+.natureCopiedSpecial2
 	ld a, [hli]
 	ld b, a
 	ld c, [hl]
@@ -257,6 +277,26 @@ LegacyEnemyDamageVars:
 ; get stat c of enemy mon
 ; c: stat to get (HP=1,Attack=2,Defense=3,Speed=4,Special=5)
 GetEnemyMonStat:
+	ld a, [wEnemyBattleStatus3]
+	bit TRANSFORMED, a
+	jr z, .originalSpecies
+	push bc
+	push de
+	ld a, c
+	sub 2
+	add a
+	ld e, a
+	ld d, 0
+	ld hl, wEnemyMonUnmodifiedAttack
+	add hl, de
+	ld a, [hli]
+	ld [H_MULTIPLICAND + 1], a
+	ld a, [hl]
+	ld [H_MULTIPLICAND + 2], a
+	pop de
+	pop bc
+	ret
+.originalSpecies
 	push de
 	push bc
 	ld a, [wLinkState]

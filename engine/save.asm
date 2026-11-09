@@ -25,6 +25,7 @@ LoadSAV:
 	ld a, $1 ; bad checksum
 .goodsum
 	ld [wSaveFileStatus], a
+	abilitycall NatureMigrateParty
 	ret
 
 FileDataDestroyedText:

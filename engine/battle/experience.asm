@@ -248,12 +248,20 @@ GainExperience:
 	ld de, (wPartyMon1HP + 1) - wPartyMon1MaxHP
 	add hl, de
 ; add to the current HP the amount of max HP gained when levelling
-	ld a, [hl] ; wPartyMon1HP + 1
+	ld a, [hld]
+	or [hl]
+	inc hl
+	jr z, .natureKeepFainted
+	ld a, [hl]
 	add c
 	ld [hld], a
-	ld a, [hl] ; wPartyMon1HP + 1
+	ld a, [hl]
 	adc b
-	ld [hl], a ; wPartyMon1HP
+	ld [hl], a
+	jr .natureHPDone
+.natureKeepFainted
+	dec hl
+.natureHPDone
 	ld a, [wPlayerMonNumber]
 	ld b, a
 	ld a, [wWhichPokemon]

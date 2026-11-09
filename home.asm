@@ -3899,6 +3899,7 @@ CalcStat::
 	pop bc
 	pop de
 	pop hl
+	naturecall NatureApplyStat
 	ret
 
 AddEnemyMonToPlayerParty::

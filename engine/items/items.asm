@@ -1464,12 +1464,20 @@ ItemUseMedicine:
 ; add the amount gained to the current HP
 	ld de, (wPartyMon1HP + 1) - wPartyMon1MaxHP
 	add hl, de ; hl now points to LSB of current HP
+	ld a, [hld]
+	or [hl]
+	inc hl
+	jr z, .natureKeepFainted
 	ld a, [hl]
 	add c
 	ld [hld], a
 	ld a, [hl]
 	adc b
 	ld [hl], a
+	jr .natureHPDone
+.natureKeepFainted
+	dec hl
+.natureHPDone
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	jp .end_mgene
 ;joenote - added code for the M_GENE

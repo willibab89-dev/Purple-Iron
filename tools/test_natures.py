@@ -93,6 +93,46 @@ def validate(version):
         put('wPartyCount',0);put('wMonDataLocation',0x80);put('wcf91',ids['CHARMANDER']);word('wEnemyMonHP',10);put('wEnemyMonSpecies2',ids['CHARMANDER'])
         call('AddPartyMon');assert inspect('wPartyMon1')==(195,5)
         put('wBoxMon1Type1',20);put('wBoxMon1Type2',20);call('NatureInitializeCapturedBox');assert inspect('wBoxMon1')==(195,5)
+        # All five underlying stats: original value * ratio, floor, 1..999.
+        put('wIsInBattle',0);put('wCurEnemyLVL',50);put('wd0b5',ids['BULBASAUR']);call('GetMonHeader')
+        for n in ('HPExp','AttackExp','DefenseExp','SpeedExp','SpecialExp','DVs'):
+            word('wPartyMon1'+n,0)
+        def stats():
+            call('CalcStats',HL=addr('wPartyMon1HPExp')-1,DE=addr('wPartyMon1Stats'),BC=256)
+            return [readword('wPartyMon1'+n) for n in ('MaxHP','Attack','Defense','Speed','Special')]
+        put('wPartyMon1Type2',0);baseline=stats()
+        for id,(up,down) in enumerate(table):
+            stored('wPartyMon1',id,3)
+            expected=[max(1,min(999,value*(110 if up&(1<<i) else 90 if down&(1<<i) else 100)//100)) for i,value in enumerate(baseline)]
+            assert stats()==expected,(id,baseline,stats(),expected)
+            assert stats()==expected,('repeated stat calculation',id)
+            for stat in range(5):
+                for value in (1,9,100,999):
+                    word('wNatureInputHL',addr('wPartyMon1HPExp')-1);put('wNatureInputBC',1);put('wNatureInputBC',1)
+                    game.memory[addr('wNatureInputBC')+1]=stat+1
+                    game.memory[0xff96:0xff99]=[0,value>>8,value&255]
+                    call('NatureApplyStat')
+                    want=max(1,min(999,value*(110 if up&(1<<stat) else 90 if down&(1<<stat) else 100)//100))
+                    got=game.memory[0xff97]*256+game.memory[0xff98]
+                    assert got==want,(id,stat,value,got,want)
+        # Legacy party conversion preserves missing HP and never revives fainted.
+        for hp in (0,1,baseline[0]-5,baseline[0]):
+            put('wPartyMon1Type1',22);put('wPartyMon1Type2',3);put('wPartyMon1CatchRate',45)
+            put('wPartyMon1Level',50);word('wPartyMon1MaxHP',baseline[0]);word('wPartyMon1HP',hp)
+            put('wPartyCount',1);put('wSaveFileStatus',2);put('wDayCareInUse',0);rng(2,0)
+            call('NatureMigrateParty');newmax=baseline[0]*110//100
+            assert readword('wPartyMon1MaxHP')==newmax
+            assert readword('wPartyMon1HP')==(0 if hp==0 else max(1,newmax-(baseline[0]-hp)))
+            before=bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+44]);i=state['index']
+            call('NatureMigrateParty');assert bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+44])==before and state['index']==i
+        # Legacy boxed HP is converted using the deposit-level old maximum.
+        for hp in (0,1,baseline[0]-5,baseline[0]):
+            prefix=bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+33])
+            game.memory[addr('wBoxMon1'):addr('wBoxMon1')+33]=prefix
+            put('wBoxMon1Type1',22);put('wBoxMon1Type2',3);put('wBoxMon1CatchRate',45);put('wBoxMon1BoxLevel',50);word('wBoxMon1HP',hp)
+            source('wBoxMon1');rng(0,7);call('NaturePrepareOldBox');newmax=baseline[0]*90//100
+            assert inspect('wBoxMon1')==(7,1)
+            assert readword('wBoxMon1HP')==(0 if hp==0 else max(1,newmax-(baseline[0]-hp)))
         # Save block sizes/checksums remain native and both fields survive reload.
         stored('wPartyMon1',194,2)
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2');put('wPartyMon1CatchRate',0)
