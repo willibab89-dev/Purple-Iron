@@ -3380,6 +3380,9 @@ wAbilityEnemySpeed:: ds 2
 wAbilityTemp:: ds 2
 wAbilityScratchEnd::
 wWalkSpeedPhase:: ds 1
+wSupplyChanged:: ds 1
+wLootItem:: ds 1
+wLootHash:: ds 1
 SECTION "Nature scratch", WRAM0[$df22]
 wNatureInputHL:: ds 2
 wNatureInputDE:: ds 2

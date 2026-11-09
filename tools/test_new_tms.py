@@ -105,11 +105,12 @@ def validate(version):
     for label, stock in re.findall(r'(\w+)::\n\s*TX_MART ([^\n]+)', oldshops):
         old = [x.strip() for x in stock.split(',')]
         new = [f'TM_{d["number"]}' for d in PLAN['new_tms'] if d['shop'] == label]
+        if label == 'CeladonMart3ClerkText': new += ['ABILITY_CAPSULE', 'NATURE_CAPSULE', 'FIRST_AID']
         raw = data(label, 2 + len(old) + len(new) + 1)
         assert raw[0] == 254 and raw[1] == len(old) + len(new) <= 14, label
         assert raw[-1] == 255
         assert list(raw[2:2 + len(old)]) == [item_ids[x] for x in old], label
-        assert list(raw[2 + len(old):-1]) == [d['item_id'] for d in PLAN['new_tms'] if d['shop'] == label]
+        assert list(raw[2 + len(old):-1]) == [item_ids[x] for x in new]
     game = PyBoy(str(ROOT / (version + '.gbc')), window='null', sound_emulated=False)
     game.set_emulation_speed(0)
     game.tick(90, False)

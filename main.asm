@@ -2194,3 +2194,5 @@ INCLUDE "engine/natures.asm"
 
 INCLUDE "engine/battle/status_balance.asm"
 INCLUDE "engine/overworld/walking_speed.asm"
+
+INCLUDE "engine/items/curated_supplies.asm"

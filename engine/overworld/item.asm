@@ -25,6 +25,9 @@ PickUpItem:
 	ld e, a
 	add hl, de
 	ld a, [hl]
+	ld [wLootItem], a
+	abilitycall SelectCuratedLoot
+	ld a, [wLootItem]
 	ld b, a ; item
 	ld c, 1 ; quantity
 	call GiveItem

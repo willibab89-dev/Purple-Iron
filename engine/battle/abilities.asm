@@ -753,3 +753,14 @@ PartyAbilityPanel:
 	jp LoadScreenTilesFromBuffer1
 PartyAbilityHelp:
 	db "A/B CLOSE@"
+
+; Do not initialize or alter an unsupported species when using a capsule.
+AbilityCapsuleCheck::
+	ld a, [wNatureMonPtr]
+	ld h, a
+	ld a, [wNatureMonPtr + 1]
+	ld l, a
+	ld a, [hl]
+	call AbilityFamily
+	ld [wAbilityID], a
+	ret

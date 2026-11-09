@@ -934,3 +934,40 @@ NatureCrit:
 	db "CRIT@"
 NatureEvasion:
 	db "EVASION@"
+
+; Party root is supplied in wNatureMonPtr. Capsules preserve the other metadata.
+NatureCapsuleApply::
+	call NatureCapsuleLoadRoot
+	call NatureEnsureAtHL
+	ld a, [wNatureID]
+	ld [wNatureResult], a
+.roll
+	call NatureRoll
+	ld b, a
+	ld a, [wNatureResult]
+	cp b
+	jr z, .roll
+	call NatureCapsuleLoadRoot
+	call NatureWriteAtHL
+	jp NatureMigrateOne
+
+AbilityCapsuleApply::
+	call NatureCapsuleLoadRoot
+	call NatureEnsureAtHL
+	ld a, [wNatureSlot]
+	ld [wNatureResult], a
+.roll
+	call NatureRollSlot
+	ld b, a
+	ld a, [wNatureResult]
+	cp b
+	jr z, .roll
+	call NatureCapsuleLoadRoot
+	jp NatureWriteAtHL
+
+NatureCapsuleLoadRoot:
+	ld a, [wNatureMonPtr]
+	ld h, a
+	ld a, [wNatureMonPtr + 1]
+	ld l, a
+	ret

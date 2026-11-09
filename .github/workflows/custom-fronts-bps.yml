@@ -88,6 +88,7 @@ jobs:
           python3 tools/test_abilities.py
           python3 tools/test_natures.py
           python3 tools/test_status_balance.py
+          python3 tools/test_curated_supplies.py
       - name: Upload patches and Windows guide only
         uses: actions/upload-artifact@v4
         with:
@@ -163,6 +164,7 @@ jobs:
             ${{ runner.temp }}/patches/REGULAR-TRAINER-PROPOSALS.csv
             ${{ runner.temp }}/patches/MEW-DIPLOMA-GATE.md
             ${{ runner.temp }}/patches/ROUTE-ENCOUNTER-REDESIGN.md
+            ${{ runner.temp }}/patches/CURATED-LOOT-AND-SUPPLIES.md
             ${{ runner.temp }}/patches/STATUS-AND-WALKING-CHANGES.md
             ${{ runner.temp }}/patches/NATURE-SYSTEM.md
             ${{ runner.temp }}/patches/NATURE-SYSTEM-AUDIT.md

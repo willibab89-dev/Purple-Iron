@@ -110,3 +110,6 @@ ItemPrices:;joenote - added prices for amber/fossils/moon stone/pp_up/exp all/ma
 	money 4000 ; TM_61
 	money 6000 ; TM_62
 	money 9000 ; TM_63
+	money 30000 ; ABILITY_CAPSULE
+	money 30000 ; NATURE_CAPSULE
+	money 10000 ; FIRST_AID

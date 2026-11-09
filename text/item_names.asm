@@ -110,3 +110,6 @@ ItemNames:
 	db "TM61 LECHLIF@"
 	db "TM62 PSNTAIL@"
 	db "TM63 AGILITY@"
+	db "ABILITY CAP@"
+	db "NATURE CAP@"
+	db "FIRST AID@"
