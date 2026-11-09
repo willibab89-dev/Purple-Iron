@@ -37,6 +37,8 @@ def validate(version):
     def bcd(n): return bytes.fromhex(f'{n:06d}')
     oldprices = [int(n) for n in re.findall(r'^\s*money\s+(\d+)', PLAN['baseline_item_prices'], re.M)]
     assert len(oldprices) == 97
+    for item,price in {11:200,12:200,18:600,19:200,59:600,60:750,61:1000}.items():
+        oldprices[item]=price
     assert data('ItemPrices', (97 + len(PLAN['new_tms'])) * 3) == b''.join(bcd(n) for n in oldprices + [d['price'] for d in PLAN['new_tms']])
     masks = b''.join(e['mask'].to_bytes(2, 'little') for e in PLAN['entries'])
     assert data('ExtraTMCompatibilityTable', 2 * len(PLAN['entries'])) == masks
@@ -167,6 +169,44 @@ def validate(version):
             call('GetItemPrice'); assert bytes(game.memory[addr('hItemPrice'):addr('hItemPrice') + 3]) == bcd(d['price'])
             call('IsKeyItem_'); assert get('wIsKeyItem') == 0
             call('IsItemHM', A=d['item_id']); assert not(game.register_file.F & 16)
+        # Display, charge and affordability use the revised drink prices.
+        assert data('DrinkPriceText', len(encoded('¥600')) - 1) == encoded('¥600')[:-1]
+        for index,(item,price) in enumerate([(60,600),(61,750),(62,1000)]):
+            put('wCurrentMenuItem',index);call('LoadVendingMachineItem')
+            assert game.memory[0xffdb]==item
+            assert bytes(game.memory[0xffdc:0xffdf])==bcd(price)
+            assert bytes(game.memory[0xff9f:0xffa2])==bcd(price)
+            put('wcf91',item);call('GetItemPrice')
+            assert bytes(game.memory[0xff8b:0xff8e])==bcd(price)
+            for money in (price-1,price,price+1):
+                game.memory[addr('wPlayerMoney'):addr('wPlayerMoney')+3]=bcd(money)
+                call('HasEnoughMoney');assert bool(game.register_file.F&16)==(money<price)
+        # Purchase through the real vending menu, bag and BCD subtraction.
+        presentation=('PrintText','DisplayTextBoxID','TextBoxBorder','UpdateSprites',
+                      'PlaceString','HandleMenuInput','DelayFrames','PlaySound')
+        originals={n:data(n,1) for n in presentation}
+        for n in presentation:patch(n,[0xc9])
+        choice={'index':0}
+        def choose_drink(s):
+            put('wCurrentMenuItem',s['index']);game.register_file.A=1
+        bank,address=syms['HandleMenuInput'];game.hook_register(bank,address,choose_drink,choice)
+        for index,(item,price) in enumerate([(60,600),(61,750),(62,1000)]):
+            choice['index']=index
+            for money in (price-1,price,price+1):
+                put('wNumBagItems',0);put('wBagItems',255)
+                game.memory[addr('wPlayerMoney'):addr('wPlayerMoney')+3]=bcd(money)
+                call('VendingMachineMenu')
+                success=money>=price
+                assert get('wNumBagItems')==int(success)
+                if success:assert bytes(game.memory[addr('wBagItems'):addr('wBagItems')+3])==bytes([item,1,255])
+                assert bytes(game.memory[addr('wPlayerMoney'):addr('wPlayerMoney')+3])==bcd(money-price if success else money)
+            put('wNumBagItems',20)
+            game.memory[addr('wBagItems'):addr('wBagItems')+41]=[20,99]*20+[255]
+            game.memory[addr('wPlayerMoney'):addr('wPlayerMoney')+3]=bcd(10000)
+            call('VendingMachineMenu')
+            assert get('wNumBagItems')==20 and bytes(game.memory[addr('wPlayerMoney'):addr('wPlayerMoney')+3])==bcd(10000)
+        game.hook_deregister(bank,address)
+        for n,code in originals.items():patch(n,code)
         # Legacy machine prices still use their original nibble table.
         prices = [int(x) * 1000 for row in re.findall(r'^\s*dn (\d+), (\d+)', (ROOT / 'data/tm_prices.asm').read_text(), re.M) for x in row]
         for i, price in enumerate(prices):

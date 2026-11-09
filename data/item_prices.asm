@@ -10,15 +10,15 @@ ItemPrices:;joenote - added prices for amber/fossils/moon stone/pp_up/exp all/ma
 	money 0     ; POKEDEX
 	money 4200  ; MOON_STONE
 	money 100   ; ANTIDOTE
-	money 250   ; BURN_HEAL
-	money 250   ; ICE_HEAL
+	money 200   ; BURN_HEAL
+	money 200   ; ICE_HEAL
 	money 200   ; AWAKENING
 	money 200   ; PARLYZ_HEAL
 	money 3000  ; FULL_RESTORE
 	money 2500  ; MAX_POTION
 	money 1500  ; HYPER_POTION
-	money 700   ; SUPER_POTION
-	money 300   ; POTION
+	money 600   ; SUPER_POTION
+	money 200   ; POTION
 	money 0     ; BOULDERBADGE
 	money 0     ; CASCADEBADGE
 	money 0     ; THUNDERBADGE
@@ -59,9 +59,9 @@ ItemPrices:;joenote - added prices for amber/fossils/moon stone/pp_up/exp all/ma
 	money 700   ; MAX_REPEL
 	money 650   ; DIRE_HIT
 	money 10    ; COIN
-	money 200   ; FRESH_WATER
-	money 300   ; SODA_POP
-	money 350   ; LEMONADE
+	money 600   ; FRESH_WATER
+	money 750   ; SODA_POP
+	money 1000   ; LEMONADE
 	money 0     ; S_S_TICKET
 	money 0     ; GOLD_TEETH
 	money 500   ; X_ATTACK

@@ -25,7 +25,7 @@ VendingMachineMenu:
 	coord hl, 2, 5
 	ld de, DrinkText
 	call PlaceString
-	coord hl, 9, 6
+	coord hl, 8, 6
 	ld de, DrinkPriceText
 	call PlaceString
 	ld hl, wd730
@@ -36,35 +36,7 @@ VendingMachineMenu:
 	ld a, [wCurrentMenuItem]
 	cp 3 ; chose Cancel?
 	jr z, .notThirsty
-;joenote - need to account for soda and lemonade
-	cp 2 ; chose lemonade?
-	jr z, .picklemonade
-	cp 1 ; chose soda?
-	jr z, .picksoda
-;else water is being piked
-	jr .pickwater
-.picklemonade
-	xor a
-	ld [hMoney], a
-	ld a, $5
-	ld [hMoney + 2], a
-	ld a, $3
-	ld [hMoney + 1], a
-	jr .checkmoney
-.picksoda
-	xor a
-	ld [hMoney], a
-	ld [hMoney + 2], a
-	ld a, $3
-	ld [hMoney + 1], a
-	jr .checkmoney
-.pickwater
-	xor a
-	ld [hMoney], a
-	ld [hMoney + 2], a
-	ld a, $2
-	ld [hMoney + 1], a
-.checkmoney
+	call LoadVendingMachineItem
 	call HasEnoughMoney
 	jr nc, .enoughMoney
 	ld hl, VendingMachineText4
@@ -115,9 +87,9 @@ DrinkText:
 	next "CANCEL@"
 
 DrinkPriceText:
-	db   "¥200"
-	next "¥300"
-	next "¥350"
+	db   "¥600"
+	next "¥750"
+	next "¥1000"
 	next "@"
 
 VendingMachineText4:
@@ -148,16 +120,19 @@ LoadVendingMachineItem:
 	ld [hVendingMachineItem], a
 	ld a, [hli]
 	ld [hVendingMachinePrice], a
+	ld [hMoney], a
 	ld a, [hli]
 	ld [hVendingMachinePrice + 1], a
+	ld [hMoney + 1], a
 	ld a, [hl]
 	ld [hVendingMachinePrice + 2], a
+	ld [hMoney + 2], a
 	ret
 
 VendingPrices:
 	db FRESH_WATER
-	money 200
+	money 600
 	db SODA_POP
-	money 300
+	money 750
 	db LEMONADE
-	money 350
+	money 1000
