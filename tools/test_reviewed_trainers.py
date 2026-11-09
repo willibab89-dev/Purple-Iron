@@ -160,6 +160,14 @@ def validate(version):
         machines=data('TechnicalMachines')[:55+len(extraplan['new_tms'])]
         move_data=data('Moves')[:max(MOVES.values())*6]
         expected={(d['trainer'],d['number'],d['slot']):d for d in plan['changes']+plan['preserved']}
+        rematch_moves=json.loads((ROOT/'data/rematch_moveset_review.json').read_text())['records']
+        assert len(rematch_moves)==77 and sum(d['changed'] for d in rematch_moves)==37
+        for d in rematch_moves:
+            key=d['trainer'],d['number'],d['slot']
+            assert expected[key]['moves']==d['proposed'],('approved rematch moves',key)
+            assert d['changed']==(d['moves']!=d['proposed'])
+            if d['trainer']=='SONY3':
+                assert not d['changed'],('Champion moves preserved',key)
         seen=set();entries=0;special=0
         for (trainer,number),party in records.items():
             load(trainer,number)

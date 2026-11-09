@@ -1652,7 +1652,7 @@
       "moves": [
         "ICICLE_SPEAR",
         "SPIKE_CANNON",
-        "ICE_BEAM",
+        "SURF",
         "SHELL_SMASH"
       ]
     },
@@ -1734,10 +1734,10 @@
       "dex": 106,
       "level": 85,
       "moves": [
-        "ROLLING_KICK",
+        "BODY_SLAM",
         "HI_JUMP_KICK",
         "TRIPLE_KICK",
-        "MEGA_KICK"
+        "FOCUS_ENERGY"
       ]
     },
     {
@@ -1748,10 +1748,10 @@
       "dex": 68,
       "level": 88,
       "moves": [
-        "KARATE_CHOP",
+        "BULK_UP",
         "SUBMISSION",
         "DOUBLE_EDGE",
-        "MEGA_KICK"
+        "ROCK_SLIDE"
       ]
     },
     {
@@ -1776,7 +1776,7 @@
       "dex": 127,
       "level": 86,
       "moves": [
-        "SHELL_BREAK",
+        "VICEGRIP",
         "SUBMISSION",
         "BULK_UP",
         "GUILLOTINE"
@@ -1806,7 +1806,7 @@
       "moves": [
         "WAILING_CRY",
         "BONEMERANG",
-        "RAGE",
+        "ROCK_TOMB",
         "CURSE"
       ]
     },
@@ -1820,7 +1820,7 @@
       "moves": [
         "STONE_PRESS",
         "MUD_WAVE",
-        "WAILING_CRY",
+        "PSYCHIC_M",
         "LIGHT_SCREEN"
       ]
     },
@@ -1833,7 +1833,7 @@
       "level": 80,
       "moves": [
         "SHADOW_LEECH",
-        "CRUNCH",
+        "SNARL",
         "RECOVER",
         "PUNISHMENT"
       ]
@@ -1863,7 +1863,7 @@
         "WAILING_CRY",
         "FLAMETHROWER",
         "CAUTERIZE",
-        "FIRE_SPIN"
+        "WILL_O_WISP"
       ]
     },
     {
@@ -1875,7 +1875,7 @@
       "level": 88,
       "moves": [
         "SHADOW_LEECH",
-        "X_SCISSOR",
+        "SPORE",
         "CURSE",
         "LUNGE"
       ]
@@ -1888,7 +1888,7 @@
       "dex": 130,
       "level": 88,
       "moves": [
-        "CRUNCH",
+        "HYDRO_PUMP",
         "DRAGON_DANCE",
         "OUTRAGE",
         "HYPER_BEAM"
@@ -1905,7 +1905,7 @@
         "THUNDER_WAVE",
         "DRAGON_RAGE",
         "THUNDERBOLT",
-        "COIL"
+        "REFLECT"
       ]
     },
     {
@@ -1916,7 +1916,7 @@
       "dex": 131,
       "level": 88,
       "moves": [
-        "CONFUSE_RAY",
+        "THUNDERBOLT",
         "ICE_BEAM",
         "HEAL_BELL",
         "HYDRO_PUMP"
@@ -1932,7 +1932,7 @@
       "moves": [
         "ROCK_SLIDE",
         "EARTHQUAKE",
-        "DRAGON_RAGE",
+        "THUNDER",
         "OUTRAGE"
       ]
     },
@@ -1945,7 +1945,7 @@
       "level": 80,
       "moves": [
         "ROCK_SLIDE",
-        "CRUNCH",
+        "AERIAL_ACE",
         "STONE_EDGE",
         "SKY_ATTACK"
       ]
@@ -1960,7 +1960,7 @@
       "moves": [
         "DRAGON_DANCE",
         "BODY_SLAM",
-        "WING_ATTACK",
+        "OUTRAGE",
         "THUNDER"
       ]
     },
@@ -2224,7 +2224,7 @@
       "dex": 76,
       "level": 64,
       "moves": [
-        "STONE_PRESS",
+        "ROCK_POLISH",
         "EARTHQUAKE",
         "STONE_EDGE",
         "EXPLOSION"
@@ -2241,7 +2241,7 @@
         "WAILING_CRY",
         "FLAMETHROWER",
         "CAUTERIZE",
-        "FIRE_SPIN"
+        "WILL_O_WISP"
       ]
     },
     {
@@ -2280,8 +2280,8 @@
       "dex": 95,
       "level": 70,
       "moves": [
-        "RAGE",
-        "SLAM",
+        "ROCK_TOMB",
+        "EARTHQUAKE",
         "STONE_PRESS",
         "COIL"
       ]
@@ -2350,7 +2350,7 @@
       "dex": 121,
       "level": 70,
       "moves": [
-        "BUBBLEBEAM",
+        "RECOVER",
         "LIGHT_SCREEN",
         "PSYCHIC_M",
         "HYDRO_PUMP"
@@ -2366,7 +2366,7 @@
       "moves": [
         "LIGHT_SCREEN",
         "ELECTRO_BALL",
-        "SWIFT",
+        "THUNDER_WAVE",
         "EXPLOSION"
       ]
     },
@@ -2380,7 +2380,7 @@
       "moves": [
         "CHARGE",
         "SHOCK_WAVE",
-        "LIGHT_SCREEN",
+        "THUNDER_WAVE",
         "ZAP_CANNON"
       ]
     },
@@ -2422,7 +2422,7 @@
       "moves": [
         "MEGA_PUNCH",
         "BODY_SLAM",
-        "LIGHT_SCREEN",
+        "THUNDER_WAVE",
         "ZAP_CANNON"
       ]
     },
@@ -2434,7 +2434,7 @@
       "dex": 71,
       "level": 66,
       "moves": [
-        "SLAM",
+        "SLEEP_POWDER",
         "POISON_FANG",
         "CLAMP",
         "VINE_CRUSH"
@@ -2465,7 +2465,7 @@
         "ACID",
         "GIGA_DRAIN",
         "PETAL_DANCE",
-        "SOLARBEAM"
+        "POISONPOWDER"
       ]
     },
     {
@@ -2476,7 +2476,7 @@
       "dex": 103,
       "level": 66,
       "moves": [
-        "PSYBEAM",
+        "HYPNOSIS",
         "EGG_BOMB",
         "PSYCHIC_M",
         "SOLARBEAM"
@@ -2491,7 +2491,7 @@
       "level": 70,
       "moves": [
         "PETAL_DANCE",
-        "SLUDGE",
+        "POISONPOWDER",
         "SYNTHESIS",
         "VENOSHOCK"
       ]
@@ -2505,7 +2505,7 @@
       "level": 63,
       "moves": [
         "POISON_GAS",
-        "INCINERATE",
+        "VENOSHOCK",
         "HAZE",
         "EXPLOSION"
       ]
@@ -2519,7 +2519,7 @@
       "level": 65,
       "moves": [
         "MUD_WAVE",
-        "SCREECH",
+        "VENOSHOCK",
         "ACID_ARMOR",
         "TOXIC"
       ]
@@ -2535,7 +2535,7 @@
         "BRINE",
         "BARRIER",
         "VENOSHOCK",
-        "HYDRO_PUMP"
+        "TOXIC"
       ]
     },
     {
@@ -2589,7 +2589,7 @@
       "level": 66,
       "moves": [
         "DREAM_EATER",
-        "PSYBEAM",
+        "HYPNOSIS",
         "PSYCHIC_M",
         "AMNESIA"
       ]
@@ -2602,8 +2602,8 @@
       "dex": 124,
       "level": 68,
       "moves": [
-        "PSYBEAM",
-        "FROST_BREATH",
+        "LOVELY_KISS",
+        "CHARM",
         "PSYCHIC_M",
         "BLIZZARD"
       ]
@@ -2617,7 +2617,7 @@
       "level": 65,
       "moves": [
         "REST",
-        "WITHDRAW",
+        "AMNESIA",
         "PSYCHIC_M",
         "SURF"
       ]
@@ -2632,7 +2632,7 @@
       "moves": [
         "KINESIS",
         "PSYCHIC_M",
-        "PSYCH_UP",
+        "RECOVER",
         "MIND_BREAK"
       ]
     },
@@ -2661,7 +2661,7 @@
         "FLAMETHROWER",
         "CRUNCH",
         "DOUBLE_EDGE",
-        "FIRE_BLAST"
+        "REST"
       ]
     },
     {
@@ -2672,7 +2672,7 @@
       "dex": 78,
       "level": 62,
       "moves": [
-        "HORN_ATTACK",
+        "STOMP",
         "FLAMETHROWER",
         "PIERCE",
         "HORN_DRILL"
@@ -2689,7 +2689,7 @@
         "FIRE_SPIN",
         "FLAMETHROWER",
         "CAUTERIZE",
-        "FIRE_BLAST"
+        "REFLECT"
       ]
     },
     {
@@ -2701,8 +2701,8 @@
       "level": 70,
       "moves": [
         "MEGA_PUNCH",
+        "FACADE",
         "CAUTERIZE",
-        "FLAMETHROWER",
         "FIRE_BLAST"
       ]
     }

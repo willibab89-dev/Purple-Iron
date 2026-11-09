@@ -147,6 +147,8 @@ jobs:
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-2-SUPPORT.md
             ${{ runner.temp }}/patches/MOVE-DISTRIBUTION-3-COVERAGE.md
             ${{ runner.temp }}/patches/TRAINER-REVIEW.md
+            ${{ runner.temp }}/patches/REMATCH-MOVESET-PROPOSALS.md
+            ${{ runner.temp }}/patches/REMATCH-MOVESET-PROPOSALS.csv
             ${{ runner.temp }}/patches/POSTGAME-ACE-CHANGES.md
             ${{ runner.temp }}/patches/LEAGUE-REMATCH-CHANGES.md
             ${{ runner.temp }}/patches/GYM-REMATCH-CHANGES.md

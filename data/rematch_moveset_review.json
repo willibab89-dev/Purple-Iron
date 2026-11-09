@@ -1,0 +1,1699 @@
+{
+  "scope": "Approved rematch moves only; first-clear, Champion, roster, level and AI preservation.",
+  "records": [
+    {
+      "trainer": "LORELEI",
+      "number": 2,
+      "slot": 1,
+      "name": "dewgong",
+      "dex": 87,
+      "level": 84,
+      "moves": [
+        "BUBBLEBEAM",
+        "ICE_ARMOR",
+        "BRINE",
+        "ICE_BEAM"
+      ],
+      "proposed": [
+        "BUBBLEBEAM",
+        "ICE_ARMOR",
+        "BRINE",
+        "ICE_BEAM"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 2,
+      "slot": 2,
+      "name": "cloyster",
+      "dex": 91,
+      "level": 83,
+      "moves": [
+        "ICICLE_SPEAR",
+        "SPIKE_CANNON",
+        "ICE_BEAM",
+        "SHELL_SMASH"
+      ],
+      "proposed": [
+        "ICICLE_SPEAR",
+        "SPIKE_CANNON",
+        "SURF",
+        "SHELL_SMASH"
+      ],
+      "reason": "Add Water STAB while retaining both multihit signatures and the physical Spike Cannon/Shell Smash plan; trade reliable Ice Beam for coverage.",
+      "changed": true
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 2,
+      "slot": 3,
+      "name": "slowbro",
+      "dex": 80,
+      "level": 84,
+      "moves": [
+        "REST",
+        "ICE_BEAM",
+        "PSYCHIC_M",
+        "SURF"
+      ],
+      "proposed": [
+        "REST",
+        "ICE_BEAM",
+        "PSYCHIC_M",
+        "SURF"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 2,
+      "slot": 4,
+      "name": "jynx",
+      "dex": 124,
+      "level": 86,
+      "moves": [
+        "CHARM",
+        "LOVELY_KISS",
+        "FROST_BREATH",
+        "PSYCHIC_M"
+      ],
+      "proposed": [
+        "CHARM",
+        "LOVELY_KISS",
+        "FROST_BREATH",
+        "PSYCHIC_M"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 2,
+      "slot": 5,
+      "name": "lapras",
+      "dex": 131,
+      "level": 86,
+      "moves": [
+        "CONFUSE_RAY",
+        "ICE_BEAM",
+        "HEAL_BELL",
+        "HYDRO_PUMP"
+      ],
+      "proposed": [
+        "CONFUSE_RAY",
+        "ICE_BEAM",
+        "HEAL_BELL",
+        "HYDRO_PUMP"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 2,
+      "slot": 6,
+      "name": "omanyte_unique",
+      "dex": 166,
+      "level": 80,
+      "moves": [
+        "CLAMP",
+        "ROCK_TOMB",
+        "BRINE",
+        "AMNESIA"
+      ],
+      "proposed": [
+        "CLAMP",
+        "ROCK_TOMB",
+        "BRINE",
+        "AMNESIA"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 2,
+      "slot": 1,
+      "name": "hitmonchan",
+      "dex": 107,
+      "level": 85,
+      "moves": [
+        "ICE_PUNCH",
+        "THUNDERPUNCH",
+        "FIRE_PUNCH",
+        "BRICK_BREAK"
+      ],
+      "proposed": [
+        "ICE_PUNCH",
+        "THUNDERPUNCH",
+        "FIRE_PUNCH",
+        "BRICK_BREAK"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 2,
+      "slot": 2,
+      "name": "hitmonlee",
+      "dex": 106,
+      "level": 85,
+      "moves": [
+        "ROLLING_KICK",
+        "HI_JUMP_KICK",
+        "TRIPLE_KICK",
+        "MEGA_KICK"
+      ],
+      "proposed": [
+        "BODY_SLAM",
+        "HI_JUMP_KICK",
+        "TRIPLE_KICK",
+        "FOCUS_ENERGY"
+      ],
+      "reason": "Keep two distinctive kicks; Body Slam gives neutral physical coverage/paralysis and Focus Energy adds crit pressure. Rock TMs are not currently permitted.",
+      "changed": true
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 2,
+      "slot": 3,
+      "name": "machamp",
+      "dex": 68,
+      "level": 88,
+      "moves": [
+        "KARATE_CHOP",
+        "SUBMISSION",
+        "DOUBLE_EDGE",
+        "MEGA_KICK"
+      ],
+      "proposed": [
+        "BULK_UP",
+        "SUBMISSION",
+        "DOUBLE_EDGE",
+        "ROCK_SLIDE"
+      ],
+      "reason": "Replace low-power Karate Chop and redundant Mega Kick with physical setup and Flying coverage.",
+      "changed": true
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 2,
+      "slot": 4,
+      "name": "poliwrath",
+      "dex": 62,
+      "level": 87,
+      "moves": [
+        "BODY_SLAM",
+        "BULK_UP",
+        "HYDRO_PUMP",
+        "SUBMISSION"
+      ],
+      "proposed": [
+        "BODY_SLAM",
+        "BULK_UP",
+        "HYDRO_PUMP",
+        "SUBMISSION"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 2,
+      "slot": 5,
+      "name": "pinsir",
+      "dex": 127,
+      "level": 86,
+      "moves": [
+        "SHELL_BREAK",
+        "SUBMISSION",
+        "BULK_UP",
+        "GUILLOTINE"
+      ],
+      "proposed": [
+        "VICEGRIP",
+        "SUBMISSION",
+        "BULK_UP",
+        "GUILLOTINE"
+      ],
+      "reason": "Use the redesigned 75-power Bug Vicegrip as reliable STAB; keep Fighting coverage, setup and the intended risky finisher.",
+      "changed": true
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 2,
+      "slot": 6,
+      "name": "primeape",
+      "dex": 57,
+      "level": 88,
+      "moves": [
+        "FOCUS_ENERGY",
+        "BRICK_BREAK",
+        "PUNISHMENT",
+        "THRASH"
+      ],
+      "proposed": [
+        "FOCUS_ENERGY",
+        "BRICK_BREAK",
+        "PUNISHMENT",
+        "THRASH"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 2,
+      "slot": 1,
+      "name": "marowak",
+      "dex": 105,
+      "level": 85,
+      "moves": [
+        "WAILING_CRY",
+        "BONEMERANG",
+        "RAGE",
+        "CURSE"
+      ],
+      "proposed": [
+        "WAILING_CRY",
+        "BONEMERANG",
+        "ROCK_TOMB",
+        "CURSE"
+      ],
+      "reason": "Replace Rage with legal Rock Tomb for Flying coverage and speed control; keep both STAB themes and Curse.",
+      "changed": true
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 2,
+      "slot": 2,
+      "name": "claydol",
+      "dex": 178,
+      "level": 88,
+      "moves": [
+        "STONE_PRESS",
+        "MUD_WAVE",
+        "WAILING_CRY",
+        "LIGHT_SCREEN"
+      ],
+      "proposed": [
+        "STONE_PRESS",
+        "MUD_WAVE",
+        "PSYCHIC_M",
+        "LIGHT_SCREEN"
+      ],
+      "reason": "Use its 120 Special for offense while keeping Defense-based Stone Press and accuracy-dropping Mud Wave.",
+      "changed": true
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 2,
+      "slot": 3,
+      "name": "sableye",
+      "dex": 176,
+      "level": 80,
+      "moves": [
+        "SHADOW_LEECH",
+        "CRUNCH",
+        "RECOVER",
+        "PUNISHMENT"
+      ],
+      "proposed": [
+        "SHADOW_LEECH",
+        "SNARL",
+        "RECOVER",
+        "PUNISHMENT"
+      ],
+      "reason": "Restore the explicitly reviewed Snarl niche: Special suppression, drain/recovery and anti-setup punishment.",
+      "changed": true
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 2,
+      "slot": 4,
+      "name": "gengar",
+      "dex": 94,
+      "level": 86,
+      "moves": [
+        "HYPNOSIS",
+        "DREAM_EATER",
+        "SUBSTITUTE",
+        "THUNDERBOLT"
+      ],
+      "proposed": [
+        "HYPNOSIS",
+        "DREAM_EATER",
+        "SUBSTITUTE",
+        "THUNDERBOLT"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 2,
+      "slot": 5,
+      "name": "ninetales",
+      "dex": 38,
+      "level": 86,
+      "moves": [
+        "WAILING_CRY",
+        "FLAMETHROWER",
+        "CAUTERIZE",
+        "FIRE_SPIN"
+      ],
+      "proposed": [
+        "WAILING_CRY",
+        "FLAMETHROWER",
+        "CAUTERIZE",
+        "WILL_O_WISP"
+      ],
+      "reason": "Fire/Ghost burn control with Special reduction and limited healing; trade the residual attack for reliable burn support.",
+      "changed": true
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 2,
+      "slot": 6,
+      "name": "parasect",
+      "dex": 47,
+      "level": 88,
+      "moves": [
+        "SHADOW_LEECH",
+        "X_SCISSOR",
+        "CURSE",
+        "LUNGE"
+      ],
+      "proposed": [
+        "SHADOW_LEECH",
+        "SPORE",
+        "CURSE",
+        "LUNGE"
+      ],
+      "reason": "Restore the mushroom\u2019s signature sleep while retaining Ghost drain, Curse and slow-Pok\u00e9mon priority Attack reduction.",
+      "changed": true
+    },
+    {
+      "trainer": "LANCE",
+      "number": 2,
+      "slot": 1,
+      "name": "gyarados",
+      "dex": 130,
+      "level": 88,
+      "moves": [
+        "CRUNCH",
+        "DRAGON_DANCE",
+        "OUTRAGE",
+        "HYPER_BEAM"
+      ],
+      "proposed": [
+        "HYDRO_PUMP",
+        "DRAGON_DANCE",
+        "OUTRAGE",
+        "HYPER_BEAM"
+      ],
+      "reason": "Add Water STAB while retaining the dragon-themed rampage and physical Hyper Beam payoff. Dragon Dance boosts Speed/Hyper Beam, not the special attacks.",
+      "changed": true
+    },
+    {
+      "trainer": "LANCE",
+      "number": 2,
+      "slot": 2,
+      "name": "dragonair",
+      "dex": 148,
+      "level": 86,
+      "moves": [
+        "THUNDER_WAVE",
+        "DRAGON_RAGE",
+        "THUNDERBOLT",
+        "COIL"
+      ],
+      "proposed": [
+        "THUNDER_WAVE",
+        "DRAGON_RAGE",
+        "THUNDERBOLT",
+        "REFLECT"
+      ],
+      "reason": "Replace an Attack boost with no physical attacker by stronger physical protection. Reflect does not protect against special Ice damage. Dragon Rage is the implemented 60-power attack, not fixed 40 damage.",
+      "changed": true
+    },
+    {
+      "trainer": "LANCE",
+      "number": 2,
+      "slot": 3,
+      "name": "lapras",
+      "dex": 131,
+      "level": 88,
+      "moves": [
+        "CONFUSE_RAY",
+        "ICE_BEAM",
+        "HEAL_BELL",
+        "HYDRO_PUMP"
+      ],
+      "proposed": [
+        "THUNDERBOLT",
+        "ICE_BEAM",
+        "HEAL_BELL",
+        "HYDRO_PUMP"
+      ],
+      "reason": "Keep support and both STAB attacks while adding Water-mirror coverage; Lorelei\u2019s Lapras keeps confusion control.",
+      "changed": true
+    },
+    {
+      "trainer": "LANCE",
+      "number": 2,
+      "slot": 4,
+      "name": "tyranitar",
+      "dex": 183,
+      "level": 82,
+      "moves": [
+        "ROCK_SLIDE",
+        "EARTHQUAKE",
+        "DRAGON_RAGE",
+        "OUTRAGE"
+      ],
+      "proposed": [
+        "ROCK_SLIDE",
+        "EARTHQUAKE",
+        "THUNDER",
+        "OUTRAGE"
+      ],
+      "reason": "Replace the weaker duplicate Dragon attack with legal Electric coverage; Thunder also benefits from paralysis/other status spread earlier in the team. Bulk Up is not currently permitted.",
+      "changed": true
+    },
+    {
+      "trainer": "LANCE",
+      "number": 2,
+      "slot": 5,
+      "name": "aerodactyl",
+      "dex": 142,
+      "level": 80,
+      "moves": [
+        "ROCK_SLIDE",
+        "CRUNCH",
+        "STONE_EDGE",
+        "SKY_ATTACK"
+      ],
+      "proposed": [
+        "ROCK_SLIDE",
+        "AERIAL_ACE",
+        "STONE_EDGE",
+        "SKY_ATTACK"
+      ],
+      "reason": "Add immediate reliable Flying STAB; retain flinch/crit Rock choices and the accepted PvE charge attack.",
+      "changed": true
+    },
+    {
+      "trainer": "LANCE",
+      "number": 2,
+      "slot": 6,
+      "name": "dragonite",
+      "dex": 149,
+      "level": 90,
+      "moves": [
+        "DRAGON_DANCE",
+        "BODY_SLAM",
+        "WING_ATTACK",
+        "THUNDER"
+      ],
+      "proposed": [
+        "DRAGON_DANCE",
+        "BODY_SLAM",
+        "OUTRAGE",
+        "THUNDER"
+      ],
+      "reason": "Restore pure-Dragon STAB by replacing off-type Wing Attack; retain Body Slam/Thunder status synergy. Outrage is special and is not Attack-boosted by Dragon Dance.",
+      "changed": true
+    },
+    {
+      "trainer": "SONY3",
+      "number": 4,
+      "slot": 1,
+      "name": "pidgeot",
+      "dex": 18,
+      "level": 84,
+      "moves": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "proposed": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 4,
+      "slot": 2,
+      "name": "alakazam",
+      "dex": 65,
+      "level": 86,
+      "moves": [
+        "THUNDER_WAVE",
+        "PSYCHIC_M",
+        "PSYCH_UP",
+        "MIND_BREAK"
+      ],
+      "proposed": [
+        "THUNDER_WAVE",
+        "PSYCHIC_M",
+        "PSYCH_UP",
+        "MIND_BREAK"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 4,
+      "slot": 3,
+      "name": "rhydon",
+      "dex": 112,
+      "level": 86,
+      "moves": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "proposed": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 4,
+      "slot": 4,
+      "name": "arcanine",
+      "dex": 59,
+      "level": 86,
+      "moves": [
+        "FLAMETHROWER",
+        "REST",
+        "DOUBLE_EDGE",
+        "CRUNCH"
+      ],
+      "proposed": [
+        "FLAMETHROWER",
+        "REST",
+        "DOUBLE_EDGE",
+        "CRUNCH"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 4,
+      "slot": 5,
+      "name": "exeggutor",
+      "dex": 103,
+      "level": 88,
+      "moves": [
+        "HYPNOSIS",
+        "LEECH_SEED",
+        "PSYCHIC_M",
+        "BARRAGE"
+      ],
+      "proposed": [
+        "HYPNOSIS",
+        "LEECH_SEED",
+        "PSYCHIC_M",
+        "BARRAGE"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 4,
+      "slot": 6,
+      "name": "blastoise_unique",
+      "dex": 152,
+      "level": 90,
+      "moves": [
+        "HYDRO_PUMP",
+        "BLIZZARD",
+        "REFLECT",
+        "SKULL_BASH"
+      ],
+      "proposed": [
+        "HYDRO_PUMP",
+        "BLIZZARD",
+        "REFLECT",
+        "SKULL_BASH"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 5,
+      "slot": 1,
+      "name": "pidgeot",
+      "dex": 18,
+      "level": 84,
+      "moves": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "proposed": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 5,
+      "slot": 2,
+      "name": "alakazam",
+      "dex": 65,
+      "level": 86,
+      "moves": [
+        "THUNDER_WAVE",
+        "PSYCHIC_M",
+        "PSYCH_UP",
+        "MIND_BREAK"
+      ],
+      "proposed": [
+        "THUNDER_WAVE",
+        "PSYCHIC_M",
+        "PSYCH_UP",
+        "MIND_BREAK"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 5,
+      "slot": 3,
+      "name": "rhydon",
+      "dex": 112,
+      "level": 86,
+      "moves": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "proposed": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 5,
+      "slot": 4,
+      "name": "gyarados",
+      "dex": 130,
+      "level": 86,
+      "moves": [
+        "DRAGON_DANCE",
+        "CRUNCH",
+        "HYDRO_PUMP",
+        "OUTRAGE"
+      ],
+      "proposed": [
+        "DRAGON_DANCE",
+        "CRUNCH",
+        "HYDRO_PUMP",
+        "OUTRAGE"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 5,
+      "slot": 5,
+      "name": "arcanine",
+      "dex": 59,
+      "level": 88,
+      "moves": [
+        "FLAMETHROWER",
+        "REST",
+        "DOUBLE_EDGE",
+        "CRUNCH"
+      ],
+      "proposed": [
+        "FLAMETHROWER",
+        "REST",
+        "DOUBLE_EDGE",
+        "CRUNCH"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 5,
+      "slot": 6,
+      "name": "venusaur",
+      "dex": 3,
+      "level": 90,
+      "moves": [
+        "MEGA_DRAIN",
+        "SLUDGE",
+        "PETAL_DANCE",
+        "SOLARBEAM"
+      ],
+      "proposed": [
+        "MEGA_DRAIN",
+        "SLUDGE",
+        "PETAL_DANCE",
+        "SOLARBEAM"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 6,
+      "slot": 1,
+      "name": "pidgeot",
+      "dex": 18,
+      "level": 84,
+      "moves": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "proposed": [
+        "GALE_WIND",
+        "ROOST",
+        "MIRROR_MOVE",
+        "SKY_ATTACK"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 6,
+      "slot": 2,
+      "name": "alakazam",
+      "dex": 65,
+      "level": 86,
+      "moves": [
+        "THUNDER_WAVE",
+        "PSYCHIC_M",
+        "PSYCH_UP",
+        "MIND_BREAK"
+      ],
+      "proposed": [
+        "THUNDER_WAVE",
+        "PSYCHIC_M",
+        "PSYCH_UP",
+        "MIND_BREAK"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 6,
+      "slot": 3,
+      "name": "rhydon",
+      "dex": 112,
+      "level": 86,
+      "moves": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "proposed": [
+        "MEGAHORN",
+        "EARTHQUAKE",
+        "ROCK_SLIDE",
+        "TAKE_DOWN"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 6,
+      "slot": 4,
+      "name": "exeggutor",
+      "dex": 103,
+      "level": 86,
+      "moves": [
+        "HYPNOSIS",
+        "LEECH_SEED",
+        "PSYCHIC_M",
+        "BARRAGE"
+      ],
+      "proposed": [
+        "HYPNOSIS",
+        "LEECH_SEED",
+        "PSYCHIC_M",
+        "BARRAGE"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 6,
+      "slot": 5,
+      "name": "gyarados",
+      "dex": 130,
+      "level": 88,
+      "moves": [
+        "DRAGON_DANCE",
+        "CRUNCH",
+        "HYDRO_PUMP",
+        "OUTRAGE"
+      ],
+      "proposed": [
+        "DRAGON_DANCE",
+        "CRUNCH",
+        "HYDRO_PUMP",
+        "OUTRAGE"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "SONY3",
+      "number": 6,
+      "slot": 6,
+      "name": "charizard",
+      "dex": 6,
+      "level": 90,
+      "moves": [
+        "WING_ATTACK",
+        "FLAMETHROWER",
+        "FIRE_SPIN",
+        "DRAGON_DANCE"
+      ],
+      "proposed": [
+        "WING_ATTACK",
+        "FLAMETHROWER",
+        "FIRE_SPIN",
+        "DRAGON_DANCE"
+      ],
+      "reason": "Keep the approved same-species/same-moves Champion +25-level contract; Champion move edits are outside this default pass.",
+      "changed": false
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 1,
+      "name": "golem",
+      "dex": 76,
+      "level": 64,
+      "moves": [
+        "STONE_PRESS",
+        "EARTHQUAKE",
+        "STONE_EDGE",
+        "EXPLOSION"
+      ],
+      "proposed": [
+        "ROCK_POLISH",
+        "EARTHQUAKE",
+        "STONE_EDGE",
+        "EXPLOSION"
+      ],
+      "reason": "Trade the second Rock attack for speed setup; keep the physical finisher role distinct from Defense-based Onix.",
+      "changed": true
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 2,
+      "name": "ninetales",
+      "dex": 38,
+      "level": 66,
+      "moves": [
+        "WAILING_CRY",
+        "FLAMETHROWER",
+        "CAUTERIZE",
+        "FIRE_SPIN"
+      ],
+      "proposed": [
+        "WAILING_CRY",
+        "FLAMETHROWER",
+        "CAUTERIZE",
+        "WILL_O_WISP"
+      ],
+      "reason": "Fire/Ghost burn control with Special reduction and limited healing; trade the residual attack for reliable burn support.",
+      "changed": true
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 3,
+      "name": "crobat",
+      "dex": 179,
+      "level": 64,
+      "moves": [
+        "WING_ATTACK",
+        "POISON_FANG",
+        "SHADOW_LEECH",
+        "HAZE"
+      ],
+      "proposed": [
+        "WING_ATTACK",
+        "POISON_FANG",
+        "SHADOW_LEECH",
+        "HAZE"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 4,
+      "name": "chansey",
+      "dex": 113,
+      "level": 62,
+      "moves": [
+        "SOFTBOILED",
+        "SEISMIC_TOSS",
+        "LIGHT_SCREEN",
+        "EGG_BOMB"
+      ],
+      "proposed": [
+        "SOFTBOILED",
+        "SEISMIC_TOSS",
+        "LIGHT_SCREEN",
+        "EGG_BOMB"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "BROCK",
+      "number": 2,
+      "slot": 5,
+      "name": "onix",
+      "dex": 95,
+      "level": 70,
+      "moves": [
+        "RAGE",
+        "SLAM",
+        "STONE_PRESS",
+        "COIL"
+      ],
+      "proposed": [
+        "ROCK_TOMB",
+        "EARTHQUAKE",
+        "STONE_PRESS",
+        "COIL"
+      ],
+      "reason": "Replace Rage/Slam with Ground STAB and speed control; Coil supports both Attack-based Earthquake and Defense-based Stone Press.",
+      "changed": true
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 1,
+      "name": "golduck",
+      "dex": 55,
+      "level": 66,
+      "moves": [
+        "AMNESIA",
+        "PSYSHOCK",
+        "HYDRO_PUMP",
+        "PSYCHIC_M"
+      ],
+      "proposed": [
+        "AMNESIA",
+        "PSYSHOCK",
+        "HYDRO_PUMP",
+        "PSYCHIC_M"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 2,
+      "name": "seadra",
+      "dex": 117,
+      "level": 64,
+      "moves": [
+        "SNIPE_SHOT",
+        "AGILITY",
+        "DRAGON_RAGE",
+        "HYDRO_PUMP"
+      ],
+      "proposed": [
+        "SNIPE_SHOT",
+        "AGILITY",
+        "DRAGON_RAGE",
+        "HYDRO_PUMP"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 3,
+      "name": "seaking",
+      "dex": 119,
+      "level": 65,
+      "moves": [
+        "PIERCE",
+        "AGILITY",
+        "MEGAHORN",
+        "HORN_DRILL"
+      ],
+      "proposed": [
+        "PIERCE",
+        "AGILITY",
+        "MEGAHORN",
+        "HORN_DRILL"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 4,
+      "name": "vaporeon",
+      "dex": 134,
+      "level": 66,
+      "moves": [
+        "SCALD",
+        "ACID_ARMOR",
+        "HAZE",
+        "HYDRO_PUMP"
+      ],
+      "proposed": [
+        "SCALD",
+        "ACID_ARMOR",
+        "HAZE",
+        "HYDRO_PUMP"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "MISTY",
+      "number": 2,
+      "slot": 5,
+      "name": "starmie",
+      "dex": 121,
+      "level": 70,
+      "moves": [
+        "BUBBLEBEAM",
+        "LIGHT_SCREEN",
+        "PSYCHIC_M",
+        "HYDRO_PUMP"
+      ],
+      "proposed": [
+        "RECOVER",
+        "LIGHT_SCREEN",
+        "PSYCHIC_M",
+        "HYDRO_PUMP"
+      ],
+      "reason": "Restore the fast ace recovery role instead of a redundant weaker Water attack.",
+      "changed": true
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 1,
+      "name": "electrode",
+      "dex": 101,
+      "level": 66,
+      "moves": [
+        "LIGHT_SCREEN",
+        "ELECTRO_BALL",
+        "SWIFT",
+        "EXPLOSION"
+      ],
+      "proposed": [
+        "LIGHT_SCREEN",
+        "ELECTRO_BALL",
+        "THUNDER_WAVE",
+        "EXPLOSION"
+      ],
+      "reason": "Paralysis enables Electro Ball\u2019s speed-ratio damage and gives the lead a setup role; replace Swift.",
+      "changed": true
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 2,
+      "name": "magneton",
+      "dex": 82,
+      "level": 64,
+      "moves": [
+        "CHARGE",
+        "SHOCK_WAVE",
+        "LIGHT_SCREEN",
+        "ZAP_CANNON"
+      ],
+      "proposed": [
+        "CHARGE",
+        "SHOCK_WAVE",
+        "THUNDER_WAVE",
+        "ZAP_CANNON"
+      ],
+      "reason": "Self-enable guaranteed Shock Wave crits and Zap Cannon accuracy; Charge helps Special/accuracy, although crits ignore its Special stages.",
+      "changed": true
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 3,
+      "name": "electabuzz",
+      "dex": 125,
+      "level": 68,
+      "moves": [
+        "SCREECH",
+        "BRICK_BREAK",
+        "THUNDERCLAP",
+        "THUNDER"
+      ],
+      "proposed": [
+        "SCREECH",
+        "BRICK_BREAK",
+        "THUNDERCLAP",
+        "THUNDER"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 4,
+      "name": "jolteon",
+      "dex": 135,
+      "level": 65,
+      "moves": [
+        "PIN_MISSILE",
+        "THUNDER_WAVE",
+        "SHOCK_WAVE",
+        "THUNDER"
+      ],
+      "proposed": [
+        "PIN_MISSILE",
+        "THUNDER_WAVE",
+        "SHOCK_WAVE",
+        "THUNDER"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "LT_SURGE",
+      "number": 2,
+      "slot": 5,
+      "name": "raichu_unique",
+      "dex": 168,
+      "level": 70,
+      "moves": [
+        "MEGA_PUNCH",
+        "BODY_SLAM",
+        "LIGHT_SCREEN",
+        "ZAP_CANNON"
+      ],
+      "proposed": [
+        "MEGA_PUNCH",
+        "BODY_SLAM",
+        "THUNDER_WAVE",
+        "ZAP_CANNON"
+      ],
+      "reason": "Keep physical coverage while giving the final ace a reliable way to enable Zap Cannon; replace Light Screen.",
+      "changed": true
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 1,
+      "name": "victreebel",
+      "dex": 71,
+      "level": 66,
+      "moves": [
+        "SLAM",
+        "POISON_FANG",
+        "CLAMP",
+        "VINE_CRUSH"
+      ],
+      "proposed": [
+        "SLEEP_POWDER",
+        "POISON_FANG",
+        "CLAMP",
+        "VINE_CRUSH"
+      ],
+      "reason": "Trade Slam for legal sleep control; retain Poison Fang pressure and draining Chomp/Clamp. Stun Spore is not currently permitted, so Vine Crush is ordinary Grass STAB here rather than a self-enabled paralysis combo.",
+      "changed": true
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 2,
+      "name": "tangela_erika",
+      "dex": 170,
+      "level": 62,
+      "moves": [
+        "SLEEP_POWDER",
+        "INGRAIN",
+        "VICEGRIP",
+        "STOCKPILE"
+      ],
+      "proposed": [
+        "SLEEP_POWDER",
+        "INGRAIN",
+        "VICEGRIP",
+        "STOCKPILE"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 3,
+      "name": "vileplume",
+      "dex": 45,
+      "level": 68,
+      "moves": [
+        "ACID",
+        "GIGA_DRAIN",
+        "PETAL_DANCE",
+        "SOLARBEAM"
+      ],
+      "proposed": [
+        "ACID",
+        "GIGA_DRAIN",
+        "PETAL_DANCE",
+        "POISONPOWDER"
+      ],
+      "reason": "Preserve Vileplume\u2019s Giga Drain identity, trade a third Grass attack for poisoning that can support the final Venusaur.",
+      "changed": true
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 4,
+      "name": "exeggutor",
+      "dex": 103,
+      "level": 66,
+      "moves": [
+        "PSYBEAM",
+        "EGG_BOMB",
+        "PSYCHIC_M",
+        "SOLARBEAM"
+      ],
+      "proposed": [
+        "HYPNOSIS",
+        "EGG_BOMB",
+        "PSYCHIC_M",
+        "SOLARBEAM"
+      ],
+      "reason": "Replace redundant Psybeam with sleep; preserve screen-breaking Egg Bomb and the sleep/charge opportunity.",
+      "changed": true
+    },
+    {
+      "trainer": "ERIKA",
+      "number": 2,
+      "slot": 5,
+      "name": "venusaur_erika",
+      "dex": 172,
+      "level": 70,
+      "moves": [
+        "PETAL_DANCE",
+        "SLUDGE",
+        "SYNTHESIS",
+        "VENOSHOCK"
+      ],
+      "proposed": [
+        "PETAL_DANCE",
+        "POISONPOWDER",
+        "SYNTHESIS",
+        "VENOSHOCK"
+      ],
+      "reason": "Give the final ace its own way to enable Venoshock; keep Synthesis and no extra draining heal.",
+      "changed": true
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 1,
+      "name": "weezing",
+      "dex": 110,
+      "level": 63,
+      "moves": [
+        "POISON_GAS",
+        "INCINERATE",
+        "HAZE",
+        "EXPLOSION"
+      ],
+      "proposed": [
+        "POISON_GAS",
+        "VENOSHOCK",
+        "HAZE",
+        "EXPLOSION"
+      ],
+      "reason": "Poison setter with its own damaging payoff and anti-setup/finisher tools; replace unsupported burn-payoff Incinerate.",
+      "changed": true
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 2,
+      "name": "muk",
+      "dex": 89,
+      "level": 65,
+      "moves": [
+        "MUD_WAVE",
+        "SCREECH",
+        "ACID_ARMOR",
+        "TOXIC"
+      ],
+      "proposed": [
+        "MUD_WAVE",
+        "VENOSHOCK",
+        "ACID_ARMOR",
+        "TOXIC"
+      ],
+      "reason": "Restore Poison offense alongside Ground offense; Toxic enables Venoshock and Acid Armor retains the tank role.",
+      "changed": true
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 3,
+      "name": "tentacruel",
+      "dex": 73,
+      "level": 68,
+      "moves": [
+        "BRINE",
+        "BARRIER",
+        "VENOSHOCK",
+        "HYDRO_PUMP"
+      ],
+      "proposed": [
+        "BRINE",
+        "BARRIER",
+        "VENOSHOCK",
+        "TOXIC"
+      ],
+      "reason": "Poison chip enables Venoshock immediately and eventually Brine; retain Barrier and trade the second Water attack for self-contained setup.",
+      "changed": true
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 4,
+      "name": "crobat",
+      "dex": 179,
+      "level": 64,
+      "moves": [
+        "WING_ATTACK",
+        "POISON_FANG",
+        "SHADOW_LEECH",
+        "HAZE"
+      ],
+      "proposed": [
+        "WING_ATTACK",
+        "POISON_FANG",
+        "SHADOW_LEECH",
+        "HAZE"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "KOGA",
+      "number": 2,
+      "slot": 5,
+      "name": "arbok",
+      "dex": 24,
+      "level": 70,
+      "moves": [
+        "POISON_FANG",
+        "CRUNCH",
+        "SCREECH",
+        "COIL"
+      ],
+      "proposed": [
+        "POISON_FANG",
+        "CRUNCH",
+        "SCREECH",
+        "COIL"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 1,
+      "name": "mrmime",
+      "dex": 122,
+      "level": 62,
+      "moves": [
+        "SUBSTITUTE",
+        "MIND_BREAK",
+        "PSYCH_UP",
+        "PSYCHIC_M"
+      ],
+      "proposed": [
+        "SUBSTITUTE",
+        "MIND_BREAK",
+        "PSYCH_UP",
+        "PSYCHIC_M"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 2,
+      "name": "hypno",
+      "dex": 97,
+      "level": 66,
+      "moves": [
+        "DREAM_EATER",
+        "PSYBEAM",
+        "PSYCHIC_M",
+        "AMNESIA"
+      ],
+      "proposed": [
+        "DREAM_EATER",
+        "HYPNOSIS",
+        "PSYCHIC_M",
+        "AMNESIA"
+      ],
+      "reason": "Replace redundant Psybeam with the missing sleep move; both sleep/drain and Special setup now have a purpose.",
+      "changed": true
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 3,
+      "name": "jynx",
+      "dex": 124,
+      "level": 68,
+      "moves": [
+        "PSYBEAM",
+        "FROST_BREATH",
+        "PSYCHIC_M",
+        "BLIZZARD"
+      ],
+      "proposed": [
+        "LOVELY_KISS",
+        "CHARM",
+        "PSYCHIC_M",
+        "BLIZZARD"
+      ],
+      "reason": "Restore sleep and the approved Charm niche for frail Jynx; keep Blizzard to distinguish this from Lorelei\u2019s Frost Breath set.",
+      "changed": true
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 4,
+      "name": "slowbro",
+      "dex": 80,
+      "level": 65,
+      "moves": [
+        "REST",
+        "WITHDRAW",
+        "PSYCHIC_M",
+        "SURF"
+      ],
+      "proposed": [
+        "REST",
+        "AMNESIA",
+        "PSYCHIC_M",
+        "SURF"
+      ],
+      "reason": "Special setup improves both STAB attacks and Special defense; distinguish this set from Lorelei\u2019s Ice Beam coverage.",
+      "changed": true
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 2,
+      "slot": 5,
+      "name": "alakazam",
+      "dex": 65,
+      "level": 70,
+      "moves": [
+        "KINESIS",
+        "PSYCHIC_M",
+        "PSYCH_UP",
+        "MIND_BREAK"
+      ],
+      "proposed": [
+        "KINESIS",
+        "PSYCHIC_M",
+        "RECOVER",
+        "MIND_BREAK"
+      ],
+      "reason": "Keep physical/accuracy disruption and anti-Special-setup damage; replace the less reliable copied-stage slot with recovery.",
+      "changed": true
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 1,
+      "name": "charizard",
+      "dex": 6,
+      "level": 65,
+      "moves": [
+        "WING_ATTACK",
+        "FLAMETHROWER",
+        "FIRE_SPIN",
+        "DRAGON_DANCE"
+      ],
+      "proposed": [
+        "WING_ATTACK",
+        "FLAMETHROWER",
+        "FIRE_SPIN",
+        "DRAGON_DANCE"
+      ],
+      "reason": "Keep the reviewed role and working combination.",
+      "changed": false
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 2,
+      "name": "arcanine",
+      "dex": 59,
+      "level": 63,
+      "moves": [
+        "FLAMETHROWER",
+        "CRUNCH",
+        "DOUBLE_EDGE",
+        "FIRE_BLAST"
+      ],
+      "proposed": [
+        "FLAMETHROWER",
+        "CRUNCH",
+        "DOUBLE_EDGE",
+        "REST"
+      ],
+      "reason": "Replace the second Fire attack with legal full healing/status removal to offset Double-Edge recoil; Rest leaves two vulnerable turns. Cauterize is not in the current Arcanine learnset.",
+      "changed": true
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 3,
+      "name": "rapidash",
+      "dex": 78,
+      "level": 62,
+      "moves": [
+        "HORN_ATTACK",
+        "FLAMETHROWER",
+        "PIERCE",
+        "HORN_DRILL"
+      ],
+      "proposed": [
+        "STOMP",
+        "FLAMETHROWER",
+        "PIERCE",
+        "HORN_DRILL"
+      ],
+      "reason": "Upgrade the early Horn Attack slot to the horse\u2019s flinch move; preserve piercing coverage and the redesigned high-risk Horn Drill.",
+      "changed": true
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 4,
+      "name": "flareon",
+      "dex": 136,
+      "level": 66,
+      "moves": [
+        "FIRE_SPIN",
+        "FLAMETHROWER",
+        "CAUTERIZE",
+        "FIRE_BLAST"
+      ],
+      "proposed": [
+        "FIRE_SPIN",
+        "FLAMETHROWER",
+        "CAUTERIZE",
+        "REFLECT"
+      ],
+      "reason": "Emphasize the reviewed bulky Flareon role rather than three Fire attacks; keep residual pressure and quarter-HP healing.",
+      "changed": true
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 2,
+      "slot": 5,
+      "name": "magmar",
+      "dex": 126,
+      "level": 70,
+      "moves": [
+        "MEGA_PUNCH",
+        "CAUTERIZE",
+        "FLAMETHROWER",
+        "FIRE_BLAST"
+      ],
+      "proposed": [
+        "MEGA_PUNCH",
+        "FACADE",
+        "CAUTERIZE",
+        "FIRE_BLAST"
+      ],
+      "reason": "Retain Fire/Fighting offense and quarter-HP healing, add legal neutral physical coverage and a status-punishing Facade. Psychic is not currently permitted.",
+      "changed": true
+    }
+  ]
+}
