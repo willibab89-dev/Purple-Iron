@@ -2217,6 +2217,7 @@ LoadMapData::
 	ld [hSCY], a
 	ld [hSCX], a
 	ld [wWalkCounter], a
+	ld [wWalkSpeedPhase], a
 	;ld [wUnusedD119], a
 	ld [wWalkBikeSurfStateCopy], a
 	ld [wSpriteSetID], a

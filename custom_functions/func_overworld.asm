@@ -52,6 +52,7 @@ TrackRunBikeSpeed:
 	inc a	
 .skip
 	ld[wUnusedD119], a
+	abilitycall WalkingSpeedBoost
 	ret
 IsRidingBike:
 	ld a, [wUnusedD119]

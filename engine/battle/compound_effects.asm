@@ -350,6 +350,7 @@ CustomRecalculate:
 	ld [H_WHOSETURN], a
 	callab HalveAttackDueToBurn
 	callab QuarterSpeedDueToParalysis
+	callab PoisonSpecialPenalty
 	pop af
 	ld [H_WHOSETURN], a
 	ret

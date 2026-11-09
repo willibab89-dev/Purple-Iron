@@ -376,23 +376,23 @@ AbilityAfterHit:
 	jr nz, .combustion
 	ld a, [wAbilityMoveType]
 	cp GRASS
-	jr nz, .done
+	jp nz, .done
 	ld b, 64 ; 25%
 	ld c, 1 << PSN
 	jr .status
 .combustion
 	cp 7
-	jr nz, .done
+	jp nz, .done
 	ld a, [wAbilityMoveType]
 	cp FIRE
-	jr z, .done
+	jp z, .done
 	ld b, 38 ; 14.84%, nearest 8-bit threshold
 	ld c, 1 << BRN
 .status
 	call AbilityTargetStatus
 	ld a, [hl]
 	and a
-	jr nz, .done
+	jp nz, .done
 	inc hl
 	ld a, c
 	cp 1 << PSN
@@ -401,16 +401,16 @@ AbilityAfterHit:
 	ld a, FIRE
 .immuneType
 	cp [hl]
-	jr z, .done
+	jp z, .done
 	inc hl
 	cp [hl]
-	jr z, .done
+	jp z, .done
 	push bc
 	callab CustomRandomInBattleBank
 	ld a, [wCustomRandomValue]
 	pop bc
 	cp b
-	jr nc, .done
+	jp nc, .done
 	call AbilityTargetStatus
 	ld [hl], c
 	ld a, [H_WHOSETURN]
@@ -425,8 +425,9 @@ AbilityAfterHit:
 	jr z, .poison
 	call AbilityTargetStatus
 	ld [hl], 0
-	jr .done
+	jp .done
 .poison
+	callab CustomRecalculate
 	ld hl, AbilityPoisonedText
 	jr .sync
 .burn

@@ -75,7 +75,7 @@ def validate(version):
                     assert game.register_file.D==power(u,t),(turn,u,t,crit,game.register_file.D)
                     cases+=1
             # Modified Speed includes stages and paralysis even on critical hits.
-            for stage,status,expected in [(9,0,80),(9,64,40),(13,0,150),(13,64,60)]:
+            for stage,status,expected in [(9,0,80),(9,64,60),(13,0,150),(13,64,80)]:
                 actor,target,ap,tp=init('ELECTRO_BALL',turn);put(f'w{actor}MonSpeedMod',stage);put(ap+'Status',status)
                 put('wCustomSide',turn);call('CustomRecalculate');put('wCriticalHitOrOHKO',1)
                 call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack')

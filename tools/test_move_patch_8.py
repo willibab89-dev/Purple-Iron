@@ -97,7 +97,7 @@ def validate(version):
                     assert list(game.memory[addr(ap+'PP'):addr(ap+'PP')+4])==[5]*4
                     assert list(game.memory[addr(ap+'Type'):addr(ap+'Type')+2])==[20,2]
                     assert readword(ap+'Attack')==(60 if status==16 else 120)
-                    assert readword(ap+'Speed')==(45 if status==64 else 180)
+                    assert readword(ap+'Speed')==(90 if status==64 else 180)
                     assert get(f'w{actor}SelectedMove')==selected and get(f'w{actor}MoveNum')==moveno
                     assert bytes(game.memory[addr(party):addr(party)+44])==before
                     if turn:assert list(game.memory[addr('wTransformedEnemyMonOriginalDVs'):addr('wTransformedEnemyMonOriginalDVs')+2])==[171,205]

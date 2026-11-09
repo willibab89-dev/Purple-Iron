@@ -1215,6 +1215,11 @@ ItemUseMedicine:
 	ld a, [wIsInBattle]
 	and a
 	jr z, .clearParBrn	;do not adjust the stats if not currently in battle
+	ld a, [wUsedItemOnWhichPokemon]
+	ld b, a
+	ld a, [wPlayerMonNumber]
+	cp b
+	jr nz, .clearParBrn ; a reserve's cure must not restore the active mon's stats
 	push hl
 	push de
 	callab UndoBurnParStats
@@ -1224,7 +1229,7 @@ ItemUseMedicine:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	xor a
 	ld [hl], a ; remove the status ailment in the party data
-	ld [wPlayerToxicCounter], a	;clear toxic counter
+
 .updateInBattleData
 	ld h, d
 	ld l, e
@@ -1242,6 +1247,9 @@ ItemUseMedicine:
 	jr nz, .calculateHPBarCoords
 	xor a
 	ld [wBattleMonStatus], a ; remove the status ailment in the in-battle pokemon data
+	ld [wPlayerToxicCounter], a
+	ld hl, wPlayerBattleStatus3
+	res BADLY_POISONED, [hl]
 .calculateHPBarCoords
 	ld hl, wOAMBuffer + $90
 	ld bc, 2 * SCREEN_WIDTH

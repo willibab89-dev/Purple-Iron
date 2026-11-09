@@ -95,6 +95,7 @@ def validate(version):
                 for value,want in [(0,status),(threshold-1,status),(threshold,0),(255,0)]:
                     ap,tp=init(turn);ability(turn,id);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);rng(value)
                     call('AbilityAfterHit');assert get(tp+'Status')==want,(id,value,get(tp+'Status'))
+                    if want==8:assert readword(tp+'Special')==25
                 for block in ('sub','status','immune','fainted'):
                     ap,tp=init(turn);ability(turn,id);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ])
                     if block=='sub':put('wCustomTargetHadSub',1)

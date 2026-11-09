@@ -78,8 +78,8 @@ def validate(version):
                 cases+=1
             for status in (8,16,64):
                 actor,target,ap,tp=init('QUIVER_DANCE',turn);put(ap+'Status',status)
-                effect();assert get(ap+'Status')==status and readword(ap+'Special')==150
-                assert readword(ap+'Speed')==(37 if status==64 else 150)
+                effect();assert get(ap+'Status')==status and readword(ap+'Special')==(37 if status==8 else 150)
+                assert readword(ap+'Speed')==(75 if status==64 else 150)
                 assert readword(ap+'Attack')==(50 if status==16 else 100)
                 cases+=1
             # This is self setup: opposing Mist/Substitute/invulnerability

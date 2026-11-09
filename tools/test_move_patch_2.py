@@ -185,7 +185,7 @@ def validate(version):
             actor, target = init('MEDITATE', turn)
             prefix = 'wBattleMon' if actor == 'Player' else 'wEnemyMon'
             put(prefix+'Status', 0x50) # BRN and PAR; synthetic to exercise both penalties
-            for expected in ((75, 37), (100, 50)):
+            for expected in ((75, 75), (100, 100)):
                 effect()
                 assert (readword(prefix+'Attack'), readword(prefix+'Speed')) == expected
             # Badge boosts are rebuilt once, without compounding across uses.
@@ -193,7 +193,7 @@ def validate(version):
             if not turn:
                 put('wObtainedBadges', 0x55)
                 put('wBattleMonStatus', 0x50)
-                for expected in ((78, 39), (105, 52)):
+                for expected in ((78, 78), (105, 105)):
                     effect()
                     assert (readword('wBattleMonAttack'), readword('wBattleMonSpeed')) == expected
                     assert readword('wBattleMonDefense') == 105

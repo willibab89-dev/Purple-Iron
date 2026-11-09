@@ -121,7 +121,7 @@ def validate(version):
                 party='wPartyMon1' if target=='Player' else 'wEnemyMon1'
                 assert get(party+'Status')==mask
                 if mask==16:assert readword(tp+'Attack')==50
-                if mask==64:assert readword(tp+'Speed')==25
+                if mask==64:assert readword(tp+'Speed')==50
                 assert rng_state['index']==2
             for move,threshold,mask in (('TRI_ATTACK',51,16),('SCALD',77,16),('POISON_FANG',51,8)):
                 for roll in range(256):

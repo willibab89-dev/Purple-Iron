@@ -3817,8 +3817,7 @@ CheckPlayerStatusConditions:
 	ld hl, wBattleMonStatus
 	bit PAR, [hl]
 	jr z, .BideCheck
-	call BattleRandom
-	cp $3F ; 25% to be fully paralyzed
+	call TwentyPercentBattleRoll
 	jr nc, .BideCheck
 	ld hl, FullyParalyzedText
 	call PrintText
@@ -6205,8 +6204,7 @@ CheckEnemyStatusConditions:
 	ld hl, wEnemyMonStatus
 	bit PAR, [hl]
 	jr z, .checkIfUsingBide
-	call BattleRandom
-	cp $3f ; 25% to be fully paralysed
+	call TwentyPercentBattleRoll
 	jr nc, .checkIfUsingBide
 	ld hl, FullyParalyzedText
 	call PrintText
@@ -6822,89 +6820,13 @@ ApplyBurnAndParalysisPenaltiesToEnemy:
 ApplyBurnAndParalysisPenalties:
 	ld [H_WHOSETURN], a
 	call QuarterSpeedDueToParalysis
-	jp HalveAttackDueToBurn
+	call HalveAttackDueToBurn
+	jpab PoisonSpecialPenalty
 
-QuarterSpeedDueToParalysis:
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .playerTurn
-.enemyTurn ; quarter the player's speed
-	ld a, [wBattleMonStatus]
-	and 1 << PAR
-	ret z ; return if player not paralysed
-	ld hl, wBattleMonSpeed + 1
-	ld a, [hld]
-	ld b, a
-	ld a, [hl]
-	srl a
-	rr b
-	srl a
-	rr b
-	ld [hli], a
-	or b
-	jr nz, .storePlayerSpeed
-	ld b, 1 ; give the player a minimum of at least one speed point
-.storePlayerSpeed
-	ld [hl], b
-	ret
-.playerTurn ; quarter the enemy's speed
-	ld a, [wEnemyMonStatus]
-	and 1 << PAR
-	ret z ; return if enemy not paralysed
-	ld hl, wEnemyMonSpeed + 1
-	ld a, [hld]
-	ld b, a
-	ld a, [hl]
-	srl a
-	rr b
-	srl a
-	rr b
-	ld [hli], a
-	or b
-	jr nz, .storeEnemySpeed
-	ld b, 1 ; give the enemy a minimum of at least one speed point
-.storeEnemySpeed
-	ld [hl], b
-	ret
-
+QuarterSpeedDueToParalysis: ; retained entry name for existing callers
+	jpab HalveSpeedDueToParalysis
 HalveAttackDueToBurn:
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .playerTurn
-.enemyTurn ; halve the player's attack
-	ld a, [wBattleMonStatus]
-	and 1 << BRN
-	ret z ; return if player not burnt
-	ld hl, wBattleMonAttack + 1
-	ld a, [hld]
-	ld b, a
-	ld a, [hl]
-	srl a
-	rr b
-	ld [hli], a
-	or b
-	jr nz, .storePlayerAttack
-	ld b, 1 ; give the player a minimum of at least one attack point
-.storePlayerAttack
-	ld [hl], b
-	ret
-.playerTurn ; halve the enemy's attack
-	ld a, [wEnemyMonStatus]
-	and 1 << BRN
-	ret z ; return if enemy not burnt
-	ld hl, wEnemyMonAttack + 1
-	ld a, [hld]
-	ld b, a
-	ld a, [hl]
-	srl a
-	rr b
-	ld [hli], a
-	or b
-	jr nz, .storeEnemyAttack
-	ld b, 1 ; give the enemy a minimum of at least one attack point
-.storeEnemyAttack
-	ld [hl], b
-	ret
+	jpab StatusHalveAttackDueToBurn
 
 CalculateModifiedStats:
 	ld c, 0
@@ -7644,6 +7566,7 @@ PoisonEffect:
 .inflictPoison
 	dec hl
 	set 3, [hl] ; mon is now poisoned
+	abilitycall PoisonSpecialPenalty
 	push de
 	dec de
 	ld a, [H_WHOSETURN]
@@ -7755,7 +7678,7 @@ FreezeBurnParalyzeEffect:
 ; .paralyze
 	ld a, 1 << PAR
 	ld [wEnemyMonStatus], a
-	call QuarterSpeedDueToParalysis ; quarter speed of affected mon
+	call QuarterSpeedDueToParalysis ; halve Speed of affected mon
 	ld a, ANIM_A9
 	call PlayBattleAnimation
 	jp PrintMayNotAttackText ; print paralysis text
@@ -8050,13 +7973,20 @@ UpdateStatDone:
 	cp SPEED_UP1_EFFECT
 	jr z, .skip_par	;speed effect. skip to par penalty.
 	cp SPEED_UP2_EFFECT
-	jr z, .skip_par	;speed effect. skip to par penalty.
+	jr z, .skip_par
+	cp SPECIAL_UP1_EFFECT
+	jr z, .skip_psn
+	cp SPECIAL_UP2_EFFECT
+	jr z, .skip_psn ; Special was rebuilt; reapply poison once.
 	jr .skip_end	;no attack or speed effect if at this line. skip to end.
 .skip_brn
 	call HalveAttackDueToBurn	;the active pkmn has a new recalculated attack. the non-active pkmn applies brn penalty to its opponent.
 	jr .skip_end
 .skip_par
 	call QuarterSpeedDueToParalysis	;the active pkmn has a new recalculated speed. the non-active pkmn applies par penalty to its opponent.
+	jr .skip_end
+.skip_psn
+	abilitycall PoisonSpecialPenalty
 .skip_end
 	ld a, [H_WHOSETURN]	;load the inverted turn
 	xor $1	;revert the turn back to normal
@@ -8278,13 +8208,22 @@ UpdateLoweredStatDone:
 	cp SPEED_DOWN1_EFFECT
 	jr z, .skip_par	;speed effect. skip to par penalty.
 	cp SPEED_DOWN2_EFFECT
-	jr z, .skip_par	;speed effect. skip to par penalty.
+	jr z, .skip_par
+	cp SPECIAL_DOWN1_EFFECT
+	jr z, .skip_psn
+	cp SPECIAL_DOWN2_EFFECT
+	jr z, .skip_psn
+	cp SPECIAL_DOWN_SIDE_EFFECT
+	jr z, .skip_psn ; Special was rebuilt; reapply poison once.
 	jr .skip_end	;no attack or speed effect if at this line. skip to end.
 .skip_brn
 	call HalveAttackDueToBurn	;the non-active pkmn has a new recalculated attack. the active pkmn applies brn penalty to its opponent.
 	jr .skip_end
 .skip_par
 	call QuarterSpeedDueToParalysis	;the non-active pkmn has a new recalculated speed. the active pkmn applies par penalty to its opponent.
+	jr .skip_end
+.skip_psn
+	abilitycall PoisonSpecialPenalty
 .skip_end
 	pop de	;restore de from the stack
 	ret	;remember to return 
@@ -9223,6 +9162,7 @@ CryFunc:
 ;joenote - caps the stat in bc to 999
 ; Exact 20%: reject 250..255, then accept 0..49 of the 250 outcomes.
 ; Keep this small RNG entry in the battle bank to use link-safe BattleRandom.
+TwentyPercentBattleRoll:
 NaturalThawRoll:
 	call BattleRandom
 	cp 250
