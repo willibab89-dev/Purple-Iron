@@ -744,16 +744,7 @@ AbilityPanel:
 	call PlaceString
 	ld a, [wAbilityPanelSide]
 	call AbilityGet
-	add a
-	ld c, a
-	ld b, 0
-	ld hl, AbilityTextPointers
-	add hl, bc
-	ld a, [hli]
-	ld d, [hl]
-	ld e, a
-	coord hl, 2, 4
-	call PlaceString
+	call AbilityDrawDescription
 	coord hl, 2, 14
 	ld de, AbilityPanelHelp
 	call PlaceString
@@ -804,3 +795,54 @@ AbilityHotTemper:
 	db "HOT TEMPER",$4e,"Physical hit:",$4e,"Special +1 once",$4e,"per battle.@"
 AbilityConfident:
 	db "CONFIDENT",$4e,"After a miss:",$4e,"Accuracy +1 once",$4e,"per battle.@"
+
+; Shared renderer: A = ability ID. Does not change either active battle ID.
+AbilityDrawDescription:
+	add a
+	ld c, a
+	ld b, 0
+	ld hl, AbilityTextPointers
+	add hl, bc
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
+	coord hl, 2, 4
+	call PlaceString
+	ret
+
+; Invoked from the overworld party action menu. Buffer 2 contains the saved
+; overworld screen, so only buffer 1 may be used here.
+PartyAbilityPanel:
+	call ClearSprites
+	call SaveScreenTilesToBuffer1
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	call AbilityEnsureMon
+	ld [wAbilityID], a
+	call ClearScreen
+	coord hl, 0, 0
+	lb bc, 16, 18
+	call TextBoxBorder
+	ld hl, wPartyMonNicks
+	ld a, [wWhichPokemon]
+	call SkipFixedLengthTextEntries
+	ld d, h
+	ld e, l
+	coord hl, 2, 2
+	call PlaceString
+	ld a, [wAbilityID]
+	call AbilityDrawDescription
+	coord hl, 2, 14
+	ld de, PartyAbilityHelp
+	call PlaceString
+.wait
+	call DelayFrame
+	call JoypadLowSensitivity
+	ld a, [hJoy5]
+	and A_BUTTON | B_BUTTON | SELECT
+	jr z, .wait
+	jp LoadScreenTilesFromBuffer1
+PartyAbilityHelp:
+	db "A/B CLOSE@"

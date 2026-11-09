@@ -34,7 +34,7 @@ StartMenu_Pokemon:
 	ld [wTextBoxID], a
 	call DisplayTextBoxID ; display pokemon menu options
 	ld hl, wFieldMoves
-	lb bc, 2, 12 ; max menu item ID, top menu item Y
+	lb bc, 3, 10 ; four normal actions; field moves appear above them
 	ld e, 5
 .adjustMenuVariablesLoop
 	dec e
@@ -75,6 +75,9 @@ StartMenu_Pokemon:
 	jp z, .exitMenu ; if the player chose Cancel
 	dec b
 	cp b
+	jr z, .choseAbility
+	dec b
+	cp b
 	jr z, .choseSwitch
 	dec b
 	cp b
@@ -84,6 +87,9 @@ StartMenu_Pokemon:
 	ld hl, wFieldMoves
 	add hl, bc
 	jp .choseOutOfBattleMove
+.choseAbility
+	abilitycall PartyAbilityPanel
+	jp .loop
 .choseSwitch
 	ld a, [wPartyCount]
 	cp 2 ; is there more than one pokemon in the party?

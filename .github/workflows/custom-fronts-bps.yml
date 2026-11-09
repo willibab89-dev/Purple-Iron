@@ -164,6 +164,9 @@ jobs:
             ${{ runner.temp }}/patches/ABILITY-PROTOTYPE.md
             ${{ runner.temp }}/patches/ABILITY-PANEL-PLAYER.png
             ${{ runner.temp }}/patches/ABILITY-PANEL-ENEMY.png
+            ${{ runner.temp }}/patches/ABILITY-PANEL-PARTY.png
+            ${{ runner.temp }}/patches/ABILITY-PARTY-MENU.png
+            ${{ runner.temp }}/patches/ABILITY-PARTY-MENU-FIELD-MOVES.png
             ${{ runner.temp }}/patches/TYPE-CHART-CHANGES.md
             ${{ runner.temp }}/patches/BADGE-BOOSTS.md
             ${{ runner.temp }}/patches/POKEMON-AVAILABILITY.md

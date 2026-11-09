@@ -185,6 +185,79 @@ def validate(version):
         assert bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360])==before
         assert get('wActionResultOrTookBattleTurn')==0
         game.hook_deregister(b,a)
+        # Outside battle, inspect the selected party member rather than the active one.
+        put('wWhichPokemon',1);put('wPartyMon2Species',ids['CHARMANDER']);put('wPartyMon2CatchRate',253)
+        def encoded(text):return bytes(0x80+ord(c)-ord('A') for c in text)+bytes([0x50])
+        nick=encoded('CHARMANDER')
+        game.memory[addr('wPartyMonNicks')+11:addr('wPartyMonNicks')+11+len(nick)]=nick
+        active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])
+        saved_map=bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360])
+        game.memory[addr('wTileMapBackup2'):addr('wTileMapBackup2')+360]=[0x66]*360
+        party_snapshots=[]
+        def party_keys(state):
+            party_snapshots.append(bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360]))
+            game.memory[0xffb5]=state['key']
+        for key in (1,2,4):
+            game.hook_register(b,a,party_keys,{'key':key})
+            call('PartyAbilityPanel');game.hook_deregister(b,a)
+            assert get('wWhichPokemon')==1 and get('wAbilityID')==10
+            assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
+            assert bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360])==saved_map
+            assert bytes(game.memory[addr('wTileMapBackup2'):addr('wTileMapBackup2')+360])==bytes([0x66]*360)
+        assert party_snapshots[0][42:42+len(nick)-1]==nick[:-1]
+        # Render zero through four field moves. ABILITY must fit inside the box,
+        # and every menu action/field move keeps its two-row cursor spacing.
+        patch('UpdateSprites',[0xc9]);menus=[]
+        for count in range(5):
+            put('wWhichPokemon',1)
+            moves=[MOVES[m] for m in ('CUT','SURF','STRENGTH','SOFTBOILED')][:count]
+            game.memory[addr('wPartyMon2Moves'):addr('wPartyMon2Moves')+4]=moves+[MOVES['TACKLE']]*(4-count)
+            game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360
+            call('DisplayFieldMoveMonMenu')
+            tiles=bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360]);menus.append(tiles)
+            x=game.memory[0xfff7]+1
+            for row,text in ((10,'STATS'),(12,'SWITCH'),(14,'ABILITY'),(16,'CANCEL')):
+                assert tiles[row*20+x:row*20+x+len(text)]==encoded(text)[:-1],(count,row,x)
+            assert 10-2*count>=2 and 3+count<=7
+        snapshots.extend([party_snapshots[0],menus[0],menus[4]])
+        # Exercise the real action dispatcher with each possible field-move count.
+        for n in ('DisplayPartyMenu','DisplayTextBoxID','GBPalWhiteOutWithDelay3',
+                  'RestoreScreenTilesAndReloadTilePatterns','LoadGBPal','RedisplayStartMenu'):
+            patch(n,[0xc9])
+        patch('GoBackToPartyMenu',[0x37,0xc9])
+        patch('HandleMenuInput',[0xc9]);mb,ma=syms['HandleMenuInput']
+        choice={'index':0}
+        def choose(s):
+            put('wCurrentMenuItem',s['index']);game.register_file.A=1
+        game.hook_register(mb,ma,choose,choice)
+        seen=[]
+        # This RGBDS version omits labels referenced only by relative jumps.
+        bank,start=syms['StartMenu_Pokemon']
+        raw=bytes(game.memory[bank,start:start+180])
+        jumps=[i for i in range(len(raw)-3) if raw[i:i+3]==bytes([5,0xb8,0x28])]
+        assert len(jumps)==2
+        for label,i in zip(('choseAbility','choseSwitch'),jumps):
+            offset=raw[i+3] if raw[i+3]<128 else raw[i+3]-256
+            syms['StartMenu_Pokemon.'+label]=(bank,start+i+4+offset)
+        labels=('choseStats','choseSwitch','choseAbility','choseOutOfBattleMove')
+        for label in labels:
+            full='StartMenu_Pokemon.'+label
+            if label!='choseAbility':patch(full,[0xc9])
+            bank,pos=syms[full]
+            game.hook_register(bank,pos,lambda label:seen.append(label),label)
+        game.hook_register(b,a,party_keys,{'key':2})
+        put('wPartyCount',2)
+        for count in range(5):
+            put('wWhichPokemon',1)
+            game.memory[addr('wFieldMoves'):addr('wFieldMoves')+4]=list(range(1,count+1))+[0]*(4-count)
+            for offset,label in ((0,'choseStats'),(1,'choseSwitch'),(2,'choseAbility')):
+                seen.clear();choice['index']=count+offset;call('StartMenu_Pokemon')
+                assert seen==[label],(count,offset,seen)
+            for index in range(count):
+                seen.clear();choice['index']=index;call('StartMenu_Pokemon')
+                assert seen==['choseOutOfBattleMove'],(count,index,seen)
+            seen.clear();choice['index']=count+3;call('StartMenu_Pokemon');assert not seen
+        game.hook_deregister(b,a);game.hook_deregister(mb,ma)
         # Ordinary save routines retain the tag without changing party layouts.
         put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1CatchRate',253)
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2');put('wPartyMon1CatchRate',45)
@@ -195,7 +268,7 @@ def validate(version):
             out=Path(os.environ['ABILITY_SCREENSHOTS']);out.mkdir(parents=True,exist_ok=True)
             game.memory[0xff40]=0
             call('LoadFontTilePatterns');call('LoadTextBoxTilePatterns')
-            for label,tiles in zip(('player','enemy'),snapshots):
+            for label,tiles in zip(('player','enemy','party','party-menu','party-menu-four-field-moves'),snapshots):
                 game.memory[0xff40]=0
                 for row in range(18):game.memory[0x9800+32*row:0x9800+32*row+20]=tiles[row*20:row*20+20]
                 game.memory[0xff4f]=1;game.memory[0x9800:0x9c00]=[0]*1024;game.memory[0xff4f]=0
@@ -204,7 +277,7 @@ def validate(version):
                 game.memory[0xff47]=0xe4;game.memory[0xff42]=game.memory[0xff43]=0
                 game.memory[0xff40]=0x81;game.tick(3,True)
                 game.screen.image.save(out/f'ability-panel-{label}.png')
-        print(f'{version}: ten abilities, both sides, weighted-slot foundation, thresholds, immunities, once-per-battle flags, speed, healing, party identity and save passed')
+        print(f'{version}: ten abilities, both sides, weighted-slot foundation, thresholds, immunities, once-per-battle flags, speed, healing, party identity, party action menu/selected ability/field-move layout/screen restoration and save passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

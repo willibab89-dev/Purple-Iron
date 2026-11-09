@@ -6,11 +6,21 @@ This cumulative test patch adds one active ability to the standard Bulbasaur/Ivy
 
 Choose Bulbasaur: the rival already chooses Charmander. Each Pokémon receives one of its five slots with equal 20% odds. The normal starting moves and levels are preserved: Bulbasaur first learns Vine Whip at level 10, Charmander Ember at level 7. The opening level-5 fight therefore tests the panel and only those effects that its moves/HP can trigger. Automated higher-level battles cover the attacking effects.
 
-At the battle command menu, press **Select** to inspect abilities. **Left/Right** changes between player and opponent; **B or Select** closes the panel. Inspecting does not spend a turn, PP or an item. Both abilities are immediately visible. This replaces Select's old opponent-cry shortcut. Map a keyboard key to the emulator's Game Boy Select button; the ROM cannot directly read keyboard 1/2/Esc. Party/stats-screen inspection is a later UI pass.
+At the battle command menu, press **Select** to inspect abilities. **Left/Right** changes between player and opponent; **B or Select** closes the panel. Inspecting does not spend a turn, PP or an item. Both abilities are immediately visible. This replaces Select's old opponent-cry shortcut. Map a keyboard key to the emulator's Game Boy Select button; the ROM cannot directly read keyboard 1/2/Esc. Outside battle, open **POKéMON**, choose a party member, then choose **ABILITY**. The panel shows that selected Pokémon’s nickname, ability and description. **A, B or Select** closes it. The action menu now lists STATS, SWITCH, ABILITY and CANCEL, below any field moves. Nature and held-item systems are not added by this patch.
 
 ![Player ability inspection](ABILITY-PANEL-PLAYER.png)
 
 ![Opponent ability inspection](ABILITY-PANEL-ENEMY.png)
+
+## Party menu inspection
+
+![Party action menu](ABILITY-PARTY-MENU.png)
+
+![Selected Pokémon ability](ABILITY-PANEL-PARTY.png)
+
+![Party action menu with four field moves](ABILITY-PARTY-MENU-FIELD-MOVES.png)
+
+The box expands upward for field moves and widens to fit ABILITY. The party viewer reads the selected Pokémon’s stored slot rather than the last active battler’s ability. Closing restores the party screen and preserves the overworld backup. Unsupported species show NO ABILITY. An unassigned existing starter receives its persistent slot when inspected or next sent out.
 
 ## Slot definitions
 
@@ -44,6 +54,6 @@ Transient flags occupy 26 bytes from the former unused bottom of the stack; the 
 
 ## Validation
 
-Both Red and Blue build. Tests cover all five equal random buckets and rejection sampling; all six species/slot mappings; migration of old starters; gift generation; real rival party creation and send-out; saved slots; both sides' ten effects; full-HP and one-third/half-HP boundaries; status chances and immunities; Substitute and fainting protection; used-once flags; healing caps; conditional Speed; actual attack execution; panel paging/closing and tile restoration. The panel previews render the actual panel tilemaps using the game's font and border assets.
+Both Red and Blue build. Tests cover all five equal random buckets and rejection sampling; all six species/slot mappings; migration of old starters; gift generation; real rival party creation and send-out; saved slots; both sides' ten effects; full-HP and one-third/half-HP boundaries; status chances and immunities; Substitute and fainting protection; used-once flags; healing caps; conditional Speed; actual attack execution; panel paging/closing and tile restoration; selected-party inspection with A/B/Select closing; preservation of battle IDs and the overworld backup; action rendering and actual dispatch for zero through four field moves. The panel previews render the actual panel tilemaps using the game's font and border assets.
 
 All 37 pre-existing regression suites passed, including prior moves, species, sprites, encounters, trainer/rematch sets, saves and the new type chart. BPS application must reproduce both built ROMs byte for byte.
