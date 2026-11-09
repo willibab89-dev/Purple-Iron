@@ -31,3 +31,5 @@ INCLUDE "constants/starter_mons.asm"
 INCLUDE "constants/event_constants.asm"
 INCLUDE "constants/text_constants.asm"
 INCLUDE "constants/monfrontpic_constants.asm"
+
+INCLUDE "constants/nature_constants.asm"
