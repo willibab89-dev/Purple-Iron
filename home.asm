@@ -3900,6 +3900,7 @@ CalcStat::
 	pop de
 	pop hl
 	naturecall NatureApplyStat
+	abilitycall AbilityAncientHP
 	ret
 
 AddEnemyMonToPlayerParty::

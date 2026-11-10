@@ -334,6 +334,10 @@ UtilityTargetStatus1:
 
 ; One ailment per application. Only Poison Fang may upgrade ordinary poison.
 UtilityInflictStatus:
+	abilitycall AbilityBurnGate
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	xor a
 	ld [wCustomChanged], a
 	call UtilityStatusPointer
@@ -558,9 +562,9 @@ UtilityAIStatusScore:
 	cp CAUTERIZE
 	jr z, .cauterize
 	cp COIL
-	jr z, .coil
+	jp z, .coil
 	cp PSYCH_UP
-	jr z, .psychUp
+	jp z, .psychUp
 	ld a, [wPlayerBattleStatus2]
 	bit HAS_SUBSTITUTE_UP, a
 	jp nz, .useless
@@ -572,8 +576,13 @@ UtilityAIStatusScore:
 	jr nz, .useless
 	ld a, [wEnemyMoveNum]
 	cp WILL_O_WISP
+	jr nz, .iceType
+	ld a, [wActiveAbilities]
+	cp AB_WATER_VEIL
+	jp z, .useless
 	ld b, FIRE
-	jr z, .types
+	jr .types
+.iceType
 	ld b, ICE
 .types
 	ld a, [wBattleMonType1]

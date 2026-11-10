@@ -1,9 +1,9 @@
 ;joenote - custom functions to handle move priority. Sets zero flag if priority lowered/raised.
-CheckLowerPlayerPriority:	
+CheckLowerPlayerPriority::
 	ld a, [wPlayerSelectedMove]
 	call LowPriorityMoves
 	ret
-CheckLowerEnemyPriority:
+CheckLowerEnemyPriority::
 	ld a, [wEnemySelectedMove]
 	call LowPriorityMoves
 	ret
@@ -19,9 +19,9 @@ LowPriorityMoves:
 ;	cp CLAMP
 	ret
 
-CheckHigherPlayerPriority:
+CheckHigherPlayerPriority::
 	jpab SequencePlayerPriority
-CheckHigherEnemyPriority:
+CheckHigherEnemyPriority::
 	jpab SequenceEnemyPriority
 
 

@@ -3367,7 +3367,7 @@ wCounterRecipient:: ds 1
 ; Ability prototype scratch occupies the former bottom of the stack.
 ; Saved Pokémon structs and the stack top remain unchanged.
 SECTION "Ability scratch", WRAM0[$df02]
-wAbilityFlags:: ds 12 ; six per side; bit 0 Hot Temper, bit 1 Confident
+wAbilityFlags:: ds 12 ; six per side: Hot Temper, Confident, low HP, entry attack
 wActiveAbilities:: ds 2
 wAbilitySide:: ds 1
 wAbilityID:: ds 1
@@ -3383,6 +3383,8 @@ wWalkSpeedPhase:: ds 1
 wSupplyChanged:: ds 1
 wLootItem:: ds 1
 wLootHash:: ds 1
+wAbilityCheckResult:: ds 1
+wAbilityPPLeft:: ds 1
 SECTION "Nature scratch", WRAM0[$df22]
 wNatureInputHL:: ds 2
 wNatureInputDE:: ds 2

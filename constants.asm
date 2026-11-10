@@ -33,3 +33,5 @@ INCLUDE "constants/text_constants.asm"
 INCLUDE "constants/monfrontpic_constants.asm"
 
 INCLUDE "constants/nature_constants.asm"
+
+INCLUDE "constants/ability_constants.asm"

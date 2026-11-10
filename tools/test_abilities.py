@@ -72,7 +72,7 @@ def validate(version):
                 put('wPartyMon1Species',ids[species]);put('wPartyMon1Type1',0);put('wPartyMon1Type2',0);put('wPartyMon1CatchRate',249+slot)
                 call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==base+slot
                 assert get('wPartyMon1Type1')>>5==slot+1 and get('wPartyMon1CatchRate')<196
-        put('wPartyMon1Species',ids['SQUIRTLE']);put('wPartyMon1CatchRate',45)
+        put('wPartyMon1Species',ids['PIKACHU']);put('wPartyMon1CatchRate',45)
         call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==0 and get('wPartyMon1CatchRate')==45
         put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1Type1',0);put('wPartyMon1Type2',0);rng(3)
         call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert get('wPartyMon1Type1')>>5==4
@@ -86,13 +86,13 @@ def validate(version):
             # Dynamic damage: no stage replacement, correct types/full HP/thresholds.
             ap,tp=init(turn)
             for id,typ,hp,expected in [(3,'GRASS',160,125),(3,'GRASS',159,100),(3,'NORMAL',160,100),
-                                      (5,'NORMAL',160,120),(5,'GRASS',160,100),(6,'FIRE',53,125),(6,'FIRE',54,100)]:
+                                      (5,'NORMAL',160,100),(5,'GRASS',160,100),(6,'FIRE',53,125),(6,'FIRE',54,100)]:
                 ability(turn,id);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);word(ap+'HP',hp);word('wDamage',100)
                 call('AbilityDamageBoost');assert readword('wDamage')==expected,(id,typ,hp,readword('wDamage'))
             put('wUnusedC000',16);word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==100
             # Grass poison and non-Fire burn chances with exact RNG boundaries.
-            for id,typ,status,threshold in [(1,'GRASS',8,64),(7,'NORMAL',16,38)]:
-                for value,want in [(0,status),(threshold-1,status),(threshold,0),(255,0)]:
+            for id,typ,status,threshold in [(1,'GRASS',8,50),(7,'NORMAL',16,30)]:
+                for value,want in [(0,status),(threshold-1,status),(threshold,0),(199,0)]:
                     ap,tp=init(turn);ability(turn,id);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);rng(value)
                     call('AbilityAfterHit');assert get(tp+'Status')==want,(id,value,get(tp+'Status'))
                     if want==8:assert readword(tp+'Special')==25

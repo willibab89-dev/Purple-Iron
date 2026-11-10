@@ -3,25 +3,53 @@ SECTION "Starter ability prototype", ROMX, BANK[$3a]
 ; Persistent ability slots share the versioned nature record. Legacy F9..FD
 ; tags are migrated by NatureEnsureMon without rerolling the ability slot.
 AbilityFamily:
-	cp BULBASAUR
-	jr z, .grass
-	cp IVYSAUR
-	jr z, .grass
-	cp VENUSAUR
-	jr z, .grass
-	cp CHARMANDER
-	jr z, .fire
-	cp CHARMELEON
-	jr z, .fire
-	cp CHARIZARD
-	jr z, .fire
-	xor a
-	ret
-.grass
-	ld a, 1
-	ret
-.fire
-	ld a, 6
+	ld b, a
+	ld hl, AbilitySpeciesPools
+.loop
+	ld a, [hli]
+	and a
+	ret z
+	cp b
+	ld a, [hli]
+	ret z
+	jr .loop
+
+AbilitySpeciesPools:
+	db BULBASAUR, 1
+	db IVYSAUR, 1
+	db VENUSAUR, 1
+	db CHARMANDER, 6
+	db CHARMELEON, 6
+	db CHARIZARD, 6
+	db SQUIRTLE, 11
+	db WARTORTLE, 11
+	db BLASTOISE, 11
+	db CATERPIE, 16
+	db METAPOD, 21
+	db BUTTERFREE, 26
+	db WEEDLE, 31
+	db KAKUNA, 36
+	db BEEDRILL, 41
+	db 0
+AbilityPoolIds:
+	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
+	db AB_BLAZE, AB_COMBUSTION, AB_WILDFIRE, AB_HOT_TEMPER, AB_CONFIDENT
+	db AB_WATER_PRESSURE, AB_SHELL_GUARD, AB_ANCIENT, AB_WATER_VEIL, AB_SHELL_ARMOR
+	db AB_RUN_AWAY, AB_REPULSIVE, AB_SURVIVAL_INSTINCTS, AB_QUICK_REFLEXES, AB_SHIELD_DUST
+	db AB_HARD_SHELL, AB_FORTIFY, AB_REGENERATION, AB_QUICK_REFLEXES, AB_BATTLE_ARMOR
+	db AB_COMPOUND_EYES, AB_PSIONIC, AB_DUST_CLOUD, AB_QUICK_REFLEXES, AB_WONDER_SKIN
+	db AB_POISON_POINT, AB_REPULSIVE, AB_VENOMOUS, AB_PIERCING_STING, AB_SHIELD_DUST
+	db AB_HARD_SHELL, AB_FORTIFY, AB_TOXIC_SHELL, AB_PIERCING_STING, AB_BATTLE_ARMOR
+	db AB_RUTHLESS, AB_FRENZY, AB_VENOMOUS, AB_PIERCING_STING, AB_QUICK_REFLEXES
+
+; A = one-based pool offset plus zero-based slot.
+AbilityResolvePoolId:
+	dec a
+	ld e, a
+	ld d, 0
+	ld hl, AbilityPoolIds
+	add hl, de
+	ld a, [hl]
 	ret
 
 ; Nature format keeps the persistent ability slot in stored Type1 high bits.
@@ -36,13 +64,16 @@ AbilityEnsureMon:
 	ld b, a
 	dec a
 	add c
-	ret
+	jp AbilityResolvePoolId
 .none
 	ld b, 0
 	ret
 
 AbilityResetBattle:
 	xor a
+	ld [wAbilityHit], a
+	ld [wAbilityPPLeft], a
+	ld [wAbilityCheckResult], a
 	ld [wNatureMode], a
 	ld hl, wAbilityFlags
 	ld b, 14
@@ -82,6 +113,9 @@ AbilityLoadPlayer:
 	xor a
 .store
 	ld [wActiveAbilities], a
+	xor a
+	ld [wAbilitySide], a
+	call AbilityPlayerEntry
 	pop hl
 	pop de
 	pop bc
@@ -98,8 +132,12 @@ AbilityLoadEnemy:
 	ld a, [wNatureEnemySlot]
 	dec a
 	add c
+	call AbilityResolvePoolId
 .store
 	ld [wActiveAbilities + 1], a
+	ld a, 1
+	ld [wAbilitySide], a
+	call AbilityEntry
 	ld a, [wNatureIDs + 1]
 	ld [wAbilityTemp], a
 	ret
@@ -164,76 +202,7 @@ AbilityDamageBoost:
 	push bc
 	push de
 	push hl
-	ld a, [wUnusedC000]
-	bit 4, a
-	jr nz, .done
-	call AbilityActor
-	ld [wAbilityID], a
-	ld a, [H_WHOSETURN]
-	ld [wAbilitySide], a
-	ld hl, wPlayerMovePower
-	and a
-	jr z, .move
-	ld hl, wEnemyMovePower
-.move
-	ld a, [hli]
-	and a
-	jr z, .done
-	ld a, [hl]
-	ld b, a
-	ld a, [wAbilityID]
-	cp 5 ; Thick Vines: every physical move, not just contact/Grass.
-	jr nz, .overgrowth
-	ld a, b
-	cp FIRE
-	jr nc, .done
-	ld c, 120
-	jr .multiply
-.overgrowth
-	cp 3
-	jr nz, .blaze
-	ld a, b
-	cp GRASS
-	jr nz, .done
-	call AbilityHP
-	ld a, [de]
-	cp [hl]
-	jr nz, .done
-	inc de
-	inc hl
-	ld a, [de]
-	cp [hl]
-	jr nz, .done
-	jr .quarter
-.blaze
-	cp 6
-	jr nz, .done
-	ld a, b
-	cp FIRE
-	jr nz, .done
-	call AbilityBelowThird
-	jr nc, .done
-.quarter
-	ld c, 125
-.multiply
-	xor a
-	ld [H_MULTIPLICAND], a
-	ld a, [wDamage]
-	ld [H_MULTIPLICAND + 1], a
-	ld a, [wDamage + 1]
-	ld [H_MULTIPLICAND + 2], a
-	ld a, c
-	ld [H_MULTIPLIER], a
-	call Multiply
-	ld a, 100
-	ld [H_DIVISOR], a
-	ld b, 4
-	call Divide
-	ld a, [H_QUOTIENT + 2]
-	ld [wDamage], a
-	ld a, [H_QUOTIENT + 3]
-	ld [wDamage + 1], a
-.done
+	call AbilityModifyDamage
 	pop hl
 	pop de
 	pop bc
@@ -241,6 +210,7 @@ AbilityDamageBoost:
 	ret
 
 AbilityPrepareSpeeds:
+	abilitycall AbilityLowHPBoth
 	push af
 	push bc
 	push de
@@ -314,6 +284,7 @@ AbilityBeforeAction:
 	call AbilityTargetStatus
 	ld a, [hl]
 	ld [wAbilityOldStatus], a
+	call AbilityCachePP
 	pop hl
 	pop de
 	pop bc
@@ -325,120 +296,7 @@ AbilityAfterHit:
 	push bc
 	push de
 	push hl
-	ld hl, wPlayerMovePower
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .power
-	ld hl, wEnemyMovePower
-.power
-	ld a, [hl]
-	and a
-	jp z, .done
-	ld a, [wCustomTargetHadSub]
-	and a
-	jp nz, .done
-	ld a, [wDamage]
-	ld b, a
-	ld a, [wDamage + 1]
-	or b
-	jp z, .done
-	call AbilityTargetStatus
-	dec hl
-	ld a, [hld]
-	or [hl]
-	jp z, .done ; no effects on a fainted target
-	ld a, 1
-	ld [wAbilityHit], a
-	ld a, [H_WHOSETURN]
-	ld [wAbilitySide], a
-	call AbilityActorMoveType
-	ld [wAbilityMoveType], a
-	; Hot Temper is once for this party member, including multi-hits/switches.
-	cp FIRE
-	jr nc, .attacker
-	ld a, [H_WHOSETURN]
-	xor 1
-	call AbilityGet
-	cp 9
-	jr nz, .attacker
-	ld a, [H_WHOSETURN]
-	xor 1
-	ld [wAbilitySide], a
-	call AbilityFlagsPointer
-	bit 0, [hl]
-	jr nz, .attacker
-	set 0, [hl]
-	ld a, 3 ; Special
-	call AbilityRaiseStage
-.attacker
-	call AbilityActor
-	cp 1
-	jr nz, .combustion
-	ld a, [wAbilityMoveType]
-	cp GRASS
-	jp nz, .done
-	ld b, 64 ; 25%
-	ld c, 1 << PSN
-	jr .status
-.combustion
-	cp 7
-	jp nz, .done
-	ld a, [wAbilityMoveType]
-	cp FIRE
-	jp z, .done
-	ld b, 38 ; 14.84%, nearest 8-bit threshold
-	ld c, 1 << BRN
-.status
-	call AbilityTargetStatus
-	ld a, [hl]
-	and a
-	jp nz, .done
-	inc hl
-	ld a, c
-	cp 1 << PSN
-	ld a, POISON
-	jr z, .immuneType
-	ld a, FIRE
-.immuneType
-	cp [hl]
-	jp z, .done
-	inc hl
-	cp [hl]
-	jp z, .done
-	push bc
-	callab CustomRandomInBattleBank
-	ld a, [wCustomRandomValue]
-	pop bc
-	cp b
-	jp nc, .done
-	call AbilityTargetStatus
-	ld [hl], c
-	ld a, [H_WHOSETURN]
-	xor 1
-	ld [wCustomSide], a
-	ld a, c
-	cp 1 << PSN
-	jr nz, .burn
-	; Poison cannot coexist with this game's Curse.
-	callab ResidualState
-	bit 1, [hl]
-	jr z, .poison
-	call AbilityTargetStatus
-	ld [hl], 0
-	jp .done
-.poison
-	callab CustomRecalculate
-	ld hl, AbilityPoisonedText
-	jr .sync
-.burn
-	callab CustomRecalculate
-	ld hl, AbilityBurnedText
-.sync
-	push hl
-	callab UtilitySyncParty
-	pop hl
-	call PrintText
-.done
+	call AbilityHitEvents
 	pop hl
 	pop de
 	pop bc
@@ -480,6 +338,7 @@ AbilityRaiseStage:
 	jpab CustomChangeStage
 
 AbilityAfterAction:
+	abilitycall AbilityFrenzy
 	push af
 	push bc
 	push de
@@ -537,6 +396,7 @@ AbilityAfterAction:
 	ret
 
 AbilityEndRound:
+	call AbilityLowHPBoth
 	ld a, [wResidualRoundDone]
 	and a
 	ret nz
@@ -548,6 +408,8 @@ AbilityEndRound:
 AbilityPhotosynthesis:
 	ld a, [wAbilitySide]
 	call AbilityGet
+	cp AB_REGENERATION
+	jp z, AbilityRegeneration
 	cp 4
 	ret nz
 	call AbilityHP
@@ -678,10 +540,34 @@ AbilityEnemyLabel:
 AbilityPanelHelp:
 	db "LEFT/RIGHT SIDE",$4e,"B/SELECT CLOSE@"
 AbilityTextPointers:
-	dw AbilityNone, AbilityPoisonLeaf, AbilityChlorophyll, AbilityOvergrowth, AbilityPhotosynthesisText, AbilityThickVines
+	dw AbilityNone, AbilityPoisonLeaf, AbilityChlorophyll, AbilityOvergrowth, AbilityPhotosynthesisText, AbilityVineGuard
 	dw AbilityBlaze, AbilityCombustion, AbilityWildfire, AbilityHotTemper, AbilityConfident
+	dw AbilityText11
+	dw AbilityText12
+	dw AbilityText13
+	dw AbilityText14
+	dw AbilityText15
+	dw AbilityText16
+	dw AbilityText17
+	dw AbilityText18
+	dw AbilityText19
+	dw AbilityText20
+	dw AbilityText21
+	dw AbilityText22
+	dw AbilityText23
+	dw AbilityText24
+	dw AbilityText25
+	dw AbilityText26
+	dw AbilityText27
+	dw AbilityText28
+	dw AbilityText29
+	dw AbilityText30
+	dw AbilityText31
+	dw AbilityText32
+	dw AbilityText33
+	dw AbilityText34
 AbilityNone:
-	db "NO ABILITY",$4e,"Prototype",$4e,"Starter lines.@"
+	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
 	db "POISON LEAF",$4e,"Grass hits have a",$4e,"25% poison odds.@"
 AbilityChlorophyll:
@@ -690,8 +576,8 @@ AbilityOvergrowth:
 	db "OVERGROWTH",$4e,"Grass power x1.25",$4e,"at full HP.@"
 AbilityPhotosynthesisText:
 	db "PHOTOSYNTHESIS",$4e,"Heal 1/16 HP each",$4e,"turn above 1/2.@"
-AbilityThickVines:
-	db "THICK VINES",$4e,"Physical damage",$4e,"multiplied x1.2.@"
+AbilityVineGuard:
+	db "VINE GUARD",$4e,"Flying damage",$4e,"received x0.5.@"
 AbilityBlaze:
 	db "BLAZE",$4e,"Fire power x1.25",$4e,"below 1/3 HP.@"
 AbilityCombustion:
@@ -764,3 +650,77 @@ AbilityCapsuleCheck::
 	call AbilityFamily
 	ld [wAbilityID], a
 	ret
+
+AbilityText11:
+	db "WATER PRESSURE",$4e,"Water +2% per PP",$4e,"left, cap +50%.@"
+
+AbilityText12:
+	db "SHELL GUARD",$4e,"After a crit:",$4e,"Defense +1.@"
+
+AbilityText13:
+	db "ANCIENT",$4e,"Maximum HP x1.2.@"
+
+AbilityText14:
+	db "WATER VEIL",$4e,"Prevents burns.",$4e,"Fire damage",$4e,"x0.5.@"
+
+AbilityText15:
+	db "SHELL ARMOR",$4e,"Cannot be hit by",$4e,"critical hits.@"
+
+AbilityText16:
+	db "RUN AWAY",$4e,"Always escape",$4e,"wild battles.@"
+
+AbilityText17:
+	db "REPULSIVE",$4e,"Damaging hits:",$4e,"10% flinch odds.@"
+
+AbilityText18:
+	db "SURVIVAL INST.",$4e,"Below 1/3 HP:",$4e,"Speed +1 once",$4e,"per battle.@"
+
+AbilityText19:
+	db "QUICK REFLEXES",$4e,"First attack",$4e,"move each entry:",$4e,"priority +1.@"
+
+AbilityText20:
+	db "SHIELD DUST",$4e,"Blocks extra",$4e,"effects of",$4e,"moves.@"
+
+AbilityText21:
+	db "HARD SHELL",$4e,"Physical damage",$4e,"received x0.75.@"
+
+AbilityText22:
+	db "FORTIFY",$4e,"Below 1/3 HP:",$4e,"Defense +1 once",$4e,"per battle.@"
+
+AbilityText23:
+	db "REGENERATION",$4e,"Heal 1/16 max HP",$4e,"at each turn",$4e,"end.@"
+
+AbilityText24:
+	db "BATTLE ARMOR",$4e,"Cannot be hit by",$4e,"critical",$4e,"attacks.@"
+
+AbilityText25:
+	db "COMPOUND EYES",$4e,"Move accuracy",$4e,"multiplied x1.3.@"
+
+AbilityText26:
+	db "PSIONIC",$4e,"Psychic damage",$4e,"multiplied x1.2.@"
+
+AbilityText27:
+	db "DUST CLOUD",$4e,"Contact taken:",$4e,"25% lower foe",$4e,"Accuracy 1",$4e,"stage.@"
+
+AbilityText28:
+	db "WONDER SKIN",$4e,"Incoming status",$4e,"move accuracy",$4e,"multiplied x0.5.@"
+
+AbilityText29:
+	db "POISON POINT",$4e,"Contact taken:",$4e,"25% poison odds.@"
+
+AbilityText30:
+	db "VENOMOUS",$4e,"Damage x1.25 to",$4e,"poisoned foes.@"
+
+AbilityText31:
+	db "PIERCING STING",$4e,"Poison hits Bug",$4e,"at double power.@"
+
+AbilityText32:
+	db "TOXIC SHELL",$4e,"Contact taken:",$4e,"25% poison odds.@"
+
+AbilityText33:
+	db "RUTHLESS",$4e,"Crit odds x2 vs",$4e,"foes with",$4e,"status.@"
+
+AbilityText34:
+	db "FRENZY",$4e,"Direct move KO:",$4e,"Attack +1.@"
+
+INCLUDE "engine/battle/expanded_abilities.asm"

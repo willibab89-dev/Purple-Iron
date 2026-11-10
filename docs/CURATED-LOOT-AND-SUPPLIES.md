@@ -2,7 +2,7 @@
 
 Ability Capsules and Nature Capsules cost ¥30,000 each; First Aid costs ¥10,000. All three are sold by the existing post–Elite Four Celadon third-floor vendor. Bag names are ABILITY CAP, NATURE CAP and FIRST AID.
 
-- Ability Capsule: rerolls a different ability slot, preserving nature. Only species with implemented abilities are eligible (currently the standard Bulbasaur and Charmander families). Equal odds among the other four slots.
+- Ability Capsule: rerolls a different ability slot, preserving nature. Only species with implemented abilities are eligible (currently the standard Bulbasaur, Charmander and Squirtle families, plus the Caterpie and Weedle evolution lines). Equal odds among the other four slots.
 - Nature Capsule: rerolls a different nature, preserving ability slot, DVs, stat experience, moves, PP and status. Recalculates stats and preserves missing HP, with at least 1 HP for a living Pokémon; never revives.
 - First Aid: outside battle, heals every living party member by half its own maximum HP, rounded down (minimum 1), capped at maximum. Does not revive or cure status. Consumed only if someone heals.
 - All three are consumable, outside-battle items. Cancelled/failed uses consume nothing.

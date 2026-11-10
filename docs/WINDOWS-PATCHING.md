@@ -6,7 +6,7 @@
 4. Open Flips and select **Apply Patch**. Choose `pokered-custom-fronts.bps` or `pokeblue-custom-fronts.bps`, then select your matching original ROM. Save the result under a new filename.
 5. Open the patched ROM in your Game Boy emulator.
 
-See `HEALING-ITEM-PRICES.md` for revised medicine and vending prices. This build adds curated visible-item loot, Ability/Nature Capsules and First Aid. See `CURATED-LOOT-AND-SUPPLIES.md` for pools, item effects and the postgame vendor. Saves from the preceding 183-species build remain compatible; collected items stay collected.
+See `EARLY-SPECIES-ABILITIES.md` for the expanded ability pools and behavior. See `HEALING-ITEM-PRICES.md` for revised medicine and vending prices. This build adds curated visible-item loot, Ability/Nature Capsules and First Aid. See `CURATED-LOOT-AND-SUPPLIES.md` for pools, item effects and the postgame vendor. Saves from the preceding 183-species build remain compatible; collected items stay collected.
 
 **Earlier 151/172/176-species saves require a fresh start.** Saves from the preceding 183-species build remain compatible with this type update. See `SEVEN-MORE-SPECIES.md` for locations and `MEOWTH-PSYDUCK-MANKEY.md` for the latest changes (`PARAS-VENONAT-DIGLETT.md` covers the previous review) (`PUFF-BATS-AND-FLOWERS.md` covers the previous review) (`CLEFAIRY-AND-VULPIX.md` covers the preceding review) (`SANDSHREW-AND-NIDOS.md` covers the previous patch) (`RATTATA-FEAROW-RAICHU.md` covers the previous review) (`EARLY-BUGS-AND-BIRDS.md` covers the preceding patch); `STARTER-REDESIGNS.md` and `SPECIES-TUNING-1.md` cover the earlier reviews.
 

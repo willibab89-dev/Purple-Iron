@@ -512,22 +512,12 @@ MainInBattleLoop:
 .specialMoveNotUsed
 	callab SwitchEnemyMon	;joedebug - both AI and link enemy use this to switch
 .noLinkBattle
-	callba CheckHigherPlayerPriority	;joenote - custom function now used
-	jr nz, .playerDidNotUseQuickAttack
-	callba CheckHigherEnemyPriority	;joenote - custom function now used
-	jr z, .compareSpeed  ; if both used Quick Attack
-	jp .playerMovesFirst ; if player used Quick Attack and enemy didn't
-.playerDidNotUseQuickAttack
-	callba CheckHigherEnemyPriority	;joenote - custom function now used
-	jr z, .enemyMovesFirst ; if enemy used Quick Attack and player didn't
-	callba CheckLowerPlayerPriority	;joenote - custom function now used
-	jr nz, .playerDidNotUseCounter
-	callba CheckLowerEnemyPriority	;joenote - custom function now used
-	jr z, .compareSpeed ; if both used Counter
-	jr .enemyMovesFirst ; if player used Counter and enemy didn't
-.playerDidNotUseCounter
-	callba CheckLowerEnemyPriority	;joenote - custom function now used
-	jr z, .playerMovesFirst ; if enemy used Counter and player didn't
+	abilitycall AbilityPriority
+	ld a, [wAbilityCheckResult]
+	cp 1
+	jp z, .playerMovesFirst
+	cp 2
+	jp z, .enemyMovesFirst
 .compareSpeed
 	abilitycall AbilityPrepareSpeeds
 	ld de, wAbilityPlayerSpeed
@@ -619,6 +609,7 @@ MainInBattleLoop:
 ResidualRoundComplete:
 	abilitycall AbilityEndRound
 	callab ResidualEndRound
+	abilitycall AbilityLowHPBoth
 	ld hl, wBattleMonHP
 	ld a, [hli]
 	or [hl]
@@ -1725,6 +1716,9 @@ TryRunningFromBattle:
 	ld a, [wIsInBattle]
 	dec a
 	jr nz, .trainerBattle ; jump if it's a trainer battle
+	ld a, [wActiveAbilities]
+	cp AB_RUN_AWAY
+	jp z, .canEscape
 	ld a, [wNumRunAttempts]
 	inc a
 	ld [wNumRunAttempts], a
@@ -3432,6 +3426,7 @@ PlayerCanExecuteChargingMove:
 	                    ; resulting in the Pokemon being invulnerable for the whole battle
 	res INVULNERABLE, [hl]
 PlayerCanExecuteMove:
+	abilitycall AbilityAttempt
 	call PrintMonName1Text
 	ld hl, DecrementPP
 	ld de, wPlayerSelectedMove ; pointer to the move just used
@@ -5707,6 +5702,7 @@ CalcHitChance:
 	dec d
 	jr nz, .loop
 	abilitycall NatureApplyHitChance
+	abilitycall AbilityAccuracy
 	ld a, [H_QUOTIENT + 2]
 	and a ; is the calculated hit chance over 0xFF?
 	ld a, [H_QUOTIENT + 3]
@@ -5826,6 +5822,7 @@ EnemyCanExecuteChargingMove:
 	ld de, wcd6d
 	call CopyStringToCF4B
 EnemyCanExecuteMove:
+	abilitycall AbilityAttempt
 	callab SequenceBeginRage
 	xor a
 	ld [wMonIsDisobedient], a
@@ -7521,6 +7518,10 @@ AlreadyAsleepText:
 	db "@"
 
 PoisonEffect:
+	abilitycall AbilityDustOnly
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	callab ResidualTargetCursed
 	ret nz
 	ld hl, wEnemyMonStatus
@@ -7683,6 +7684,10 @@ FreezeBurnParalyzeEffect:
 	call PlayBattleAnimation
 	jp PrintMayNotAttackText ; print paralysis text
 .burn
+	abilitycall AbilityVeilOnly
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	ld a, 1 << BRN
 	ld [wEnemyMonStatus], a
 	call HalveAttackDueToBurn ; halve attack of affected mon
@@ -7732,6 +7737,10 @@ opponentAttacker:
 	call QuarterSpeedDueToParalysis
 	jp PrintMayNotAttackText
 .burn
+	abilitycall AbilityVeilOnly
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	ld a, 1 << BRN
 	ld [wBattleMonStatus], a
 	call HalveAttackDueToBurn

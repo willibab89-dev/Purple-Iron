@@ -1,3 +1,5 @@
+Current implementation: see [Early-species abilities](EARLY-SPECIES-ABILITIES.md) for all 15 supported species. The original prototype notes below are historical.
+
 # Starter ability prototype
 
 This cumulative test patch adds one active ability to the standard Bulbasaur/Ivysaur/Venusaur and Charmander/Charmeleon/Charizard lines. Unique variants and other species have no ability yet. Their existing sprites, stats, moves, encounters and trainer changes remain included.

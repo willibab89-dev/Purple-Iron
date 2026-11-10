@@ -211,6 +211,14 @@ NatureRefreshEvolvedTypes:
 	ret
 
 NatureCriticalHitTest:
+	abilitycall AbilityCriticalGuard
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .allowed
+	xor a
+	ld [wCriticalHitOrOHKO], a
+	ret
+.allowed
 	xor a
 	ld [wCriticalHitOrOHKO], a
 	callab ConditionalCriticalCheck
@@ -287,6 +295,7 @@ NatureCriticalHitTest:
 	ld b, $ff					 ; cap at 255/256
 .finishcalc
 	call NatureAdjustCriticalChance
+	abilitycall AbilityRuthless
 	ld a, [wNatureResult]
 	ld b, a
 	push bc
@@ -963,7 +972,22 @@ AbilityCapsuleApply::
 	cp b
 	jr z, .roll
 	call NatureCapsuleLoadRoot
-	jp NatureWriteAtHL
+	call NatureWriteAtHL
+	ld a, [hl]
+	cp SQUIRTLE
+	jr z, .hp
+	cp WARTORTLE
+	jr z, .hp
+	cp BLASTOISE
+	ret nz
+.hp
+	ld a, [wNatureResult]
+	cp 3
+	jp z, NatureMigrateOne
+	ld a, [wNatureSlot]
+	cp 3
+	ret nz
+	jp NatureMigrateOne
 
 NatureCapsuleLoadRoot:
 	ld a, [wNatureMonPtr]

@@ -3,6 +3,10 @@ SECTION "Compound move effects", ROMX, BANK[$34]
 ; Old handlers run in the battle bank. The table lives here to free space there.
 ; Use a 16-bit pointer offset so future effect IDs do not wrap at 129.
 DispatchMoveEffect:
+	abilitycall AbilityEffectGate
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	call CustomActorMove
 	ld a, [de]
 	cp RESIDUAL_STATUS_EFFECT
