@@ -1,6 +1,6 @@
 # Every Pokémon’s movepool — Purple Iron
 
-Game snapshot: `2ab28e0` · 10 November 2026.
+Game snapshot: `095d1da` · 10 November 2026.
 
 [Searchable/printable HTML](ALL-POKEMON-MOVEPOOLS.html) · [CSV spreadsheet](ALL-POKEMON-MOVEPOOLS.csv)
 
@@ -1886,9 +1886,12 @@ None beyond the lists above.
 | 26 | Bubblebeam |
 | 30 | Drain Punch |
 | 32 | Body Slam |
+| 35 | Fire Punch |
 | 38 | Bulk Up |
-| 44 | Hydro Pump |
-| 50 | Submission |
+| 41 | Ice Punch |
+| 47 | Thunderpunch |
+| 54 | Hydro Pump |
+| 60 | Submission |
 
 **TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM29 Psychic; TM35 Metronome; TM40 Skull Bash; TM44 Rest; TM46 Psywave; TM52 Facade; TM53 Brine; TM56 Bulk Up; TM59 Scald
 
@@ -2033,7 +2036,7 @@ None beyond the lists above.
 
 **Type:** Fighting
 
-**Starting moves:** Karate Chop, Leer, Low Kick
+**Starting moves:** Karate Chop, Leer, Low Kick, Doubleslap
 
 **Level-up moves**
 
@@ -2044,9 +2047,11 @@ None beyond the lists above.
 | 22 | Seismic Toss |
 | 28 | Bulk Up |
 | 34 | Brick Break |
+| 36 | Doubleslap |
 | 41 | Submission |
-| 49 | Pierce |
-| 56 | Mega Kick |
+| 49 | Triple Kick |
+| 56 | Pierce |
+| 63 | Mega Kick |
 
 **TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM10 Double-Edge; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM20 Rage; TM26 Earthquake; TM34 Bide; TM35 Metronome; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM52 Facade; TM56 Bulk Up; TM57 Rock Tomb
 
@@ -2068,11 +2073,12 @@ None beyond the lists above.
 | Level | Move |
 |---:|---|
 | 7 | Wrap |
+| 10 | Acid |
 | 12 | Poisonpowder |
 | 16 | Sleep Powder |
-| 21 | Acid |
-| 27 | Razor Leaf |
-| 33 | Slam |
+| 25 | Sludge |
+| 31 | Razor Leaf |
+| 37 | Slam |
 
 **TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail
 
@@ -2094,11 +2100,12 @@ None beyond the lists above.
 | Level | Move |
 |---:|---|
 | 7 | Wrap |
+| 10 | Acid |
 | 12 | Poisonpowder |
 | 16 | Sleep Powder |
-| 21 | Acid |
-| 27 | Razor Leaf |
-| 33 | Slam |
+| 25 | Sludge |
+| 31 | Razor Leaf |
+| 37 | Slam |
 
 **TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail
 
@@ -2120,14 +2127,15 @@ None beyond the lists above.
 | Level | Move |
 |---:|---|
 | 7 | Wrap |
+| 10 | Acid |
 | 12 | Poisonpowder |
 | 16 | Sleep Powder |
-| 21 | Acid |
-| 27 | Razor Leaf |
-| 33 | Slam |
-| 39 | Poison Fang |
-| 45 | Chomp |
-| 51 | Vine Crush |
+| 25 | Sludge |
+| 31 | Razor Leaf |
+| 37 | Slam |
+| 43 | Poison Fang |
+| 49 | Chomp |
+| 55 | Vine Crush |
 
 **TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail
 
@@ -2476,6 +2484,7 @@ None beyond the lists above.
 | Level | Move |
 |---:|---|
 | 9 | Quick Attack |
+| 12 | Bite |
 | 16 | Fury Attack |
 | 23 | Triple Kick |
 | 30 | Drill Peck |
@@ -2502,6 +2511,7 @@ None beyond the lists above.
 | Level | Move |
 |---:|---|
 | 9 | Quick Attack |
+| 12 | Bite |
 | 16 | Fury Attack |
 | 23 | Triple Kick |
 | 30 | Drill Peck |
@@ -2637,9 +2647,9 @@ None beyond the lists above.
 |---:|---|
 | 7 | Water Gun |
 | 13 | Supersonic |
-| 19 | Chomp |
-| 25 | Aurora Beam |
-| 31 | Icicle Spear |
+| 20 | Icicle Spear |
+| 25 | Chomp |
+| 31 | Aurora Beam |
 | 43 | Ice Beam |
 
 **TM compatibility:** TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM30 Teleport; TM33 Reflect; TM34 Bide; TM36 Selfdestruct; TM39 Swift; TM44 Rest; TM47 Explosion; TM49 Tri Attack; TM53 Brine
@@ -2663,9 +2673,9 @@ None beyond the lists above.
 |---:|---|
 | 7 | Water Gun |
 | 13 | Supersonic |
-| 19 | Chomp |
-| 25 | Aurora Beam |
-| 31 | Icicle Spear |
+| 20 | Icicle Spear |
+| 25 | Chomp |
+| 31 | Aurora Beam |
 | 37 | Spike Cannon |
 | 43 | Ice Beam |
 | 49 | Shell Smash |
@@ -2770,10 +2780,11 @@ None beyond the lists above.
 |---:|---|
 | 15 | Bind |
 | 19 | Rock Tomb |
-| 25 | Rage |
-| 33 | Slam |
-| 43 | Stone Press |
-| 50 | Coil |
+| 25 | Dig |
+| 29 | Rage |
+| 36 | Slam |
+| 46 | Stone Press |
+| 54 | Coil |
 
 **TM compatibility:** TM08 Body Slam; TM26 Earthquake; TM27 Fissure; TM28 Dig; TM34 Bide; TM36 Selfdestruct; TM40 Skull Bash; TM44 Rest; TM47 Explosion; TM48 Rock Slide; TM57 Rock Tomb
 
@@ -2797,6 +2808,7 @@ None beyond the lists above.
 | 7 | Sand-Attack |
 | 13 | Confusion |
 | 19 | Disable |
+| 22 | Mud Wave |
 | 25 | Headbutt |
 | 33 | Psybeam |
 | 40 | Psychic |
@@ -2823,6 +2835,7 @@ None beyond the lists above.
 | 7 | Sand-Attack |
 | 13 | Confusion |
 | 19 | Disable |
+| 22 | Mud Wave |
 | 25 | Headbutt |
 | 27 | Dream Eater |
 | 33 | Psybeam |
@@ -2957,6 +2970,7 @@ None beyond the lists above.
 | 9 | Confusion |
 | 16 | Reflect |
 | 23 | Leech Seed |
+| 25 | Mega Drain |
 | 30 | Psybeam |
 | 44 | Psychic |
 | 51 | Solarbeam |
@@ -2983,6 +2997,7 @@ None beyond the lists above.
 | 9 | Confusion |
 | 16 | Reflect |
 | 23 | Leech Seed |
+| 25 | Mega Drain |
 | 30 | Psybeam |
 | 37 | Egg Bomb |
 | 44 | Psychic |
@@ -3010,6 +3025,7 @@ None beyond the lists above.
 | 9 | Tail Whip |
 | 16 | Headbutt |
 | 23 | Focus Energy |
+| 30 | Take Down |
 | 34 | Bonemerang |
 | 41 | Rage |
 
@@ -3036,6 +3052,7 @@ None beyond the lists above.
 | 16 | Headbutt |
 | 23 | Focus Energy |
 | 29 | Wailing Cry |
+| 30 | Take Down |
 | 34 | Bonemerang |
 | 41 | Rage |
 | 48 | Curse |
@@ -3480,6 +3497,7 @@ None beyond the lists above.
 |---:|---|
 | 9 | Mimic |
 | 16 | Light Screen |
+| 18 | Doubleslap |
 | 23 | Psybeam |
 | 30 | Substitute |
 | 37 | Mind Break |
@@ -3588,6 +3606,7 @@ None beyond the lists above.
 |---:|---|
 | 9 | Smokescreen |
 | 17 | Smog |
+| 21 | Will-O-Wisp |
 | 25 | Fire Punch |
 | 33 | Mega Punch |
 | 41 | Cauterize |
@@ -3614,11 +3633,13 @@ None beyond the lists above.
 | Level | Move |
 |---:|---|
 | 9 | Bind |
-| 17 | Seismic Toss |
-| 25 | Shell Break |
-| 33 | Submission |
-| 41 | Bulk Up |
-| 49 | Guillotine |
+| 17 | Lunge |
+| 25 | Seismic Toss |
+| 33 | Shell Break |
+| 41 | X-Scissor |
+| 49 | Submission |
+| 57 | Bulk Up |
+| 65 | Guillotine |
 
 **TM compatibility:** TM08 Body Slam; TM17 Submission; TM19 Seismic Toss; TM20 Rage; TM44 Rest; TM52 Facade; TM56 Bulk Up; TM57 Rock Tomb
 
@@ -3775,7 +3796,7 @@ None beyond the lists above.
 | 40 | Charm |
 | 43 | Double-Edge |
 
-**TM compatibility:** TM08 Body Slam; TM10 Double-Edge; TM33 Reflect; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM52 Facade
+**TM compatibility:** TM08 Body Slam; TM10 Double-Edge; TM28 Dig; TM33 Reflect; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM52 Facade
 
 **HM compatibility:** None
 
@@ -3811,6 +3832,7 @@ None beyond the lists above.
 | Additional move | Learn before evolving |
 |---|---|
 | Charm | Eevee — Lv 40 |
+| Dig | Eevee — TM28 |
 | Focus Energy | Eevee — Lv 29 |
 | Take Down | Eevee — Lv 36 |
 
@@ -3843,6 +3865,7 @@ None beyond the lists above.
 |---|---|
 | Bite | Eevee — Lv 22 |
 | Charm | Eevee — Lv 40 |
+| Dig | Eevee — TM28 |
 | Focus Energy | Eevee — Lv 29 |
 | Take Down | Eevee — Lv 36 |
 
@@ -3874,6 +3897,7 @@ None beyond the lists above.
 | Additional move | Learn before evolving |
 |---|---|
 | Charm | Eevee — Lv 40 |
+| Dig | Eevee — TM28 |
 | Focus Energy | Eevee — Lv 29 |
 | Take Down | Eevee — Lv 36 |
 
@@ -3969,6 +3993,7 @@ None beyond the lists above.
 | 9 | Absorb |
 | 17 | Rock Tomb |
 | 25 | Aqua Jet |
+| 29 | Slash |
 | 33 | Shell Break |
 
 **TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM33 Reflect; TM34 Bide; TM44 Rest; TM53 Brine; TM57 Rock Tomb
@@ -3993,8 +4018,8 @@ None beyond the lists above.
 | 9 | Absorb |
 | 17 | Rock Tomb |
 | 25 | Aqua Jet |
+| 29 | Slash |
 | 33 | Shell Break |
-| 41 | Slash |
 | 49 | X-Scissor |
 | 57 | Stone Edge |
 
@@ -4011,7 +4036,7 @@ None beyond the lists above.
 
 **Type:** Rock / Flying
 
-**Starting moves:** Wing Attack, Bite
+**Starting moves:** Wing Attack, Bite, Take Down
 
 **Level-up moves**
 
