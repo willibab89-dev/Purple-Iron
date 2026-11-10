@@ -326,6 +326,7 @@ ExeggutorEvosMoves:
 	db 9, CONFUSION
 	db 16, REFLECT
 	db 23, LEECH_SEED
+	db 25, MEGA_DRAIN
 	db 30, PSYBEAM
 	db 37, EGG_BOMB
 	db 44, PSYCHIC_M
@@ -352,6 +353,7 @@ ExeggcuteEvosMoves:
 	db 9, CONFUSION
 	db 16, REFLECT
 	db 23, LEECH_SEED
+	db 25, MEGA_DRAIN
 	db 30, PSYBEAM
 	db 44, PSYCHIC_M
 	db 51, SOLARBEAM
@@ -419,6 +421,7 @@ CuboneEvosMoves:
 	db 9, TAIL_WHIP
 	db 16, HEADBUTT
 	db 23, FOCUS_ENERGY
+	db 30, TAKE_DOWN
 	db 34, BONEMERANG
 	db 41, RAGE
 	db 0
@@ -498,9 +501,9 @@ ShellderEvosMoves:
 ; Learnset
 	db 7, WATER_GUN
 	db 13, SUPERSONIC
-	db 19, CLAMP
-	db 25, AURORA_BEAM
-	db 31, ICICLE_SPEAR
+	db 20, ICICLE_SPEAR
+	db 25, CLAMP
+	db 31, AURORA_BEAM
 	db 43, ICE_BEAM
 	db 0
 
@@ -576,11 +579,13 @@ PinsirEvosMoves:
 	db 0
 ; Learnset;joenote-modified for yellow
 	db 9, BIND
-	db 17, SEISMIC_TOSS
-	db 25, SHELL_BREAK
-	db 33, SUBMISSION
-	db 41, BULK_UP
-	db 49, GUILLOTINE
+	db 17, LUNGE
+	db 25, SEISMIC_TOSS
+	db 33, SHELL_BREAK
+	db 41, X_SCISSOR
+	db 49, SUBMISSION
+	db 57, BULK_UP
+	db 65, GUILLOTINE
 	db 0
 
 TangelaEvosMoves:
@@ -629,10 +634,11 @@ OnixEvosMoves:
 ; Learnset
 	db 15, BIND
 	db 19, ROCK_TOMB
-	db 25, RAGE
-	db 33, SLAM
-	db 43, STONE_PRESS
-	db 50, COIL
+	db 25, DIG
+	db 29, RAGE
+	db 36, SLAM
+	db 46, STONE_PRESS
+	db 54, COIL
 	db 0
 
 FearowEvosMoves:
@@ -736,6 +742,7 @@ MrMimeEvosMoves:
 ; Learnset
 	db 9, MIMIC
 	db 16, LIGHT_SCREEN
+	db 18, DOUBLESLAP
 	db 23, PSYBEAM
 	db 30, SUBSTITUTE
 	db 37, MIND_BREAK
@@ -818,6 +825,7 @@ DrowzeeEvosMoves:
 	db 7, SAND_ATTACK
 	db 13, CONFUSION
 	db 19, DISABLE
+	db 22, MUD_WAVE
 	db 25, HEADBUTT
 	db 33, PSYBEAM
 	db 40, PSYCHIC_M
@@ -849,6 +857,7 @@ MagmarEvosMoves:
 ; Learnset
 	db 9, SMOKESCREEN
 	db 17, SMOG
+	db 21, WILL_O_WISP
 	db 25, FIRE_PUNCH
 	db 33, MEGA_PUNCH
 	db 41, CAUTERIZE
@@ -1039,6 +1048,7 @@ DoduoEvosMoves:
 	db 0
 ; Learnset
 	db 9, QUICK_ATTACK
+	db 12, BITE
 	db 16, FURY_ATTACK
 	db 23, TRIPLE_KICK
 	db 30, DRILL_PECK
@@ -1268,6 +1278,7 @@ KabutoEvosMoves:
 	db 9, ABSORB
 	db 17, ROCK_TOMB
 	db 25, AQUA_JET
+	db 29, SLASH
 	db 33, SHELL_BREAK
 	db 0
 
@@ -1278,8 +1289,8 @@ KabutopsEvosMoves:
 	db 9, ABSORB
 	db 17, ROCK_TOMB
 	db 25, AQUA_JET
+	db 29, SLASH
 	db 33, SHELL_BREAK
-	db 41, SLASH
 	db 49, X_SCISSOR
 	db 57, STONE_EDGE
 	db 0
@@ -1537,9 +1548,12 @@ PoliwrathEvosMoves:
 	db 26, BUBBLEBEAM
 	db 30, DRAIN_PUNCH
 	db 32, BODY_SLAM
+	db 35, FIRE_PUNCH
 	db 38, BULK_UP
-	db 44, HYDRO_PUMP
-	db 50, SUBMISSION
+	db 41, ICE_PUNCH
+	db 47, THUNDERPUNCH
+	db 54, HYDRO_PUMP
+	db 60, SUBMISSION
 	db 0
 
 WeedleEvosMoves:
@@ -1581,6 +1595,7 @@ DodrioEvosMoves:
 	db 0
 ; Learnset
 	db 9, QUICK_ATTACK
+	db 12, BITE
 	db 16, FURY_ATTACK
 	db 23, TRIPLE_KICK
 	db 30, DRILL_PECK
@@ -1692,9 +1707,11 @@ MachampEvosMoves:
 	db 22, SEISMIC_TOSS
 	db 28, BULK_UP
 	db 34, BRICK_BREAK
+	db 36, DOUBLESLAP
 	db 41, SUBMISSION
-	db 49, PIERCE
-	db 56, MEGA_KICK
+	db 49, TRIPLE_KICK
+	db 56, PIERCE
+	db 63, MEGA_KICK
 	db 0
 
 MissingNo7FEvosMoves:
@@ -1725,6 +1742,7 @@ HypnoEvosMoves:
 	db 7, SAND_ATTACK
 	db 13, CONFUSION
 	db 19, DISABLE
+	db 22, MUD_WAVE
 	db 25, HEADBUTT
 	db 27, DREAM_EATER
 	db 33, PSYBEAM
@@ -1831,9 +1849,9 @@ CloysterEvosMoves:
 ; Learnset
 	db 7, WATER_GUN
 	db 13, SUPERSONIC
-	db 19, CLAMP
-	db 25, AURORA_BEAM
-	db 31, ICICLE_SPEAR
+	db 20, ICICLE_SPEAR
+	db 25, CLAMP
+	db 31, AURORA_BEAM
 	db 37, SPIKE_CANNON
 	db 43, ICE_BEAM
 	db 49, SHELL_SMASH
@@ -1906,6 +1924,7 @@ MarowakEvosMoves:
 	db 16, HEADBUTT
 	db 23, FOCUS_ENERGY
 	db 29, WAILING_CRY
+	db 30, TAKE_DOWN
 	db 34, BONEMERANG
 	db 41, RAGE
 	db 48, CURSE
@@ -2396,11 +2415,12 @@ BellsproutEvosMoves:
 	db 0
 ; Learnset
 	db 7, WRAP
+	db 10, ACID
 	db 12, POISONPOWDER
 	db 16, SLEEP_POWDER
-	db 21, ACID
-	db 27, RAZOR_LEAF
-	db 33, SLAM
+	db 25, SLUDGE
+	db 31, RAZOR_LEAF
+	db 37, SLAM
 	db 0
 
 WeepinbellEvosMoves:
@@ -2409,11 +2429,12 @@ WeepinbellEvosMoves:
 	db 0
 ; Learnset
 	db 7, WRAP
+	db 10, ACID
 	db 12, POISONPOWDER
 	db 16, SLEEP_POWDER
-	db 21, ACID
-	db 27, RAZOR_LEAF
-	db 33, SLAM
+	db 25, SLUDGE
+	db 31, RAZOR_LEAF
+	db 37, SLAM
 	db 0
 
 VictreebelEvosMoves:
@@ -2422,14 +2443,15 @@ VictreebelEvosMoves:
 ;joenote-modified for fun
 ; Learnset
 	db 7, WRAP
+	db 10, ACID
 	db 12, POISONPOWDER
 	db 16, SLEEP_POWDER
-	db 21, ACID
-	db 27, RAZOR_LEAF
-	db 33, SLAM
-	db 39, POISON_FANG
-	db 45, CLAMP
-	db 51, VINE_CRUSH
+	db 25, SLUDGE
+	db 31, RAZOR_LEAF
+	db 37, SLAM
+	db 43, POISON_FANG
+	db 49, CLAMP
+	db 55, VINE_CRUSH
 	db 0
 
 MareanieEvosMoves:

@@ -924,7 +924,7 @@
       "moves": [
         "POISONPOWDER",
         "SLEEP_POWDER",
-        "ACID",
+        "SLUDGE",
         "RAZOR_LEAF"
       ]
     },
@@ -1090,8 +1090,8 @@
       "dex": 96,
       "level": 39,
       "moves": [
-        "CONFUSION",
         "DISABLE",
+        "MUD_WAVE",
         "HEADBUTT",
         "PSYBEAM"
       ]
@@ -1259,7 +1259,7 @@
       "level": 40,
       "moves": [
         "STRENGTH",
-        "SMOG",
+        "WILL_O_WISP",
         "FIRE_PUNCH",
         "MEGA_PUNCH"
       ]
@@ -1314,7 +1314,7 @@
       "dex": 91,
       "level": 53,
       "moves": [
-        "ICICLE_SPEAR",
+        "AURORA_BEAM",
         "SPIKE_CANNON",
         "ICE_BEAM",
         "SHELL_SMASH"
@@ -1415,7 +1415,7 @@
         "KARATE_CHOP",
         "SUBMISSION",
         "DOUBLE_EDGE",
-        "MEGA_KICK"
+        "PIERCE"
       ]
     },
     {
@@ -1426,10 +1426,10 @@
       "dex": 62,
       "level": 57,
       "moves": [
-        "BODY_SLAM",
         "BULK_UP",
-        "HYDRO_PUMP",
-        "SUBMISSION"
+        "ICE_PUNCH",
+        "THUNDERPUNCH",
+        "HYDRO_PUMP"
       ]
     },
     {
@@ -1440,10 +1440,10 @@
       "dex": 127,
       "level": 56,
       "moves": [
+        "SEISMIC_TOSS",
         "SHELL_BREAK",
-        "SUBMISSION",
-        "BULK_UP",
-        "GUILLOTINE"
+        "X_SCISSOR",
+        "SUBMISSION"
       ]
     },
     {
@@ -1468,7 +1468,7 @@
       "dex": 105,
       "level": 55,
       "moves": [
-        "WAILING_CRY",
+        "TAKE_DOWN",
         "BONEMERANG",
         "RAGE",
         "CURSE"
@@ -2714,5 +2714,159 @@
   "blaine_elite_revision": "blaine_elite_review.json",
   "rematch_revision": "gym_rematch_review.json",
   "league_rematch_revision": "league_rematch_review.json",
-  "postgame_ace_revision": "postgame_ace_review.json"
+  "postgame_ace_revision": "postgame_ace_review.json",
+  "ability_preparation_natural_updates": [
+    {
+      "trainer": "ERIKA",
+      "number": 1,
+      "slot": 1,
+      "name": "weepinbell",
+      "level": 32,
+      "moves": [
+        "POISONPOWDER",
+        "SLEEP_POWDER",
+        "ACID",
+        "RAZOR_LEAF"
+      ],
+      "after": [
+        "POISONPOWDER",
+        "SLEEP_POWDER",
+        "SLUDGE",
+        "RAZOR_LEAF"
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 1,
+      "slot": 3,
+      "name": "drowzee",
+      "level": 39,
+      "moves": [
+        "CONFUSION",
+        "DISABLE",
+        "HEADBUTT",
+        "PSYBEAM"
+      ],
+      "after": [
+        "DISABLE",
+        "MUD_WAVE",
+        "HEADBUTT",
+        "PSYBEAM"
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 1,
+      "slot": 4,
+      "name": "magmar",
+      "level": 40,
+      "moves": [
+        "STRENGTH",
+        "SMOG",
+        "FIRE_PUNCH",
+        "MEGA_PUNCH"
+      ],
+      "after": [
+        "STRENGTH",
+        "WILL_O_WISP",
+        "FIRE_PUNCH",
+        "MEGA_PUNCH"
+      ]
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 1,
+      "slot": 2,
+      "name": "cloyster",
+      "level": 53,
+      "moves": [
+        "ICICLE_SPEAR",
+        "SPIKE_CANNON",
+        "ICE_BEAM",
+        "SHELL_SMASH"
+      ],
+      "after": [
+        "AURORA_BEAM",
+        "SPIKE_CANNON",
+        "ICE_BEAM",
+        "SHELL_SMASH"
+      ]
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 1,
+      "slot": 3,
+      "name": "machamp",
+      "level": 58,
+      "moves": [
+        "KARATE_CHOP",
+        "SUBMISSION",
+        "DOUBLE_EDGE",
+        "MEGA_KICK"
+      ],
+      "after": [
+        "KARATE_CHOP",
+        "SUBMISSION",
+        "DOUBLE_EDGE",
+        "PIERCE"
+      ]
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 1,
+      "slot": 4,
+      "name": "poliwrath",
+      "level": 57,
+      "moves": [
+        "BODY_SLAM",
+        "BULK_UP",
+        "HYDRO_PUMP",
+        "SUBMISSION"
+      ],
+      "after": [
+        "BULK_UP",
+        "ICE_PUNCH",
+        "THUNDERPUNCH",
+        "HYDRO_PUMP"
+      ]
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 1,
+      "slot": 5,
+      "name": "pinsir",
+      "level": 56,
+      "moves": [
+        "SHELL_BREAK",
+        "SUBMISSION",
+        "BULK_UP",
+        "GUILLOTINE"
+      ],
+      "after": [
+        "SEISMIC_TOSS",
+        "SHELL_BREAK",
+        "X_SCISSOR",
+        "SUBMISSION"
+      ]
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 1,
+      "slot": 1,
+      "name": "marowak",
+      "level": 55,
+      "moves": [
+        "WAILING_CRY",
+        "BONEMERANG",
+        "RAGE",
+        "CURSE"
+      ],
+      "after": [
+        "TAKE_DOWN",
+        "BONEMERANG",
+        "RAGE",
+        "CURSE"
+      ]
+    }
+  ]
 }

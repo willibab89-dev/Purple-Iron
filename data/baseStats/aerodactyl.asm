@@ -14,7 +14,7 @@ dw AerodactylPicBack
 ; attacks known at lvl 0
 db WING_ATTACK
 db BITE
-db 0
+db TAKE_DOWN
 db 0
 db 5 ; growth rate
 ; learnset

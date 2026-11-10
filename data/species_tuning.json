@@ -146,18 +146,22 @@
       ],
       [
         25,
+        "DIG"
+      ],
+      [
+        29,
         "RAGE"
       ],
       [
-        33,
+        36,
         "SLAM"
       ],
       [
-        43,
+        46,
         "STONE_PRESS"
       ],
       [
-        50,
+        54,
         "COIL"
       ]
     ],
@@ -4245,15 +4249,27 @@
         "BODY_SLAM"
       ],
       [
+        35,
+        "FIRE_PUNCH"
+      ],
+      [
         38,
         "BULK_UP"
       ],
       [
-        44,
+        41,
+        "ICE_PUNCH"
+      ],
+      [
+        47,
+        "THUNDERPUNCH"
+      ],
+      [
+        54,
         "HYDRO_PUMP"
       ],
       [
-        50,
+        60,
         "SUBMISSION"
       ]
     ],
@@ -4591,7 +4607,8 @@
     "start": [
       "KARATE_CHOP",
       "LEER",
-      "LOW_KICK"
+      "LOW_KICK",
+      "DOUBLESLAP"
     ],
     "learn": [
       [
@@ -4615,15 +4632,23 @@
         "BRICK_BREAK"
       ],
       [
+        36,
+        "DOUBLESLAP"
+      ],
+      [
         41,
         "SUBMISSION"
       ],
       [
         49,
-        "PIERCE"
+        "TRIPLE_KICK"
       ],
       [
         56,
+        "PIERCE"
+      ],
+      [
+        63,
         "MEGA_KICK"
       ]
     ],
@@ -4669,6 +4694,10 @@
         "WRAP"
       ],
       [
+        10,
+        "ACID"
+      ],
+      [
         12,
         "POISONPOWDER"
       ],
@@ -4677,15 +4706,15 @@
         "SLEEP_POWDER"
       ],
       [
-        21,
-        "ACID"
+        25,
+        "SLUDGE"
       ],
       [
-        27,
+        31,
         "RAZOR_LEAF"
       ],
       [
-        33,
+        37,
         "SLAM"
       ]
     ],
@@ -4729,6 +4758,10 @@
         "WRAP"
       ],
       [
+        10,
+        "ACID"
+      ],
+      [
         12,
         "POISONPOWDER"
       ],
@@ -4737,15 +4770,15 @@
         "SLEEP_POWDER"
       ],
       [
-        21,
-        "ACID"
+        25,
+        "SLUDGE"
       ],
       [
-        27,
+        31,
         "RAZOR_LEAF"
       ],
       [
-        33,
+        37,
         "SLAM"
       ]
     ],
@@ -4790,6 +4823,10 @@
         "WRAP"
       ],
       [
+        10,
+        "ACID"
+      ],
+      [
         12,
         "POISONPOWDER"
       ],
@@ -4798,27 +4835,27 @@
         "SLEEP_POWDER"
       ],
       [
-        21,
-        "ACID"
+        25,
+        "SLUDGE"
       ],
       [
-        27,
+        31,
         "RAZOR_LEAF"
       ],
       [
-        33,
+        37,
         "SLAM"
       ],
       [
-        39,
+        43,
         "POISON_FANG"
       ],
       [
-        45,
+        49,
         "CLAMP"
       ],
       [
-        51,
+        55,
         "VINE_CRUSH"
       ]
     ],
@@ -5592,6 +5629,10 @@
         "QUICK_ATTACK"
       ],
       [
+        12,
+        "BITE"
+      ],
+      [
         16,
         "FURY_ATTACK"
       ],
@@ -5653,6 +5694,10 @@
       [
         9,
         "QUICK_ATTACK"
+      ],
+      [
+        12,
+        "BITE"
       ],
       [
         16,
@@ -5981,16 +6026,16 @@
         "SUPERSONIC"
       ],
       [
-        19,
-        "CLAMP"
+        20,
+        "ICICLE_SPEAR"
       ],
       [
         25,
-        "AURORA_BEAM"
+        "CLAMP"
       ],
       [
         31,
-        "ICICLE_SPEAR"
+        "AURORA_BEAM"
       ],
       [
         43,
@@ -6039,16 +6084,16 @@
         "SUPERSONIC"
       ],
       [
-        19,
-        "CLAMP"
+        20,
+        "ICICLE_SPEAR"
       ],
       [
         25,
-        "AURORA_BEAM"
+        "CLAMP"
       ],
       [
         31,
-        "ICICLE_SPEAR"
+        "AURORA_BEAM"
       ],
       [
         37,
@@ -6298,6 +6343,10 @@
         "DISABLE"
       ],
       [
+        22,
+        "MUD_WAVE"
+      ],
+      [
         25,
         "HEADBUTT"
       ],
@@ -6360,6 +6409,10 @@
       [
         19,
         "DISABLE"
+      ],
+      [
+        22,
+        "MUD_WAVE"
       ],
       [
         25,
@@ -6676,6 +6729,10 @@
         "LEECH_SEED"
       ],
       [
+        25,
+        "MEGA_DRAIN"
+      ],
+      [
         30,
         "PSYBEAM"
       ],
@@ -6731,6 +6788,10 @@
       [
         23,
         "LEECH_SEED"
+      ],
+      [
+        25,
+        "MEGA_DRAIN"
       ],
       [
         30,
@@ -6796,6 +6857,10 @@
         "FOCUS_ENERGY"
       ],
       [
+        30,
+        "TAKE_DOWN"
+      ],
+      [
         34,
         "BONEMERANG"
       ],
@@ -6859,6 +6924,10 @@
       [
         29,
         "WAILING_CRY"
+      ],
+      [
+        30,
+        "TAKE_DOWN"
       ],
       [
         34,
@@ -7912,6 +7981,10 @@
         "LIGHT_SCREEN"
       ],
       [
+        18,
+        "DOUBLESLAP"
+      ],
+      [
         23,
         "PSYBEAM"
       ],
@@ -8182,6 +8255,10 @@
         "SMOG"
       ],
       [
+        21,
+        "WILL_O_WISP"
+      ],
+      [
         25,
         "FIRE_PUNCH"
       ],
@@ -8246,22 +8323,30 @@
       ],
       [
         17,
-        "SEISMIC_TOSS"
+        "LUNGE"
       ],
       [
         25,
-        "SHELL_BREAK"
+        "SEISMIC_TOSS"
       ],
       [
         33,
-        "SUBMISSION"
+        "SHELL_BREAK"
       ],
       [
         41,
-        "BULK_UP"
+        "X_SCISSOR"
       ],
       [
         49,
+        "SUBMISSION"
+      ],
+      [
+        57,
+        "BULK_UP"
+      ],
+      [
+        65,
         "GUILLOTINE"
       ]
     ],
@@ -8606,7 +8691,8 @@
     ],
     "remove": [],
     "add": [
-      10
+      10,
+      28
     ],
     "before_stats": [
       55,
@@ -9027,6 +9113,10 @@
         "AQUA_JET"
       ],
       [
+        29,
+        "SLASH"
+      ],
+      [
         33,
         "SHELL_BREAK"
       ]
@@ -9077,12 +9167,12 @@
         "AQUA_JET"
       ],
       [
-        33,
-        "SHELL_BREAK"
+        29,
+        "SLASH"
       ],
       [
-        41,
-        "SLASH"
+        33,
+        "SHELL_BREAK"
       ],
       [
         49,
@@ -9127,7 +9217,8 @@
     ],
     "start": [
       "WING_ATTACK",
-      "BITE"
+      "BITE",
+      "TAKE_DOWN"
     ],
     "learn": [
       [

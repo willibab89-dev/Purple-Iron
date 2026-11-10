@@ -15,7 +15,7 @@ dw MachampPicBack
 db KARATE_CHOP
 db LEER
 db LOW_KICK
-db 0
+db DOUBLESLAP
 db 3 ; growth rate
 ; learnset
 	tmlearn 1,5,8
