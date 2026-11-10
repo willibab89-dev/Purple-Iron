@@ -33,6 +33,8 @@ Comet Punch is a single-hit move in this game, so it is not counted as a multi-h
 
 ## Naturally generated trainer moves
 
+**Follow-up implemented:** These eight natural sets have since been replaced by the [approved boss movesets](BOSS-ABILITY-MOVESET-REVIEW.md). The table below records the original automatic changes.
+
 Trainers retain the same species, levels and explicit overrides. Eight first-challenge boss Pokémon pick up different naturally initialized moves as a consequence of the revised level-up lists. The trainer audit records have been refreshed to verify these results:
 
 | Trainer / Pokémon | Natural move changes |

@@ -55,6 +55,10 @@ SpecialTrainerMoves:
 	db 0
 	
 	db ERIKA,$1
+	db 1,1,SLEEP_POWDER
+	db 1,2,SLUDGE
+	db 1,3,RAZOR_LEAF
+	db 1,4,MEGA_DRAIN
 	db 0
 	
 	db KOGA,$1
@@ -71,13 +75,20 @@ SpecialTrainerMoves:
 	db 2,2,PSYBEAM
 	db 2,3,SUBSTITUTE
 	db 2,4,MIND_BREAK
+	db 3,1,PSYBEAM
+	db 3,2,MUD_WAVE
+	db 3,3,HYPNOSIS
+	db 3,4,REFLECT
 	db 0
 	
 	db BLAINE,$1
 	db 5,1,SWIFT
-	db 4,1,STRENGTH
 	db 3,3,TAKE_DOWN
 	db 2,2,FIRE_BLAST
+	db 4,1,WILL_O_WISP
+	db 4,2,FIRE_PUNCH
+	db 4,3,MEGA_PUNCH
+	db 4,4,FIRE_BLAST
 	db 0
 	
 	db GIOVANNI,$3
@@ -106,16 +117,30 @@ SpecialTrainerMoves:
 	db 5,2,ICE_BEAM
 	db 5,3,HEAL_BELL
 	db 5,4,HYDRO_PUMP
+	db 2,1,ICE_BEAM
+	db 2,2,SURF
+	db 2,3,SPIKE_CANNON
+	db 2,4,SHELL_SMASH
 	db 0
 
 	db BRUNO,$1
 	db 2,1,ROLLING_KICK
-	db 3,1,KARATE_CHOP
-	db 3,3,DOUBLE_EDGE
 	db 1,1,ICE_PUNCH
 	db 1,2,THUNDERPUNCH
 	db 1,3,FIRE_PUNCH
 	db 1,4,BRICK_BREAK
+	db 3,1,BULK_UP
+	db 3,2,TRIPLE_KICK
+	db 3,3,PIERCE
+	db 3,4,ROCK_SLIDE
+	db 4,1,BULK_UP
+	db 4,2,DRAIN_PUNCH
+	db 4,3,THUNDERPUNCH
+	db 4,4,HYDRO_PUMP
+	db 5,1,X_SCISSOR
+	db 5,2,LUNGE
+	db 5,3,SUBMISSION
+	db 5,4,ROCK_TOMB
 	db 0
 
 	db AGATHA,$1
@@ -123,6 +148,10 @@ SpecialTrainerMoves:
 	db 4,2,DREAM_EATER
 	db 4,3,SUBSTITUTE
 	db 4,4,THUNDERBOLT
+	db 1,1,WAILING_CRY
+	db 1,2,BONEMERANG
+	db 1,3,WILL_O_WISP
+	db 1,4,CURSE
 	db 0
 
 	db LANCE,$1

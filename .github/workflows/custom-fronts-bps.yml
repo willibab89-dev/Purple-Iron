@@ -165,6 +165,7 @@ jobs:
             ${{ runner.temp }}/patches/REGULAR-TRAINER-PROPOSALS.csv
             ${{ runner.temp }}/patches/MEW-DIPLOMA-GATE.md
             ${{ runner.temp }}/patches/ROUTE-ENCOUNTER-REDESIGN.md
+            ${{ runner.temp }}/patches/BOSS-ABILITY-MOVESET-REVIEW.md
             ${{ runner.temp }}/patches/ABILITY-PREPARATION-MOVEPOOLS.md
             ${{ runner.temp }}/patches/ALL-POKEMON-MOVEPOOLS.md
             ${{ runner.temp }}/patches/ALL-POKEMON-MOVEPOOLS.html

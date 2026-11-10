@@ -922,10 +922,10 @@
       "dex": 70,
       "level": 32,
       "moves": [
-        "POISONPOWDER",
         "SLEEP_POWDER",
         "SLUDGE",
-        "RAZOR_LEAF"
+        "RAZOR_LEAF",
+        "MEGA_DRAIN"
       ]
     },
     {
@@ -1090,10 +1090,10 @@
       "dex": 96,
       "level": 39,
       "moves": [
-        "DISABLE",
+        "PSYBEAM",
         "MUD_WAVE",
-        "HEADBUTT",
-        "PSYBEAM"
+        "HYPNOSIS",
+        "REFLECT"
       ]
     },
     {
@@ -1258,10 +1258,10 @@
       "dex": 126,
       "level": 40,
       "moves": [
-        "STRENGTH",
         "WILL_O_WISP",
         "FIRE_PUNCH",
-        "MEGA_PUNCH"
+        "MEGA_PUNCH",
+        "FIRE_BLAST"
       ]
     },
     {
@@ -1314,9 +1314,9 @@
       "dex": 91,
       "level": 53,
       "moves": [
-        "AURORA_BEAM",
-        "SPIKE_CANNON",
         "ICE_BEAM",
+        "SURF",
+        "SPIKE_CANNON",
         "SHELL_SMASH"
       ]
     },
@@ -1412,10 +1412,10 @@
       "dex": 68,
       "level": 58,
       "moves": [
-        "KARATE_CHOP",
-        "SUBMISSION",
-        "DOUBLE_EDGE",
-        "PIERCE"
+        "BULK_UP",
+        "TRIPLE_KICK",
+        "PIERCE",
+        "ROCK_SLIDE"
       ]
     },
     {
@@ -1427,7 +1427,7 @@
       "level": 57,
       "moves": [
         "BULK_UP",
-        "ICE_PUNCH",
+        "DRAIN_PUNCH",
         "THUNDERPUNCH",
         "HYDRO_PUMP"
       ]
@@ -1440,10 +1440,10 @@
       "dex": 127,
       "level": 56,
       "moves": [
-        "SEISMIC_TOSS",
-        "SHELL_BREAK",
         "X_SCISSOR",
-        "SUBMISSION"
+        "LUNGE",
+        "SUBMISSION",
+        "ROCK_TOMB"
       ]
     },
     {
@@ -1468,9 +1468,9 @@
       "dex": 105,
       "level": 55,
       "moves": [
-        "TAKE_DOWN",
+        "WAILING_CRY",
         "BONEMERANG",
-        "RAGE",
+        "WILL_O_WISP",
         "CURSE"
       ]
     },
@@ -2865,6 +2865,168 @@
         "TAKE_DOWN",
         "BONEMERANG",
         "RAGE",
+        "CURSE"
+      ]
+    }
+  ],
+  "ability_preparation_boss_review": [
+    {
+      "trainer": "ERIKA",
+      "number": 1,
+      "slot": 1,
+      "name": "weepinbell",
+      "dex": 70,
+      "level": 32,
+      "before": [
+        "POISONPOWDER",
+        "SLEEP_POWDER",
+        "SLUDGE",
+        "RAZOR_LEAF"
+      ],
+      "after": [
+        "SLEEP_POWDER",
+        "SLUDGE",
+        "RAZOR_LEAF",
+        "MEGA_DRAIN"
+      ]
+    },
+    {
+      "trainer": "SABRINA",
+      "number": 1,
+      "slot": 3,
+      "name": "drowzee",
+      "dex": 96,
+      "level": 39,
+      "before": [
+        "DISABLE",
+        "MUD_WAVE",
+        "HEADBUTT",
+        "PSYBEAM"
+      ],
+      "after": [
+        "PSYBEAM",
+        "MUD_WAVE",
+        "HYPNOSIS",
+        "REFLECT"
+      ]
+    },
+    {
+      "trainer": "BLAINE",
+      "number": 1,
+      "slot": 4,
+      "name": "magmar",
+      "dex": 126,
+      "level": 40,
+      "before": [
+        "STRENGTH",
+        "WILL_O_WISP",
+        "FIRE_PUNCH",
+        "MEGA_PUNCH"
+      ],
+      "after": [
+        "WILL_O_WISP",
+        "FIRE_PUNCH",
+        "MEGA_PUNCH",
+        "FIRE_BLAST"
+      ]
+    },
+    {
+      "trainer": "LORELEI",
+      "number": 1,
+      "slot": 2,
+      "name": "cloyster",
+      "dex": 91,
+      "level": 53,
+      "before": [
+        "AURORA_BEAM",
+        "SPIKE_CANNON",
+        "ICE_BEAM",
+        "SHELL_SMASH"
+      ],
+      "after": [
+        "ICE_BEAM",
+        "SURF",
+        "SPIKE_CANNON",
+        "SHELL_SMASH"
+      ]
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 1,
+      "slot": 3,
+      "name": "machamp",
+      "dex": 68,
+      "level": 58,
+      "before": [
+        "KARATE_CHOP",
+        "SUBMISSION",
+        "DOUBLE_EDGE",
+        "PIERCE"
+      ],
+      "after": [
+        "BULK_UP",
+        "TRIPLE_KICK",
+        "PIERCE",
+        "ROCK_SLIDE"
+      ]
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 1,
+      "slot": 4,
+      "name": "poliwrath",
+      "dex": 62,
+      "level": 57,
+      "before": [
+        "BULK_UP",
+        "ICE_PUNCH",
+        "THUNDERPUNCH",
+        "HYDRO_PUMP"
+      ],
+      "after": [
+        "BULK_UP",
+        "DRAIN_PUNCH",
+        "THUNDERPUNCH",
+        "HYDRO_PUMP"
+      ]
+    },
+    {
+      "trainer": "BRUNO",
+      "number": 1,
+      "slot": 5,
+      "name": "pinsir",
+      "dex": 127,
+      "level": 56,
+      "before": [
+        "SEISMIC_TOSS",
+        "SHELL_BREAK",
+        "X_SCISSOR",
+        "SUBMISSION"
+      ],
+      "after": [
+        "X_SCISSOR",
+        "LUNGE",
+        "SUBMISSION",
+        "ROCK_TOMB"
+      ]
+    },
+    {
+      "trainer": "AGATHA",
+      "number": 1,
+      "slot": 1,
+      "name": "marowak",
+      "dex": 105,
+      "level": 55,
+      "before": [
+        "TAKE_DOWN",
+        "BONEMERANG",
+        "RAGE",
+        "CURSE"
+      ],
+      "after": [
+        "WAILING_CRY",
+        "BONEMERANG",
+        "WILL_O_WISP",
         "CURSE"
       ]
     }
