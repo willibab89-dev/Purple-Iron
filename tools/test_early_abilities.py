@@ -82,8 +82,9 @@ def validate(version):
                'BUTTERFREE':['COMPOUND_EYES','PSIONIC','DUST_CLOUD','QUICK_REFLEXES','WONDER_SKIN'],
                'WEEDLE':['POISON_POINT','REPULSIVE','VENOMOUS','PIERCING_STING','SHIELD_DUST'],
                'KAKUNA':['HARD_SHELL','FORTIFY','TOXIC_SHELL','PIERCING_STING','BATTLE_ARMOR'],
-               'BEEDRILL':['RUTHLESS','FRENZY','VENOMOUS','PIERCING_STING','QUICK_REFLEXES']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE')]:
+               'BEEDRILL':['RUTHLESS','FRENZY','VENOMOUS','PIERCING_STING','QUICK_REFLEXES'],
+               'PIDGEY':['TAILWIND','PREDATOR','KEEN_EYE','PIERCING_BEAK','GALE_WINGS']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -92,7 +93,35 @@ def validate(version):
                 assert get('wPartyMon1CatchRate')==17
                 put('wEnemyMonSpecies2',ids[species]);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=17
                 call('AbilityLoadEnemy');assert game.memory[addr('wActiveAbilities')+1]==ab[name]
+        # Load a real party member and ensure entry occurs after stage reset.
+        init();metadata('wPartyMon1','PIDGEY',1,0);put('wBattleMonSpecies2',ids['PIDGEY'])
+        call('LoadBattleMonFromParty')
+        assert get('wActiveAbilities')==ab['TAILWIND'] and get('wPlayerMonSpeedMod')==8,(get('wActiveAbilities'),get('wPlayerMonSpeedMod'))
+        init();put('wEnemyMonSpecies2',ids['PIDGEY']);put('wCurEnemyLVL',20);put('wIsInBattle',1)
+        put('wNatureMode',2);put('wNatureEnemySlot',1);game.memory[addr('wNatureIDs')+1]=0
+        game.memory[addr('wNatureStatSources')+1]=0;rng(0);call('LoadEnemyMonData')
+        assert game.memory[addr('wActiveAbilities')+1]==ab['TAILWIND'] and get('wEnemyMonSpeedMod')==8
         for turn in (0,1):
+            # Tailwind applies after stat setup; other species are unaffected.
+            init(turn);aid(turn,'TAILWIND');put('wAbilitySide',turn);call('AbilityEntrySpeed')
+            assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8
+            init(turn);put('wAbilitySide',turn);call('AbilityEntrySpeed')
+            assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==7
+            # Full-HP Flying moves gain priority; status moves count too.
+            for attack,hp,want in [('WING_ATTACK',160,True),('WHIRLWIND',160,True),('WING_ATTACK',159,False),('TACKLE',160,False)]:
+                ap,tp=init(turn);move(turn,attack);move(1-turn,'TACKLE');aid(turn,'GALE_WINGS');word(ap+'HP',hp)
+                put('wAbilitySide',turn);call('AbilityPriorityOne')
+                assert bool(game.register_file.A)==want,(turn,attack,hp,game.register_file.A)
+            # Apply the defense reduction before Gen 1 stat scaling.
+            for typ,defense,want in [('FLYING',100,75),('FLYING',3,3),('NORMAL',100,100)]:
+                init(turn);aid(turn,'PIERCING_BEAK');put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ])
+                call('AdjustPiercingBeakDefense',BC=defense)
+                got=game.register_file.B*256+game.register_file.C
+                assert got==want,(turn,typ,defense,got)
+            for attack in ('WING_ATTACK','AERIAL_ACE'):
+                init(turn);move(turn,attack);aid(turn,'PIERCING_BEAK')
+                call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack')
+                assert game.memory[0xff98]==75,(turn,attack,game.memory[0xff98])
             for attack,defend,typ,status,pp,want in [
                 ('WATER_PRESSURE',None,'WATER',0,0,100),('WATER_PRESSURE',None,'WATER',0,15,130),('WATER_PRESSURE',None,'WATER',0,40,150),
                 ('PSIONIC',None,'PSYCHIC',0,5,120),('VENOMOUS',None,'NORMAL',8,5,125),('VENOMOUS',None,'NORMAL',0,5,100),
@@ -100,6 +129,22 @@ def validate(version):
                 (None,'WATER_VEIL','FIRE',0,5,50),(None,'HARD_SHELL','NORMAL',0,5,75),(None,'HARD_SHELL','FIRE',0,5,100)]:
                 ap,tp=init(turn);aid(turn,attack);aid(1-turn,defend);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);put(tp+'Status',status);put('wAbilityPPLeft',pp);word('wDamage',100)
                 call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,attack,defend,readword('wDamage'))
+            # Unassigned mechanics for the next species pools, on either side.
+            for name,typ,status,critical,want in [
+                ('STRONG_JAW','NORMAL',0,0,115),('STRONG_JAW','FIRE',0,0,100),
+                ('VOLTAGE','ELECTRIC',64,0,120),('VOLTAGE','ELECTRIC',0,0,100),
+                ('VOLTAGE','NORMAL',64,0,100),('SNIPER','NORMAL',0,1,150),
+                ('SNIPER','NORMAL',0,0,100)]:
+                ap,tp=init(turn);aid(turn,name);put(tp+'Status',status);put('wCriticalHitOrOHKO',critical)
+                put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);word('wDamage',100)
+                call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,name,typ,status,critical,readword('wDamage'))
+            for multiplier,want in [(5,100),(10,100),(20,75)]:
+                init(turn);aid(1-turn,'SAND_ARMOR');put('wDamageMultipliers',multiplier);word('wDamage',100)
+                call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,multiplier,readword('wDamage'))
+            for actor_speed,target_speed,typ,want in [(101,100,'NORMAL',120),(100,100,'NORMAL',100),(99,100,'NORMAL',100),(101,100,'FIRE',100)]:
+                ap,tp=init(turn);aid(turn,'PREDATOR');word(ap+'Speed',actor_speed);word(tp+'Speed',target_speed)
+                put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);word('wDamage',100)
+                call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,actor_speed,target_speed,typ,readword('wDamage'))
             # Poison/Bug override is a single extra type-chart factor.
             ap,tp=init(turn);aid(turn,'PIERCING_STING');put(tp+'Type1',TYPES['BUG']);put(tp+'Type2',TYPES['GRASS']);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES['POISON']);word('wDamage',100)
             call('AbilityDamageBoost');assert readword('wDamage')==200 and get('wDamageMultipliers')==20
@@ -107,6 +152,9 @@ def validate(version):
             for name in ('SHELL_ARMOR','BATTLE_ARMOR'):
                 init(turn);aid(1-turn,name);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==0
             ap,tp=init(turn);aid(turn,'RUTHLESS');put(tp+'Status',8);put('wNatureResult',150);call('AbilityRuthless');assert get('wNatureResult')==255
+            for typ,base,want in [('NORMAL',100,150),('NORMAL',200,255),('FIRE',100,100)]:
+                init(turn);aid(turn,'SHARP_CLAWS');put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);put('wNatureResult',base)
+                call('AbilityRuthless');assert get('wNatureResult')==want,(turn,typ,base,get('wNatureResult'))
             for attack,status in [('SHOCK_WAVE',64),('POISON_TAIL',8)]:
                 ap,tp=init(turn);move(turn,attack);put(tp+'Status',status);rng(199);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==1
                 for armor in ('SHELL_ARMOR','BATTLE_ARMOR'):
@@ -122,7 +170,7 @@ def validate(version):
             ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'POISON_POINT');put(ap+'Status',8)
             actor_flags='w'+('Enemy' if turn else 'Player')+'BattleStatus3';put(actor_flags,1);call('AbilityAfterHit');assert get(actor_flags)&1
             # Low-HP stage triggers and switch persistence, strict one-third boundary.
-            for name,stat in [('FORTIFY','Defense'),('SURVIVAL_INSTINCTS','Speed')]:
+            for name,stat in [('FORTIFY','Defense'),('SURVIVAL_INSTINCTS','Speed'),('CORNERED','Attack')]:
                 ap,tp=init(turn);aid(turn,name);word(ap+'HP',54);call('AbilityLowHPBoth');mod='w'+('Enemy' if turn else 'Player')+'Mon'+stat+'Mod';assert get(mod)==7
                 word(ap+'HP',53);call('AbilityLowHPBoth');assert get(mod)==8
                 call('AbilityLowHPBoth');assert get(mod)==8
@@ -147,6 +195,27 @@ def validate(version):
             # Direct and secondary burns are blocked by the Water Veil status gate.
             ap,tp=init(turn);aid(1-turn,'WATER_VEIL');put('wCustomSide',1-turn);put('wCustomDelta',16);call('UtilityInflictStatus');assert get(tp+'Status')==0
             # Accuracy effects, including simultaneous Compound Eyes / Wonder Skin.
+            for stat,delta,blocked in [(4,255,True),(4,1,False),(1,255,False)]:
+                init(turn);aid(1-turn,'KEEN_EYE');put('wCustomSide',1-turn);put('wCustomStat',stat);put('wCustomDelta',delta)
+                call('AbilityKeenEyeCustom');assert bool(get('wAbilityCheckResult'))==blocked,(turn,stat,delta)
+            init(turn);aid(1-turn,'KEEN_EYE');call('AbilityKeenEyeTarget');assert get('wAbilityCheckResult')==1
+            # Exercise the actual legacy accuracy-drop routine as well.
+            bank,address=syms['MoveHitTest'];original=game.memory[bank,address]
+            patch('MoveHitTest',[0xc9])
+            delay_bank,delay_address=syms['DelayFrames'];original_delay=game.memory[delay_bank,delay_address]
+            patch('DelayFrames',[0xc9])
+            frame_bank,frame_address=syms['DelayFrame'];original_frame=game.memory[frame_bank,frame_address]
+            patch('DelayFrame',[0xc9])
+            done_bank,done_address=syms['UpdateLoweredStatDone'];original_done=game.memory[done_bank,done_address]
+            patch('UpdateLoweredStatDone',[0xc9])
+            for target_ability,want in [('KEEN_EYE',7),(None,6)]:
+                init(turn);move(turn,'SMOKESCREEN');aid(1-turn,target_ability)
+                call('StatModifierDownEffect')
+                assert get('w'+('Player' if turn else 'Enemy')+'MonAccuracyMod')==want,(turn,target_ability)
+            game.memory[bank,address]=original
+            game.memory[delay_bank,delay_address]=original_delay
+            game.memory[frame_bank,frame_address]=original_frame
+            game.memory[done_bank,done_address]=original_done
             for actor,target,attack,want in [('COMPOUND_EYES',None,'SLEEP_POWDER',130),(None,'WONDER_SKIN','SLEEP_POWDER',50),('COMPOUND_EYES','WONDER_SKIN','SLEEP_POWDER',65),(None,'WONDER_SKIN','TACKLE',100)]:
                 init(turn);move(turn,attack);aid(turn,actor);aid(1-turn,target);game.memory[0xff97:0xff99]=[0,100]
                 call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,want]),(actor,target,attack,bytes(game.memory[0xff97:0xff99]))
@@ -168,9 +237,9 @@ def validate(version):
             call('AbilityPriority');assert get('wAbilityCheckResult')==want,('Ambush priority',hp,quick)
         for invalid in (0,237,255):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
-        # All 34 descriptions render without changing the active ability IDs.
+        # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,35):
+        for n in range(1,46):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -258,7 +327,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 15 species / 75 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 18 species / 90 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

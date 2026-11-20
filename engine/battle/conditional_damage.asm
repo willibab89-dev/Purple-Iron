@@ -24,6 +24,32 @@ StoreBankedDamageVars:
 	ld [H_MULTIPLICAND + 2], a
 	ret
 
+; BC is the full defensive stat; HL and DE are preserved for the caller.
+AdjustPiercingBeakDefense:
+	abilitycall AbilityPiercingBeakCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	ret z
+	push hl
+	ld h, b
+	ld l, c
+	srl h
+	rr l
+	srl h
+	rr l
+	ld a, c
+	sub l
+	ld c, a
+	ld a, b
+	sbc h
+	ld b, a
+	or c
+	jr nz, .done
+	inc c
+.done
+	pop hl
+	ret
+
 INCLUDE "engine/battle/legacy_damage_vars.asm"
 
 ConditionalActorMove:
@@ -260,6 +286,7 @@ ConditionalDamageVars:
 	ld b, h
 	ld c, l
 	pop hl
+	call AdjustPiercingBeakDefense
 	; Identical Gen 1 joint stat scaling, with the existing minimum-one fix.
 	ld a, h
 	or b

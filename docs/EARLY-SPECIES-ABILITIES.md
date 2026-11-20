@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 15 original species, with five equally likely slots per species and 34 distinct ability effects. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 18 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -13,10 +13,13 @@ Implemented for 15 original species, with five equally likely slots per species 
 | Weedle | Poison Point | Repulsive | Venomous | Piercing Sting | Shield Dust |
 | Kakuna | Hard Shell | Fortify | Toxic Shell | Piercing Sting | Battle Armor |
 | Beedrill | Ruthless | Frenzy | Venomous | Piercing Sting | Quick Reflexes |
+| Pidgey / Pidgeotto / Pidgeot | Tailwind | Predator | Keen Eye | Piercing Beak | Gale Wings |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Pidgey-family effects: Tailwind raises Speed one stage on entry; Predator boosts physical damage by 20% against a slower target; Keen Eye prevents accuracy reductions; Piercing Beak ignores 25% of the defender's Defense for Flying moves; Gale Wings gives Flying moves +1 priority at full HP. Predator compares effective battle speeds. The existing type-based physical/special categories apply.
 
 | Ability | Behavior |
 |---|---|
@@ -68,4 +71,4 @@ Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family 
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py`, the existing prototype ability tests and the full regression suite. Coverage includes all 75 species/slot combinations, both sides of battle, exact chance boundaries, full native move execution, multi-hit/contact/Substitute rules, priority stacking, critical prevention, all new damage/status/stat effects and Ancient's native wild/capture/capsule/PC/daycare/save paths. Existing generic nature/storage/evolution/Transform tests remain part of the suite. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 90 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.

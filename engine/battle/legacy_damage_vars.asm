@@ -94,6 +94,7 @@ LegacyPlayerDamageVars:
 ; this allows values with up to 10 bits (values up to 1023) to be handled
 ; anything larger will wrap around
 .scaleStats
+	call AdjustPiercingBeakDefense
 	ld a, [hli]
 	ld l, [hl]
 	ld h, a ; hl = player's offensive stat
@@ -232,6 +233,7 @@ LegacyEnemyDamageVars:
 ; this allows values with up to 10 bits (values up to 1023) to be handled
 ; anything larger will wrap around
 .scaleStats
+	call AdjustPiercingBeakDefense
 	ld a, [hli]
 	ld l, [hl]
 	ld h, a ; hl = enemy's offensive stat

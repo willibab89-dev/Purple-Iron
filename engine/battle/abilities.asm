@@ -30,6 +30,9 @@ AbilitySpeciesPools:
 	db WEEDLE, 31
 	db KAKUNA, 36
 	db BEEDRILL, 41
+	db PIDGEY, 46
+	db PIDGEOTTO, 46
+	db PIDGEOT, 46
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -41,6 +44,7 @@ AbilityPoolIds:
 	db AB_POISON_POINT, AB_REPULSIVE, AB_VENOMOUS, AB_PIERCING_STING, AB_SHIELD_DUST
 	db AB_HARD_SHELL, AB_FORTIFY, AB_TOXIC_SHELL, AB_PIERCING_STING, AB_BATTLE_ARMOR
 	db AB_RUTHLESS, AB_FRENZY, AB_VENOMOUS, AB_PIERCING_STING, AB_QUICK_REFLEXES
+	db AB_TAILWIND, AB_PREDATOR, AB_KEEN_EYE, AB_PIERCING_BEAK, AB_GALE_WINGS
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -566,6 +570,7 @@ AbilityTextPointers:
 	dw AbilityText32
 	dw AbilityText33
 	dw AbilityText34
+	dw AbilityText35, AbilityText36, AbilityText37, AbilityText38, AbilityText39, AbilityText40, AbilityText41, AbilityText42, AbilityText43, AbilityText44, AbilityText45
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -722,5 +727,17 @@ AbilityText33:
 
 AbilityText34:
 	db "FRENZY",$4e,"Direct move KO:",$4e,"Attack +1.@"
+
+AbilityText35: db "STRONG JAW",$4e,"Physical damage",$4e,"x1.15.@"
+AbilityText36: db "VOLTAGE",$4e,"Electric damage",$4e,"x1.2 vs paralysis.@"
+AbilityText37: db "SNIPER",$4e,"Critical damage",$4e,"x1.5.@"
+AbilityText38: db "SAND ARMOR",$4e,"Super effective",$4e,"damage x0.75.@"
+AbilityText39: db "SHARP CLAWS",$4e,"Physical crit",$4e,"chance x1.5.@"
+AbilityText40: db "CORNERED",$4e,"Below 1/3 HP:",$4e,"Attack +1 once.@"
+AbilityText41: db "PREDATOR",$4e,"Physical damage",$4e,"x1.2 vs slower",$4e,"foes.@"
+AbilityText42: db "KEEN EYE",$4e,"Accuracy cannot",$4e,"be lowered.@"
+AbilityText43: db "TAILWIND",$4e,"Speed +1 on",$4e,"entry.@"
+AbilityText44: db "GALE WINGS",$4e,"Flying priority",$4e,"+1 at full HP.@"
+AbilityText45: db "PIERCING BEAK",$4e,"Flying ignores",$4e,"25% of Defense.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

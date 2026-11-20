@@ -289,6 +289,10 @@ CustomFailed:
 
 ; Stage caps are independent. No second hit test, animation, or RNG here.
 CustomChangeStage:
+	abilitycall AbilityKeenEyeCustom
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	call CustomMods
 	ld a, [wCustomStat]
 	ld e, a

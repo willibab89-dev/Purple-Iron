@@ -6,10 +6,60 @@ AbilityEntry:
 	res 3, [hl]
 	ret
 
+; Called after the newly loaded combatant's stat stages are initialized.
+AbilityEntrySpeed:
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_TAILWIND
+	ret nz
+	ld a, 2 ; Speed
+	jp AbilityRaiseStage
+
 AbilityTarget:
 	ld a, [H_WHOSETURN]
 	xor 1
 	jp AbilityGet
+
+; Called by CustomChangeStage before modifying a stage.
+AbilityKeenEyeCustom:
+	xor a
+	ld [wAbilityCheckResult], a
+	ld a, [wCustomStat]
+	cp 4 ; accuracy
+	ret nz
+	ld a, [wCustomDelta]
+	bit 7, a
+	ret z
+	ld a, [wCustomSide]
+	call AbilityGet
+	cp AB_KEEN_EYE
+	ret nz
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ret
+
+AbilityKeenEyeTarget::
+	xor a
+	ld [wAbilityCheckResult], a
+	call AbilityTarget
+	cp AB_KEEN_EYE
+	ret nz
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ret
+
+AbilityPiercingBeakCheck:
+	xor a
+	ld [wAbilityCheckResult], a
+	call AbilityActor
+	cp AB_PIERCING_BEAK
+	ret nz
+	call AbilityActorMoveType
+	cp FLYING
+	ret nz
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ret
 
 AbilityMove:
 	ld hl, wPlayerMoveNum
@@ -137,14 +187,14 @@ AbilityModifyDamage:
 	jr nz, .piercing
 	call AbilityTargetStatus
 	bit PSN, [hl]
-	jr z, .defender
+	jp z, .defender
 .quarter
 	ld c, 125
 	call AbilityScaleDamage
 	jp .defender
 .piercing
 	cp AB_PIERCING_STING
-	jp nz, .defender
+	jr nz, .newOffense
 	ld a, [wAbilityMoveType]
 	cp POISON
 	jp nz, .defender
@@ -168,6 +218,68 @@ AbilityModifyDamage:
 	and $80
 	or c
 	ld [wDamageMultipliers], a
+	jr .defender
+.newOffense
+	cp AB_STRONG_JAW
+	jr nz, .voltage
+	ld a, [wAbilityMoveType]
+	cp FIRE ; physical types precede FIRE
+	jr nc, .defender
+	ld c, 115
+	call AbilityScaleDamage
+	jr .defender
+.voltage
+	cp AB_VOLTAGE
+	jr nz, .sniper
+	ld a, [wAbilityMoveType]
+	cp ELECTRIC
+	jr nz, .defender
+	call AbilityTargetStatus
+	bit PAR, [hl]
+	jr z, .defender
+	ld c, 120
+	call AbilityScaleDamage
+	jr .defender
+.sniper
+	cp AB_SNIPER
+	jr nz, .predator
+	ld a, [wCriticalHitOrOHKO]
+	and a
+	jr z, .defender
+	ld c, 150
+	call AbilityScaleDamage
+	jr .defender
+.predator
+	cp AB_PREDATOR
+	jr nz, .defender
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jr nc, .defender
+	call AbilityPrepareSpeeds
+	ld hl, wAbilityPlayerSpeed
+	ld de, wAbilityEnemySpeed
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .compareSpeed
+	ld hl, wAbilityEnemySpeed
+	ld de, wAbilityPlayerSpeed
+.compareSpeed
+	ld a, [de]
+	ld b, a
+	ld a, [hli]
+	cp b
+	jr c, .defender
+	jr nz, .predatorBoost
+	inc de
+	ld a, [de]
+	ld b, a
+	ld a, [hl]
+	cp b
+	jr c, .defender
+	jr z, .defender
+.predatorBoost
+	ld c, 120
+	call AbilityScaleDamage
 .defender
 	call AbilityTarget
 	cp AB_VINE_GUARD
@@ -187,10 +299,19 @@ AbilityModifyDamage:
 	jp .reduce
 .shell
 	cp AB_HARD_SHELL
-	ret nz
+	jr nz, .sandArmor
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	ret nc
+	ld c, 75
+	jr .reduce
+.sandArmor
+	cp AB_SAND_ARMOR
+	ret nz
+	ld a, [wDamageMultipliers]
+	and $7f
+	cp 11 ; neutral is 10
+	ret c
 	ld c, 75
 .reduce
 	call AbilityScaleDamage
@@ -404,8 +525,13 @@ AbilityLowHP:
 	cp AB_SURVIVAL_INSTINCTS
 	jr z, .speed
 	cp AB_FORTIFY
-	ret nz
+	jr nz, .cornered
 	ld a, 1
+	jr .stat
+.cornered
+	cp AB_CORNERED
+	ret nz
+	xor a ; Attack
 	jr .stat
 .speed
 	ld a, 2
@@ -470,7 +596,7 @@ AbilityCriticalGuard:
 AbilityRuthless:
 	call AbilityActor
 	cp AB_RUTHLESS
-	ret nz
+	jr nz, .sharpClaws
 	call AbilityTargetStatus
 	ld a, [hl]
 	and a
@@ -482,6 +608,19 @@ AbilityRuthless:
 .store
 	ld [wNatureResult], a
 	ret
+.sharpClaws
+	cp AB_SHARP_CLAWS
+	ret nz
+	call AbilityActorMoveType
+	cp FIRE ; physical types precede FIRE
+	ret nc
+	ld a, [wNatureResult]
+	ld b, a
+	srl a
+	add b
+	jr nc, .store
+	ld a, 255
+	jr .store
 
 ; Shield Dust blocks target-directed secondary effects only. Multi-hit,
 ; recoil, draining, screen removal and primary trapping effects still execute.
@@ -665,13 +804,33 @@ AbilityPriorityOne:
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_QUICK_REFLEXES
-	jr nz, .plain
+	jr nz, .gale
 	call AbilityFlagsPointer
 	bit 3, [hl]
 	jr nz, .plain
 	ld a, [wAbilityTemp + 1]
 	call AbilityMoveFlags
 	bit 0, a
+	jr z, .plain
+	pop bc
+	inc b
+	ld a, b
+	ret
+.gale
+	cp AB_GALE_WINGS
+	jr nz, .plain
+	call AbilityHP
+	ld a, [de]
+	cp [hl]
+	jr nz, .plain
+	inc de
+	inc hl
+	ld a, [de]
+	cp [hl]
+	jr nz, .plain
+	ld a, [wAbilityTemp + 1]
+	call AbilityMoveFlags
+	bit 2, a
 	jr z, .plain
 	pop bc
 	inc b
