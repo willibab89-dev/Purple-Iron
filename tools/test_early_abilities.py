@@ -84,8 +84,9 @@ def validate(version):
                'KAKUNA':['HARD_SHELL','FORTIFY','TOXIC_SHELL','PIERCING_STING','BATTLE_ARMOR'],
                'BEEDRILL':['RUTHLESS','FRENZY','VENOMOUS','PIERCING_STING','QUICK_REFLEXES'],
                'PIDGEY':['TAILWIND','PREDATOR','KEEN_EYE','PIERCING_BEAK','GALE_WINGS'],
-               'RATTATA':['SCAVENGER','STRONG_JAW','CORNERED','HUSTLE','POISON_HEAL']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA')]:
+               'RATTATA':['SCAVENGER','STRONG_JAW','CORNERED','HUSTLE','POISON_HEAL'],
+               'SPEAROW':['RUTHLESS','SHORT_TEMPER','RELENTLESS','PIERCING_BEAK','SNIPER']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -103,6 +104,21 @@ def validate(version):
         game.memory[addr('wNatureStatSources')+1]=0;rng(0);call('LoadEnemyMonData')
         assert game.memory[addr('wActiveAbilities')+1]==ab['TAILWIND'] and get('wEnemyMonSpeedMod')==8
         for turn in (0,1):
+            # Short Temper responds to misses, including status moves, but not immunities.
+            for attack,miss,multiplier,hp,want in [('TACKLE',1,10,160,8),('GROWL',1,10,160,8),('TACKLE',0,10,160,7),('TACKLE',1,0,160,7),('TACKLE',1,10,0,7)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'SHORT_TEMPER');put('wMoveMissed',miss);put('wDamageMultipliers',multiplier);word(ap+'HP',hp)
+                call('AbilityAfterAction');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==want,(turn,attack,miss,multiplier,hp)
+            init(turn);move(turn,'TACKLE');aid(turn,'SHORT_TEMPER');put('wMoveMissed',1)
+            call('AbilityAfterAction');call('AbilityAfterAction')
+            assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==9
+            # Relentless grows once per successful strike, including Substitute,
+            # caps at 30%, and clears on status moves or either side switching.
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'RELENTLESS')
+            for hit,expected in enumerate((100,110,120,130,130)):
+                word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==expected,(turn,hit,readword('wDamage'))
+                put('wCustomTargetHadSub',int(hit==1));call('AbilityAfterHit')
+            move(turn,'GROWL');call('AbilityAttempt');move(turn,'TACKLE');word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==100
+            call('AbilityAfterHit');put('wAbilitySide',1-turn);call('AbilityEntry');word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==100
             # Tailwind applies after stat setup; other species are unaffected.
             init(turn);aid(turn,'TAILWIND');put('wAbilitySide',turn);call('AbilityEntrySpeed')
             assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8
@@ -260,7 +276,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,49):
+        for n in range(1,51):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -348,7 +364,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 20 species / 100 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 22 species / 110 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

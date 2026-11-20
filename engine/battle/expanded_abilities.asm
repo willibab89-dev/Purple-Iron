@@ -1,9 +1,22 @@
 ; Shared ability mechanics. This bank has room for the early-species pools.
 ; Flags per party member: 0 Hot Temper, 1 Confident, 2 low-HP trigger,
-; 3 first damaging move spent. Bits 0..2 persist through switching.
+; 3 first damaging move spent; 4..5 Relentless hit count. Bits 0..2 persist
+; through switching; Relentless resets when either combatant changes.
 AbilityEntry:
+	call AbilityClearRelentless
 	call AbilityFlagsPointer
 	res 3, [hl]
+	ret
+
+AbilityClearRelentless:
+	ld hl, wAbilityFlags
+	ld b, 12
+.loop
+	ld a, [hl]
+	and $cf
+	ld [hli], a
+	dec b
+	jr nz, .loop
 	ret
 
 ; Called after the newly loaded combatant's stat stages are initialized.
@@ -218,7 +231,7 @@ AbilityModifyDamage:
 	and $80
 	or c
 	ld [wDamageMultipliers], a
-	jr .defender
+	jp .defender
 .newOffense
 	cp AB_STRONG_JAW
 	jr z, .physicalStrong
@@ -231,7 +244,7 @@ AbilityModifyDamage:
 .physicalBoost
 	ld a, [wAbilityMoveType]
 	cp FIRE ; physical types precede FIRE
-	jr nc, .defender
+	jp nc, .defender
 	call AbilityScaleDamage
 	jr .defender
 .voltage
@@ -257,7 +270,7 @@ AbilityModifyDamage:
 	jr .defender
 .predator
 	cp AB_PREDATOR
-	jr nz, .defender
+	jr nz, .relentless
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	jr nc, .defender
@@ -285,6 +298,24 @@ AbilityModifyDamage:
 	jr z, .defender
 .predatorBoost
 	ld c, 120
+	call AbilityScaleDamage
+	jr .defender
+.relentless
+	cp AB_RELENTLESS
+	jr nz, .defender
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityFlagsPointer
+	ld a, [hl]
+	and $30
+	swap a
+	ld b, a
+	add a
+	add a
+	add b
+	add a ; ten percent per prior hit
+	add 100
+	ld c, a
 	call AbilityScaleDamage
 .defender
 	call AbilityTarget
@@ -355,11 +386,18 @@ AbilityAttempt:
 	ld a, [hl]
 	call AbilityMoveFlags
 	bit 0, a
-	ret z
+	jr z, .statusMove
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	call AbilityFlagsPointer
 	set 3, [hl]
+	ret
+.statusMove
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityFlagsPointer
+	res 4, [hl]
+	res 5, [hl]
 	ret
 
 AbilityHitEvents:
@@ -369,6 +407,12 @@ AbilityHitEvents:
 	ld a, [hl]
 	and a
 	ret z
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	or b
+	ret z
+	call AbilityRelentlessHit
 	ld a, [wCustomTargetHadSub]
 	and a
 	ret nz
@@ -442,6 +486,42 @@ AbilityHitEvents:
 	xor 1
 	ld [wCustomSide], a
 	jp AbilityInflictOrdinaryStatus
+
+; Each successful damaging strike counts, including a hit on a Substitute.
+AbilityRelentlessHit:
+	call AbilityActor
+	cp AB_RELENTLESS
+	ret nz
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityFlagsPointer
+	ld a, [hl]
+	and $30
+	cp $30
+	ret z
+	ld a, [hl]
+	add $10
+	ld [hl], a
+	ret
+
+AbilityShortTemper:
+	call AbilityActor
+	cp AB_SHORT_TEMPER
+	ret nz
+	ld a, [wMoveMissed]
+	and a
+	ret z
+	ld a, [wDamageMultipliers]
+	and $7f
+	ret z ; immunity is not a miss
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	xor a ; Attack
+	jp AbilityRaiseStage
 
 AbilityGetTargetReactions:
 	call AbilityHP
@@ -1025,6 +1105,7 @@ AbilityHalfHP:
 	ret
 
 AbilityPlayerEntry:
+	call AbilityClearRelentless
 	ld hl, wAbilityFlags
 	ld a, [wWhichPokemon]
 	ld c, a

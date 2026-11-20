@@ -35,6 +35,8 @@ AbilitySpeciesPools:
 	db PIDGEOT, 46
 	db RATTATA, 51
 	db RATICATE, 51
+	db SPEAROW, 56
+	db FEAROW, 56
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -48,6 +50,7 @@ AbilityPoolIds:
 	db AB_RUTHLESS, AB_FRENZY, AB_VENOMOUS, AB_PIERCING_STING, AB_QUICK_REFLEXES
 	db AB_TAILWIND, AB_PREDATOR, AB_KEEN_EYE, AB_PIERCING_BEAK, AB_GALE_WINGS
 	db AB_SCAVENGER, AB_STRONG_JAW, AB_CORNERED, AB_HUSTLE, AB_POISON_HEAL
+	db AB_RUTHLESS, AB_SHORT_TEMPER, AB_RELENTLESS, AB_PIERCING_BEAK, AB_SNIPER
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -346,6 +349,7 @@ AbilityRaiseStage:
 
 AbilityAfterAction:
 	abilitycall AbilityFrenzy
+	abilitycall AbilityShortTemper
 	push af
 	push bc
 	push de
@@ -584,6 +588,7 @@ AbilityTextPointers:
 	dw AbilityText34
 	dw AbilityText35, AbilityText36, AbilityText37, AbilityText38, AbilityText39, AbilityText40, AbilityText41, AbilityText42, AbilityText43, AbilityText44, AbilityText45
 	dw AbilityText46, AbilityText47, AbilityText48
+	dw AbilityText49, AbilityText50
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -755,5 +760,7 @@ AbilityText45: db "PIERCING BEAK",$4e,"Flying ignores",$4e,"25% of Defense.@"
 AbilityText46: db "SCAVENGER",$4e,"Direct KO heals",$4e,"1/4 max HP.@"
 AbilityText47: db "HUSTLE",$4e,"Physical damage",$4e,"x1.25; accuracy",$4e,"-15 points.@"
 AbilityText48: db "POISON HEAL",$4e,"Poison heals",$4e,"1/8 max HP.@"
+AbilityText49: db "SHORT TEMPER",$4e,"Attack +1 when",$4e,"a move misses.@"
+AbilityText50: db "RELENTLESS",$4e,"Each hit boosts",$4e,"next damage 10%",$4e,"up to 30%.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

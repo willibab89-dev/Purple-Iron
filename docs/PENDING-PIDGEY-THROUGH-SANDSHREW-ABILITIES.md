@@ -18,7 +18,7 @@ These are requested designs; implementation status is noted below. Each line is 
 4. Hustle: Physical attacks deal 25% more damage but lose 15 accuracy points.
 5. Poison Heal: Restore 1/8 maximum HP each turn while poisoned instead of taking poison damage.
 
-## Spearow / Fearow
+## Spearow / Fearow (implemented)
 
 1. Ruthless: Double critical-hit chance against targets with a major status condition.
 2. Short Temper: Raise Attack by one stage when one of its moves misses.
