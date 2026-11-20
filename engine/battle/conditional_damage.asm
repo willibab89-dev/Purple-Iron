@@ -237,6 +237,21 @@ ConditionalAccuracyCheck:
 	push hl
 	push de
 	push bc
+	abilitycall AbilityRubberSkinCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .checkMove
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
+	ld a, [wDamageMultipliers]
+	and $80
+	ld [wDamageMultipliers], a
+	ld a, 1
+	ld [wMoveMissed], a
+	scf
+	jr .done
+.checkMove
 	call ConditionalActorMove
 	ld a, [hl]
 	cp SNIPE_SHOT

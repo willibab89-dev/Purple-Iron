@@ -115,7 +115,7 @@ def validate(version):
                     assert state['index']==2
         for item in ('ABILITY_CAPSULE','NATURE_CAPSULE'):
             for cancel in (True,False):
-                initmon(0);label=initmon(1,'JIGGLYPUFF');before=raw(label);select.update(cancel=cancel,mon=1);bag(items[item]);rng(9)
+                initmon(0);label=initmon(1,'ZUBAT');before=raw(label);select.update(cancel=cancel,mon=1);bag(items[item]);rng(9)
                 if not cancel and item=='NATURE_CAPSULE':continue
                 call('UseItem_');assert quantity()==2 and raw(label)==before and get('wActionResultOrTookBattleTurn')==0
         select.update(cancel=False,mon=1)

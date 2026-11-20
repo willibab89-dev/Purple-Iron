@@ -598,6 +598,15 @@ AbilityModifyDamage:
 	ld c, 75
 	jr .reduce
 .thickHide
+	cp AB_THICK_FAT
+	jr nz, .notThickFat
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jr z, .half
+	cp ICE
+	jr z, .half
+	ret
+.notThickFat
 	cp AB_THICK_HIDE
 	ret nz
 	ld a, [wAbilityMoveType]
@@ -695,12 +704,24 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityScaleDamage
 .defender
 	call AbilityTarget
+	cp AB_THICK_FAT
+	jr nz, .hide
+	call AbilityActorMoveType
+	cp FIRE
+	jr z, .half
+	cp ICE
+	ret nz
+.half
+	ld c, 50
+	jr .scale
+.hide
 	cp AB_THICK_HIDE
 	ret nz
 	call AbilityActorMoveType
 	cp FIRE
 	ret nc
 	ld c, 85
+.scale
 	call AbilityScaleDamage
 AbilityFixedMinimum:
 	ld a, [wDamage]
@@ -1077,6 +1098,41 @@ AbilityAftermathText:
 	line "the attacker!"
 	prompt
 
+AbilityRubberSkinCheck:
+	xor a
+	ld [wAbilityCheckResult], a
+	call AbilityActorMoveType
+	cp ELECTRIC
+	ret nz
+	call AbilityTarget
+	cp AB_RUBBER_SKIN
+	ret nz
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ret
+
+AbilitySoothingVoice:
+	ld a, [wAbilityHit]
+	bit 3, a
+	ret z
+	call AbilityActor
+	cp AB_SOOTHING_VOICE
+	ret nz
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 4, a
+	ret z
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	dec hl
+	ld a, 3
+	jp AbilityHealFractionFromHL
+
 AbilityFoxfire:
 	call AbilityActor
 	cp AB_FOXFIRE
@@ -1316,6 +1372,15 @@ AbilityGetTargetReactions:
 	or [hl]
 	jp z, .contact
 	call AbilityTarget
+	cp AB_INFLATABLE
+	jr nz, .hotTemper
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jr nc, .contact
+	ld a, 1 ; Defense
+	call AbilityRaiseStage
+	jr .contact
+.hotTemper
 	cp AB_HOT_TEMPER
 	jr nz, .shellGuard
 	ld a, [wAbilityMoveType]
@@ -1748,8 +1813,19 @@ AbilityBurnGate:
 AbilityAccuracy:
 	call AbilityActor
 	cp AB_COMPOUND_EYES
-	jr nz, .target
+	jr nz, .performer
 	ld c, 130
+	call AbilityScaleAccuracy
+	jr .target
+.performer
+	cp AB_PERFORMER
+	jr nz, .target
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 4, a
+	jr z, .target
+	ld c, 120
 	call AbilityScaleAccuracy
 .target
 	call AbilityTarget

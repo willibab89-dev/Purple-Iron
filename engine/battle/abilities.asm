@@ -53,6 +53,8 @@ AbilitySpeciesPools:
 	db CLEFABLE, 91
 	db VULPIX, 96
 	db NINETALES, 96
+	db JIGGLYPUFF, 101
+	db WIGGLYTUFF, 101
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -75,6 +77,7 @@ AbilityPoolIds:
 	db AB_PHYSICAL_POISON_POINT, AB_PIERCING_HORN, AB_SHEER_FORCE, AB_BLOODLUST, AB_RAMPAGE
 	db AB_LUCKY_STAR, AB_MAGIC_GUARD, AB_MOON_CHILD, AB_UNPREDICTABLE, AB_WONDER_SKIN
 	db AB_AFTERMATH, AB_FOXFIRE, AB_NINE_LIVES, AB_FOXS_CUNNING, AB_ILLUSION
+	db AB_INFLATABLE, AB_PERFORMER, AB_RUBBER_SKIN, AB_SOOTHING_VOICE, AB_THICK_FAT
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -387,6 +390,7 @@ AbilityAfterAction:
 	abilitycall AbilityShortTemper
 	abilitycall AbilitySandAfterAction
 	abilitycall AbilityFoxfire
+	abilitycall AbilitySoothingVoice
 	abilitycall AbilityQuickFeetBoth
 	push af
 	push bc
@@ -652,6 +656,7 @@ AbilityTextPointers:
 	dw AbilityText66, AbilityText67, AbilityText68, AbilityText69
 	dw AbilityText70, AbilityText71, AbilityText72, AbilityText73
 	dw AbilityText74, AbilityText75, AbilityText76, AbilityText77, AbilityText78
+	dw AbilityText79, AbilityText80, AbilityText81, AbilityText82, AbilityText83
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -853,5 +858,10 @@ AbilityText75: db "FOXFIRE",$4e,"Inflict burn:",$4e,"Special +1 once.@"
 AbilityText76: db "NINE LIVES",$4e,"Survive a fatal hit",$4e,"once per battle.@"
 AbilityText77: db "FOX'S CUNNING",$4e,"Ghost move: Evasion",$4e,"+1 once per battle.@"
 AbilityText78: db "ILLUSION",$4e,"First attack taken",$4e,"is halved on entry.@"
+AbilityText79: db "INFLATABLE",$4e,"Physical hit:",$4e,"Defense +1.@"
+AbilityText80: db "PERFORMER",$4e,"Sound move accuracy",$4e,"is increased 20%.@"
+AbilityText81: db "RUBBER SKIN",$4e,"Immune to Electric",$4e,"moves.@"
+AbilityText82: db "SOOTHING VOICE",$4e,"Sound move: heal",$4e,"1/8 maximum HP.@"
+AbilityText83: db "THICK FAT",$4e,"Fire and Ice damage",$4e,"is halved.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"
