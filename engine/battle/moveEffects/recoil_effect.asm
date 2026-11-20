@@ -1,4 +1,8 @@
 RecoilEffect_:
+	abilitycall AbilityMagicGuardActor
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	ld a, [H_WHOSETURN]
 	and a
 	ld a, [wPlayerMoveNum]

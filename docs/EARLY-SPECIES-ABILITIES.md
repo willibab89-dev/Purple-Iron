@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 34 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 36 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -22,10 +22,13 @@ Implemented for 34 original species, with five equally likely slots per species.
 | Sandslash | Spiny Armor | Sand Armor | Burrower | Sharp Claws | Sand Veil |
 | Nidoran♀ / Nidorina / Nidoqueen | Poison Point | Measured | Thick Hide | Protective Instinct | Iron Will |
 | Nidoran♂ / Nidorino / Nidoking | Poison Point | Piercing Horn | Sheer Force | Bloodlust | Rampage |
+| Clefairy / Clefable | Lucky Star | Magic Guard | Moon Child | Unpredictable | Wonder Skin |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Clefairy-family effects: Lucky Star gives damaging moves a 10% chance to deal 50% more damage. Magic Guard prevents indirect damage from poison, burn, Leech Seed, recoil, crash damage, Spiny Armor and residual Wrap, Fire Spin and Curse. Moon Child heals 1/16 maximum HP each turn, with a minimum of 1 HP and no revival. Unpredictable boosts damage from moves called by Metronome by 30%. Wonder Skin halves the accuracy of incoming status moves.
 
 Nidoran♂-family effects: Poison Point has a 25% chance to poison physical attackers. Piercing Horn ignores 20% of Defense with physical moves. Sheer Force increases damage by 20% for moves with secondary effects and suppresses those effects. Bloodlust increases physical damage by 25% against a living target below half HP. Rampage increases physical damage by 25% and inflicts recoil equal to 10% of damage dealt per hit, rounded down with a minimum of 1; Substitute damage is capped at its remaining HP. Fixed physical damage is affected by Bloodlust and Rampage.
 
@@ -93,4 +96,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 170 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 180 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.

@@ -207,6 +207,12 @@ ResidualTickSide:
 	and a
 	jr z, .fire
 	dec [hl]
+	ld a, [wCustomSide]
+	ld [wAbilitySide], a
+	abilitycall AbilityMagicGuardCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr nz, .fire
 	inc hl
 	ld a, [hli]
 	ld [wDamage], a
@@ -245,6 +251,8 @@ ResidualTickSide:
 	and a
 	jr z, .curse
 	dec [hl]
+	call ResidualMagicGuard
+	jr nz, .curse
 	ld a, 4
 	ld [wCustomDelta], a
 	xor a
@@ -258,6 +266,8 @@ ResidualTickSide:
 	call ResidualState
 	bit 1, [hl]
 	jr z, .root
+	call ResidualMagicGuard
+	jr nz, .root
 	ld a, 3
 	ld [wCustomDelta], a
 	xor a
@@ -279,6 +289,14 @@ ResidualTickSide:
 	ld hl, ResidualRootTickText
 	jp PrintText
 
+ResidualMagicGuard:
+	ld a, [wCustomSide]
+	ld [wAbilitySide], a
+	abilitycall AbilityMagicGuardCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	ret
+
 ResidualAlive:
 	call UtilityStatusPointer
 	dec hl
@@ -291,6 +309,16 @@ ResidualAlive:
 ; CustomSide selects recipient. Delta is divisor shift (3 or 4), Chance
 ; selects damage (0) or healing (1). Uses full-width HP, minimum one.
 ResidualFraction:
+	ld a, [wCustomChance]
+	and a
+	jr nz, .allowed
+	ld a, [wCustomSide]
+	ld [wAbilitySide], a
+	abilitycall AbilityMagicGuardCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
+.allowed
 	call UtilityStatusPointer
 	ld bc, wBattleMonMaxHP - wBattleMonStatus
 	add hl, bc

@@ -92,8 +92,9 @@ def validate(version):
                'SANDSHREW':['ROLLING_DEFENSE','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL'],
                'SANDSLASH':['SPINY_ARMOR','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL'],
                'NIDORAN_F':['PHYSICAL_POISON_POINT','MEASURED','THICK_HIDE','PROTECTIVE_INSTINCT','IRON_WILL'],
-               'NIDORAN_M':['PHYSICAL_POISON_POINT','PIERCING_HORN','SHEER_FORCE','BLOODLUST','RAMPAGE']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M')]:
+               'NIDORAN_M':['PHYSICAL_POISON_POINT','PIERCING_HORN','SHEER_FORCE','BLOODLUST','RAMPAGE'],
+               'CLEFAIRY':['LUCKY_STAR','MAGIC_GUARD','MOON_CHILD','UNPREDICTABLE','WONDER_SKIN']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -319,6 +320,13 @@ def validate(version):
             for ability_name,attack,hp,want in [('BLOODLUST','TACKLE',79,125),('BLOODLUST','TACKLE',80,100),('BLOODLUST','EMBER',79,100),('RAMPAGE','TACKLE',160,125),('RAMPAGE','EMBER',160,100),('SHEER_FORCE','SLUDGE',160,120),('SHEER_FORCE','TWINEEDLE',160,120),('SHEER_FORCE','TACKLE',160,100)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,ability_name);word(tp+'HP',hp);word('wDamage',100)
                 call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,ability_name,attack,hp,readword('wDamage'))
+            for roll,want in [(0,150),(19,150),(20,100),(199,100)]:
+                init(turn);move(turn,'TACKLE');aid(turn,'LUCKY_STAR');word('wDamage',100);rng(roll)
+                call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,roll,readword('wDamage'))
+            init(turn);move(turn,'METRONOME');aid(turn,'UNPREDICTABLE');call('AbilityAttempt');move(turn,'TACKLE');word('wDamage',100)
+            call('AbilityDamageBoost');assert readword('wDamage')==130,(turn,readword('wDamage'))
+            init(turn);move(turn,'TACKLE');aid(turn,'UNPREDICTABLE');word('wDamage',100)
+            call('AbilityDamageBoost');assert readword('wDamage')==100
             for attack in ('WING_ATTACK','AERIAL_ACE'):
                 init(turn);move(turn,attack);aid(turn,'PIERCING_BEAK')
                 call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack')
@@ -467,7 +475,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,70):
+        for n in range(1,74):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -516,7 +524,7 @@ def validate(version):
                   'DrawPlayerHUDAndHPBar','DrawEnemyHUDAndHPBar','UpdateHPBar2','MoveAnimation',
                   'HideSubstituteShowMonAnim','ReshowSubstituteAnim','DrawHUDsAndHPBars'):
             patch(n,[0xc9])
-        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None):
+        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None,random_value=0):
             ap,tp=init(turn)
             put('wActionResultOrTookBattleTurn',0);put('wMonIsDisobedient',0)
             for side in (0,1):
@@ -525,7 +533,7 @@ def validate(version):
             for pref in ('wBattleMon','wPartyMon1','wEnemyMon','wEnemyMon1'):
                 put(pref+'Species',ids['BULBASAUR'] if pref in ('wBattleMon','wPartyMon1') else ids['CHARMANDER'])
                 put(pref+'Level',50);put(pref+'PP',pp);put(pref+'Moves',MOVES[attack])
-            aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);word(tp+'HP',hp);word(ap+'HP',actor_hp);rng(0)
+            aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);word(tp+'HP',hp);word(ap+'HP',actor_hp);rng(random_value)
             if counter_damage is not None:
                 word('wCounterDamage',counter_damage);put('wCounterRecipient',turn)
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
@@ -533,6 +541,20 @@ def validate(version):
         for turn in (0,1):
             # Threshold triggers also run immediately after recoil and poison,
             # before the opposing Pokémon can take its action.
+            ap,tp=execute('METRONOME',turn,random_value=MOVES['TACKLE']);normal=160-readword(tp+'HP')
+            ap,tp=execute('METRONOME',turn,actor='UNPREDICTABLE',random_value=MOVES['TACKLE']);assert 160-readword(tp+'HP')>normal,(turn,normal,readword(tp+'HP'))
+            ap,tp=init(turn);aid(turn,'MOON_CHILD');word(ap+'HP',80);put('wResidualRoundDone',0);call('AbilityEndRound');assert readword(ap+'HP')==90
+            for status in (8,16):
+                ap,tp=init(turn);aid(turn,'MAGIC_GUARD');word(ap+'HP',80);put(ap+'Status',status)
+                put('w'+('Enemy' if turn else 'Player')+'BattleStatus2',128);call('HandlePoisonBurnLeechSeed')
+                assert readword(ap+'HP')==80 and readword(tp+'HP')==160,(turn,status,readword(ap+'HP'))
+            ap,tp=init(turn);aid(turn,'MAGIC_GUARD');word(ap+'HP',80);put('w'+('Enemy' if turn else 'Player')+'BattleStatus2',128);call('HandlePoisonBurnLeechSeed');assert readword(ap+'HP')==80
+            ap,tp=init(turn);aid(turn,'MAGIC_GUARD');word(ap+'HP',80);put('wCustomSide',turn);put('wCustomChance',0);put('wCustomDelta',3);call('ResidualFraction');assert readword(ap+'HP')==80
+            ap,tp=init(turn);call('ResidualClearAll');aid(turn,'MAGIC_GUARD');word(ap+'HP',80);put('wResidualRoundDone',0)
+            residual='wEnemyResidual' if turn else 'wPlayerResidual'
+            game.memory[addr(residual):addr(residual)+5]=[2,2,2,0,20];call('ResidualEndRound');assert readword(ap+'HP')==80,(turn,readword(ap+'HP'));call('ResidualClearAll')
+            ap,tp=execute('TAKE_DOWN',turn,actor='MAGIC_GUARD',actor_hp=80);assert readword(ap+'HP')==80 and readword(tp+'HP')<160
+            ap,tp=execute('TACKLE',turn,actor='MAGIC_GUARD',target='SPINY_ARMOR',actor_hp=80);assert readword(ap+'HP')==80 and readword(tp+'HP')<160
             ap,tp=execute('SLUDGE',turn);normal=160-readword(tp+'HP');assert get(tp+'Status')==8
             ap,tp=execute('SLUDGE',turn,actor='SHEER_FORCE');assert 160-readword(tp+'HP')>normal and get(tp+'Status')==0
             ap,tp=execute('TWINEEDLE',turn,actor='SHEER_FORCE');assert get(tp+'Status')==0 and readword(tp+'HP')<160
@@ -587,7 +609,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 34 species / 170 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 36 species / 180 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

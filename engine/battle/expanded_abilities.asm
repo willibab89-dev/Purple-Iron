@@ -501,6 +501,30 @@ AbilityModifyDamage:
 	call AbilityScaleDamage
 	jp .defender
 .nidoMale
+	cp AB_LUCKY_STAR
+	jr nz, .unpredictable
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jp z, .defender
+	ld b, 10
+	call AbilityRoll
+	jp nc, .defender
+	ld c, 150
+	call AbilityScaleDamage
+	jp .defender
+.unpredictable
+	cp AB_UNPREDICTABLE
+	jr nz, .sheerForce
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jp z, .defender
+	ld a, [wAbilityHit]
+	bit 4, a
+	jp z, .defender
+	ld c, 130
+	call AbilityScaleDamage
+	jp .defender
+.sheerForce
 	cp AB_SHEER_FORCE
 	jr nz, .bloodlust
 	ld a, [wCriticalHitOrOHKO]
@@ -588,6 +612,23 @@ AbilityModifyDamage:
 ; Fixed-damage moves are calculated later than the ordinary damage hook.
 ; Apply the explicitly requested damage reductions after that calculation.
 AbilityFixedDamageModifiers:
+	; A missed Jump Kick causes crash damage to its user.
+	ld a, [wMoveMissed]
+	and a
+	jr z, .notCrash
+	call AbilityActor
+	cp AB_MAGIC_GUARD
+	jr nz, .notCrash
+	call AbilityMove
+	inc hl
+	ld a, [hl]
+	cp JUMP_KICK_EFFECT
+	jr nz, .notCrash
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
+	ret
+.notCrash
 	ld a, [wUnusedC000]
 	bit 4, a
 	jr nz, .fixed
@@ -611,6 +652,24 @@ AbilityFixedDamageModifiers:
 	call AbilityFixedMinimum
 	jr .defender
 .male
+	cp AB_LUCKY_STAR
+	jr nz, .unpredictable
+	ld b, 10
+	call AbilityRoll
+	jr nc, .defender
+	ld c, 150
+	call AbilityScaleDamage
+	jr .defender
+.unpredictable
+	cp AB_UNPREDICTABLE
+	jr nz, .bloodlust
+	ld a, [wAbilityHit]
+	bit 4, a
+	jr z, .defender
+	ld c, 130
+	call AbilityScaleDamage
+	jr .defender
+.bloodlust
 	cp AB_BLOODLUST
 	jr nz, .rampage
 	call AbilityBloodlustCheck
@@ -669,6 +728,12 @@ AbilityAttempt:
 	set 3, [hl] ; a move was actually executed this action
 	call AbilityMove
 	ld a, [hl]
+	cp METRONOME
+	jr nz, .notMetronome
+	ld hl, wAbilityHit
+	set 4, [hl]
+	ld a, METRONOME
+.notMetronome
 	call AbilityMoveFlags
 	bit 0, a
 	jr z, AbilityAttemptStatusMove
@@ -958,6 +1023,9 @@ AbilityRampageText:
 	prompt
 
 AbilitySpinyArmor:
+	call AbilityActor
+	cp AB_MAGIC_GUARD
+	ret z
 	call AbilityTarget
 	cp AB_SPINY_ARMOR
 	ret nz
@@ -1246,12 +1314,32 @@ AbilityHealQuarter:
 	jp AbilityHealFractionFromHL
 
 ; Called at poison damage time; skips poison damage but not Leech Seed.
+AbilityMagicGuardActor:
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+AbilityMagicGuardCheck:
+	xor a
+	ld [wAbilityCheckResult], a
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_MAGIC_GUARD
+	ret nz
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ret
+
 AbilityPoisonHeal:
 	xor a
 	ld [wAbilityCheckResult], a
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	call AbilityGet
+	cp AB_MAGIC_GUARD
+	jr nz, .poisonHeal
+	ld a, 2
+	ld [wAbilityCheckResult], a
+	ret
+.poisonHeal
 	cp AB_POISON_HEAL
 	ret nz
 	call AbilityHP

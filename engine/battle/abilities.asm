@@ -49,6 +49,8 @@ AbilitySpeciesPools:
 	db NIDORAN_M, 86
 	db NIDORINO, 86
 	db NIDOKING, 86
+	db CLEFAIRY, 91
+	db CLEFABLE, 91
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -69,6 +71,7 @@ AbilityPoolIds:
 	db AB_SPINY_ARMOR, AB_SAND_ARMOR, AB_BURROWER, AB_SHARP_CLAWS, AB_SAND_VEIL
 	db AB_PHYSICAL_POISON_POINT, AB_MEASURED, AB_THICK_HIDE, AB_PROTECTIVE_INSTINCT, AB_IRON_WILL
 	db AB_PHYSICAL_POISON_POINT, AB_PIERCING_HORN, AB_SHEER_FORCE, AB_BLOODLUST, AB_RAMPAGE
+	db AB_LUCKY_STAR, AB_MAGIC_GUARD, AB_MOON_CHILD, AB_UNPREDICTABLE, AB_WONDER_SKIN
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -460,6 +463,16 @@ AbilityPhotosynthesis:
 	call AbilityGet
 	cp AB_REGENERATION
 	jp z, AbilityRegeneration
+	cp AB_MOON_CHILD
+	jr nz, .notMoon
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	dec hl
+	ld a, 4
+	jp AbilityHealFractionFromHL
+.notMoon
 	cp 4
 	ret nz
 	call AbilityHP
@@ -633,6 +646,7 @@ AbilityTextPointers:
 	dw AbilityText57, AbilityText58, AbilityText59, AbilityText60
 	dw AbilityText61, AbilityText62, AbilityText63, AbilityText64, AbilityText65
 	dw AbilityText66, AbilityText67, AbilityText68, AbilityText69
+	dw AbilityText70, AbilityText71, AbilityText72, AbilityText73
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -825,5 +839,9 @@ AbilityText66: db "PIERCING HORN",$4e,"Physical hits ignore",$4e,"20% of Defense
 AbilityText67: db "SHEER FORCE",$4e,"Secondary moves x1.2",$4e,"lose added effects.@"
 AbilityText68: db "BLOODLUST",$4e,"Physical hits x1.25",$4e,"if foe below 1/2.@"
 AbilityText69: db "RAMPAGE",$4e,"Physical hits x1.25",$4e,"recoil 10% damage.@"
+AbilityText70: db "LUCKY STAR",$4e,"10% chance to deal",$4e,"50% more damage.@"
+AbilityText71: db "MAGIC GUARD",$4e,"Blocks indirect",$4e,"damage.@"
+AbilityText72: db "MOON CHILD",$4e,"Heal 1/16 max HP",$4e,"each turn.@"
+AbilityText73: db "UNPREDICTABLE",$4e,"Metronome damage",$4e,"is boosted 30%.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

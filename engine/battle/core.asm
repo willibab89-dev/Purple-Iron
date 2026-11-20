@@ -634,10 +634,10 @@ HandlePoisonBurnLeechSeed:
 	ld hl, wEnemyMonHP
 	ld de, wEnemyMonStatus
 .playersTurn
+	abilitycall AbilityPoisonHeal
 	ld a, [de]
 	and (1 << BRN) | (1 << PSN)
 	jr z, .notBurnedOrPoisoned
-	abilitycall AbilityPoisonHeal
 	ld a, [wAbilityCheckResult]
 	and a
 	jr nz, .notBurnedOrPoisoned
@@ -656,6 +656,9 @@ HandlePoisonBurnLeechSeed:
 	pop hl
 	call HandlePoisonBurnLeechSeed_DecreaseOwnHP
 .notBurnedOrPoisoned
+	ld a, [wAbilityCheckResult]
+	cp 2
+	jr z, .notLeechSeeded
 	ld de, wPlayerBattleStatus2
 	ld a, [H_WHOSETURN]
 	and a
