@@ -391,6 +391,20 @@ AbilityModifyDamage:
 	call AbilityScaleDamage
 	jp .defender
 .venomous
+	cp AB_TINTED_LENS
+	jr nz, .notTinted
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jp z, .defender
+	ld a, [wDamageMultipliers]
+	and $7f
+	jp z, .defender
+	cp 10
+	jp nc, .defender
+	ld c, 200
+	call AbilityScaleDamage
+	jp .defender
+.notTinted
 	cp AB_VENOMOUS
 	jr nz, .piercing
 	call AbilityTargetStatus
@@ -684,6 +698,15 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityFixedMinimum
 	jr .defender
 .male
+	cp AB_VENOMOUS
+	jr nz, .luckyStar
+	call AbilityTargetStatus
+	bit PSN, [hl]
+	jr z, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jr .defender
+.luckyStar
 	cp AB_LUCKY_STAR
 	jr nz, .unpredictable
 	ld b, 10
@@ -887,6 +910,7 @@ AbilityHitEvents:
 	ld [wAbilityMoveType], a
 	call AbilitySpinyArmor
 	call AbilityEffectSpore
+	call AbilityToxicScales
 	call AbilityParasite
 	ld a, [wDamage]
 	ld b, a
@@ -1441,8 +1465,16 @@ AbilityToxicWaste:
 	ld a, [hli]
 	or [hl]
 	ret z
-	dec hl
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_POISON_ABSORB
 	ld a, 4
+	jr nz, .heal
+	dec a
+.heal
+	push af
+	call AbilityHP
+	pop af
 	jp AbilityHealFractionFromHL
 .noHeal
 	ld a, [wAbilitySide]
@@ -1450,8 +1482,40 @@ AbilityToxicWaste:
 	ld [wAbilitySide], a
 	ret
 
-; Each physical hit can trigger. Choose among the three statuses uniformly;
-; existing immunities apply to the chosen status without rerolling.
+; Each physical hit may inflict ordinary poison.
+AbilityToxicScales:
+	call AbilityActor
+	cp AB_TOXIC_SCALES
+	ret nz
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	ret nc
+	call AbilityTarget
+	cp AB_SHIELD_DUST
+	ret z
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	inc hl
+	inc hl
+	ld a, [hl]
+	and a
+	ret nz
+	ld b, 30
+	call AbilityRoll
+	ret nc
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wCustomSide], a
+	ld a, 1 << PSN
+	ld [wCustomDelta], a
+	jp AbilityInflictOrdinaryStatus
+
+; Choose among the three statuses uniformly; immunities do not reroll.
 AbilityEffectSpore:
 	call AbilityTarget
 	cp AB_EFFECT_SPORE

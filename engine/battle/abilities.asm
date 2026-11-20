@@ -63,6 +63,8 @@ AbilitySpeciesPools:
 	db VILEPLUME, 111
 	db PARAS, 121
 	db PARASECT, 126
+	db VENONAT, 131
+	db VENOMOTH, 131
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -91,6 +93,7 @@ AbilityPoolIds:
 	db AB_STENCH, AB_ABSORPTION, AB_POLLEN, AB_EFFECT_SPORE, AB_TOXIC_WASTE
 	db AB_EFFECT_SPORE, AB_LEECHING, AB_PARASITE, AB_MYCELIUM, AB_REGROWTH
 	db AB_EFFECT_SPORE, AB_LEECHING, AB_PARASITE, AB_MYCELIUM, AB_DEATH_SPORE
+	db AB_SHIELD_DUST, AB_TOXIC_SCALES, AB_TINTED_LENS, AB_POISON_ABSORB, AB_VENOMOUS
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -487,7 +490,10 @@ AbilityPhotosynthesis:
 	cp AB_REGENERATION
 	jp z, AbilityRegeneration
 	cp AB_TOXIC_WASTE
+	jr z, .poisonRecovery
+	cp AB_POISON_ABSORB
 	jr nz, .notToxicWaste
+.poisonRecovery
 	jp AbilityToxicWaste
 .notToxicWaste
 	cp AB_MOON_CHILD
@@ -682,6 +688,7 @@ AbilityTextPointers:
 	dw AbilityText84, AbilityText85, AbilityText86
 	dw AbilityText87, AbilityText88, AbilityText89, AbilityText90, AbilityText91, AbilityText92
 	dw AbilityText93, AbilityText94, AbilityText95, AbilityText96, AbilityText97
+	dw AbilityText98, AbilityText99, AbilityText100
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -902,5 +909,8 @@ AbilityText94: db "PARASITE",$4e,"Contact spreads",$4e,"this ability.@"
 AbilityText95: db "MYCELIUM",$4e,"Status moves bypass",$4e,"accuracy checks.@"
 AbilityText96: db "REGROWTH",$4e,"Heal 1/16 max HP",$4e,"each turn.@"
 AbilityText97: db "DEATH SPORE",$4e,"When knocked out:",$4e,"curse or poison foe.@"
+AbilityText98: db "TOXIC SCALES",$4e,"Physical hits: 30%",$4e,"chance to poison.@"
+AbilityText99: db "TINTED LENS",$4e,"Resisted damage",$4e,"is doubled.@"
+AbilityText100: db "POISON ABSORB",$4e,"Heal 1/8 max HP",$4e,"if foe is poisoned.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

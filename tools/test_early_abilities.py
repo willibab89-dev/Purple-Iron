@@ -108,8 +108,9 @@ def validate(version):
                'ODDISH':['PERFUME','ABSORPTION','POLLEN','EFFECT_SPORE','PHOTOSYNTHESIS'],
                'GLOOM':['STENCH','ABSORPTION','POLLEN','EFFECT_SPORE','TOXIC_WASTE'],
                'PARAS':['EFFECT_SPORE','LEECHING','PARASITE','MYCELIUM','REGROWTH'],
-               'PARASECT':['EFFECT_SPORE','LEECHING','PARASITE','MYCELIUM','DEATH_SPORE']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH')]:
+               'PARASECT':['EFFECT_SPORE','LEECHING','PARASITE','MYCELIUM','DEATH_SPORE'],
+               'VENONAT':['SHIELD_DUST','TOXIC_SCALES','TINTED_LENS','POISON_ABSORB','VENOMOUS']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -271,6 +272,30 @@ def validate(version):
             call('AbilityLoadEnemy' if turn else 'AbilityLoadPlayer');assert game.memory[addr('wActiveAbilities')+turn]==ab['BLAZE']
             ap,tp=init(turn);move(turn,'SING');aid(turn,'MYCELIUM');put('w'+('Player' if turn else 'Enemy')+'BattleStatus1',64)
             call('MoveHitTest');assert get('wMoveMissed')==1
+            for targethp,targetstatus,hp,want in [(160,8,80,100),(160,0,80,80),(0,8,80,80),(160,8,0,0),(160,8,1,21),(160,8,155,160)]:
+                ap,tp=init(turn);aid(turn,'POISON_ABSORB');word(ap+'HP',hp);word(tp+'HP',targethp);put(tp+'Status',targetstatus);put('wResidualRoundDone',0)
+                call('AbilityEndRound');assert readword(ap+'HP')==want,(turn,targethp,targetstatus,hp,readword(ap+'HP'))
+                if hp and targethp and targetstatus:
+                    party='wEnemyMon1' if turn else 'wPartyMon1';assert readword(party+'HP')==want
+            for multiplier,want in [(0,100),(2,200),(5,200),(10,100),(20,100),(40,100),(130,200),(133,200),(138,100)]:
+                init(turn);move(turn,'TACKLE');aid(turn,'TINTED_LENS');word('wDamage',100);put('wDamageMultipliers',multiplier)
+                call('AbilityDamageBoost');assert readword('wDamage')==want and get('wDamageMultipliers')==multiplier,(turn,multiplier,readword('wDamage'))
+            init(turn);aid(turn,'TINTED_LENS');put('wDamageMultipliers',5);word('wDamage',0);call('AbilityDamageBoost');assert readword('wDamage')==0
+            for actor,target,status,want in [('VENOMOUS',None,8,125),('VENOMOUS',None,0,100),('VENOMOUS','THICK_HIDE',8,106)]:
+                ap,tp=init(turn);move(turn,'SEISMIC_TOSS');aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);put('wUnusedC000',16);word('wDamage',100)
+                call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,actor,target,status,readword('wDamage'))
+            for attack,sub,targethp,oldstatus,targetability in [('EMBER',0,160,0,None),('TACKLE',1,160,0,None),('TACKLE',0,0,0,None),('TACKLE',0,160,16,None),('TACKLE',0,160,0,'SHIELD_DUST')]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'TOXIC_SCALES');aid(1-turn,targetability);put('wCustomTargetHadSub',sub);word(tp+'HP',targethp);put(tp+'Status',oldstatus);rng(0)
+                call('AbilityAfterHit');assert get(tp+'Status')==oldstatus,(turn,attack,sub,targethp,oldstatus,get(tp+'Status'))
+            ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'TOXIC_SCALES');rng(0);call('AbilityAfterHit');assert get(tp+'Status')==8
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'TOXIC_SCALES');put(tp+'Type1',TYPES['POISON']);rng(0);call('AbilityAfterHit');assert get(tp+'Status')==0
+            ap,tp=init(turn);move(turn,'DOUBLESLAP');aid(turn,'TOXIC_SCALES');rng(100,0)
+            call('AbilityAfterHit');assert get(tp+'Status')==0
+            call('AbilityAfterHit');assert get(tp+'Status')==8
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'TOXIC_SCALES');success=0
+            for value in range(200):
+                put(tp+'Status',0);put('wAbilityHit',0);word('wDamage',40);rng(value);call('AbilityAfterHit');success+=bool(get(tp+'Status'))
+            assert success==60,(turn,success)
             # Sound heals after an executed move, including misses, but not before use.
             for attack,hp,used,want in [('SING',80,True,100),('SNARL',80,True,100),('HEAL_BELL',150,True,160),('SING',0,True,0),('SING',80,False,80),('TACKLE',80,True,80)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'SOOTHING_VOICE');word(ap+'HP',hp)
@@ -571,7 +596,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,98):
+        for n in range(1,101):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -620,7 +645,7 @@ def validate(version):
                   'DrawPlayerHUDAndHPBar','DrawEnemyHUDAndHPBar','UpdateHPBar2','MoveAnimation',
                   'HideSubstituteShowMonAnim','ReshowSubstituteAnim','DrawHUDsAndHPBars'):
             patch(n,[0xc9])
-        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None,random_value=0,subhp=None,screens=0):
+        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None,random_value=0,subhp=None,screens=0,target_types=None):
             ap,tp=init(turn)
             put('wActionResultOrTookBattleTurn',0);put('wMonIsDisobedient',0)
             for side in (0,1):
@@ -630,6 +655,8 @@ def validate(version):
                 put(pref+'Species',ids['BULBASAUR'] if pref in ('wBattleMon','wPartyMon1') else ids['CHARMANDER'])
                 put(pref+'Level',50);put(pref+'PP',pp);put(pref+'Moves',MOVES[attack])
             aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);word(tp+'HP',hp);word(ap+'HP',actor_hp);rng(random_value)
+            if target_types:
+                put(tp+'Type1',TYPES[target_types[0]]);put(tp+'Type2',TYPES[target_types[1]])
             target_name='Player' if turn else 'Enemy'
             put('w'+target_name+'BattleStatus3',screens)
             if subhp is not None:
@@ -656,6 +683,16 @@ def validate(version):
             assert get(ap+'Status')==8 and not(get('wEnemyResidual' if turn else 'wPlayerResidual')&2)
             call('ResidualClearAll');ap,tp=execute('TACKLE',turn,target='DEATH_SPORE',hp=160)
             assert get(ap+'Status')==0 and not(get('wEnemyResidual' if turn else 'wPlayerResidual')&2)
+            ap,tp=execute('TACKLE',turn,random_value=100,target_types=('ROCK','ROCK'));normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='TINTED_LENS',random_value=100,target_types=('ROCK','ROCK'))
+            assert 160-readword(tp+'HP')==2*normal,(turn,normal,readword(tp+'HP'))
+            ap,tp=execute('TACKLE',turn,actor='TINTED_LENS',random_value=100,target_types=('GHOST','GHOST'));assert readword(tp+'HP')==160
+            ap,tp=execute('VINE_WHIP',turn,random_value=100,target_types=('GRASS','POISON'));normal=160-readword(tp+'HP')
+            ap,tp=execute('VINE_WHIP',turn,actor='TINTED_LENS',random_value=100,target_types=('GRASS','POISON'));assert 160-readword(tp+'HP')==2*normal
+            ap,tp=execute('TACKLE',turn,actor='TOXIC_SCALES',target='PARASITE');assert get(tp+'Status')==8 and game.memory[addr('wActiveAbilities')+turn]==ab['PARASITE']
+            ap,tp=execute('TACKLE',turn,actor='TOXIC_SCALES');assert get(tp+'Status')==8
+            ap,tp=execute('TACKLE',turn,actor='TOXIC_SCALES',target='SHIELD_DUST');assert get(tp+'Status')==0
+            ap,tp=execute('SEISMIC_TOSS',turn,actor='VENOMOUS',status=8);assert readword(tp+'HP')==98
             # Infiltrator affects the damage calculation and restores intact screens.
             for attack,screen in [('TACKLE',4),('EMBER',2),('AERIAL_ACE',4),('SHOCK_WAVE',2)]:
                 ap,tp=execute(attack,turn,random_value=100);normal=160-readword(tp+'HP')
@@ -788,7 +825,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 48 species / 240 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 50 species / 250 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

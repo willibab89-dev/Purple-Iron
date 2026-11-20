@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 48 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 50 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -30,10 +30,13 @@ Implemented for 48 species, with five equally likely slots per species. The save
 | Gloom | Stench | Absorption | Pollen | Effect Spore | Toxic Waste |
 | Paras | Effect Spore | Leeching | Parasite | Mycelium | Regrowth |
 | Parasect | Effect Spore | Leeching | Parasite | Mycelium | Death Spore |
+| Venonat / Venomoth | Shield Dust | Toxic Scales | Tinted Lens | Poison Absorb | Venomous |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Venonat-family effects: Shield Dust blocks added effects of incoming attacks. Toxic Scales gives each physical hit a 30% chance to inflict ordinary poison, subject to existing status and type immunities. Tinted Lens doubles damage from resisted attacks without changing type effectiveness or immunity. Poison Absorb heals 1/8 maximum HP each turn while the opposing active Pokémon is alive and poisoned. Venomous increases move damage by 25% against poisoned targets, including fixed-damage moves.
 
 Paras-family effects: Effect Spore gives each physical hit a 20% chance to inflict a randomly selected poison, paralysis or sleep. Leeching heals 10% of physical damage dealt per hit, rounded down with a minimum of 1; damage to Substitute is capped at its remaining HP. Parasite changes a contact attacker’s active ability to Parasite until it switches. Mycelium bypasses accuracy checks for status moves while retaining other failure and immunity rules. Regrowth heals 1/16 maximum HP each turn. When Parasect is knocked out by a direct attack, Death Spore chooses Curse or ordinary poison equally; poison follows existing type and status immunity rules.
 
@@ -113,4 +116,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 240 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 250 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
