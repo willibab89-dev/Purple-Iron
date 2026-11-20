@@ -93,8 +93,9 @@ def validate(version):
                'SANDSLASH':['SPINY_ARMOR','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL'],
                'NIDORAN_F':['PHYSICAL_POISON_POINT','MEASURED','THICK_HIDE','PROTECTIVE_INSTINCT','IRON_WILL'],
                'NIDORAN_M':['PHYSICAL_POISON_POINT','PIERCING_HORN','SHEER_FORCE','BLOODLUST','RAMPAGE'],
-               'CLEFAIRY':['LUCKY_STAR','MAGIC_GUARD','MOON_CHILD','UNPREDICTABLE','WONDER_SKIN']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY')]:
+               'CLEFAIRY':['LUCKY_STAR','MAGIC_GUARD','MOON_CHILD','UNPREDICTABLE','WONDER_SKIN'],
+               'VULPIX':['AFTERMATH','FOXFIRE','NINE_LIVES','FOXS_CUNNING','ILLUSION']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -327,6 +328,24 @@ def validate(version):
             call('AbilityDamageBoost');assert readword('wDamage')==130,(turn,readword('wDamage'))
             init(turn);move(turn,'TACKLE');aid(turn,'UNPREDICTABLE');word('wDamage',100)
             call('AbilityDamageBoost');assert readword('wDamage')==100
+            # Direct, fixed, exact lethal and already-at-1 HP; then spent.
+            for hp,damage,want in [(300,299,299),(300,300,299),(160,500,159),(1,10,0)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'NINE_LIVES');word(tp+'HP',hp);word('wDamage',damage)
+                call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,hp,damage,readword('wDamage'))
+                if damage>=hp:
+                    word('wDamage',damage);call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==damage
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'NINE_LIVES');put('wCustomTargetHadSub',1);word(tp+'HP',1);word('wDamage',40)
+            call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==40
+            put('wCustomTargetHadSub',0);call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==0
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'ILLUSION');put('wCustomTargetHadSub',1);word('wDamage',100)
+            call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==100
+            put('wCustomTargetHadSub',0);word('wDamage',100)
+            call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==50
+            word('wDamage',100);call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==50
+            put('wAbilityHit',0);word('wDamage',100);call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==100
+            put('wAbilitySide',1-turn);call('AbilityEntry');put('wAbilityHit',0);word('wDamage',100);call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==50
+            ap,tp=init(turn);move(turn,'FISSURE');aid(1-turn,'ILLUSION');word(tp+'HP',160);word('wDamage',65535);put('wCriticalHitOrOHKO',2)
+            call('AbilityMarkDirectHit');call('AbilityFixedDamageModifiers');assert readword('wDamage')==80 and get('wCriticalHitOrOHKO')==0
             for attack in ('WING_ATTACK','AERIAL_ACE'):
                 init(turn);move(turn,attack);aid(turn,'PIERCING_BEAK')
                 call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack')
@@ -475,7 +494,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,74):
+        for n in range(1,79):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -541,6 +560,20 @@ def validate(version):
         for turn in (0,1):
             # Threshold triggers also run immediately after recoil and poison,
             # before the opposing Pokémon can take its action.
+            ap,tp=execute('TACKLE',turn);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,target='ILLUSION');assert 160-readword(tp+'HP')==max(1,normal//2),(turn,normal,readword(tp+'HP'))
+            ap,tp=execute('DOUBLESLAP',turn);multi=160-readword(tp+'HP')
+            ap,tp=execute('DOUBLESLAP',turn,target='ILLUSION');assert abs((160-readword(tp+'HP'))-multi//2)<=1,(turn,multi,readword(tp+'HP'))
+            ap,tp=execute('TACKLE',turn,target='NINE_LIVES',hp=1);assert readword(tp+'HP')==1
+            ap,tp=execute('SEISMIC_TOSS',turn,target='NINE_LIVES',hp=10);assert readword(tp+'HP')==1
+            call('ResidualClearAll');ap,tp=execute('TACKLE',turn,target='AFTERMATH',hp=1)
+            assert readword(tp+'HP')==0 and get('wEnemyResidual' if turn else 'wPlayerResidual')&2
+            call('ResidualClearAll');ap,tp=execute('TACKLE',turn,target='AFTERMATH',hp=160)
+            assert not(get('wEnemyResidual' if turn else 'wPlayerResidual')&2)
+            ap,tp=execute('EMBER',turn,actor='FOXFIRE');assert get(tp+'Status')==16 and get('w'+('Enemy' if turn else 'Player')+'MonSpecialMod')==8
+            put('wAbilityOldStatus',0);call('AbilityFoxfire');assert get('w'+('Enemy' if turn else 'Player')+'MonSpecialMod')==8
+            ap,tp=execute('LICK',turn,actor='FOXS_CUNNING');assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8
+            call('AbilitySandAfterAction');assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8
             ap,tp=execute('METRONOME',turn,random_value=MOVES['TACKLE']);normal=160-readword(tp+'HP')
             ap,tp=execute('METRONOME',turn,actor='UNPREDICTABLE',random_value=MOVES['TACKLE']);assert 160-readword(tp+'HP')>normal,(turn,normal,readword(tp+'HP'))
             ap,tp=init(turn);aid(turn,'MOON_CHILD');word(ap+'HP',80);put('wResidualRoundDone',0);call('AbilityEndRound');assert readword(ap+'HP')==90
@@ -609,7 +642,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 36 species / 180 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 38 species / 190 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

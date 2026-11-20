@@ -7,6 +7,12 @@ AbilityEntry:
 	call AbilityClearRelentless
 	call AbilityFlagsPointer
 	res 3, [hl]
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_ILLUSION
+	ret nz
+	call AbilityFlagsPointer
+	res 0, [hl]
 	ret
 
 AbilityClearRelentless:
@@ -612,6 +618,9 @@ AbilityModifyDamage:
 ; Fixed-damage moves are calculated later than the ordinary damage hook.
 ; Apply the explicitly requested damage reductions after that calculation.
 AbilityFixedDamageModifiers:
+	call AbilityExistingFixedDamageModifiers
+	jp AbilityIncomingDamage
+AbilityExistingFixedDamageModifiers:
 	; A missed Jump Kick causes crash damage to its user.
 	ld a, [wMoveMissed]
 	and a
@@ -754,7 +763,7 @@ AbilitySandAfterAction:
 	cp AB_SAND_VEIL
 	jr z, .evasion
 	cp AB_BURROWER
-	ret nz
+	jr nz, .fox
 	call AbilityActorMoveType
 	cp GROUND
 	ret nz
@@ -767,6 +776,14 @@ AbilitySandAfterAction:
 	dec hl
 	ld a, 3 ; 1/8 maximum HP
 	jp AbilityHealFractionFromHL
+.fox
+	cp AB_FOXS_CUNNING
+	ret nz
+	call AbilityActorMoveType
+	cp GHOST
+	ret nz
+	ld a, 5
+	jr .once
 .normal
 	call AbilityActorMoveType
 	cp NORMAL
@@ -815,6 +832,7 @@ AbilityHitEvents:
 	ld a, [wDamage + 1]
 	or b
 	ret z
+	call AbilityAftermath
 	call AbilityRelentlessHit
 	call AbilityOvercharge
 	call AbilityRampage
@@ -911,6 +929,177 @@ AbilityRelentlessHit:
 	ret
 
 ; Each direct physical strike damages the attacker, even if the holder faints.
+ ; The attack pipeline records a successful damaging action immediately before
+; the HP/substitute path; fixed damage is calculated after this point.
+AbilityMarkDirectHit:
+	ld a, [wMoveMissed]
+	and a
+	ret nz
+	call AbilityMove
+	inc hl
+	inc hl
+	ld a, [hl]
+	and a
+	ret z
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	or b
+	ret z
+	ld hl, wAbilityHit
+	set 5, [hl]
+	ret
+
+AbilityIncomingDamage:
+	ld hl, wAbilityHit
+	bit 5, [hl]
+	ret z
+	res 5, [hl]
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	or b
+	ret z
+	ld a, [wCustomTargetHadSub]
+	and a
+	ret nz ; a substitute, rather than the holder, received the hit
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityTarget
+	cp AB_ILLUSION
+	jr z, .illusion
+	cp AB_NINE_LIVES
+	ret nz
+	call AbilityFlagsPointer
+	bit 0, [hl]
+	ret nz
+	call AbilityHP
+	ld a, [hli]
+	ld b, a
+	ld a, [hl]
+	ld c, a
+	or b
+	ret z
+	ld a, [wDamage]
+	cp b
+	jr c, .done
+	jr nz, .survive
+	ld a, [wDamage + 1]
+	cp c
+	jr c, .done
+.survive
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jr nz, .notOHKO
+	xor a
+	ld [wCriticalHitOrOHKO], a
+.notOHKO
+	push bc
+	call AbilityFlagsPointer
+	set 0, [hl]
+	pop bc
+	ld a, c
+	sub 1
+	ld [wDamage + 1], a
+	ld a, b
+	sbc 0
+	ld [wDamage], a
+.done
+	ret
+.illusion
+	ld hl, wAbilityHit
+	bit 6, [hl]
+	jr nz, .halve
+	call AbilityFlagsPointer
+	bit 0, [hl]
+	ret nz
+	set 0, [hl]
+	ld hl, wAbilityHit
+	set 6, [hl] ; the full multi-hit attack is reduced
+.halve
+	; OHKO moves use 65535 as a sentinel for the target's remaining HP.
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jr nz, .scale
+	xor a
+	ld [wCriticalHitOrOHKO], a
+	call AbilityHP
+	ld a, [hli]
+	ld [wDamage], a
+	ld a, [hl]
+	ld [wDamage + 1], a
+.scale
+	ld c, 50
+	call AbilityScaleDamage
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	or b
+	ret nz
+	inc a
+	ld [wDamage + 1], a
+	ret
+
+AbilityAftermath:
+	ld a, [wCustomTargetHadSub]
+	and a
+	ret nz
+	call AbilityTarget
+	cp AB_AFTERMATH
+	ret nz
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret nz
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	ld hl, wPlayerResidual
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .curse
+	ld hl, wEnemyResidual
+.curse
+	bit 1, [hl]
+	ret nz
+	set 1, [hl]
+	ld hl, AbilityAftermathText
+	jp PrintText
+AbilityAftermathText:
+	text "AFTERMATH cursed"
+	line "the attacker!"
+	prompt
+
+AbilityFoxfire:
+	call AbilityActor
+	cp AB_FOXFIRE
+	ret nz
+	ld a, [wAbilityOldStatus]
+	bit BRN, a
+	ret nz
+	call AbilityTargetStatus
+	bit BRN, [hl]
+	ret z
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	call AbilityFlagsPointer
+	bit 0, [hl]
+	ret nz
+	set 0, [hl]
+	ld a, 3
+	jp AbilityRaiseStage
+
 AbilityBloodlustCheck:
 	ld a, [H_WHOSETURN]
 	xor 1

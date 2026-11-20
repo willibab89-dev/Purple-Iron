@@ -51,6 +51,8 @@ AbilitySpeciesPools:
 	db NIDOKING, 86
 	db CLEFAIRY, 91
 	db CLEFABLE, 91
+	db VULPIX, 96
+	db NINETALES, 96
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -72,6 +74,7 @@ AbilityPoolIds:
 	db AB_PHYSICAL_POISON_POINT, AB_MEASURED, AB_THICK_HIDE, AB_PROTECTIVE_INSTINCT, AB_IRON_WILL
 	db AB_PHYSICAL_POISON_POINT, AB_PIERCING_HORN, AB_SHEER_FORCE, AB_BLOODLUST, AB_RAMPAGE
 	db AB_LUCKY_STAR, AB_MAGIC_GUARD, AB_MOON_CHILD, AB_UNPREDICTABLE, AB_WONDER_SKIN
+	db AB_AFTERMATH, AB_FOXFIRE, AB_NINE_LIVES, AB_FOXS_CUNNING, AB_ILLUSION
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -383,6 +386,7 @@ AbilityAfterAction:
 	abilitycall AbilityFrenzy
 	abilitycall AbilityShortTemper
 	abilitycall AbilitySandAfterAction
+	abilitycall AbilityFoxfire
 	abilitycall AbilityQuickFeetBoth
 	push af
 	push bc
@@ -647,6 +651,7 @@ AbilityTextPointers:
 	dw AbilityText61, AbilityText62, AbilityText63, AbilityText64, AbilityText65
 	dw AbilityText66, AbilityText67, AbilityText68, AbilityText69
 	dw AbilityText70, AbilityText71, AbilityText72, AbilityText73
+	dw AbilityText74, AbilityText75, AbilityText76, AbilityText77, AbilityText78
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -843,5 +848,10 @@ AbilityText70: db "LUCKY STAR",$4e,"10% chance to deal",$4e,"50% more damage.@"
 AbilityText71: db "MAGIC GUARD",$4e,"Blocks indirect",$4e,"damage.@"
 AbilityText72: db "MOON CHILD",$4e,"Heal 1/16 max HP",$4e,"each turn.@"
 AbilityText73: db "UNPREDICTABLE",$4e,"Metronome damage",$4e,"is boosted 30%.@"
+AbilityText74: db "AFTERMATH",$4e,"Curse the foe that",$4e,"knocks this out.@"
+AbilityText75: db "FOXFIRE",$4e,"Inflict burn:",$4e,"Special +1 once.@"
+AbilityText76: db "NINE LIVES",$4e,"Survive a fatal hit",$4e,"once per battle.@"
+AbilityText77: db "FOX'S CUNNING",$4e,"Ghost move: Evasion",$4e,"+1 once per battle.@"
+AbilityText78: db "ILLUSION",$4e,"First attack taken",$4e,"is halved on entry.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"
