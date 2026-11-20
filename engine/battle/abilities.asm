@@ -39,6 +39,8 @@ AbilitySpeciesPools:
 	db FEAROW, 56
 	db EKANS, 61
 	db ARBOK, 61
+	db PIKACHU, 66
+	db RAICHU, 66
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -54,6 +56,7 @@ AbilityPoolIds:
 	db AB_SCAVENGER, AB_STRONG_JAW, AB_CORNERED, AB_HUSTLE, AB_POISON_HEAL
 	db AB_RUTHLESS, AB_SHORT_TEMPER, AB_RELENTLESS, AB_PIERCING_BEAK, AB_SNIPER
 	db AB_INTIMIDATE, AB_SHED_SKIN, AB_VENOMOUS, AB_PREDATOR, AB_CORROSIVE_VENOM
+	db AB_STATIC, AB_VOLTAGE, AB_OVERCHARGE, AB_QUICK_REFLEXES, AB_QUICK_FEET
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -224,6 +227,7 @@ AbilityDamageBoost:
 
 AbilityPrepareSpeeds:
 	abilitycall AbilityLowHPBoth
+	abilitycall AbilityQuickFeetBoth
 	push af
 	push bc
 	push de
@@ -362,6 +366,7 @@ AbilityRaiseStage:
 AbilityAfterAction:
 	abilitycall AbilityFrenzy
 	abilitycall AbilityShortTemper
+	abilitycall AbilityQuickFeetBoth
 	push af
 	push bc
 	push de
@@ -434,7 +439,8 @@ AbilityEndRound:
 	call AbilityShedSkin
 	ld a, 1
 	ld [wAbilitySide], a
-	jp AbilityShedSkin
+	call AbilityShedSkin
+	jp AbilityQuickFeetBoth
 AbilityPhotosynthesis:
 	ld a, [wAbilitySide]
 	call AbilityGet
@@ -609,6 +615,7 @@ AbilityTextPointers:
 	dw AbilityText46, AbilityText47, AbilityText48
 	dw AbilityText49, AbilityText50
 	dw AbilityText51, AbilityText52, AbilityText53
+	dw AbilityText54, AbilityText55, AbilityText56
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -785,5 +792,8 @@ AbilityText50: db "RELENTLESS",$4e,"Each hit boosts",$4e,"next damage 10%",$4e,"
 AbilityText51: db "INTIMIDATE",$4e,"Foe Speed -1 on",$4e,"entry, once.@"
 AbilityText52: db "SHED SKIN",$4e,"30% chance to",$4e,"cure status at",$4e,"turn end.@"
 AbilityText53: db "CORROSIVE VENOM",$4e,"Poison is strong",$4e,"against Rock.@"
+AbilityText54: db "STATIC",$4e,"Physical hits:",$4e,"20% paralyze",$4e,"attacker.@"
+AbilityText55: db "OVERCHARGE",$4e,"Critical hit:",$4e,"Special +1 once",$4e,"per battle.@"
+AbilityText56: db "QUICK FEET",$4e,"Status raises",$4e,"Speed 1 stage.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

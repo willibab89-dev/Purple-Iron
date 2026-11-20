@@ -1,5 +1,6 @@
 ; Shared ability mechanics. This bank has room for the early-species pools.
-; Flags per party member: 0 Hot Temper, 1 Confident, 2 low-HP trigger,
+; Flags per party member: 0 Hot Temper / Quick Feet status, 1 Confident /
+; Overcharge, 2 low-HP trigger,
 ; 3 first damaging move spent; 4..5 Relentless hit count; 6 Intimidate spent;
 ; 7 already affected by Intimidate. Bits 0..2 and 6..7 persist in battle.
 AbilityEntry:
@@ -28,6 +29,14 @@ AbilityEntrySpeed:
 	ld a, 2 ; Speed
 	call AbilityRaiseStage
 .intimidate
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_QUICK_FEET
+	jr nz, .checkIntimidate
+	call AbilityFlagsPointer
+	res 0, [hl] ; reapply the boost after stages reset on each entry
+	call AbilityQuickFeet
+.checkIntimidate
 	ld a, [wFirstMonsNotOutYet]
 	and a
 	jr z, .oneSide
@@ -43,6 +52,39 @@ AbilityEntrySpeed:
 	ret
 .oneSide
 	jp AbilityIntimidate
+
+AbilityQuickFeetBoth:
+	xor a
+	ld [wAbilitySide], a
+	call AbilityQuickFeet
+	ld a, 1
+	ld [wAbilitySide], a
+	jp AbilityQuickFeet
+
+AbilityQuickFeet:
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_QUICK_FEET
+	ret nz
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	inc hl
+	inc hl ; major status is at HP + 3
+	ld a, [hl]
+	and a
+	jr z, .healthy
+	call AbilityFlagsPointer
+	bit 0, [hl]
+	ret nz
+	set 0, [hl]
+	ld a, 2 ; Speed
+	jp AbilityRaiseStage
+.healthy
+	call AbilityFlagsPointer
+	res 0, [hl]
+	ret
 
 ; Each holder may trigger once; each target may be affected once per battle.
 AbilityIntimidate:
@@ -519,6 +561,7 @@ AbilityHitEvents:
 	or b
 	ret z
 	call AbilityRelentlessHit
+	call AbilityOvercharge
 	ld a, [wCustomTargetHadSub]
 	and a
 	ret nz
@@ -610,6 +653,27 @@ AbilityRelentlessHit:
 	ld [hl], a
 	ret
 
+; A successful critical hit, including against a Substitute, triggers once.
+AbilityOvercharge:
+	call AbilityActor
+	cp AB_OVERCHARGE
+	ret nz
+	ld a, [wCriticalHitOrOHKO]
+	cp 1 ; 2 is an OHKO, not a critical hit
+	ret nz
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	call AbilityFlagsPointer
+	bit 1, [hl]
+	ret nz
+	set 1, [hl]
+	ld a, 3 ; Special
+	jp AbilityRaiseStage
+
 AbilityShortTemper:
 	call AbilityActor
 	cp AB_SHORT_TEMPER
@@ -660,6 +724,33 @@ AbilityGetTargetReactions:
 	bit 2, [hl]
 	ret nz
 	set 2, [hl]
+	call AbilityTarget
+	cp AB_STATIC
+	jr nz, .contactMove
+	ld a, [wAbilityMoveType]
+	cp FIRE ; all physical moves, including ranged moves
+	ret nc
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	ld b, 20
+	call AbilityRoll
+	ret nc
+	ld a, [H_WHOSETURN]
+	push af
+	ld [wCustomSide], a
+	xor 1
+	ld [H_WHOSETURN], a
+	ld a, 1 << PAR
+	ld [wCustomDelta], a
+	callab UtilityInflictStatus
+	pop af
+	ld [H_WHOSETURN], a
+	ret
+.contactMove
 	call AbilityMove
 	ld a, [hl]
 	call AbilityMoveFlags

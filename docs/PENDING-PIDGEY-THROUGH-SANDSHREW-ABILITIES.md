@@ -34,7 +34,7 @@ These are requested designs; implementation status is noted below. Each line is 
 4. Predator: Physical moves deal 20% more damage against slower targets.
 5. Corrosive Venom: Poison attacks are super effective against Rock types.
 
-## Pikachu / Raichu
+## Pikachu / Raichu (implemented)
 
 1. Static: Physical attacks have a 20% chance to paralyze the attacker.
 2. Voltage: Electric moves deal 20% more damage against paralyzed targets.
@@ -58,6 +58,6 @@ These are requested designs; implementation status is noted below. Each line is 
 4. Sharp Claws: Multiply physical attacks' critical-hit chance by 1.5.
 5. Sand Veil: Raise Evasion by one stage after using a Ground move, once per battle.
 
-## Existing implementation and decisions needed during implementation
+## Implementation notes
 
-Ruthless, Venomous and Quick Reflexes already exist in the current engine, but these species do not yet have pools assigned. Quick Reflexes currently applies to the first attempted **damaging** move after entry. The wording “first attack” should retain that behavior unless clarified. Static says physical attacks, which is broader than the engine's contact-move category. Intimidate's non-stacking rule needs an explicit lifecycle, especially across switching and multiple holders. Relentless needs its counter and target identity reset on the specified events. Type interactions, stage caps, status/HP synchronization, multi-hit moves, Substitute and both battle sides must be tested as applicable.
+The Pidgey through Pikachu families are implemented as marked above. Quick Reflexes applies to the first attempted **damaging** move after entry. Static applies to all physical attacks, including ranged moves. Intimidate is once per holder and target per battle. Relentless resets its hit count when either combatant switches or its holder uses a non-damaging move. The Sandshrew and Sandslash pools remain to be implemented and tested.

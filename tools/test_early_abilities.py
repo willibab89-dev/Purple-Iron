@@ -87,8 +87,9 @@ def validate(version):
                'PIDGEY':['TAILWIND','PREDATOR','KEEN_EYE','PIERCING_BEAK','GALE_WINGS'],
                'RATTATA':['SCAVENGER','STRONG_JAW','CORNERED','HUSTLE','POISON_HEAL'],
                'SPEAROW':['RUTHLESS','SHORT_TEMPER','RELENTLESS','PIERCING_BEAK','SNIPER'],
-               'EKANS':['INTIMIDATE','SHED_SKIN','VENOMOUS','PREDATOR','CORROSIVE_VENOM']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS')]:
+               'EKANS':['INTIMIDATE','SHED_SKIN','VENOMOUS','PREDATOR','CORROSIVE_VENOM'],
+               'PIKACHU':['STATIC','VOLTAGE','OVERCHARGE','QUICK_REFLEXES','QUICK_FEET']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -101,6 +102,9 @@ def validate(version):
         init();metadata('wPartyMon1','PIDGEY',1,0);put('wBattleMonSpecies2',ids['PIDGEY'])
         call('LoadBattleMonFromParty')
         assert get('wActiveAbilities')==ab['TAILWIND'] and get('wPlayerMonSpeedMod')==8,(get('wActiveAbilities'),get('wPlayerMonSpeedMod'))
+        init();metadata('wPartyMon1','PIKACHU',5,0);put('wPartyMon1Status',64);put('wBattleMonSpecies2',ids['PIKACHU'])
+        call('LoadBattleMonFromParty')
+        assert get('wActiveAbilities')==ab['QUICK_FEET'] and get('wPlayerMonSpeedMod')==8 and readword('wBattleMonSpeed')==75
         init();put('wEnemyMonSpecies2',ids['PIDGEY']);put('wCurEnemyLVL',20);put('wIsInBattle',1)
         put('wNatureMode',2);put('wNatureEnemySlot',1);game.memory[addr('wNatureIDs')+1]=0
         game.memory[addr('wNatureStatSources')+1]=0;rng(0);call('LoadEnemyMonData')
@@ -125,6 +129,45 @@ def validate(version):
         metadata('wPartyMon1','BULBASAUR',1,0);put('wBattleMonSpecies2',ids['BULBASAUR']);put('wFirstMonsNotOutYet',1)
         call('LoadBattleMonFromParty');assert get('wPlayerMonSpeedMod')==6
         for turn in (0,1):
+            # Static responds to physical attacks, not just contact, and rolls once.
+            for attack,roll,sub,holder_hp,actor_type,want in [
+                ('TACKLE',0,0,160,'NORMAL',64),('EARTHQUAKE',39,0,160,'NORMAL',64),
+                ('TACKLE',40,0,160,'NORMAL',0),('EMBER',0,0,160,'NORMAL',0),
+                ('TACKLE',0,1,160,'NORMAL',0),('TACKLE',0,0,0,'NORMAL',64),
+                ('TACKLE',0,0,160,'ELECTRIC',0)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'STATIC');put('wCustomTargetHadSub',sub);word(tp+'HP',holder_hp)
+                put(ap+'Type1',TYPES[actor_type]);put(ap+'Type2',TYPES[actor_type]);rng(roll);call('AbilityAfterHit')
+                assert get(ap+'Status')==want,(turn,attack,roll,sub,holder_hp,actor_type,get(ap+'Status'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'STATIC');rng(199,0)
+            call('AbilityAfterHit');call('AbilityAfterHit');assert get(ap+'Status')==0 and state['index']==1
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'STATIC');put(ap+'Status',8);rng(0)
+            call('AbilityAfterHit');assert get(ap+'Status')==8
+            # Overcharge requires a critical hit, triggers on a Substitute, and persists across entry.
+            for crit,damage,sub,want in [(1,40,0,8),(1,40,1,8),(0,40,0,7),(2,40,0,7),(1,0,0,7)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'OVERCHARGE');put('wCriticalHitOrOHKO',crit);put('wCustomTargetHadSub',sub);word('wDamage',damage)
+                call('AbilityAfterHit');mod='w'+('Enemy' if turn else 'Player')+'MonSpecialMod';assert get(mod)==want,(turn,crit,damage,sub)
+                if want==8:
+                    call('AbilityAfterHit');put('wAbilitySide',turn);call('AbilityEntry');call('AbilityAfterHit');assert get(mod)==8
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'OVERCHARGE');put('wCriticalHitOrOHKO',1);word(tp+'HP',0)
+            call('AbilityAfterHit');assert get('w'+('Enemy' if turn else 'Player')+'MonSpecialMod')==8
+            # Quick Feet raises Speed once per status episode and reapplies on entry.
+            for status in (1,8,16,32,64):
+                ap,tp=init(turn);aid(turn,'QUICK_FEET');put(ap+'Status',status);put('wAbilitySide',turn);call('AbilityEntrySpeed')
+                mod='w'+('Enemy' if turn else 'Player')+'MonSpeedMod';assert get(mod)==8,(turn,status)
+                call('AbilityQuickFeetBoth');assert get(mod)==8
+                put(ap+'Status',0);call('AbilityQuickFeetBoth');put(ap+'Status',status);call('AbilityQuickFeetBoth');assert get(mod)==9
+                put(mod,7);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get(mod)==8
+            ap,tp=init(turn);aid(turn,'QUICK_FEET');put(ap+'Status',8);call('AbilityAfterAction')
+            assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8
+            # A normal move inflicts paralysis; Quick Feet applies its stage
+            # afterwards while retaining this game's paralysis Speed penalty.
+            ap,tp=init(turn);aid(1-turn,'QUICK_FEET');put('wCustomSide',1-turn);put('wCustomDelta',64)
+            call('UtilityInflictStatus');assert get(tp+'Status')==64 and readword(tp+'Speed')==50
+            call('AbilityAfterAction');assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==8 and readword(tp+'Speed')==75
+            # Static on a defender can activate the attacker's Quick Feet.
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'QUICK_FEET');aid(1-turn,'STATIC');rng(0)
+            call('AbilityAfterHit');assert get(ap+'Status')==64
+            call('AbilityAfterAction');assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8 and readword(ap+'Speed')==75
             # Intimidate fires once per holder and does not stack on a target.
             ap,tp=init(turn);aid(turn,'INTIMIDATE');put('wAbilitySide',turn);call('AbilityEntrySpeed')
             mod='w'+('Player' if turn else 'Enemy')+'MonSpeedMod';assert get(mod)==6
@@ -308,7 +351,7 @@ def validate(version):
                 init(turn);move(turn,attack);aid(turn,actor);aid(1-turn,target);game.memory[0xff97:0xff99]=[0,100]
                 call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,want]),(actor,target,attack,bytes(game.memory[0xff97:0xff99]))
         # Exact 10%, 15%, 25% rolls, including high-byte rejection.
-        for percent in (10,15,25,30):
+        for percent in (10,15,20,25,30):
             success=0
             for value in range(200):rng(value);call('AbilityRoll',BC=percent<<8);success+=bool(game.register_file.F&16)
             assert success==2*percent
@@ -327,7 +370,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,54):
+        for n in range(1,57):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -415,7 +458,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 24 species / 120 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 26 species / 130 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
