@@ -61,7 +61,7 @@ def validate(version):
         return ('wEnemyMon','wBattleMon') if turn else ('wBattleMon','wEnemyMon')
     def ability(side,id):game.memory[addr('wActiveAbilities')+side]=id
     import re
-    from generate_ability_moves import render,CONTACT,SOUND
+    from generate_ability_moves import render,CONTACT,SOUND,POWDER
     ab={n:int(v) for n,v in re.findall(r'^AB_(\w+) EQU (\d+)',(ROOT/'constants/ability_constants.asm').read_text(),re.M)}
     def aid(side,name):ability(side,ab[name] if name else 0)
     def move(side,name):
@@ -78,6 +78,10 @@ def validate(version):
             call('AbilityMoveFlags',A=MOVES[name]);assert game.register_file.A&16,name
         for name in ('TACKLE','SONICBOOM','METRONOME'):
             call('AbilityMoveFlags',A=MOVES[name]);assert not(game.register_file.A&16),name
+        for name in POWDER:
+            call('AbilityMoveFlags',A=MOVES[name]);assert game.register_file.A&32,name
+        for name in ('TACKLE','SING','POISON_GAS'):
+            call('AbilityMoveFlags',A=MOVES[name]);assert not(game.register_file.A&32),name
         # All five evolution slots, including noncontiguous ability IDs.
         pools={'BULBASAUR':['POISON_LEAF','CHLOROPHYLL','OVERGROWTH','PHOTOSYNTHESIS','VINE_GUARD'],
                'CHARMANDER':['BLAZE','COMBUSTION','WILDFIRE','HOT_TEMPER','CONFIDENT'],
@@ -100,8 +104,10 @@ def validate(version):
                'CLEFAIRY':['LUCKY_STAR','MAGIC_GUARD','MOON_CHILD','UNPREDICTABLE','WONDER_SKIN'],
                'VULPIX':['AFTERMATH','FOXFIRE','NINE_LIVES','FOXS_CUNNING','ILLUSION'],
                'JIGGLYPUFF':['INFLATABLE','PERFORMER','RUBBER_SKIN','SOOTHING_VOICE','THICK_FAT'],
-               'ZUBAT':['ECHOLOCATION','BLOODSUCKER','GALE_WINGS','INFILTRATOR','PREDATOR']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT')]:
+               'ZUBAT':['ECHOLOCATION','BLOODSUCKER','GALE_WINGS','INFILTRATOR','PREDATOR'],
+               'ODDISH':['PERFUME','ABSORPTION','POLLEN','EFFECT_SPORE','PHOTOSYNTHESIS'],
+               'GLOOM':['STENCH','ABSORPTION','POLLEN','EFFECT_SPORE','TOXIC_WASTE']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -208,6 +214,35 @@ def validate(version):
                 call('AbilityAfterAction');assert readword(ap+'HP')==want,(turn,attack,hp,used,readword(ap+'HP'))
                 if used and hp and attack=='EARTHQUAKE':
                     party='wEnemyMon1' if turn else 'wPartyMon1';assert readword(party+'HP')==want
+            init(turn);aid(turn,'PERFUME');put('wAbilitySide',turn);call('AbilityEntrySpeed')
+            assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8
+            for targethp,targetstatus,hp,want in [(160,8,80,90),(160,0,80,80),(0,8,80,80),(160,8,0,0),(160,8,155,160)]:
+                ap,tp=init(turn);aid(turn,'TOXIC_WASTE');word(ap+'HP',hp);word(tp+'HP',targethp);put(tp+'Status',targetstatus);put('wResidualRoundDone',0)
+                call('AbilityEndRound');assert readword(ap+'HP')==want,(turn,targethp,targetstatus,hp,readword(ap+'HP'))
+            for attack,attacker_status,want in [('TACKLE',8,75),('TACKLE',0,100),('EMBER',8,75)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'STENCH');put(ap+'Status',attacker_status);word('wDamage',100)
+                call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,attack,attacker_status,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'SEISMIC_TOSS');aid(1-turn,'STENCH');put(ap+'Status',8);put('wUnusedC000',16);word('wDamage',100)
+            call('AbilityFixedDamageModifiers');assert readword('wDamage')==75
+            for choice,status in [(0,8),(1,64),(2,2)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'EFFECT_SPORE');rng(0,choice,2);call('AbilityAfterHit')
+                assert get(ap+'Status')==status,(turn,choice,get(ap+'Status'))
+                party='wEnemyMon1' if turn else 'wPartyMon1';assert get(party+'Status')==status
+            ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(1-turn,'EFFECT_SPORE');rng(0,0);call('AbilityAfterHit');assert get(ap+'Status')==8
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'EFFECT_SPORE');rng(0,3,2,1,7);call('AbilityAfterHit');assert get(ap+'Status')==7
+            ap,tp=init(turn);move(turn,'DOUBLESLAP');aid(1-turn,'EFFECT_SPORE')
+            actorname='Enemy' if turn else 'Player';put('w'+actorname+'BattleStatus1',4);put('w'+actorname+'NumAttacksLeft',3);rng(0,2,2)
+            call('AbilityAfterHit');assert get(ap+'Status')==2 and get('w'+actorname+'NumAttacksLeft')==1
+            for attack,sub,actorhp,oldstatus in [('EMBER',0,160,0),('TACKLE',1,160,0),('TACKLE',0,0,0),('TACKLE',0,160,16)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'EFFECT_SPORE');put('wCustomTargetHadSub',sub);word(ap+'HP',actorhp);put(ap+'Status',oldstatus);rng(0,0,2)
+                call('AbilityAfterHit');assert get(ap+'Status')==oldstatus,(turn,attack,sub,actorhp,get(ap+'Status'))
+            for choice,immune_type in [(0,'POISON'),(1,'ELECTRIC')]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'EFFECT_SPORE');put(ap+'Type1',TYPES[immune_type]);rng(0,choice,2)
+                call('AbilityAfterHit');assert get(ap+'Status')==0,(turn,choice,immune_type)
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'EFFECT_SPORE');success=0
+            for value in range(200):
+                put(ap+'Status',0);put('wAbilityHit',0);word('wDamage',40);rng(value,0,2);call('AbilityAfterHit');success+=bool(get(ap+'Status'))
+            assert success==40,(turn,success)
             # Sound heals after an executed move, including misses, but not before use.
             for attack,hp,used,want in [('SING',80,True,100),('SNARL',80,True,100),('HEAL_BELL',150,True,160),('SING',0,True,0),('SING',80,False,80),('TACKLE',80,True,80)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'SOOTHING_VOICE');word(ap+'HP',hp)
@@ -485,7 +520,7 @@ def validate(version):
             game.memory[delay_bank,delay_address]=original_delay
             game.memory[frame_bank,frame_address]=original_frame
             game.memory[done_bank,done_address]=original_done
-            for actor,target,attack,want in [('ECHOLOCATION',None,'SING',151),('ECHOLOCATION','WONDER_SKIN','SING',75),('ECHOLOCATION',None,'TACKLE',151),('PERFORMER',None,'SING',120),('PERFORMER','WONDER_SKIN','SING',60),('PERFORMER',None,'SNARL',120),('PERFORMER',None,'TACKLE',100),('COMPOUND_EYES',None,'SLEEP_POWDER',130),(None,'WONDER_SKIN','SLEEP_POWDER',50),('COMPOUND_EYES','WONDER_SKIN','SLEEP_POWDER',65),(None,'WONDER_SKIN','TACKLE',100)]:
+            for actor,target,attack,want in [('POLLEN',None,'SLEEP_POWDER',151),('POLLEN','WONDER_SKIN','SPORE',75),('POLLEN',None,'POISON_GAS',100),('ECHOLOCATION',None,'SING',151),('ECHOLOCATION','WONDER_SKIN','SING',75),('ECHOLOCATION',None,'TACKLE',151),('PERFORMER',None,'SING',120),('PERFORMER','WONDER_SKIN','SING',60),('PERFORMER',None,'SNARL',120),('PERFORMER',None,'TACKLE',100),('COMPOUND_EYES',None,'SLEEP_POWDER',130),(None,'WONDER_SKIN','SLEEP_POWDER',50),('COMPOUND_EYES','WONDER_SKIN','SLEEP_POWDER',65),(None,'WONDER_SKIN','TACKLE',100)]:
                 init(turn);move(turn,attack);aid(turn,actor);aid(1-turn,target);game.memory[0xff97:0xff99]=[0,100]
                 call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,want]),(actor,target,attack,bytes(game.memory[0xff97:0xff99]))
         # Exact 10%, 15%, 25% rolls, including high-byte rejection.
@@ -508,7 +543,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,87):
+        for n in range(1,93):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -609,6 +644,11 @@ def validate(version):
             ap,tp=execute('ABSORB',turn,actor='BLOODSUCKER',actor_hp=80,hp=1);assert readword(ap+'HP')==81
             ap,tp=execute('SHADOW_LEECH',turn,actor='BLOODSUCKER',actor_hp=80,status=1);damage=160-readword(tp+'HP')
             assert readword(ap+'HP')==min(160,80+damage+damage//4),(turn,damage,readword(ap+'HP'))
+            ap,tp=execute('SLEEP_POWDER',turn,random_value=220);assert not(get(tp+'Status')&7)
+            ap,tp=execute('SLEEP_POWDER',turn,actor='POLLEN',random_value=220);assert get(tp+'Status')&7
+            ap,tp=execute('ABSORB',turn,actor='ABSORPTION',actor_hp=80);damage=160-readword(tp+'HP')
+            assert readword(ap+'HP')==min(160,80+max(1,damage//2)+damage//4),(turn,damage,readword(ap+'HP'))
+            ap,tp=execute('TACKLE',turn,target='EFFECT_SPORE');assert get(ap+'Status')==8
             for attack in ('THUNDERBOLT','THUNDER_WAVE','SHOCK_WAVE','FLASH'):
                 ap,tp=execute(attack,turn,target='RUBBER_SKIN');assert readword(tp+'HP')==160 and get(tp+'Status')==0,(turn,attack,readword(tp+'HP'),get(tp+'Status'))
                 assert get('wMoveMissed')==1 and get('wDamageMultipliers')&127==0,(turn,attack,get('wMoveMissed'),get('wDamageMultipliers'))
@@ -705,7 +745,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 43 species / 215 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 46 species / 230 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

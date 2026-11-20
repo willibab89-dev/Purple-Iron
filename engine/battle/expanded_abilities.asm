@@ -30,6 +30,13 @@ AbilityClearRelentless:
 AbilityEntrySpeed:
 	ld a, [wAbilitySide]
 	call AbilityGet
+	cp AB_PERFUME
+	jr nz, .tailwind
+	ld a, 5 ; Evasion
+	call AbilityRaiseStage
+.tailwind
+	ld a, [wAbilitySide]
+	call AbilityGet
 	cp AB_TAILWIND
 	jr nz, .intimidate
 	ld a, 2 ; Speed
@@ -565,6 +572,13 @@ AbilityModifyDamage:
 
 .defender
 	call AbilityTarget
+	cp AB_STENCH
+	jr nz, .vineGuard
+	call AbilityActorPoisoned
+	ret z
+	ld c, 75
+	jp .reduce
+.vineGuard
 	cp AB_VINE_GUARD
 	jr nz, .veil
 	ld a, [wAbilityMoveType]
@@ -704,6 +718,13 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityScaleDamage
 .defender
 	call AbilityTarget
+	cp AB_STENCH
+	jr nz, .thickFat
+	call AbilityActorPoisoned
+	ret z
+	ld c, 75
+	jr .scale
+.thickFat
 	cp AB_THICK_FAT
 	jr nz, .hide
 	call AbilityActorMoveType
@@ -863,6 +884,7 @@ AbilityHitEvents:
 	call AbilityActorMoveType
 	ld [wAbilityMoveType], a
 	call AbilitySpinyArmor
+	call AbilityEffectSpore
 	ld a, [wDamage]
 	ld b, a
 	ld a, [wDamage + 1]
@@ -1166,7 +1188,10 @@ AbilityInfiltratorRestore:
 AbilityBloodsuckerCache:
 	call AbilityActor
 	cp AB_BLOODSUCKER
+	jr z, .eligible
+	cp AB_ABSORPTION
 	ret nz
+.eligible
 	ld a, [wDamage]
 	ld b, a
 	ld a, [wDamage + 1]
@@ -1183,7 +1208,10 @@ AbilityBloodsuckerCache:
 AbilityBloodsuckerAdd:
 	call AbilityActor
 	cp AB_BLOODSUCKER
+	jr z, .eligible
+	cp AB_ABSORPTION
 	ret nz
+.eligible
 	ld a, [wAbilityTemp + 1]
 	ld b, a
 	ld a, [wDamage + 1]
@@ -1199,6 +1227,132 @@ AbilityBloodsuckerAdd:
 .store
 	ld [wDamage], a
 	ret
+
+AbilityActorPoisoned:
+	ld hl, wBattleMonStatus
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .check
+	ld hl, wEnemyMonStatus
+.check
+	bit PSN, [hl]
+	ret
+
+AbilityToxicWaste:
+	ld a, [wAbilitySide]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	jr z, .noHeal
+	inc hl
+	inc hl
+	bit PSN, [hl]
+	jr z, .noHeal
+	ld a, [wAbilitySide]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	dec hl
+	ld a, 4
+	jp AbilityHealFractionFromHL
+.noHeal
+	ld a, [wAbilitySide]
+	xor 1
+	ld [wAbilitySide], a
+	ret
+
+; Each physical hit can trigger. Choose among the three statuses uniformly;
+; existing immunities apply to the chosen status without rerolling.
+AbilityEffectSpore:
+	call AbilityTarget
+	cp AB_EFFECT_SPORE
+	ret nz
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	ret nc
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	inc hl
+	inc hl
+	ld a, [hl]
+	and a
+	ret nz
+	ld b, 20
+	call AbilityRoll
+	ret nc
+.choose
+	callab CustomRandomInBattleBank
+	ld a, [wCustomRandomValue]
+	and 3
+	cp 3
+	jr z, .choose
+	cp 2
+	jr z, .sleep
+	ld c, 1 << PSN
+	and a
+	jr z, .inflict
+	ld c, 1 << PAR
+.inflict
+	ld a, [H_WHOSETURN]
+	push af
+	ld [wCustomSide], a
+	xor 1
+	ld [H_WHOSETURN], a
+	ld a, c
+	ld [wCustomDelta], a
+	call AbilityInflictOrdinaryStatus
+	pop af
+	ld [H_WHOSETURN], a
+	ret
+.sleep
+	callab CustomRandomInBattleBank
+	ld a, [wCustomRandomValue]
+	and 7
+	cp 2
+	jr c, .sleep
+	ld b, a
+	ld a, [H_WHOSETURN]
+	ld [wCustomSide], a
+	ld hl, wBattleMonStatus
+	ld de, wPlayerBattleStatus2
+	and a
+	jr z, .storeSleep
+	ld hl, wEnemyMonStatus
+	ld de, wEnemyBattleStatus2
+.storeSleep
+	ld [hl], b
+	ld a, [de]
+	res NEEDS_TO_RECHARGE, a
+	ld [de], a
+	; Sleep interrupts the remaining strikes of a multi-hit move.
+	ld hl, wPlayerBattleStatus1
+	ld de, wPlayerNumAttacksLeft
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .interrupt
+	ld hl, wEnemyBattleStatus1
+	ld de, wEnemyNumAttacksLeft
+.interrupt
+	bit ATTACKING_MULTIPLE_TIMES, [hl]
+	jr z, .syncSleep
+	ld a, 1
+	ld [de], a
+.syncSleep
+	callab UtilitySyncParty
+	ld hl, AbilityEffectSporeSleepText
+	jp PrintText
+AbilityEffectSporeSleepText:
+	text "Fell asleep!"
+	prompt
 
 AbilityRubberSkinCheck:
 	xor a
@@ -1914,8 +2068,18 @@ AbilityBurnGate:
 ; Accuracy is scaled after nature and stage factors, before final byte cap.
 AbilityAccuracy:
 	call AbilityActor
+	cp AB_POLLEN
+	jr nz, .echolocation
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 5, a
+	jr z, .target
+	jr .flat20
+.echolocation
 	cp AB_ECHOLOCATION
 	jr nz, .compound
+.flat20
 	ld a, [H_QUOTIENT + 3]
 	add 51 ; 20 percentage points on the 0..255 accuracy scale
 	ld [H_QUOTIENT + 3], a

@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 43 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 46 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -26,10 +26,14 @@ Implemented for 43 species, with five equally likely slots per species. The save
 | Vulpix / Ninetales | Aftermath | Foxfire | Nine Lives | Fox's Cunning | Illusion |
 | Jigglypuff / Wigglytuff | Inflatable | Performer | Rubber Skin | Soothing Voice | Thick Fat |
 | Zubat / Golbat / Crobat | Echolocation | Bloodsucker | Gale Wings | Infiltrator | Predator |
+| Oddish / Vileplume | Perfume | Absorption | Pollen | Effect Spore | Photosynthesis |
+| Gloom | Stench | Absorption | Pollen | Effect Spore | Toxic Waste |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Oddish-family effects: Perfume raises Evasion one stage on entry. Absorption adds 25% of damage dealt to healing from damaging drain moves. Pollen adds 20 accuracy points to Poisonpowder, Stun Spore, Sleep Powder and Spore. Effect Spore gives each physical hit a 20% chance to choose poison, paralysis or sleep equally; existing status immunities apply. Stench reduces damage from poisoned opponents by 25%. Toxic Waste heals 1/16 maximum HP each turn while the opposing active Pokémon is alive and poisoned. Photosynthesis heals 1/16 maximum HP each turn while above half HP.
 
 Zubat-family effects: Echolocation adds 20 percentage points to move accuracy before the final cap. Bloodsucker adds 25% of damage dealt to healing from draining moves, rounded down. Gale Wings gives Flying moves +1 priority at full HP. Infiltrator bypasses opposing Reflect, Light Screen and Substitute while preserving them for later attacks; screen-breaking moves still remove screens. Predator boosts physical damage by 20% against slower opponents.
 
@@ -105,4 +109,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 215 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 230 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.

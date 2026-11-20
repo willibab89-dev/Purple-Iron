@@ -58,6 +58,9 @@ AbilitySpeciesPools:
 	db ZUBAT, 106
 	db GOLBAT, 106
 	db CROBAT, 106
+	db ODDISH, 111
+	db GLOOM, 116
+	db VILEPLUME, 111
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -82,6 +85,8 @@ AbilityPoolIds:
 	db AB_AFTERMATH, AB_FOXFIRE, AB_NINE_LIVES, AB_FOXS_CUNNING, AB_ILLUSION
 	db AB_INFLATABLE, AB_PERFORMER, AB_RUBBER_SKIN, AB_SOOTHING_VOICE, AB_THICK_FAT
 	db AB_ECHOLOCATION, AB_BLOODSUCKER, AB_GALE_WINGS, AB_INFILTRATOR, AB_PREDATOR
+	db AB_PERFUME, AB_ABSORPTION, AB_POLLEN, AB_EFFECT_SPORE, AB_PHOTOSYNTHESIS
+	db AB_STENCH, AB_ABSORPTION, AB_POLLEN, AB_EFFECT_SPORE, AB_TOXIC_WASTE
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -477,6 +482,10 @@ AbilityPhotosynthesis:
 	call AbilityGet
 	cp AB_REGENERATION
 	jp z, AbilityRegeneration
+	cp AB_TOXIC_WASTE
+	jr nz, .notToxicWaste
+	jp AbilityToxicWaste
+.notToxicWaste
 	cp AB_MOON_CHILD
 	jr nz, .notMoon
 	call AbilityHP
@@ -664,6 +673,7 @@ AbilityTextPointers:
 	dw AbilityText74, AbilityText75, AbilityText76, AbilityText77, AbilityText78
 	dw AbilityText79, AbilityText80, AbilityText81, AbilityText82, AbilityText83
 	dw AbilityText84, AbilityText85, AbilityText86
+	dw AbilityText87, AbilityText88, AbilityText89, AbilityText90, AbilityText91, AbilityText92
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -873,5 +883,11 @@ AbilityText83: db "THICK FAT",$4e,"Fire and Ice damage",$4e,"is halved.@"
 AbilityText84: db "ECHOLOCATION",$4e,"Move accuracy",$4e,"gains 20 points.@"
 AbilityText85: db "BLOODSUCKER",$4e,"Drain moves heal an",$4e,"extra 25% damage.@"
 AbilityText86: db "INFILTRATOR",$4e,"Bypasses screens",$4e,"and Substitute.@"
+AbilityText87: db "PERFUME",$4e,"Evasion +1 when",$4e,"entering battle.@"
+AbilityText88: db "ABSORPTION",$4e,"Drain moves heal an",$4e,"extra 25% damage.@"
+AbilityText89: db "POLLEN",$4e,"Powder accuracy",$4e,"gains 20 points.@"
+AbilityText90: db "EFFECT SPORE",$4e,"Physical hits: 20%",$4e,"poison, para or",$4e,"sleep.@"
+AbilityText91: db "STENCH",$4e,"Poisoned foes deal",$4e,"25% less damage.@"
+AbilityText92: db "TOXIC WASTE",$4e,"Heal 1/16 max HP",$4e,"if foe is poisoned.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"
