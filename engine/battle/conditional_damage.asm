@@ -30,6 +30,8 @@ AdjustPiercingBeakDefense:
 	ld a, [wAbilityCheckResult]
 	and a
 	ret z
+	cp 2
+	jr z, .horn
 	push hl
 	ld h, b
 	ld l, c
@@ -48,6 +50,40 @@ AdjustPiercingBeakDefense:
 	inc c
 .done
 	pop hl
+	ret
+.horn
+	push hl
+	push de
+	push bc
+	xor a
+	ld [H_DIVIDEND], a
+	ld [H_DIVIDEND + 1], a
+	ld a, b
+	ld [H_DIVIDEND + 2], a
+	ld a, c
+	ld [H_DIVIDEND + 3], a
+	ld a, 5
+	ld [H_DIVISOR], a
+	ld b, 4
+	call Divide
+	ld a, [H_QUOTIENT + 2]
+	ld [wAbilityTemp], a
+	ld a, [H_QUOTIENT + 3]
+	ld [wAbilityTemp + 1], a
+	pop bc
+	pop de
+	ld hl, wAbilityTemp + 1
+	ld a, c
+	sub [hl]
+	ld c, a
+	dec hl
+	ld a, b
+	sbc [hl]
+	ld b, a
+	pop hl
+	or c
+	ret nz
+	inc c
 	ret
 
 INCLUDE "engine/battle/legacy_damage_vars.asm"

@@ -175,11 +175,20 @@ AbilityPiercingBeakCheck:
 	ld [wAbilityCheckResult], a
 	call AbilityActor
 	cp AB_PIERCING_BEAK
+	jr z, .beak
+	cp AB_PIERCING_HORN
 	ret nz
+	call AbilityActorMoveType
+	cp FIRE
+	ret nc
+	ld a, 2
+	jr .store
+.beak
 	call AbilityActorMoveType
 	cp FLYING
 	ret nz
 	ld a, 1
+.store
 	ld [wAbilityCheckResult], a
 	ret
 
@@ -419,34 +428,34 @@ AbilityModifyDamage:
 	cp FIRE ; physical types precede FIRE
 	jp nc, .defender
 	call AbilityScaleDamage
-	jr .defender
+	jp .defender
 .voltage
 	cp AB_VOLTAGE
 	jr nz, .sniper
 	ld a, [wAbilityMoveType]
 	cp ELECTRIC
-	jr nz, .defender
+	jp nz, .defender
 	call AbilityTargetStatus
 	bit PAR, [hl]
-	jr z, .defender
+	jp z, .defender
 	ld c, 120
 	call AbilityScaleDamage
-	jr .defender
+	jp .defender
 .sniper
 	cp AB_SNIPER
 	jr nz, .predator
 	ld a, [wCriticalHitOrOHKO]
 	and a
-	jr z, .defender
+	jp z, .defender
 	ld c, 150
 	call AbilityScaleDamage
-	jr .defender
+	jp .defender
 .predator
 	cp AB_PREDATOR
 	jr nz, .relentless
 	ld a, [wAbilityMoveType]
 	cp FIRE
-	jr nc, .defender
+	jp nc, .defender
 	call AbilityPrepareSpeeds
 	ld hl, wAbilityPlayerSpeed
 	ld de, wAbilityEnemySpeed
@@ -460,22 +469,22 @@ AbilityModifyDamage:
 	ld b, a
 	ld a, [hli]
 	cp b
-	jr c, .defender
+	jp c, .defender
 	jr nz, .predatorBoost
 	inc de
 	ld a, [de]
 	ld b, a
 	ld a, [hl]
 	cp b
-	jr c, .defender
-	jr z, .defender
+	jp c, .defender
+	jp z, .defender
 .predatorBoost
 	ld c, 120
 	call AbilityScaleDamage
-	jr .defender
+	jp .defender
 .relentless
 	cp AB_RELENTLESS
-	jr nz, .defender
+	jr nz, .nidoMale
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	call AbilityFlagsPointer
@@ -490,6 +499,40 @@ AbilityModifyDamage:
 	add 100
 	ld c, a
 	call AbilityScaleDamage
+	jp .defender
+.nidoMale
+	cp AB_SHEER_FORCE
+	jr nz, .bloodlust
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jp z, .defender
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 3, a
+	jp z, .defender
+	ld c, 120
+	call AbilityScaleDamage
+	jp .defender
+.bloodlust
+	cp AB_BLOODLUST
+	jr nz, .rampage
+	call AbilityBloodlustCheck
+	jp nc, .defender
+	jr .malePhysicalBoost
+.rampage
+	cp AB_RAMPAGE
+	jp nz, .defender
+.malePhysicalBoost
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jp z, .defender
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jp nc, .defender
+	ld c, 125
+	call AbilityScaleDamage
+
 .defender
 	call AbilityTarget
 	cp AB_VINE_GUARD
@@ -562,10 +605,26 @@ AbilityFixedDamageModifiers:
 	ret z
 	call AbilityActor
 	cp AB_MEASURED
-	jr nz, .defender
+	jr nz, .male
 	ld c, 80
 	call AbilityScaleDamage
 	call AbilityFixedMinimum
+	jr .defender
+.male
+	cp AB_BLOODLUST
+	jr nz, .rampage
+	call AbilityBloodlustCheck
+	jr nc, .defender
+	jr .boost
+.rampage
+	cp AB_RAMPAGE
+	jr nz, .defender
+.boost
+	call AbilityActorMoveType
+	cp FIRE
+	jr nc, .defender
+	ld c, 125
+	call AbilityScaleDamage
 .defender
 	call AbilityTarget
 	cp AB_THICK_HIDE
@@ -693,6 +752,7 @@ AbilityHitEvents:
 	ret z
 	call AbilityRelentlessHit
 	call AbilityOvercharge
+	call AbilityRampage
 	ld a, [wCustomTargetHadSub]
 	and a
 	ret nz
@@ -786,6 +846,117 @@ AbilityRelentlessHit:
 	ret
 
 ; Each direct physical strike damages the attacker, even if the holder faints.
+AbilityBloodlustCheck:
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	jr z, .no
+	dec hl
+	jp AbilityHalfHP
+.no
+	and a
+	ret
+
+; Preserve the substitute's pre-hit HP for recoil when it breaks.
+AbilityCaptureRampageSubHP:
+	call AbilityActor
+	cp AB_RAMPAGE
+	ret nz
+	ld a, [wCustomTargetHadSub]
+	and a
+	ret z
+	ld hl, wEnemySubstituteHP
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .store
+	ld hl, wPlayerSubstituteHP
+.store
+	ld a, [hl]
+	ld [wAbilityTemp + 1], a
+	ret
+
+AbilityRampage:
+	call AbilityActor
+	cp AB_RAMPAGE
+	ret nz
+	call AbilityActorMoveType
+	cp FIRE
+	ret nc
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	ld c, a
+	or b
+	ret z
+	ld a, [wCustomTargetHadSub]
+	and a
+	jr z, .divide
+	ld a, [wAbilityTemp + 1]
+	ld d, a
+	ld a, b
+	and a
+	jr nz, .cap
+	ld a, c
+	cp d
+	jr c, .divide
+.cap
+	ld b, 0
+	ld c, d
+.divide
+	xor a
+	ld [H_DIVIDEND], a
+	ld [H_DIVIDEND + 1], a
+	ld a, b
+	ld [H_DIVIDEND + 2], a
+	ld a, c
+	ld [H_DIVIDEND + 3], a
+	ld a, 10
+	ld [H_DIVISOR], a
+	ld b, 4
+	call Divide
+	ld a, [H_QUOTIENT + 2]
+	ld b, a
+	ld a, [H_QUOTIENT + 3]
+	ld c, a
+	or b
+	jr nz, .amount
+	inc c
+.amount
+	call AbilityHP
+	ld a, [hli]
+	ld d, a
+	ld a, [hl]
+	sub c
+	ld e, a
+	ld a, d
+	sbc b
+	jr nc, .store
+	xor a
+	ld e, a
+.store
+	ld [hl], e
+	dec hl
+	ld [hl], a
+	ld a, [wAbilitySide]
+	ld [wCustomSide], a
+	callab UtilitySyncParty
+	callab DrawHUDsAndHPBars
+	ld hl, AbilityRampageText
+	jp PrintText
+AbilityRampageText:
+	text "Hurt by"
+	line "RAMPAGE!"
+	prompt
+
 AbilitySpinyArmor:
 	call AbilityTarget
 	cp AB_SPINY_ARMOR
@@ -1237,37 +1408,40 @@ AbilityEffectGate:
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
-	ld b, a ; effect
+	ld b, a
 	ld a, [hli]
 	and a
-	ret z ; direct status moves are not blocked by Shield Dust
-	call AbilityTarget
-	cp AB_SHIELD_DUST
-	ret nz
-	; Fire's thawing interaction is beneficial, so it is not blocked.
-	ld a, b
-	cp BURN_SIDE_EFFECT1
-	jr z, .thaw
-	cp BURN_SIDE_EFFECT2
-	jr nz, .secondary
-.thaw
-	call AbilityTargetStatus
-	bit FRZ, [hl]
-	ret nz
-.secondary
+	ret z
 	ld a, b
 	ld hl, AbilitySecondaryEffects
 	ld de, 1
 	push bc
 	call IsInArray
 	pop bc
-	jr c, .block
+	jr c, .secondary
 	ld a, c
 	cp TRI_ATTACK
-	jr z, .block
+	jr z, .secondary
 	cp SCALD
-	jr z, .block
+	jr z, .secondary
 	cp POISON_FANG
+	ret nz
+.secondary
+	call AbilityActor
+	cp AB_SHEER_FORCE
+	jr z, .checkThaw
+	call AbilityTarget
+	cp AB_SHIELD_DUST
+	ret nz
+.checkThaw
+	ld a, b
+	cp BURN_SIDE_EFFECT1
+	jr z, .thaw
+	cp BURN_SIDE_EFFECT2
+	jr nz, .block
+.thaw
+	call AbilityTargetStatus
+	bit FRZ, [hl]
 	ret nz
 .block
 	ld a, 1

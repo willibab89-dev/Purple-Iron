@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 31 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 34 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -21,10 +21,13 @@ Implemented for 31 original species, with five equally likely slots per species.
 | Sandshrew | Rolling Defense | Sand Armor | Burrower | Sharp Claws | Sand Veil |
 | Sandslash | Spiny Armor | Sand Armor | Burrower | Sharp Claws | Sand Veil |
 | Nidoran♀ / Nidorina / Nidoqueen | Poison Point | Measured | Thick Hide | Protective Instinct | Iron Will |
+| Nidoran♂ / Nidorino / Nidoking | Poison Point | Piercing Horn | Sheer Force | Bloodlust | Rampage |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Nidoran♂-family effects: Poison Point has a 25% chance to poison physical attackers. Piercing Horn ignores 20% of Defense with physical moves. Sheer Force increases damage by 20% for moves with secondary effects and suppresses those effects. Bloodlust increases physical damage by 25% against a living target below half HP. Rampage increases physical damage by 25% and inflicts recoil equal to 10% of damage dealt per hit, rounded down with a minimum of 1; Substitute damage is capped at its remaining HP. Fixed physical damage is affected by Bloodlust and Rampage.
 
 Nidoran♀-family effects: Poison Point has a 25% chance to poison the attacker after a physical hit, including ranged attacks; Weedle retains its previously implemented contact-only Poison Point. Measured multiplies outgoing move damage by 0.8, including fixed-damage moves and Counter, and doubles the probability of move secondary effects using the existing single RNG draw, capped at certainty. Thick Hide multiplies incoming physical move damage by 0.85, including fixed damage. Protective Instinct raises Defense one stage below half HP once per battle. Iron Will prevents critical hits, including guaranteed critical hits. Existing Substitute, type/status immunity and minimum-damage rules apply.
 
@@ -90,4 +93,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 155 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 170 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.

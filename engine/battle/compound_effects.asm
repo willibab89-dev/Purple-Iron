@@ -62,6 +62,7 @@ CaptureCustomTargetSubstitute:
 	inc a
 .store
 	ld [wCustomTargetHadSub], a
+	abilitycall AbilityCaptureRampageSubHP
 	ret
 
 CustomSetActor:

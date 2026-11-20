@@ -91,8 +91,9 @@ def validate(version):
                'PIKACHU':['STATIC','VOLTAGE','OVERCHARGE','QUICK_REFLEXES','QUICK_FEET'],
                'SANDSHREW':['ROLLING_DEFENSE','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL'],
                'SANDSLASH':['SPINY_ARMOR','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL'],
-               'NIDORAN_F':['PHYSICAL_POISON_POINT','MEASURED','THICK_HIDE','PROTECTIVE_INSTINCT','IRON_WILL']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F')]:
+               'NIDORAN_F':['PHYSICAL_POISON_POINT','MEASURED','THICK_HIDE','PROTECTIVE_INSTINCT','IRON_WILL'],
+               'NIDORAN_M':['PHYSICAL_POISON_POINT','PIERCING_HORN','SHEER_FORCE','BLOODLUST','RAMPAGE']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -307,6 +308,17 @@ def validate(version):
                 call('AdjustPiercingBeakDefense',BC=defense)
                 got=game.register_file.B*256+game.register_file.C
                 assert got==want,(turn,typ,defense,got)
+            for typ,defense,want in [('NORMAL',100,80),('NORMAL',99,80),('NORMAL',3,3),('FIRE',100,100)]:
+                init(turn);aid(turn,'PIERCING_HORN');put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ])
+                call('AdjustPiercingBeakDefense',BC=defense)
+                assert game.register_file.B*256+game.register_file.C==want,(turn,typ,defense,game.register_file.B,game.register_file.C)
+            for attack in ('TACKLE','EARTHQUAKE'):
+                init(turn);move(turn,attack);aid(turn,'PIERCING_HORN')
+                call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack')
+                assert game.memory[0xff98]==80,(turn,attack,game.memory[0xff98])
+            for ability_name,attack,hp,want in [('BLOODLUST','TACKLE',79,125),('BLOODLUST','TACKLE',80,100),('BLOODLUST','EMBER',79,100),('RAMPAGE','TACKLE',160,125),('RAMPAGE','EMBER',160,100),('SHEER_FORCE','SLUDGE',160,120),('SHEER_FORCE','TWINEEDLE',160,120),('SHEER_FORCE','TACKLE',160,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,ability_name);word(tp+'HP',hp);word('wDamage',100)
+                call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,ability_name,attack,hp,readword('wDamage'))
             for attack in ('WING_ATTACK','AERIAL_ACE'):
                 init(turn);move(turn,attack);aid(turn,'PIERCING_BEAK')
                 call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack')
@@ -399,6 +411,13 @@ def validate(version):
             # Secondary-effect gates keep primary/multi-hit/draining mechanics.
             for attack,blocked in [('SLUDGE',True),('VINE_WHIP',True),('FLASH',True),('SCALD',True),('TWINEEDLE',False),('DOUBLESLAP',False),('DRAIN_PUNCH',False),('BRICK_BREAK',False),('TOXIC',False)]:
                 init(turn);move(turn,attack);aid(1-turn,'SHIELD_DUST');call('AbilityEffectGate');assert bool(get('wAbilityCheckResult'))==blocked,(attack,get('wAbilityCheckResult'))
+            for attack,blocked in [('SLUDGE',True),('FLASH',True),('SCALD',True),('TWINEEDLE',False),('DOUBLESLAP',False),('DRAIN_PUNCH',False),('TOXIC',False)]:
+                init(turn);move(turn,attack);aid(turn,'SHEER_FORCE');call('AbilityEffectGate');assert bool(get('wAbilityCheckResult'))==blocked,(turn,attack,get('wAbilityCheckResult'))
+            # Recoil uses actual damage to a substitute, including on its breaking hit.
+            for damage,subhp,want in [(80,25,158),(8,25,159),(300,25,158)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'RAMPAGE');put('wCustomTargetHadSub',1)
+                put('w'+('Player' if turn else 'Enemy')+'SubstituteHP',subhp);call('AbilityCaptureRampageSubHP');word('wDamage',damage)
+                call('AbilityRampage');assert readword(ap+'HP')==want,(turn,damage,subhp,readword(ap+'HP'))
             # Shield Dust also blocks ability-granted added poison/burn/flinch.
             ap,tp=init(turn);move(turn,'VINE_WHIP');aid(turn,'POISON_LEAF');aid(1-turn,'SHIELD_DUST');rng(0);call('AbilityAfterHit');assert get(tp+'Status')==0
             # Direct and secondary burns are blocked by the Water Veil status gate.
@@ -448,7 +467,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,66):
+        for n in range(1,70):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -514,6 +533,14 @@ def validate(version):
         for turn in (0,1):
             # Threshold triggers also run immediately after recoil and poison,
             # before the opposing Pokémon can take its action.
+            ap,tp=execute('SLUDGE',turn);normal=160-readword(tp+'HP');assert get(tp+'Status')==8
+            ap,tp=execute('SLUDGE',turn,actor='SHEER_FORCE');assert 160-readword(tp+'HP')>normal and get(tp+'Status')==0
+            ap,tp=execute('TWINEEDLE',turn,actor='SHEER_FORCE');assert get(tp+'Status')==0 and readword(tp+'HP')<160
+            ap,tp=execute('SCALD',turn,actor='SHEER_FORCE');assert get(tp+'Status')==0 and readword(tp+'HP')<160
+            ap,tp=execute('TACKLE',turn,actor='RAMPAGE');dealt=160-readword(tp+'HP');assert readword(ap+'HP')==160-max(1,dealt//10),(turn,dealt,readword(ap+'HP'))
+            ap,tp=execute('SEISMIC_TOSS',turn,actor='RAMPAGE');assert readword(tp+'HP')==98 and readword(ap+'HP')==154,(turn,readword(tp+'HP'),readword(ap+'HP'))
+            ap,tp=execute('TACKLE',turn,actor='RAMPAGE',hp=1);assert readword(ap+'HP')==159 and readword(tp+'HP')==0
+            ap,tp=execute('DOUBLESLAP',turn,actor='RAMPAGE',actor_hp=1);assert readword(ap+'HP')==0 and get('w'+('Enemy' if turn else 'Player')+'NumAttacksLeft')==0
             ap,tp=execute('TAKE_DOWN',turn,actor='PROTECTIVE_INSTINCT',actor_hp=85)
             assert readword(ap+'HP')<80 and get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==8
             ap,tp=init(turn);aid(turn,'PROTECTIVE_INSTINCT');word(ap+'HP',85);put(ap+'Status',8)
@@ -560,7 +587,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 31 species / 155 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 34 species / 170 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

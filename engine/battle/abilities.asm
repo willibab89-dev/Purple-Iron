@@ -46,6 +46,9 @@ AbilitySpeciesPools:
 	db NIDORAN_F, 81
 	db NIDORINA, 81
 	db NIDOQUEEN, 81
+	db NIDORAN_M, 86
+	db NIDORINO, 86
+	db NIDOKING, 86
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -65,6 +68,7 @@ AbilityPoolIds:
 	db AB_ROLLING_DEFENSE, AB_SAND_ARMOR, AB_BURROWER, AB_SHARP_CLAWS, AB_SAND_VEIL
 	db AB_SPINY_ARMOR, AB_SAND_ARMOR, AB_BURROWER, AB_SHARP_CLAWS, AB_SAND_VEIL
 	db AB_PHYSICAL_POISON_POINT, AB_MEASURED, AB_THICK_HIDE, AB_PROTECTIVE_INSTINCT, AB_IRON_WILL
+	db AB_PHYSICAL_POISON_POINT, AB_PIERCING_HORN, AB_SHEER_FORCE, AB_BLOODLUST, AB_RAMPAGE
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -628,6 +632,7 @@ AbilityTextPointers:
 	dw AbilityText54, AbilityText55, AbilityText56
 	dw AbilityText57, AbilityText58, AbilityText59, AbilityText60
 	dw AbilityText61, AbilityText62, AbilityText63, AbilityText64, AbilityText65
+	dw AbilityText66, AbilityText67, AbilityText68, AbilityText69
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -816,5 +821,9 @@ AbilityText62: db "MEASURED",$4e,"Damage x0.8;",$4e,"extra effect",$4e,"chance x
 AbilityText63: db "THICK HIDE",$4e,"Physical damage",$4e,"received x0.85.@"
 AbilityText64: db "PROTECTIVE INST.",$4e,"Below 1/2 HP:",$4e,"Defense +1 once",$4e,"per battle.@"
 AbilityText65: db "IRON WILL",$4e,"Cannot be hit by",$4e,"critical hits.@"
+AbilityText66: db "PIERCING HORN",$4e,"Physical hits ignore",$4e,"20% of Defense.@"
+AbilityText67: db "SHEER FORCE",$4e,"Secondary moves x1.2",$4e,"lose added effects.@"
+AbilityText68: db "BLOODLUST",$4e,"Physical hits x1.25",$4e,"if foe below 1/2.@"
+AbilityText69: db "RAMPAGE",$4e,"Physical hits x1.25",$4e,"recoil 10% damage.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"
