@@ -61,6 +61,8 @@ AbilitySpeciesPools:
 	db ODDISH, 111
 	db GLOOM, 116
 	db VILEPLUME, 111
+	db PARAS, 121
+	db PARASECT, 126
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -87,6 +89,8 @@ AbilityPoolIds:
 	db AB_ECHOLOCATION, AB_BLOODSUCKER, AB_GALE_WINGS, AB_INFILTRATOR, AB_PREDATOR
 	db AB_PERFUME, AB_ABSORPTION, AB_POLLEN, AB_EFFECT_SPORE, AB_PHOTOSYNTHESIS
 	db AB_STENCH, AB_ABSORPTION, AB_POLLEN, AB_EFFECT_SPORE, AB_TOXIC_WASTE
+	db AB_EFFECT_SPORE, AB_LEECHING, AB_PARASITE, AB_MYCELIUM, AB_REGROWTH
+	db AB_EFFECT_SPORE, AB_LEECHING, AB_PARASITE, AB_MYCELIUM, AB_DEATH_SPORE
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -487,7 +491,10 @@ AbilityPhotosynthesis:
 	jp AbilityToxicWaste
 .notToxicWaste
 	cp AB_MOON_CHILD
+	jr z, .unconditionalHeal
+	cp AB_REGROWTH
 	jr nz, .notMoon
+.unconditionalHeal
 	call AbilityHP
 	ld a, [hli]
 	or [hl]
@@ -674,6 +681,7 @@ AbilityTextPointers:
 	dw AbilityText79, AbilityText80, AbilityText81, AbilityText82, AbilityText83
 	dw AbilityText84, AbilityText85, AbilityText86
 	dw AbilityText87, AbilityText88, AbilityText89, AbilityText90, AbilityText91, AbilityText92
+	dw AbilityText93, AbilityText94, AbilityText95, AbilityText96, AbilityText97
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -889,5 +897,10 @@ AbilityText89: db "POLLEN",$4e,"Powder accuracy",$4e,"gains 20 points.@"
 AbilityText90: db "EFFECT SPORE",$4e,"Physical hits: 20%",$4e,"poison, para or",$4e,"sleep.@"
 AbilityText91: db "STENCH",$4e,"Poisoned foes deal",$4e,"25% less damage.@"
 AbilityText92: db "TOXIC WASTE",$4e,"Heal 1/16 max HP",$4e,"if foe is poisoned.@"
+AbilityText93: db "LEECHING",$4e,"Physical hits heal",$4e,"10% of damage.@"
+AbilityText94: db "PARASITE",$4e,"Contact spreads",$4e,"this ability.@"
+AbilityText95: db "MYCELIUM",$4e,"Status moves bypass",$4e,"accuracy checks.@"
+AbilityText96: db "REGROWTH",$4e,"Heal 1/16 max HP",$4e,"each turn.@"
+AbilityText97: db "DEATH SPORE",$4e,"When knocked out:",$4e,"curse or poison foe.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

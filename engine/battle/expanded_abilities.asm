@@ -874,7 +874,9 @@ AbilityHitEvents:
 	ld a, [wDamage + 1]
 	or b
 	ret z
+	call AbilityLeeching
 	call AbilityAftermath
+	call AbilityDeathSpore
 	call AbilityRelentlessHit
 	call AbilityOvercharge
 	call AbilityRampage
@@ -885,6 +887,7 @@ AbilityHitEvents:
 	ld [wAbilityMoveType], a
 	call AbilitySpinyArmor
 	call AbilityEffectSpore
+	call AbilityParasite
 	ld a, [wDamage]
 	ld b, a
 	ld a, [wDamage + 1]
@@ -1228,6 +1231,187 @@ AbilityBloodsuckerAdd:
 	ld [wDamage], a
 	ret
 
+ ; Leeching uses the actual HP lost, including capped Substitute damage.
+AbilityLeeching:
+	call AbilityActor
+	cp AB_LEECHING
+	ret nz
+	call AbilityActorMoveType
+	cp FIRE
+	ret nc
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	ld c, a
+	or b
+	ret z
+	ld a, [wCustomTargetHadSub]
+	and a
+	jr z, .divide
+	ld a, [wAbilityTemp + 1]
+	ld d, a
+	ld a, b
+	and a
+	jr nz, .capSub
+	ld a, c
+	cp d
+	jr c, .divide
+.capSub
+	ld b, 0
+	ld c, d
+.divide
+	xor a
+	ld [H_DIVIDEND], a
+	ld [H_DIVIDEND + 1], a
+	ld a, b
+	ld [H_DIVIDEND + 2], a
+	ld a, c
+	ld [H_DIVIDEND + 3], a
+	ld a, 10
+	ld [H_DIVISOR], a
+	ld b, 4
+	call Divide
+	ld a, [H_QUOTIENT + 2]
+	ld b, a
+	ld a, [H_QUOTIENT + 3]
+	ld c, a
+	or b
+	jr nz, .heal
+	inc c
+.heal
+	call AbilityHP
+	push hl
+	ld a, [hli]
+	ld l, [hl]
+	ld h, a
+	add hl, bc
+	jr c, .cap
+	ld a, [de]
+	ld b, a
+	inc de
+	ld a, [de]
+	ld c, a
+	ld a, h
+	cp b
+	jr c, .store
+	jr nz, .capBC
+	ld a, l
+	cp c
+	jr c, .store
+.capBC
+	ld h, b
+	ld l, c
+	jr .store
+.cap
+	ld a, [de]
+	ld h, a
+	inc de
+	ld a, [de]
+	ld l, a
+.store
+	ld b, h
+	ld c, l
+	pop hl
+	ld [hl], b
+	inc hl
+	ld [hl], c
+	ld a, [wAbilitySide]
+	ld [wCustomSide], a
+	callab UtilitySyncParty
+	callab DrawHUDsAndHPBars
+	ret
+
+; Contact replaces only the active ability, never the saved ability slot.
+AbilityParasite:
+	call AbilityTarget
+	cp AB_PARASITE
+	ret nz
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 1, a
+	ret z
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	ld hl, wActiveAbilities
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .infect
+	inc hl
+.infect
+	ld a, [hl]
+	cp AB_PARASITE
+	ret z
+	ld [hl], AB_PARASITE
+	ld hl, AbilityParasiteText
+	jp PrintText
+AbilityParasiteText:
+	text "PARASITE spread!"
+	prompt
+
+; A direct knockout picks Curse or ordinary poison with equal probability.
+AbilityDeathSpore:
+	ld a, [wCustomTargetHadSub]
+	and a
+	ret nz
+	call AbilityTarget
+	cp AB_DEATH_SPORE
+	ret nz
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret nz
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	callab CustomRandomInBattleBank
+	ld a, [wCustomRandomValue]
+	and 1
+	jr nz, .poison
+	ld hl, wPlayerResidual
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .curse
+	ld hl, wEnemyResidual
+.curse
+	bit 1, [hl]
+	ret nz
+	set 1, [hl]
+	ld hl, AbilityDeathSporeText
+	jp PrintText
+.poison
+	ld a, [H_WHOSETURN]
+	push af
+	ld [wCustomSide], a
+	xor 1
+	ld [H_WHOSETURN], a
+	ld a, 1 << PSN
+	ld [wCustomDelta], a
+	call AbilityInflictOrdinaryStatus
+	pop af
+	ld [H_WHOSETURN], a
+	ret
+AbilityDeathSporeText:
+	text "DEATH SPORE"
+	line "cursed its foe!"
+	prompt
+
 AbilityActorPoisoned:
 	ld hl, wBattleMonStatus
 	ld a, [H_WHOSETURN]
@@ -1426,11 +1610,14 @@ AbilityBloodlustCheck:
 	and a
 	ret
 
-; Preserve the substitute's pre-hit HP for recoil when it breaks.
+; Preserve the substitute's pre-hit HP for recoil or healing if it breaks.
 AbilityCaptureRampageSubHP:
 	call AbilityActor
 	cp AB_RAMPAGE
+	jr z, .eligible
+	cp AB_LEECHING
 	ret nz
+.eligible
 	ld a, [wCustomTargetHadSub]
 	and a
 	ret z
@@ -2068,6 +2255,20 @@ AbilityBurnGate:
 ; Accuracy is scaled after nature and stage factors, before final byte cap.
 AbilityAccuracy:
 	call AbilityActor
+	cp AB_MYCELIUM
+	jr nz, .pollen
+	call AbilityMove
+	inc hl
+	inc hl
+	ld a, [hl]
+	and a
+	jr nz, .target
+	xor a
+	ld [H_QUOTIENT + 2], a
+	dec a
+	ld [H_QUOTIENT + 3], a
+	ret
+.pollen
 	cp AB_POLLEN
 	jr nz, .echolocation
 	call AbilityMove
