@@ -29,6 +29,19 @@ def validate(version):
             game.tick(1, False)
             if game.register_file.PC in (0x104, 0x105, 0x106): return
         raise AssertionError((version, name, hex(game.register_file.PC)))
+    def load_enemy_silently():
+        # Entry abilities can display stat messages. This test deliberately
+        # disables interrupts and validates roster data, so do not run text UI.
+        saved=[]
+        for name in ('PrintText', 'CustomPrintStatName'):
+            bank, address=syms[name]
+            saved.append((bank, address, game.memory[bank, address]))
+            game.memory[bank, address]=0xc9
+        try:
+            call('LoadEnemyMonData')
+        finally:
+            for bank, address, value in saved:
+                game.memory[bank, address]=value
     def load(trainer, number):
         # Default, unscaled battles; execute ReadTrainer and all of its
         # party generation and additional-move writes without stubbing them.
@@ -201,7 +214,7 @@ def validate(version):
                     put('wWhichPokemon',slot-1);put('wEnemyMonPartyPos',slot-1)
                     put('wEnemyMonSpecies2',index);put('wCurEnemyLVL',level)
                     for n in ('wEnemyBattleStatus3','wFontLoaded','wOptions'):put(n,0)
-                    call('LoadEnemyMonData')
+                    load_enemy_silently()
                     assert get('wEnemyMonSpecies')[0]==index and get('wEnemyMonLevel')[0]==level,key
                     assert list(get('wEnemyMonMoves',4))==moves,('send-out moves',key)
                     assert list(get('wEnemyMonPP',4))==[move_data[(m-1)*6+5] if m else 0 for m in moves],('send-out PP',key)
