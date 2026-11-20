@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 22 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 24 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -16,10 +16,13 @@ Implemented for 22 original species, with five equally likely slots per species.
 | Pidgey / Pidgeotto / Pidgeot | Tailwind | Predator | Keen Eye | Piercing Beak | Gale Wings |
 | Rattata / Raticate | Scavenger | Strong Jaw | Cornered | Hustle | Poison Heal |
 | Spearow / Fearow | Ruthless | Short Temper | Relentless | Piercing Beak | Sniper |
+| Ekans / Arbok | Intimidate | Shed Skin | Venomous | Predator | Corrosive Venom |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Ekans-family effects: Intimidate lowers the opposing Pokémon’s Speed one stage on entry, once per holder per battle; a given target can only be affected once per battle, so the effect does not stack. Shed Skin has an exact 30% chance at turn end to cure a major status and clear Toxic counters, recalculating stats and synchronizing the party. Venomous increases damage by 25% against poisoned targets; Predator increases physical damage by 20% against slower targets. Corrosive Venom makes Poison attacks super effective against Rock while retaining the defender’s other type interactions; AI effectiveness scoring uses the same rule.
 
 Spearow-family effects: Ruthless doubles critical chance against a target with a major status; Short Temper raises Attack one stage when a move misses (type immunity does not count); Relentless adds 10% damage after each successful damaging strike against the same target, up to 30%, including hits on Substitute. Switching or using a non-damaging move resets the stacks; a miss does not add a stack. Piercing Beak ignores 25% of Defense with Flying attacks; Sniper increases critical damage by 50%.
 
@@ -77,4 +80,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 110 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 120 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.

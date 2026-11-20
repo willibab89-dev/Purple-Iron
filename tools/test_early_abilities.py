@@ -46,7 +46,8 @@ def validate(version):
         call('AbilityResetBattle');put('turn',turn);put('wLinkState',0);put('wIsInBattle',2)
         put('wPlayerMonNumber',0);put('wWhichPokemon',0);put('wEnemyMonPartyPos',0)
         put('wUnusedC000',0);put('wCustomTargetHadSub',0);put('wCriticalHitOrOHKO',0)
-        put('wOptions',0);put('wObtainedBadges',0)
+        put('wOptions',0);put('wObtainedBadges',0);put('wFirstMonsNotOutYet',0);put('wResidualRoundDone',0)
+        put('wBattleMonSpecies',ids['PIDGEY']);put('wEnemyMonSpecies',ids['PIDGEY'])
         for side,prefix,party in (('Player','wBattleMon','wPartyMon1'),('Enemy','wEnemyMon','wEnemyMon1')):
             for n in ('HP','MaxHP','Attack','Defense','Speed','Special'):
                 word(prefix+n,160 if n in ('HP','MaxHP') else 100);word(party+n,160 if n in ('HP','MaxHP') else 100)
@@ -85,8 +86,9 @@ def validate(version):
                'BEEDRILL':['RUTHLESS','FRENZY','VENOMOUS','PIERCING_STING','QUICK_REFLEXES'],
                'PIDGEY':['TAILWIND','PREDATOR','KEEN_EYE','PIERCING_BEAK','GALE_WINGS'],
                'RATTATA':['SCAVENGER','STRONG_JAW','CORNERED','HUSTLE','POISON_HEAL'],
-               'SPEAROW':['RUTHLESS','SHORT_TEMPER','RELENTLESS','PIERCING_BEAK','SNIPER']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW')]:
+               'SPEAROW':['RUTHLESS','SHORT_TEMPER','RELENTLESS','PIERCING_BEAK','SNIPER'],
+               'EKANS':['INTIMIDATE','SHED_SKIN','VENOMOUS','PREDATOR','CORROSIVE_VENOM']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -103,7 +105,56 @@ def validate(version):
         put('wNatureMode',2);put('wNatureEnemySlot',1);game.memory[addr('wNatureIDs')+1]=0
         game.memory[addr('wNatureStatSources')+1]=0;rng(0);call('LoadEnemyMonData')
         assert game.memory[addr('wActiveAbilities')+1]==ab['TAILWIND'] and get('wEnemyMonSpeedMod')==8
+        # At battle start the enemy loads first; its effect waits for the player.
+        init();aid(0,'INTIMIDATE');aid(1,'INTIMIDATE');put('wFirstMonsNotOutYet',1)
+        put('wAbilitySide',1);call('AbilityEntrySpeed')
+        assert get('wPlayerMonSpeedMod')==7 and get('wEnemyMonSpeedMod')==7
+        put('wAbilitySide',0);call('AbilityEntrySpeed')
+        assert get('wPlayerMonSpeedMod')==6 and get('wEnemyMonSpeedMod')==6
+        # Wild foes load before StartBattle even sets the first-mon flag.
+        init();aid(1,'INTIMIDATE');put('wBattleMonSpecies',0);put('wAbilitySide',1)
+        call('AbilityEntrySpeed');assert get('wPlayerMonSpeedMod')==7 and not(game.memory[addr('wAbilityFlags')+6]&64)
+        put('wBattleMonSpecies',ids['PIDGEY']);put('wFirstMonsNotOutYet',1);put('wAbilitySide',0);call('AbilityEntrySpeed')
+        assert get('wPlayerMonSpeedMod')==6
+        # Exercise the real wild-enemy then first-player load ordering.
+        init();put('wBattleMonSpecies',0);put('wEnemyMonSpecies2',ids['EKANS']);put('wCurEnemyLVL',20)
+        put('wIsInBattle',1);put('wEnemyMonPartyPos',255);put('wNatureMode',2);put('wNatureEnemySlot',1)
+        game.memory[addr('wNatureIDs')+1]=0;game.memory[addr('wNatureStatSources')+1]=0;rng(0)
+        call('LoadEnemyMonData');assert game.memory[addr('wActiveAbilities')+1]==ab['INTIMIDATE']
+        assert not(game.memory[addr('wAbilityFlags')+6]&64)
+        metadata('wPartyMon1','BULBASAUR',1,0);put('wBattleMonSpecies2',ids['BULBASAUR']);put('wFirstMonsNotOutYet',1)
+        call('LoadBattleMonFromParty');assert get('wPlayerMonSpeedMod')==6
         for turn in (0,1):
+            # Intimidate fires once per holder and does not stack on a target.
+            ap,tp=init(turn);aid(turn,'INTIMIDATE');put('wAbilitySide',turn);call('AbilityEntrySpeed')
+            mod='w'+('Player' if turn else 'Enemy')+'MonSpeedMod';assert get(mod)==6
+            put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get(mod)==6
+            put('wEnemyMonPartyPos' if turn else 'wPlayerMonNumber',1);put('wAbilitySide',turn)
+            call('AbilityEntrySpeed');assert get(mod)==6
+            # Shed Skin uses exact 30% rolls, clears major status/Toxic and syncs party.
+            for status,roll,cured in [(8,0,True),(8,59,True),(8,60,False),(16,0,True),(32,0,True),(64,0,True),(1,0,True)]:
+                ap,tp=init(turn);aid(turn,'SHED_SKIN');put(ap+'Status',status)
+                party='wEnemyMon1' if turn else 'wPartyMon1';put(party+'Status',status)
+                battle3='w'+('Enemy' if turn else 'Player')+'BattleStatus3';counter='w'+('Enemy' if turn else 'Player')+'ToxicCounter'
+                put(battle3,1);put(counter,3);put('wAbilitySide',turn);rng(roll);call('AbilityShedSkin')
+                assert get(ap+'Status')==(0 if cured else status),(turn,status,roll)
+                assert get(party+'Status')==(0 if cured else status)
+                assert bool(get(battle3)&1)!=cured and get(counter)==(0 if cured else 3)
+            ap,tp=init(turn);aid(turn,'SHED_SKIN');put(ap+'Status',8);word(ap+'HP',0);put('wAbilitySide',turn);rng(0);call('AbilityShedSkin');assert get(ap+'Status')==8
+            for status,stat in [(16,'Attack'),(64,'Speed'),(8,'Special')]:
+                ap,tp=init(turn);aid(turn,'SHED_SKIN');put(ap+'Status',status);word(ap+stat,50)
+                put('wAbilitySide',turn);rng(0);call('AbilityShedSkin');assert readword(ap+stat)==100,(turn,status,stat,readword(ap+stat))
+            ap,tp=init(turn);aid(turn,'SHED_SKIN');put(ap+'Status',8);rng(0);call('AbilityEndRound');assert get(ap+'Status')==0
+            ap,tp=init(turn);aid(turn,'SHED_SKIN');put(ap+'Status',8);put('wResidualRoundDone',1);rng(0);call('AbilityEndRound');assert get(ap+'Status')==8
+            # Corrosive Venom changes only Poison vs Rock, including AI scoring.
+            for attack,t1,t2,enabled,want in [('POISON','ROCK','ROCK',True,20),('POISON','ROCK','GROUND',True,10),('POISON','ROCK','GRASS',True,40),('POISON','POISON','ROCK',True,10),('POISON','ROCK','ROCK',False,5),('FIRE','ROCK','ROCK',True,5)]:
+                ap,tp=init(turn);aid(turn,'CORROSIVE_VENOM' if enabled else None);put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2])
+                put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[attack]);word('wDamage',100);call('AdjustDamageForMoveType')
+                assert readword('wDamage')==want*10 and get('wDamageMultipliers')==want,(turn,attack,t1,t2,enabled,readword('wDamage'),get('wDamageMultipliers'))
+                put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==want,(turn,attack,t1,t2,enabled,get('wTypeEffectiveness'))
+            ap,tp=init(turn);aid(turn,'CORROSIVE_VENOM');put(ap+'Type1',TYPES['POISON']);put(ap+'Type2',TYPES['POISON'])
+            put(tp+'Type1',TYPES['ROCK']);put(tp+'Type2',TYPES['ROCK']);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES['POISON'])
+            word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==300 and get('wDamageMultipliers')==0x94
             # Short Temper responds to misses, including status moves, but not immunities.
             for attack,miss,multiplier,hp,want in [('TACKLE',1,10,160,8),('GROWL',1,10,160,8),('TACKLE',0,10,160,7),('TACKLE',1,0,160,7),('TACKLE',1,10,0,7)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'SHORT_TEMPER');put('wMoveMissed',miss);put('wDamageMultipliers',multiplier);word(ap+'HP',hp)
@@ -257,7 +308,7 @@ def validate(version):
                 init(turn);move(turn,attack);aid(turn,actor);aid(1-turn,target);game.memory[0xff97:0xff99]=[0,100]
                 call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,want]),(actor,target,attack,bytes(game.memory[0xff97:0xff99]))
         # Exact 10%, 15%, 25% rolls, including high-byte rejection.
-        for percent in (10,15,25):
+        for percent in (10,15,25,30):
             success=0
             for value in range(200):rng(value);call('AbilityRoll',BC=percent<<8);success+=bool(game.register_file.F&16)
             assert success==2*percent
@@ -276,7 +327,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,51):
+        for n in range(1,54):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -364,7 +415,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 22 species / 110 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 24 species / 120 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

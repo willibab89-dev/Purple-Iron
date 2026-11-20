@@ -1,7 +1,7 @@
 ; Shared ability mechanics. This bank has room for the early-species pools.
 ; Flags per party member: 0 Hot Temper, 1 Confident, 2 low-HP trigger,
-; 3 first damaging move spent; 4..5 Relentless hit count. Bits 0..2 persist
-; through switching; Relentless resets when either combatant changes.
+; 3 first damaging move spent; 4..5 Relentless hit count; 6 Intimidate spent;
+; 7 already affected by Intimidate. Bits 0..2 and 6..7 persist in battle.
 AbilityEntry:
 	call AbilityClearRelentless
 	call AbilityFlagsPointer
@@ -24,9 +24,76 @@ AbilityEntrySpeed:
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_TAILWIND
-	ret nz
+	jr nz, .intimidate
 	ld a, 2 ; Speed
-	jp AbilityRaiseStage
+	call AbilityRaiseStage
+.intimidate
+	ld a, [wFirstMonsNotOutYet]
+	and a
+	jr z, .oneSide
+	ld a, [wAbilitySide]
+	and a
+	ret nz ; first enemy waits until the player's first combatant is ready
+	call AbilityIntimidate
+	ld a, 1
+	ld [wAbilitySide], a
+	call AbilityIntimidate
+	xor a
+	ld [wAbilitySide], a
+	ret
+.oneSide
+	jp AbilityIntimidate
+
+; Each holder may trigger once; each target may be affected once per battle.
+AbilityIntimidate:
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_INTIMIDATE
+	ret nz
+	call AbilityFlagsPointer
+	bit 6, [hl]
+	ret nz
+	ld a, [wAbilitySide]
+	xor 1
+	ld [wAbilitySide], a
+	and a
+	jr nz, .targetReady
+	; Wild enemy data is loaded before StartBattle and before the player's
+	; first mon. InitBattleVariables clears this species even if old HP remains.
+	ld a, [wBattleMonSpecies]
+	and a
+	jr z, .restoreSide
+.targetReady
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	jr z, .restoreSide
+	ld a, [wAbilitySide]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityFlagsPointer
+	set 6, [hl]
+	ld a, [wAbilitySide]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityFlagsPointer
+	bit 7, [hl]
+	jr nz, .restoreSide
+	set 7, [hl]
+	ld a, 2 ; Speed
+	ld [wCustomStat], a
+	ld a, [wAbilitySide]
+	ld [wCustomSide], a
+	ld a, -1
+	ld [wCustomDelta], a
+	xor a
+	ld [wCustomChanged], a
+	callab CustomChangeStage
+.restoreSide
+	ld a, [wAbilitySide]
+	xor 1
+	ld [wAbilitySide], a
+	ret
 
 AbilityTarget:
 	ld a, [H_WHOSETURN]
@@ -69,6 +136,45 @@ AbilityPiercingBeakCheck:
 	ret nz
 	call AbilityActorMoveType
 	cp FLYING
+	ret nz
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ret
+
+; Battle type-chart hook: called only for a Rock matchup.
+AbilityCorrosiveCheck:
+	xor a
+	ld [wAbilityCheckResult], a
+	ld a, [wMoveType]
+	cp POISON
+	ret nz
+	call AbilityActor
+	cp AB_CORROSIVE_VENOM
+	ret nz
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ret
+
+; AI's bit 3 selects whether it is evaluating the player or enemy move.
+AbilityCorrosiveAICheck:
+	xor a
+	ld [wAbilityCheckResult], a
+	ld a, [wUnusedC000]
+	bit 3, a
+	ld a, [wEnemyMoveType]
+	jr z, .move
+	ld a, [wPlayerMoveType]
+.move
+	cp POISON
+	ret nz
+	ld a, [wUnusedC000]
+	bit 3, a
+	ld a, 1
+	jr z, .side
+	xor a
+.side
+	call AbilityGet
+	cp AB_CORROSIVE_VENOM
 	ret nz
 	ld a, 1
 	ld [wAbilityCheckResult], a
@@ -729,6 +835,53 @@ AbilityRegeneration:
 	call AbilityHP
 	push hl
 	jp AbilityPhotosynthesis.notEqual
+
+AbilityShedSkin:
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_SHED_SKIN
+	ret nz
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	inc hl
+	inc hl ; status is HP + 3
+	ld a, [hl]
+	and a
+	ret z
+	ld b, 30
+	call AbilityRoll
+	ret nc
+	call AbilityHP
+	inc hl
+	inc hl
+	inc hl
+	xor a
+	ld [hl], a
+	ld hl, wPlayerBattleStatus3
+	ld de, wPlayerToxicCounter
+	ld a, [wAbilitySide]
+	and a
+	jr z, .clearToxic
+	ld hl, wEnemyBattleStatus3
+	ld de, wEnemyToxicCounter
+.clearToxic
+	res BADLY_POISONED, [hl]
+	xor a
+	ld [de], a
+	ld a, [wAbilitySide]
+	ld [wCustomSide], a
+	callab CustomRecalculate
+	callab UtilitySyncParty
+	callab DrawHUDsAndHPBars
+	ld hl, AbilityShedSkinText
+	jp PrintText
+
+AbilityShedSkinText:
+	text "Shed Skin cured"
+	line "its condition!"
+	prompt
 
 ; Common critical-hit gate runs before guaranteed-critical move rules.
 AbilityCriticalGuard:

@@ -5203,15 +5203,15 @@ AdjustDamageForMoveType:
 .loop
 	ld a, [hli] ; a = "attacking type" of the current type pair
 	cp $ff
-	jr z, .done
+	jp z, .done
 	cp b ; does move type match "attacking type"?
-	jr nz, .nextTypePair
+	jp nz, .nextTypePair
 	ld a, [hl] ; a = "defending type" of the current type pair
 	cp d ; does type 1 of defender match "defending type"?
 	jr z, .matchingPairFound
 	cp e ; does type 2 of defender match "defending type"?
 	jr z, .matchingPairFound
-	jr .nextTypePair
+	jp .nextTypePair
 .matchingPairFound
 ; if the move type matches the "attacking type" and one of the defender's types matches the "defending type"
 	push hl
@@ -5222,6 +5222,18 @@ AdjustDamageForMoveType:
 	ld b, a
 	ld a, [hl] ; a = damage multiplier from type chart table (can be $00, $05, or $14)
 	ld [H_MULTIPLIER], a
+	dec hl
+	ld a, [hli] ; defending type of this chart entry
+	cp ROCK
+	jr nz, .corrosiveDone
+	abilitycall AbilityCorrosiveCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .corrosiveDone
+	ld a, 20
+	ld [H_MULTIPLIER], a
+.corrosiveDone
+	ld a, [H_MULTIPLIER]
 ;;;;;;;;joenote - fixing the wrong effectiveness message for static damage moves
 	and a
 	jr z, .endmulti	;skip to end if the multiplier is zero
@@ -5334,7 +5346,19 @@ AIGetTypeEffectiveness:
 	jr .nextTypePair2
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 .AImatchingPairFound
-	ld a, [hl]	;get damage multiplier
+	dec hl
+	ld a, [hli] ; defending type
+	cp ROCK
+	jr nz, .normalAIMultiplier
+	abilitycall AbilityCorrosiveAICheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .normalAIMultiplier
+	ld a, $14
+	jr .gotAIMultiplier
+.normalAIMultiplier
+	ld a, [hl]
+.gotAIMultiplier
 	cp $05	;is it halved?
 	jr nz, .AInothalf	;jump down of not half
 	ld a, [wTypeEffectiveness]	;else get the effectiveness multiplier

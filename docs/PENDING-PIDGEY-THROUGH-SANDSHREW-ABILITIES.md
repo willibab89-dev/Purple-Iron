@@ -26,7 +26,7 @@ These are requested designs; implementation status is noted below. Each line is 
 4. Piercing Beak: Flying attacks ignore 25% of the target's Defense.
 5. Sniper: Critical hits deal 50% more damage.
 
-## Ekans / Arbok
+## Ekans / Arbok (implemented)
 
 1. Intimidate: Lower the opponent's Speed by one stage on entering battle, once per Pokémon; does not stack.
 2. Shed Skin: 30% chance to cure a major status condition at the end of each turn.
