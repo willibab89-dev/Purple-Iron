@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 18 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 20 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -14,12 +14,15 @@ Implemented for 18 original species, with five equally likely slots per species.
 | Kakuna | Hard Shell | Fortify | Toxic Shell | Piercing Sting | Battle Armor |
 | Beedrill | Ruthless | Frenzy | Venomous | Piercing Sting | Quick Reflexes |
 | Pidgey / Pidgeotto / Pidgeot | Tailwind | Predator | Keen Eye | Piercing Beak | Gale Wings |
+| Rattata / Raticate | Scavenger | Strong Jaw | Cornered | Hustle | Poison Heal |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
 
 Pidgey-family effects: Tailwind raises Speed one stage on entry; Predator boosts physical damage by 20% against a slower target; Keen Eye prevents accuracy reductions; Piercing Beak ignores 25% of the defender's Defense for Flying moves; Gale Wings gives Flying moves +1 priority at full HP. Predator compares effective battle speeds. The existing type-based physical/special categories apply.
+
+Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO; Strong Jaw boosts physical damage by 15%; Cornered raises Attack one stage the first time HP falls below one third in a battle; Hustle boosts physical damage by 25% and reduces its base accuracy by 15 percentage points; Poison Heal replaces poison damage with 1/8 maximum HP healing. Poison remains present and Leech Seed still applies. Healing has a minimum of 1 HP and never revives a fainted Pokémon.
 
 | Ability | Behavior |
 |---|---|
@@ -71,4 +74,4 @@ Pidgey-family effects: Tailwind raises Speed one stage on entry; Predator boosts
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 90 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 100 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.

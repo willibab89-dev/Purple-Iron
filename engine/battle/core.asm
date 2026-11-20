@@ -633,6 +633,10 @@ HandlePoisonBurnLeechSeed:
 	ld a, [de]
 	and (1 << BRN) | (1 << PSN)
 	jr z, .notBurnedOrPoisoned
+	abilitycall AbilityPoisonHeal
+	ld a, [wAbilityCheckResult]
+	and a
+	jr nz, .notBurnedOrPoisoned
 	push hl
 	ld hl, HurtByPoisonText
 	ld a, [de]

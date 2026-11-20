@@ -83,8 +83,9 @@ def validate(version):
                'WEEDLE':['POISON_POINT','REPULSIVE','VENOMOUS','PIERCING_STING','SHIELD_DUST'],
                'KAKUNA':['HARD_SHELL','FORTIFY','TOXIC_SHELL','PIERCING_STING','BATTLE_ARMOR'],
                'BEEDRILL':['RUTHLESS','FRENZY','VENOMOUS','PIERCING_STING','QUICK_REFLEXES'],
-               'PIDGEY':['TAILWIND','PREDATOR','KEEN_EYE','PIERCING_BEAK','GALE_WINGS']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY')]:
+               'PIDGEY':['TAILWIND','PREDATOR','KEEN_EYE','PIERCING_BEAK','GALE_WINGS'],
+               'RATTATA':['SCAVENGER','STRONG_JAW','CORNERED','HUSTLE','POISON_HEAL']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -131,7 +132,7 @@ def validate(version):
                 call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,attack,defend,readword('wDamage'))
             # Unassigned mechanics for the next species pools, on either side.
             for name,typ,status,critical,want in [
-                ('STRONG_JAW','NORMAL',0,0,115),('STRONG_JAW','FIRE',0,0,100),
+                ('STRONG_JAW','NORMAL',0,0,115),('STRONG_JAW','FIRE',0,0,100),('HUSTLE','NORMAL',0,0,125),('HUSTLE','FIRE',0,0,100),
                 ('VOLTAGE','ELECTRIC',64,0,120),('VOLTAGE','ELECTRIC',0,0,100),
                 ('VOLTAGE','NORMAL',64,0,100),('SNIPER','NORMAL',0,1,150),
                 ('SNIPER','NORMAL',0,0,100)]:
@@ -175,6 +176,26 @@ def validate(version):
                 word(ap+'HP',53);call('AbilityLowHPBoth');assert get(mod)==8
                 call('AbilityLowHPBoth');assert get(mod)==8
                 put('wAbilitySide',turn);call('AbilityEntry');assert get(mod)==8
+            # Direct KO healing only, capped and synchronized with the party.
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'SCAVENGER');word(ap+'HP',80);word(tp+'HP',0)
+            call('AbilityAfterHit');call('AbilityAfterAction');assert readword(ap+'HP')==120
+            party='wEnemyMon1' if turn else 'wPartyMon1';assert readword(party+'HP')==120
+            ap,tp=init(turn);aid(turn,'SCAVENGER');word(ap+'HP',80);word(tp+'HP',0);call('AbilityAfterAction');assert readword(ap+'HP')==80
+            # Actual poison-tick routine heals instead of inflicting poison damage.
+            for hp,want in [(80,100),(150,160),(0,0)]:
+                ap,tp=init(turn);aid(turn,'POISON_HEAL');word(ap+'HP',hp);put(ap+'Status',8)
+                if hp: call('HandlePoisonBurnLeechSeed');assert readword(ap+'HP')==want,(turn,hp,readword(ap+'HP'))
+                else: call('AbilityPoisonHeal');assert readword(ap+'HP')==0
+                assert get(ap+'Status')==8
+            ap,tp=init(turn);aid(turn,'POISON_HEAL');word(ap+'HP',80);put(ap+'Status',16);call('AbilityPoisonHeal');assert get('wAbilityCheckResult')==0 and readword(ap+'HP')==80
+            for attack,penalty in [('TACKLE',38),('EMBER',0),('GROWL',0)]:
+                init(turn);move(turn,attack);aid(turn,'HUSTLE');accuracy='w'+('Enemy' if turn else 'Player')+'MoveAccuracy'
+                expected=get(accuracy)-penalty;call('CalcHitChance')
+                assert get(accuracy)==expected,(turn,attack,get(accuracy),expected)
+            ap,tp=init(turn);aid(turn,'POISON_HEAL');word(ap+'HP',80);put(ap+'Status',8)
+            put('w'+('Enemy' if turn else 'Player')+'BattleStatus3',1)
+            counter='w'+('Enemy' if turn else 'Player')+'ToxicCounter';put(counter,3)
+            call('HandlePoisonBurnLeechSeed');assert readword(ap+'HP')==100 and get(counter)==3
             # Regeneration works below half HP, never revives, caps at maximum.
             ap,tp=init(turn);aid(turn,'REGENERATION');put('wResidualRoundDone',0)
             for hp,want in [(0,0),(1,11),(80,90),(159,160),(160,160)]:
@@ -239,7 +260,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,46):
+        for n in range(1,49):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -327,7 +348,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 18 species / 90 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 20 species / 100 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

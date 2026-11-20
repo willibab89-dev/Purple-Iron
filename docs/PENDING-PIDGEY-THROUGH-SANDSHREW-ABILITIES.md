@@ -10,7 +10,7 @@ These are requested designs; implementation status is noted below. Each line is 
 4. Piercing Beak: Flying attacks ignore 25% of the target's Defense.
 5. Gale Wings: Flying moves gain +1 priority at full HP.
 
-## Rattata / Raticate
+## Rattata / Raticate (implemented)
 
 1. Scavenger: Restore 25% maximum HP after knocking out an opponent.
 2. Strong Jaw: Physical moves deal 15% more damage.

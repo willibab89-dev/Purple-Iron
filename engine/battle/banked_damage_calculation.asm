@@ -131,6 +131,7 @@ BankedCalculateDamage:
 	ret
 
 BankedCalcHitChance:
+	abilitycall AbilityHustleAccuracy
 	ld hl, wPlayerMoveAccuracy
 	ld a, [H_WHOSETURN]
 	and a

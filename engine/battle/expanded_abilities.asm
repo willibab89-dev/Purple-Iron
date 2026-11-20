@@ -221,11 +221,17 @@ AbilityModifyDamage:
 	jr .defender
 .newOffense
 	cp AB_STRONG_JAW
+	jr z, .physicalStrong
+	cp AB_HUSTLE
 	jr nz, .voltage
+	ld c, 125
+	jr .physicalBoost
+.physicalStrong
+	ld c, 115
+.physicalBoost
 	ld a, [wAbilityMoveType]
 	cp FIRE ; physical types precede FIRE
 	jr nc, .defender
-	ld c, 115
 	call AbilityScaleDamage
 	jr .defender
 .voltage
@@ -552,7 +558,10 @@ AbilityLowHP:
 AbilityFrenzy:
 	call AbilityActor
 	cp AB_FRENZY
+	jr z, .directKO
+	cp AB_SCAVENGER
 	ret nz
+.directKO
 	ld a, [wAbilityHit]
 	and 1
 	ret z
@@ -567,8 +576,69 @@ AbilityFrenzy:
 	ld a, [hli]
 	or [hl]
 	ret z
+	call AbilityActor
+	cp AB_SCAVENGER
+	jr z, AbilityHealQuarter
 	xor a
 	jp AbilityRaiseStage
+
+AbilityHealQuarter:
+	call AbilityHP
+	ld a, 2
+	jp AbilityHealFractionFromHL
+
+; Called at poison damage time; skips poison damage but not Leech Seed.
+AbilityPoisonHeal:
+	xor a
+	ld [wAbilityCheckResult], a
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityGet
+	cp AB_POISON_HEAL
+	ret nz
+	call AbilityHP
+	push hl
+	inc hl
+	inc hl
+	inc hl
+	ld a, [hl]
+	pop hl
+	bit PSN, a
+	ret z
+	ld a, [hli]
+	or [hl]
+	ret z
+	dec hl
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ld a, 3
+	jp AbilityHealFractionFromHL
+
+; Accuracy is stored on a 0..255 scale: 15 percentage points = 38 units.
+AbilityHustleAccuracy:
+	call AbilityActor
+	cp AB_HUSTLE
+	ret nz
+	call AbilityMove
+	inc hl
+	inc hl
+	ld a, [hli] ; power
+	and a
+	ret z
+	ld a, [hli] ; type
+	cp FIRE
+	ret nc
+	ld a, [hl] ; accuracy
+	sub 38
+	jr nc, .store
+	ld a, 1
+.store
+	and a
+	jr nz, .write
+	inc a
+.write
+	ld [hl], a
+	ret
 
 AbilityRegeneration:
 	call AbilityHP

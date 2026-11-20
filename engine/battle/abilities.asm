@@ -33,6 +33,8 @@ AbilitySpeciesPools:
 	db PIDGEY, 46
 	db PIDGEOTTO, 46
 	db PIDGEOT, 46
+	db RATTATA, 51
+	db RATICATE, 51
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -45,6 +47,7 @@ AbilityPoolIds:
 	db AB_HARD_SHELL, AB_FORTIFY, AB_TOXIC_SHELL, AB_PIERCING_STING, AB_BATTLE_ARMOR
 	db AB_RUTHLESS, AB_FRENZY, AB_VENOMOUS, AB_PIERCING_STING, AB_QUICK_REFLEXES
 	db AB_TAILWIND, AB_PREDATOR, AB_KEEN_EYE, AB_PIERCING_BEAK, AB_GALE_WINGS
+	db AB_SCAVENGER, AB_STRONG_JAW, AB_CORNERED, AB_HUSTLE, AB_POISON_HEAL
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -430,14 +433,20 @@ AbilityPhotosynthesis:
 	dec de
 	ld a, h
 	cp b
-	jr c, .noHeal
+	jr c, AbilityPhotosynthesisNoHeal
 	jr nz, .notEqual
 	ld a, l
 	cp c
-	jr c, .noHeal
-	jr z, .noHeal
+	jr c, AbilityPhotosynthesisNoHeal
+	jr z, AbilityPhotosynthesisNoHeal
 .notEqual
 	pop hl
+	ld a, 4 ; 1/16
+	jr AbilityHealFractionFromHL
+
+; A = shift count, HL = living holder HP, DE = holder max HP.
+AbilityHealFractionFromHL:
+	ld [wAbilityTemp + 1], a
 	push hl
 	ld a, [de]
 	ld h, a
@@ -446,10 +455,13 @@ AbilityPhotosynthesis:
 	ld l, a
 	ld b, h
 	ld c, l
-	rept 4
+.shift
 	srl b
 	rr c
-	endr
+	ld a, [wAbilityTemp + 1]
+	dec a
+	ld [wAbilityTemp + 1], a
+	jr nz, .shift
 	ld a, b
 	or c
 	jr nz, .amount
@@ -486,7 +498,7 @@ AbilityPhotosynthesis:
 	ld a, [wAbilitySide]
 	ld [wCustomSide], a
 	jpab UtilitySyncParty
-.noHeal
+AbilityPhotosynthesisNoHeal:
 	pop hl
 	ret
 
@@ -571,6 +583,7 @@ AbilityTextPointers:
 	dw AbilityText33
 	dw AbilityText34
 	dw AbilityText35, AbilityText36, AbilityText37, AbilityText38, AbilityText39, AbilityText40, AbilityText41, AbilityText42, AbilityText43, AbilityText44, AbilityText45
+	dw AbilityText46, AbilityText47, AbilityText48
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -739,5 +752,8 @@ AbilityText42: db "KEEN EYE",$4e,"Accuracy cannot",$4e,"be lowered.@"
 AbilityText43: db "TAILWIND",$4e,"Speed +1 on",$4e,"entry.@"
 AbilityText44: db "GALE WINGS",$4e,"Flying priority",$4e,"+1 at full HP.@"
 AbilityText45: db "PIERCING BEAK",$4e,"Flying ignores",$4e,"25% of Defense.@"
+AbilityText46: db "SCAVENGER",$4e,"Direct KO heals",$4e,"1/4 max HP.@"
+AbilityText47: db "HUSTLE",$4e,"Physical damage",$4e,"x1.25; accuracy",$4e,"-15 points.@"
+AbilityText48: db "POISON HEAL",$4e,"Poison heals",$4e,"1/8 max HP.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"
