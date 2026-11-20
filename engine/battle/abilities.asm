@@ -55,6 +55,9 @@ AbilitySpeciesPools:
 	db NINETALES, 96
 	db JIGGLYPUFF, 101
 	db WIGGLYTUFF, 101
+	db ZUBAT, 106
+	db GOLBAT, 106
+	db CROBAT, 106
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -78,6 +81,7 @@ AbilityPoolIds:
 	db AB_LUCKY_STAR, AB_MAGIC_GUARD, AB_MOON_CHILD, AB_UNPREDICTABLE, AB_WONDER_SKIN
 	db AB_AFTERMATH, AB_FOXFIRE, AB_NINE_LIVES, AB_FOXS_CUNNING, AB_ILLUSION
 	db AB_INFLATABLE, AB_PERFORMER, AB_RUBBER_SKIN, AB_SOOTHING_VOICE, AB_THICK_FAT
+	db AB_ECHOLOCATION, AB_BLOODSUCKER, AB_GALE_WINGS, AB_INFILTRATOR, AB_PREDATOR
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -322,6 +326,7 @@ AbilityBeforeAction:
 	call AbilityTargetStatus
 	ld a, [hl]
 	ld [wAbilityOldStatus], a
+	call AbilityInfiltratorStart
 	call AbilityCachePP
 	pop hl
 	pop de
@@ -385,6 +390,7 @@ AbilityRaiseStage:
 	jpab CustomChangeStage
 
 AbilityAfterAction:
+	abilitycall AbilityInfiltratorRestore
 	abilitycall AbilityLowHPBoth ; recoil can cross a threshold mid-turn
 	abilitycall AbilityFrenzy
 	abilitycall AbilityShortTemper
@@ -657,6 +663,7 @@ AbilityTextPointers:
 	dw AbilityText70, AbilityText71, AbilityText72, AbilityText73
 	dw AbilityText74, AbilityText75, AbilityText76, AbilityText77, AbilityText78
 	dw AbilityText79, AbilityText80, AbilityText81, AbilityText82, AbilityText83
+	dw AbilityText84, AbilityText85, AbilityText86
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -863,5 +870,8 @@ AbilityText80: db "PERFORMER",$4e,"Sound move accuracy",$4e,"is increased 20%.@"
 AbilityText81: db "RUBBER SKIN",$4e,"Immune to Electric",$4e,"moves.@"
 AbilityText82: db "SOOTHING VOICE",$4e,"Sound move: heal",$4e,"1/8 maximum HP.@"
 AbilityText83: db "THICK FAT",$4e,"Fire and Ice damage",$4e,"is halved.@"
+AbilityText84: db "ECHOLOCATION",$4e,"Move accuracy",$4e,"gains 20 points.@"
+AbilityText85: db "BLOODSUCKER",$4e,"Drain moves heal an",$4e,"extra 25% damage.@"
+AbilityText86: db "INFILTRATOR",$4e,"Bypasses screens",$4e,"and Substitute.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

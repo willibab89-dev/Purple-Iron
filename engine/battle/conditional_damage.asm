@@ -1,20 +1,72 @@
 SECTION "Conditional damage and hybrid stats", ROMX, BANK[$35]
 
 BankedPlayerDamageVars:
+	call InfiltratorMaskScreens
+	push af
 	call IsConditionalDamageMove
 	jr c, .custom
 	call LegacyPlayerDamageVars
-	jr StoreBankedDamageVars
+	jr InfiltratorFinishDamageVars
 .custom
 	call ConditionalDamageVars
-	jr StoreBankedDamageVars
+	jr InfiltratorFinishDamageVars
 BankedEnemyDamageVars:
+	call InfiltratorMaskScreens
+	push af
 	call IsConditionalDamageMove
 	jr c, .custom
 	call LegacyEnemyDamageVars
-	jr StoreBankedDamageVars
+	jr InfiltratorFinishDamageVars
 .custom
 	call ConditionalDamageVars
+InfiltratorFinishDamageVars:
+	; Restore screen flags while preserving every result and the result flags.
+	push af
+	push bc
+	push de
+	push hl
+	ld hl, sp + 9
+	ld a, [hl]
+	call InfiltratorRestoreScreens
+	pop hl
+	pop de
+	pop bc
+	pop af
+	inc sp
+	inc sp
+	jr StoreBankedDamageVars
+
+InfiltratorMaskScreens:
+	abilitycall AbilityInfiltratorCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	ret z
+	call InfiltratorTargetStatus3
+	ld a, [hl]
+	and (1 << HAS_REFLECT_UP) | (1 << HAS_LIGHT_SCREEN_UP)
+	push af
+	ld a, [hl]
+	and $f9
+	ld [hl], a
+	pop af
+	ret
+InfiltratorRestoreScreens:
+	and a
+	ret z
+	ld b, a
+	call InfiltratorTargetStatus3
+	ld a, [hl]
+	or b
+	ld [hl], a
+	ret
+InfiltratorTargetStatus3:
+	ld hl, wEnemyBattleStatus3
+	ld a, [H_WHOSETURN]
+	and a
+	ret z
+	ld hl, wPlayerBattleStatus3
+	ret
+
 StoreBankedDamageVars:
 	; Bankswitch uses BC to restore its bank. Export these two results through
 	; scratch HRAM, which CalculateDamage immediately initializes again.

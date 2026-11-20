@@ -1098,6 +1098,108 @@ AbilityAftermathText:
 	line "the attacker!"
 	prompt
 
+ ; Screen bypass is applied only during the damage-stat calculation.
+AbilityInfiltratorCheck:
+	xor a
+	ld [wAbilityCheckResult], a
+	ld a, [wAbilityHit]
+	bit 3, a ; excludes confusion self-damage and idle calculations
+	ret z
+	call AbilityActor
+	cp AB_INFILTRATOR
+	ret nz
+	ld a, 1
+	ld [wAbilityCheckResult], a
+	ret
+
+; Hide only the opposing Substitute flag for the action. The original party
+; position is stored in scratch used by other, mutually exclusive abilities.
+AbilityInfiltratorStart:
+	call AbilityActor
+	cp AB_INFILTRATOR
+	ret nz
+	ld hl, wEnemyBattleStatus2
+	ld a, [wEnemyMonPartyPos]
+	ld b, a
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .target
+	ld hl, wPlayerBattleStatus2
+	ld a, [wPlayerMonNumber]
+	ld b, a
+.target
+	bit HAS_SUBSTITUTE_UP, [hl]
+	ret z
+	res HAS_SUBSTITUTE_UP, [hl]
+	ld a, b
+	ld [wAbilityOldStatus], a
+	ld hl, wAbilityHit
+	set 7, [hl]
+	ret
+
+AbilityInfiltratorRestore:
+	ld hl, wAbilityHit
+	bit 7, [hl]
+	ret z
+	res 7, [hl]
+	ld a, [wIsInBattle]
+	and a
+	ret z
+	ld hl, wEnemyBattleStatus2
+	ld a, [wEnemyMonPartyPos]
+	ld b, a
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .target
+	ld hl, wPlayerBattleStatus2
+	ld a, [wPlayerMonNumber]
+	ld b, a
+.target
+	ld a, [wAbilityOldStatus]
+	cp b
+	ret nz ; the original target switched out
+	set HAS_SUBSTITUTE_UP, [hl]
+	ret
+
+; wDamage is the HP actually lost; preserve its quarter until the normal
+; drain amount has been calculated by the move effect.
+AbilityBloodsuckerCache:
+	call AbilityActor
+	cp AB_BLOODSUCKER
+	ret nz
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	ld c, a
+	srl b
+	rr c
+	srl b
+	rr c
+	ld a, b
+	ld [wAbilityTemp], a
+	ld a, c
+	ld [wAbilityTemp + 1], a
+	ret
+AbilityBloodsuckerAdd:
+	call AbilityActor
+	cp AB_BLOODSUCKER
+	ret nz
+	ld a, [wAbilityTemp + 1]
+	ld b, a
+	ld a, [wDamage + 1]
+	add b
+	ld [wDamage + 1], a
+	ld a, [wAbilityTemp]
+	ld b, a
+	ld a, [wDamage]
+	adc b
+	jr nc, .store
+	ld a, $ff
+	ld [wDamage + 1], a
+.store
+	ld [wDamage], a
+	ret
+
 AbilityRubberSkinCheck:
 	xor a
 	ld [wAbilityCheckResult], a
@@ -1812,6 +1914,16 @@ AbilityBurnGate:
 ; Accuracy is scaled after nature and stage factors, before final byte cap.
 AbilityAccuracy:
 	call AbilityActor
+	cp AB_ECHOLOCATION
+	jr nz, .compound
+	ld a, [H_QUOTIENT + 3]
+	add 51 ; 20 percentage points on the 0..255 accuracy scale
+	ld [H_QUOTIENT + 3], a
+	jr nc, .target
+	ld hl, H_QUOTIENT + 2
+	inc [hl]
+	jr .target
+.compound
 	cp AB_COMPOUND_EYES
 	jr nz, .performer
 	ld c, 130

@@ -1,4 +1,5 @@
 DrainHPEffect_:
+	abilitycall AbilityBloodsuckerCache
 	callab ResidualFullDrain
 	jr nz, .getAttackerHP
 	ld hl, wDamage
@@ -14,6 +15,7 @@ DrainHPEffect_:
 	inc hl
 	inc [hl]
 .getAttackerHP
+	abilitycall AbilityBloodsuckerAdd
 	ld hl, wBattleMonHP
 	ld de, wBattleMonMaxHP
 	ld a, [H_WHOSETURN]
