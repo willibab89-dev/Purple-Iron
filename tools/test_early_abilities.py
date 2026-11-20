@@ -88,7 +88,9 @@ def validate(version):
                'RATTATA':['SCAVENGER','STRONG_JAW','CORNERED','HUSTLE','POISON_HEAL'],
                'SPEAROW':['RUTHLESS','SHORT_TEMPER','RELENTLESS','PIERCING_BEAK','SNIPER'],
                'EKANS':['INTIMIDATE','SHED_SKIN','VENOMOUS','PREDATOR','CORROSIVE_VENOM'],
-               'PIKACHU':['STATIC','VOLTAGE','OVERCHARGE','QUICK_REFLEXES','QUICK_FEET']}
+               'PIKACHU':['STATIC','VOLTAGE','OVERCHARGE','QUICK_REFLEXES','QUICK_FEET'],
+               'SANDSHREW':['ROLLING_DEFENSE','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL'],
+               'SANDSLASH':['SPINY_ARMOR','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -129,6 +131,30 @@ def validate(version):
         metadata('wPartyMon1','BULBASAUR',1,0);put('wBattleMonSpecies2',ids['BULBASAUR']);put('wFirstMonsNotOutYet',1)
         call('LoadBattleMonFromParty');assert get('wPlayerMonSpeedMod')==6
         for turn in (0,1):
+            # Normal and Ground triggers require an executed move and fire once.
+            for name,attack,stat in [('ROLLING_DEFENSE','GROWL','Defense'),('SAND_VEIL','EARTHQUAKE','Evasion')]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,name);mod='w'+('Enemy' if turn else 'Player')+'Mon'+stat+'Mod'
+                call('AbilityAfterAction');assert get(mod)==7
+                call('AbilityAttempt');put('wMoveMissed',1);call('AbilityAfterAction');assert get(mod)==8
+                call('AbilityAfterAction');put('wAbilitySide',turn);call('AbilityEntry');call('AbilityAfterAction');assert get(mod)==8
+            for name,attack,stat in [('ROLLING_DEFENSE','EARTHQUAKE','Defense'),('SAND_VEIL','TACKLE','Evasion')]:
+                init(turn);move(turn,attack);aid(turn,name);call('AbilityAttempt');call('AbilityAfterAction')
+                assert get('w'+('Enemy' if turn else 'Player')+'Mon'+stat+'Mod')==7
+            # Burrower heals living users for 1/8, capped, only on Ground moves.
+            for attack,hp,used,want in [('EARTHQUAKE',80,True,100),('EARTHQUAKE',150,True,160),('EARTHQUAKE',0,True,0),('EARTHQUAKE',80,False,80),('TACKLE',80,True,80)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'BURROWER');word(ap+'HP',hp)
+                if used:call('AbilityAttempt')
+                call('AbilityAfterAction');assert readword(ap+'HP')==want,(turn,attack,hp,used,readword(ap+'HP'))
+                if used and hp and attack=='EARTHQUAKE':
+                    party='wEnemyMon1' if turn else 'wPartyMon1';assert readword(party+'HP')==want
+            # Spiny Armor damages every physical hit, including ranged and KO hits.
+            for attack,sub,holder_hp,actor_hp,maxhp,want in [('TACKLE',0,160,80,160,70),('EARTHQUAKE',0,160,80,160,70),('EMBER',0,160,80,160,80),('TACKLE',1,160,80,160,80),('TACKLE',0,0,80,160,70),('TACKLE',0,160,5,160,0),('TACKLE',0,160,5,10,4)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'SPINY_ARMOR');word(ap+'HP',actor_hp);word(ap+'MaxHP',maxhp);word(tp+'HP',holder_hp);put('wCustomTargetHadSub',sub)
+                before=readword('wDamage');call('AbilityAfterHit');assert readword(ap+'HP')==want and readword('wDamage')==before,(turn,attack,sub,holder_hp,actor_hp,maxhp,readword(ap+'HP'))
+                if want!=actor_hp:
+                    party='wEnemyMon1' if turn else 'wPartyMon1';assert readword(party+'HP')==want
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'SPINY_ARMOR');word(ap+'HP',80)
+            call('AbilityAfterHit');call('AbilityAfterHit');assert readword(ap+'HP')==60
             # Static responds to physical attacks, not just contact, and rolls once.
             for attack,roll,sub,holder_hp,actor_type,want in [
                 ('TACKLE',0,0,160,'NORMAL',64),('EARTHQUAKE',39,0,160,'NORMAL',64),
@@ -370,7 +396,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,57):
+        for n in range(1,61):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -419,7 +445,7 @@ def validate(version):
                   'DrawPlayerHUDAndHPBar','DrawEnemyHUDAndHPBar','UpdateHPBar2','MoveAnimation',
                   'HideSubstituteShowMonAnim','ReshowSubstituteAnim','DrawHUDsAndHPBars'):
             patch(n,[0xc9])
-        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160):
+        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160):
             ap,tp=init(turn)
             put('wActionResultOrTookBattleTurn',0);put('wMonIsDisobedient',0)
             for side in (0,1):
@@ -428,10 +454,21 @@ def validate(version):
             for pref in ('wBattleMon','wPartyMon1','wEnemyMon','wEnemyMon1'):
                 put(pref+'Species',ids['BULBASAUR'] if pref in ('wBattleMon','wPartyMon1') else ids['CHARMANDER'])
                 put(pref+'Level',50);put(pref+'PP',pp);put(pref+'Moves',MOVES[attack])
-            aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);word(tp+'HP',hp);rng(0)
+            aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);word(tp+'HP',hp);word(ap+'HP',actor_hp);rng(0)
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,target='SPINY_ARMOR',actor_hp=80);assert readword(ap+'HP')==70 and readword(tp+'HP')<160
+            ap,tp=execute('EARTHQUAKE',turn,target='SPINY_ARMOR',actor_hp=80);assert readword(ap+'HP')==70 and readword(tp+'HP')<160
+            ap,tp=execute('EMBER',turn,target='SPINY_ARMOR',actor_hp=80);assert readword(ap+'HP')==80 and readword(tp+'HP')<160
+            ap,tp=execute('DOUBLESLAP',turn,target='SPINY_ARMOR',actor_hp=5)
+            assert readword(ap+'HP')==0 and 0<readword(tp+'HP')<160
+            assert get('w'+('Enemy' if turn else 'Player')+'NumAttacksLeft')==0
+            ap,tp=execute('TACKLE',turn,target='SPINY_ARMOR',hp=1,actor_hp=5)
+            assert readword(ap+'HP')==0 and readword(tp+'HP')==0 and game.register_file.B==0
+            ap,tp=execute('EARTHQUAKE',turn,actor='BURROWER',actor_hp=80);assert readword(ap+'HP')==100
+            ap,tp=execute('GROWL',turn,actor='ROLLING_DEFENSE');assert get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==8
+            ap,tp=execute('EARTHQUAKE',turn,actor='SAND_VEIL');assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8
             ap,tp=execute('SLUDGE',turn,target='SHIELD_DUST');assert get(tp+'Status')==0 and readword(tp+'HP')<160
             ap,tp=execute('FLASH',turn,target='SHIELD_DUST');assert get('w'+('Player' if turn else 'Enemy')+'MonAccuracyMod')==7 and readword(tp+'HP')<160
             ap,tp=execute('EMBER',turn,target='WATER_VEIL');assert get(tp+'Status')==0
@@ -458,7 +495,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 26 species / 130 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 28 species / 140 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

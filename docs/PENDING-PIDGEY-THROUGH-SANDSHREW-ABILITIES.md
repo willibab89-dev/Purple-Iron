@@ -42,7 +42,7 @@ These are requested designs; implementation status is noted below. Each line is 
 4. Quick Reflexes: First attack after entering battle gains +1 priority.
 5. Quick Feet: Raise Speed by one stage when affected by a major status condition.
 
-## Sandshrew
+## Sandshrew (implemented)
 
 1. Rolling Defense: Raise Defense by one stage after using a Normal move, once per battle.
 2. Sand Armor: Reduce super-effective damage by 25%.
@@ -50,7 +50,7 @@ These are requested designs; implementation status is noted below. Each line is 
 4. Sharp Claws: Multiply physical attacks' critical-hit chance by 1.5.
 5. Sand Veil: Raise Evasion by one stage after using a Ground move, once per battle.
 
-## Sandslash
+## Sandslash (implemented)
 
 1. Spiny Armor: Physical attackers lose 1/16 of their maximum HP when hitting the holder.
 2. Sand Armor: Reduce super-effective damage by 25%.
@@ -60,4 +60,4 @@ These are requested designs; implementation status is noted below. Each line is 
 
 ## Implementation notes
 
-The Pidgey through Pikachu families are implemented as marked above. Quick Reflexes applies to the first attempted **damaging** move after entry. Static applies to all physical attacks, including ranged moves. Intimidate is once per holder and target per battle. Relentless resets its hit count when either combatant switches or its holder uses a non-damaging move. The Sandshrew and Sandslash pools remain to be implemented and tested.
+The Pidgey through Pikachu families are implemented as marked above. Quick Reflexes applies to the first attempted **damaging** move after entry. Static applies to all physical attacks, including ranged moves. Intimidate is once per holder and target per battle. Relentless resets its hit count when either combatant switches or its holder uses a non-damaging move. The Sandshrew and Sandslash pools are also implemented.

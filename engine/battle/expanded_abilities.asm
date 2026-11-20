@@ -530,17 +530,72 @@ AbilityCachePP:
 ; Called only after the Pokémon can actually execute its move.
 AbilityAttempt:
 	call AbilityCachePP
+	ld hl, wAbilityHit
+	set 3, [hl] ; a move was actually executed this action
 	call AbilityMove
 	ld a, [hl]
 	call AbilityMoveFlags
 	bit 0, a
-	jr z, .statusMove
+	jr z, AbilityAttemptStatusMove
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	call AbilityFlagsPointer
 	set 3, [hl]
 	ret
-.statusMove
+
+; Ground/Normal abilities trigger only when a move was actually executed.
+AbilitySandAfterAction:
+	ld a, [wAbilityHit]
+	bit 3, a
+	ret z
+	call AbilityActor
+	cp AB_ROLLING_DEFENSE
+	jr z, .normal
+	cp AB_SAND_VEIL
+	jr z, .evasion
+	cp AB_BURROWER
+	ret nz
+	call AbilityActorMoveType
+	cp GROUND
+	ret nz
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	dec hl
+	ld a, 3 ; 1/8 maximum HP
+	jp AbilityHealFractionFromHL
+.normal
+	call AbilityActorMoveType
+	cp NORMAL
+	ret nz
+	ld a, 1 ; Defense
+	jr .once
+.evasion
+	call AbilityActorMoveType
+	cp GROUND
+	ret nz
+	ld a, 5 ; Evasion
+.once
+	push af
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	jr z, .discard
+	call AbilityFlagsPointer
+	bit 2, [hl]
+	jr nz, .discard
+	set 2, [hl]
+	pop af
+	jp AbilityRaiseStage
+.discard
+	pop af
+	ret
+AbilityAttemptStatusMove:
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	call AbilityFlagsPointer
@@ -565,6 +620,9 @@ AbilityHitEvents:
 	ld a, [wCustomTargetHadSub]
 	and a
 	ret nz
+	call AbilityActorMoveType
+	ld [wAbilityMoveType], a
+	call AbilitySpinyArmor
 	ld a, [wDamage]
 	ld b, a
 	ld a, [wDamage + 1]
@@ -572,8 +630,6 @@ AbilityHitEvents:
 	ret z
 	ld hl, wAbilityHit
 	set 0, [hl]
-	call AbilityActorMoveType
-	ld [wAbilityMoveType], a
 	ld a, [H_WHOSETURN]
 	xor 1
 	ld [wAbilitySide], a
@@ -652,6 +708,63 @@ AbilityRelentlessHit:
 	add $10
 	ld [hl], a
 	ret
+
+; Each direct physical strike damages the attacker, even if the holder faints.
+AbilitySpinyArmor:
+	call AbilityTarget
+	cp AB_SPINY_ARMOR
+	ret nz
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	ret nc
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	dec hl
+	push hl
+	ld a, [de]
+	ld b, a
+	inc de
+	ld a, [de]
+	ld c, a
+	rept 4
+	srl b
+	rr c
+	endr
+	ld a, b
+	or c
+	jr nz, .amount
+	inc c
+.amount
+	pop hl
+	ld a, [hli]
+	ld d, a
+	ld a, [hl]
+	sub c
+	ld e, a
+	ld a, d
+	sbc b
+	jr nc, .store
+	xor a
+	ld e, a
+.store
+	ld [hl], e
+	dec hl
+	ld [hl], a
+	ld a, [wAbilitySide]
+	ld [wCustomSide], a
+	callab UtilitySyncParty
+	callab DrawHUDsAndHPBars
+	ld hl, AbilitySpinyArmorText
+	jp PrintText
+
+AbilitySpinyArmorText:
+	text "Hurt by"
+	line "SPINY ARMOR!"
+	prompt
 
 ; A successful critical hit, including against a Substitute, triggers once.
 AbilityOvercharge:

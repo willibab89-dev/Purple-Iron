@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 26 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 28 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -18,10 +18,14 @@ Implemented for 26 original species, with five equally likely slots per species.
 | Spearow / Fearow | Ruthless | Short Temper | Relentless | Piercing Beak | Sniper |
 | Ekans / Arbok | Intimidate | Shed Skin | Venomous | Predator | Corrosive Venom |
 | Pikachu / Raichu | Static | Voltage | Overcharge | Quick Reflexes | Quick Feet |
+| Sandshrew | Rolling Defense | Sand Armor | Burrower | Sharp Claws | Sand Veil |
+| Sandslash | Spiny Armor | Sand Armor | Burrower | Sharp Claws | Sand Veil |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Sandshrew-family effects: Rolling Defense raises Defense one stage after executing a Normal move, once per battle. Spiny Armor damages a physical attacker by 1/16 of its maximum HP per direct hit, including ranged attacks and hits that KO the holder; it does not activate through Substitute. Sand Armor reduces super-effective damage by 25%. Burrower restores 1/8 maximum HP after executing a Ground move. Sharp Claws multiplies physical critical-hit chance by 1.5. Sand Veil raises Evasion one stage after executing a Ground move, once per battle. The Normal/Ground triggers apply when the move executes, including on a miss; two-turn moves trigger when their attack executes.
 
 Pikachu-family effects: Static has an exact 20% chance to paralyze an attacker after a physical hit, including ranged physical moves, once per move; the existing Electric-type/status immunities and Substitute rules apply. Voltage increases Electric damage by 20% against paralyzed targets. Overcharge raises Special one stage after a successful critical hit, once per battle; a hit on a Substitute counts. Quick Reflexes gives the first attempted damaging move after entry +1 priority. Quick Feet raises Speed one stage when a major status is present; it can trigger again after the status is cured and a new one is inflicted, and reapplies on entry. Paralysis retains its existing Speed penalty.
 
@@ -83,4 +87,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 130 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 140 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.

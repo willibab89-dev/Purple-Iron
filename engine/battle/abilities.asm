@@ -41,6 +41,8 @@ AbilitySpeciesPools:
 	db ARBOK, 61
 	db PIKACHU, 66
 	db RAICHU, 66
+	db SANDSHREW, 71
+	db SANDSLASH, 76
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -57,6 +59,8 @@ AbilityPoolIds:
 	db AB_RUTHLESS, AB_SHORT_TEMPER, AB_RELENTLESS, AB_PIERCING_BEAK, AB_SNIPER
 	db AB_INTIMIDATE, AB_SHED_SKIN, AB_VENOMOUS, AB_PREDATOR, AB_CORROSIVE_VENOM
 	db AB_STATIC, AB_VOLTAGE, AB_OVERCHARGE, AB_QUICK_REFLEXES, AB_QUICK_FEET
+	db AB_ROLLING_DEFENSE, AB_SAND_ARMOR, AB_BURROWER, AB_SHARP_CLAWS, AB_SAND_VEIL
+	db AB_SPINY_ARMOR, AB_SAND_ARMOR, AB_BURROWER, AB_SHARP_CLAWS, AB_SAND_VEIL
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -366,6 +370,7 @@ AbilityRaiseStage:
 AbilityAfterAction:
 	abilitycall AbilityFrenzy
 	abilitycall AbilityShortTemper
+	abilitycall AbilitySandAfterAction
 	abilitycall AbilityQuickFeetBoth
 	push af
 	push bc
@@ -616,6 +621,7 @@ AbilityTextPointers:
 	dw AbilityText49, AbilityText50
 	dw AbilityText51, AbilityText52, AbilityText53
 	dw AbilityText54, AbilityText55, AbilityText56
+	dw AbilityText57, AbilityText58, AbilityText59, AbilityText60
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -795,5 +801,9 @@ AbilityText53: db "CORROSIVE VENOM",$4e,"Poison is strong",$4e,"against Rock.@"
 AbilityText54: db "STATIC",$4e,"Physical hits:",$4e,"20% paralyze",$4e,"attacker.@"
 AbilityText55: db "OVERCHARGE",$4e,"Critical hit:",$4e,"Special +1 once",$4e,"per battle.@"
 AbilityText56: db "QUICK FEET",$4e,"Status raises",$4e,"Speed 1 stage.@"
+AbilityText57: db "ROLLING DEFENSE",$4e,"Normal move:",$4e,"Defense +1 once",$4e,"per battle.@"
+AbilityText58: db "BURROWER",$4e,"Ground move heals",$4e,"1/8 max HP.@"
+AbilityText59: db "SAND VEIL",$4e,"Ground move:",$4e,"Evasion +1 once",$4e,"per battle.@"
+AbilityText60: db "SPINY ARMOR",$4e,"Physical hits",$4e,"hurt attacker",$4e,"1/16 max HP.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

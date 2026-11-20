@@ -3572,6 +3572,15 @@ MirrorMoveCheck:
 	ld a, 1
 	ld [wMoveDidntMiss], a
 	callab EnemyBideAccum	;joedebug - accumulating bide damage here now
+	; A reactive ability can knock out the attacker during a multi-hit move.
+	ld hl, wEnemyMonHP
+	ld a, [hli]
+	or [hl]
+	jr z, .notDone
+	ld hl, wBattleMonHP
+	ld a, [hli]
+	or [hl]
+	jp z, ExecutePlayerMoveDone
 .notDone
 	ld a, [wPlayerMoveEffect]
 	ld hl, AlwaysHappenSideEffects
@@ -5811,6 +5820,14 @@ EnemyCheckIfMirrorMoveEffect:
 	callab PlayerBideAccum
 	ld a, 1
 	ld [wMoveDidntMiss], a
+	ld hl, wBattleMonHP
+	ld a, [hli]
+	or [hl]
+	jr z, .handleExplosionMiss
+	ld hl, wEnemyMonHP
+	ld a, [hli]
+	or [hl]
+	jp z, ExecuteEnemyMoveDone
 .handleExplosionMiss
 	ld a, [wEnemyMoveEffect]
 	ld hl, AlwaysHappenSideEffects
