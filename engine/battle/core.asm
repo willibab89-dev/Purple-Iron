@@ -609,7 +609,7 @@ MainInBattleLoop:
 ResidualRoundComplete:
 	abilitycall AbilityEndRound
 	callab ResidualEndRound
-	abilitycall AbilityLowHPBoth
+	call CheckLowHPAbilities
 	ld hl, wBattleMonHP
 	ld a, [hli]
 	or [hl]
@@ -620,6 +620,10 @@ ResidualRoundComplete:
 	jp z, HandleEnemyMonFainted
 	call CheckNumAttacksLeft
 	jp MainInBattleLoop
+
+CheckLowHPAbilities:
+	abilitycall AbilityLowHPBoth
+	ret
 
 HandlePoisonBurnLeechSeed:
 	ld hl, wBattleMonHP
@@ -686,6 +690,7 @@ HandlePoisonBurnLeechSeed:
 	call PrintText
 	pop hl
 .notLeechSeeded
+	call CheckLowHPAbilities ; residual damage can cross a threshold mid-turn
 	ld a, [hli]
 	or [hl]
 	ret nz          ; test if fainted
@@ -4727,6 +4732,7 @@ ApplyAttackToEnemyPokemon:
 	ld [hl], a
 
 ApplyDamageToEnemyPokemon:
+	abilitycall AbilityFixedDamageModifiers
 	ld hl, wDamage
 	ld a, [hli]
 	ld b, a
@@ -4857,6 +4863,7 @@ ApplyAttackToPlayerPokemon:
 	ld [hl], a
 
 ApplyDamageToPlayerPokemon:
+	abilitycall AbilityFixedDamageModifiers
 	ld hl, wDamage
 	ld a, [hli]
 	ld b, a
@@ -7426,7 +7433,7 @@ PoisonEffect:
 	jr nz, .didntAffect
 	jr .inflictPoison
 .sideEffectTest
-	call BattleRandom
+	call MeasuredEffectRandom
 	cp b ; was side effect successful?
 	ret nc
 .inflictPoison
@@ -7532,7 +7539,7 @@ FreezeBurnParalyzeEffect:
 	sub $1e ; subtract $1E to map to equivalent 10% chance effects
 .next1
 	push af
-	call BattleRandom ; get random 8bit value for probability test
+	call MeasuredEffectRandom ; get random 8bit value for probability test
 	cp b
 	pop bc
 	ret nc ; do nothing if random value is >= 1A or 4D [no status applied]
@@ -7588,7 +7595,7 @@ opponentAttacker:
 	sub $1e
 .next1
 	push af
-	call BattleRandom
+	call MeasuredEffectRandom
 	cp b
 	pop bc
 	ret nc
@@ -7922,7 +7929,7 @@ StatModifierDownEffect:
 	ld a, [de]
 	cp ATTACK_DOWN_SIDE_EFFECT
 	jr c, .nonSideEffect
-	call BattleRandom
+	call MeasuredEffectRandom
 	cp $55 ; 85/256 chance for side effects
 	jp nc, CantLowerAnymore
 	ld a, [de]
@@ -8422,7 +8429,7 @@ FlinchSideEffect:
 	jr z, .gotEffectChance
 	ld b, $4d ; ~30% chance of flinch
 .gotEffectChance
-	call BattleRandom
+	call MeasuredEffectRandom
 	cp b
 	ret nc
 	set FLINCHED, [hl] ; set mon's status to flinching
@@ -8572,7 +8579,7 @@ RecoilEffect:
 ConfusionSideEffect:
 	call CheckTargetSubstitute	;joenote - return if opponent has substitute up
 	ret nz
-	call BattleRandom
+	call MeasuredEffectRandom
 	cp $19 ; ~10% chance
 	ret nc
 	jr ConfusionSideEffectSuccess
@@ -9033,6 +9040,14 @@ CryFunc:
 	ret
 
 ;joenote - caps the stat in bc to 999
+; Preserve the original single RNG draw; Measured doubles only effect odds.
+MeasuredEffectRandom:
+	call BattleRandom
+	ld [wCustomRandomValue], a
+	abilitycall AbilityMeasuredEffectRoll
+	ld a, [wCustomRandomValue]
+	ret
+
 ; Exact 20%: reject 250..255, then accept 0..49 of the 250 outcomes.
 ; Keep this small RNG entry in the battle bank to use link-safe BattleRandom.
 TwentyPercentBattleRoll:

@@ -43,6 +43,9 @@ AbilitySpeciesPools:
 	db RAICHU, 66
 	db SANDSHREW, 71
 	db SANDSLASH, 76
+	db NIDORAN_F, 81
+	db NIDORINA, 81
+	db NIDOQUEEN, 81
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -61,6 +64,7 @@ AbilityPoolIds:
 	db AB_STATIC, AB_VOLTAGE, AB_OVERCHARGE, AB_QUICK_REFLEXES, AB_QUICK_FEET
 	db AB_ROLLING_DEFENSE, AB_SAND_ARMOR, AB_BURROWER, AB_SHARP_CLAWS, AB_SAND_VEIL
 	db AB_SPINY_ARMOR, AB_SAND_ARMOR, AB_BURROWER, AB_SHARP_CLAWS, AB_SAND_VEIL
+	db AB_PHYSICAL_POISON_POINT, AB_MEASURED, AB_THICK_HIDE, AB_PROTECTIVE_INSTINCT, AB_IRON_WILL
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -368,6 +372,7 @@ AbilityRaiseStage:
 	jpab CustomChangeStage
 
 AbilityAfterAction:
+	abilitycall AbilityLowHPBoth ; recoil can cross a threshold mid-turn
 	abilitycall AbilityFrenzy
 	abilitycall AbilityShortTemper
 	abilitycall AbilitySandAfterAction
@@ -622,6 +627,7 @@ AbilityTextPointers:
 	dw AbilityText51, AbilityText52, AbilityText53
 	dw AbilityText54, AbilityText55, AbilityText56
 	dw AbilityText57, AbilityText58, AbilityText59, AbilityText60
+	dw AbilityText61, AbilityText62, AbilityText63, AbilityText64, AbilityText65
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -805,5 +811,10 @@ AbilityText57: db "ROLLING DEFENSE",$4e,"Normal move:",$4e,"Defense +1 once",$4e
 AbilityText58: db "BURROWER",$4e,"Ground move heals",$4e,"1/8 max HP.@"
 AbilityText59: db "SAND VEIL",$4e,"Ground move:",$4e,"Evasion +1 once",$4e,"per battle.@"
 AbilityText60: db "SPINY ARMOR",$4e,"Physical hits",$4e,"hurt attacker",$4e,"1/16 max HP.@"
+AbilityText61: db "POISON POINT",$4e,"Physical hits:",$4e,"25% poison",$4e,"attacker.@"
+AbilityText62: db "MEASURED",$4e,"Damage x0.8;",$4e,"extra effect",$4e,"chance x2.@"
+AbilityText63: db "THICK HIDE",$4e,"Physical damage",$4e,"received x0.85.@"
+AbilityText64: db "PROTECTIVE INST.",$4e,"Below 1/2 HP:",$4e,"Defense +1 once",$4e,"per battle.@"
+AbilityText65: db "IRON WILL",$4e,"Cannot be hit by",$4e,"critical hits.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

@@ -90,8 +90,9 @@ def validate(version):
                'EKANS':['INTIMIDATE','SHED_SKIN','VENOMOUS','PREDATOR','CORROSIVE_VENOM'],
                'PIKACHU':['STATIC','VOLTAGE','OVERCHARGE','QUICK_REFLEXES','QUICK_FEET'],
                'SANDSHREW':['ROLLING_DEFENSE','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL'],
-               'SANDSLASH':['SPINY_ARMOR','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU')]:
+               'SANDSLASH':['SPINY_ARMOR','SAND_ARMOR','BURROWER','SHARP_CLAWS','SAND_VEIL'],
+               'NIDORAN_F':['PHYSICAL_POISON_POINT','MEASURED','THICK_HIDE','PROTECTIVE_INSTINCT','IRON_WILL']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -131,6 +132,57 @@ def validate(version):
         metadata('wPartyMon1','BULBASAUR',1,0);put('wBattleMonSpecies2',ids['BULBASAUR']);put('wFirstMonsNotOutYet',1)
         call('LoadBattleMonFromParty');assert get('wPlayerMonSpeedMod')==6
         for turn in (0,1):
+            # Nidoran's Poison Point reacts to physical rather than contact moves.
+            for attack,roll,sub,holder_hp,actor_type,want in [('TACKLE',0,0,160,'NORMAL',8),('EARTHQUAKE',49,0,160,'NORMAL',8),('TACKLE',50,0,160,'NORMAL',0),('EMBER',0,0,160,'NORMAL',0),('TACKLE',0,1,160,'NORMAL',0),('TACKLE',0,0,0,'NORMAL',8),('TACKLE',0,0,160,'POISON',0)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'PHYSICAL_POISON_POINT');put('wCustomTargetHadSub',sub);word(tp+'HP',holder_hp)
+                put(ap+'Type1',TYPES[actor_type]);put(ap+'Type2',TYPES[actor_type]);rng(roll);call('AbilityAfterHit')
+                assert get(ap+'Status')==want,(turn,attack,roll,sub,holder_hp,actor_type,get(ap+'Status'))
+            # Existing Weedle Poison Point retains its contact-only behavior.
+            ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(1-turn,'POISON_POINT');rng(0);call('AbilityAfterHit');assert get(ap+'Status')==0
+            # Damage reductions apply independently and stack, with a 1 HP floor.
+            for actor,target,typ,damage,want in [('MEASURED',None,'NORMAL',100,80),('MEASURED',None,'FIRE',100,80),('MEASURED',None,'NORMAL',1,1),(None,'THICK_HIDE','NORMAL',100,85),(None,'THICK_HIDE','FIRE',100,100),('MEASURED','THICK_HIDE','NORMAL',100,68)]:
+                init(turn);aid(turn,actor);aid(1-turn,target);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);word('wDamage',damage)
+                call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,actor,target,typ,damage,readword('wDamage'))
+            init(turn);move(turn,'BIDE');aid(turn,'MEASURED');aid(1-turn,'THICK_HIDE');word('wDamage',20)
+            call('AbilityFixedDamageModifiers');assert readword('wDamage')==13
+            for actor,target,typ,damage,want in [('MEASURED',None,'NORMAL',100,80),(None,'THICK_HIDE','NORMAL',100,85),('MEASURED','THICK_HIDE','NORMAL',100,68),('MEASURED','THICK_HIDE','NORMAL',1,1),('MEASURED','THICK_HIDE','NORMAL',0,0),(None,'THICK_HIDE','FIRE',100,100)]:
+                init(turn);aid(turn,actor);aid(1-turn,target);put('wUnusedC000',16);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[typ]);word('wDamage',damage)
+                call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,actor,target,typ,damage,readword('wDamage'))
+            # Protective Instinct is strict below half and once per Pokémon/battle.
+            for hp,want in [(81,7),(80,7),(79,8),(0,7)]:
+                ap,tp=init(turn);aid(turn,'PROTECTIVE_INSTINCT');word(ap+'HP',hp);call('AbilityLowHPBoth')
+                mod='w'+('Enemy' if turn else 'Player')+'MonDefenseMod';assert get(mod)==want,(turn,hp,get(mod))
+                call('AbilityLowHPBoth');put('wAbilitySide',turn);call('AbilityEntry');call('AbilityLowHPBoth');assert get(mod)==want
+            # One RNG draw is reused; halving it doubles any secondary gate,
+            # including guaranteeing an original 50% chance.
+            for value in range(256):
+                init(turn);aid(turn,'MEASURED');rng(value);call('MeasuredEffectRandom')
+                assert game.register_file.A==value//2 and state['index']==1
+            for value in (0,51,52,127,128,254,255):
+                init(turn);rng(value);call('MeasuredEffectRandom');assert game.register_file.A==value
+            init(turn);move(turn,'TACKLE');aid(turn,'MEASURED');accuracy='w'+('Enemy' if turn else 'Player')+'MoveAccuracy'
+            before=get(accuracy);call('CalcHitChance');assert get(accuracy)==before
+            # Custom attack secondary and utility status secondary hit exact boundaries.
+            for attack,entry,roll,changed in [('CRUNCH','CustomAttackEffect',101,True),('CRUNCH','CustomAttackEffect',102,False),('SCALD','UtilityHitEffect',153,True),('SCALD','UtilityHitEffect',154,False)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'MEASURED');rng(roll);call(entry)
+                if attack=='CRUNCH':assert (get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==6)==changed,(turn,attack,roll)
+                else:assert bool(get(tp+'Status')&16)==changed,(turn,attack,roll)
+            ap,tp=init(turn);move(turn,'FLASH');aid(turn,'MEASURED');rng(255);call('CustomAttackEffect')
+            assert get('w'+('Player' if turn else 'Enemy')+'MonAccuracyMod')==6
+            ap,tp=init(turn);move(turn,'TRI_ATTACK');aid(turn,'MEASURED');rng(101,254);call('UtilityHitEffect')
+            assert get(tp+'Status')==64 and state['index']==2 # the three-way selection is not modified
+            # Test the actual legacy secondary-effect handlers at their boundaries.
+            saved=[]
+            for label in ('PlayBattleAnimation','PlayBattleAnimation2','UpdateLoweredStatDone'):
+                bank,address=syms[label];saved.append((bank,address,game.memory[bank,address]));patch(label,[0xc9])
+            for attack,entry,roll,changed in [('POISON_STING','PoisonEffect',103,True),('POISON_STING','PoisonEffect',104,False),('EMBER','FreezeBurnParalyzeEffect',51,True),('EMBER','FreezeBurnParalyzeEffect',52,False),('BITE','FlinchSideEffect',51,True),('BITE','FlinchSideEffect',52,False),('HORN_ATTACK','StatModifierDownEffect',169,True),('HORN_ATTACK','StatModifierDownEffect',170,False)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'MEASURED');rng(roll);call(entry)
+                if attack=='POISON_STING':actual=bool(get(tp+'Status')&8)
+                elif attack=='EMBER':actual=bool(get(tp+'Status')&16)
+                elif attack=='BITE':actual=bool(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&8)
+                else:actual=get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==6
+                assert actual==changed,(turn,attack,roll,actual)
+            for bank,address,value in saved:game.memory[bank,address]=value
             # Normal and Ground triggers require an executed move and fire once.
             for name,attack,stat in [('ROLLING_DEFENSE','GROWL','Defense'),('SAND_VEIL','EARTHQUAKE','Evasion')]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,name);mod='w'+('Enemy' if turn else 'Player')+'Mon'+stat+'Mod'
@@ -286,7 +338,7 @@ def validate(version):
             ap,tp=init(turn);aid(turn,'PIERCING_STING');put(tp+'Type1',TYPES['BUG']);put(tp+'Type2',TYPES['GRASS']);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES['POISON']);word('wDamage',100)
             call('AbilityDamageBoost');assert readword('wDamage')==200 and get('wDamageMultipliers')==20
             # Crit blockers run before guaranteed crit checks; Ruthless doubles final odds.
-            for name in ('SHELL_ARMOR','BATTLE_ARMOR'):
+            for name in ('SHELL_ARMOR','BATTLE_ARMOR','IRON_WILL'):
                 init(turn);aid(1-turn,name);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==0
             ap,tp=init(turn);aid(turn,'RUTHLESS');put(tp+'Status',8);put('wNatureResult',150);call('AbilityRuthless');assert get('wNatureResult')==255
             for typ,base,want in [('NORMAL',100,150),('NORMAL',200,255),('FIRE',100,100)]:
@@ -294,7 +346,7 @@ def validate(version):
                 call('AbilityRuthless');assert get('wNatureResult')==want,(turn,typ,base,get('wNatureResult'))
             for attack,status in [('SHOCK_WAVE',64),('POISON_TAIL',8)]:
                 ap,tp=init(turn);move(turn,attack);put(tp+'Status',status);rng(199);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==1
-                for armor in ('SHELL_ARMOR','BATTLE_ARMOR'):
+                for armor in ('SHELL_ARMOR','BATTLE_ARMOR','IRON_WILL'):
                     aid(1-turn,armor);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==0
             # Contact reactions distinguish Tackle from Earthquake; once per move.
             for name in ('POISON_POINT','TOXIC_SHELL'):
@@ -396,7 +448,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,61):
+        for n in range(1,66):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -445,7 +497,7 @@ def validate(version):
                   'DrawPlayerHUDAndHPBar','DrawEnemyHUDAndHPBar','UpdateHPBar2','MoveAnimation',
                   'HideSubstituteShowMonAnim','ReshowSubstituteAnim','DrawHUDsAndHPBars'):
             patch(n,[0xc9])
-        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160):
+        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None):
             ap,tp=init(turn)
             put('wActionResultOrTookBattleTurn',0);put('wMonIsDisobedient',0)
             for side in (0,1):
@@ -455,9 +507,22 @@ def validate(version):
                 put(pref+'Species',ids['BULBASAUR'] if pref in ('wBattleMon','wPartyMon1') else ids['CHARMANDER'])
                 put(pref+'Level',50);put(pref+'PP',pp);put(pref+'Moves',MOVES[attack])
             aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);word(tp+'HP',hp);word(ap+'HP',actor_hp);rng(0)
+            if counter_damage is not None:
+                word('wCounterDamage',counter_damage);put('wCounterRecipient',turn)
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            # Threshold triggers also run immediately after recoil and poison,
+            # before the opposing Pokémon can take its action.
+            ap,tp=execute('TAKE_DOWN',turn,actor='PROTECTIVE_INSTINCT',actor_hp=85)
+            assert readword(ap+'HP')<80 and get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==8
+            ap,tp=init(turn);aid(turn,'PROTECTIVE_INSTINCT');word(ap+'HP',85);put(ap+'Status',8)
+            call('HandlePoisonBurnLeechSeed')
+            assert readword(ap+'HP')==75 and get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==8
+            ap,tp=execute('SEISMIC_TOSS',turn,actor='MEASURED');assert readword(tp+'HP')==120
+            ap,tp=execute('SEISMIC_TOSS',turn,target='THICK_HIDE');assert readword(tp+'HP')==118
+            ap,tp=execute('SEISMIC_TOSS',turn,actor='MEASURED',target='THICK_HIDE');assert readword(tp+'HP')==126
+            ap,tp=execute('COUNTER',turn,actor='MEASURED',target='THICK_HIDE',counter_damage=20);assert readword(tp+'HP')==133,(turn,readword(tp+'HP'),get('wMoveMissed'),get('w'+('Enemy' if turn else 'Player')+'MoveNum'),get('wUnusedC000'),get('wActiveAbilities'),game.memory[addr('wActiveAbilities')+1])
             ap,tp=execute('TACKLE',turn,target='SPINY_ARMOR',actor_hp=80);assert readword(ap+'HP')==70 and readword(tp+'HP')<160
             ap,tp=execute('EARTHQUAKE',turn,target='SPINY_ARMOR',actor_hp=80);assert readword(ap+'HP')==70 and readword(tp+'HP')<160
             ap,tp=execute('EMBER',turn,target='SPINY_ARMOR',actor_hp=80);assert readword(ap+'HP')==80 and readword(tp+'HP')<160
@@ -495,7 +560,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 28 species / 140 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 31 species / 155 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

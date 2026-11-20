@@ -248,6 +248,17 @@ AbilityRoll:
 	cp c
 	ret
 
+; The RNG draw is already in wCustomRandomValue. Halving it doubles the
+; threshold probability exactly and makes thresholds >=128 guaranteed.
+AbilityMeasuredEffectRoll:
+	call AbilityActor
+	cp AB_MEASURED
+	ret nz
+	ld a, [wCustomRandomValue]
+	srl a
+	ld [wCustomRandomValue], a
+	ret
+
 AbilityScaleDamage:
 	ld a, [wDamage]
 	ld [H_MULTIPLICAND + 1], a
@@ -294,6 +305,20 @@ AbilityModifyDamage:
 	ld a, [hl]
 	ld [wAbilityMoveType], a
 	call AbilityActor
+	cp AB_MEASURED
+	jr nz, .overgrowth
+	ld c, 80
+	call AbilityScaleDamage
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	or b
+	jr nz, .measuredDone
+	inc a
+	ld [wDamage + 1], a ; a non-immune damaging move still deals at least 1
+.measuredDone
+	jp .defender
+.overgrowth
 	cp AB_OVERGROWTH
 	jr nz, .blaze
 	ld a, [wAbilityMoveType]
@@ -492,14 +517,65 @@ AbilityModifyDamage:
 	jr .reduce
 .sandArmor
 	cp AB_SAND_ARMOR
-	ret nz
+	jr nz, .thickHide
 	ld a, [wDamageMultipliers]
 	and $7f
 	cp 11 ; neutral is 10
 	ret c
 	ld c, 75
+	jr .reduce
+.thickHide
+	cp AB_THICK_HIDE
+	ret nz
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	ret nc
+	ld c, 85
 .reduce
 	call AbilityScaleDamage
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	or b
+	ret nz
+	inc a
+	ld [wDamage + 1], a
+	ret
+
+; Fixed-damage moves are calculated later than the ordinary damage hook.
+; Apply the explicitly requested damage reductions after that calculation.
+AbilityFixedDamageModifiers:
+	ld a, [wUnusedC000]
+	bit 4, a
+	jr nz, .fixed
+	call AbilityMove
+	ld a, [hl]
+	cp COUNTER
+	jr z, .fixed
+	cp BIDE
+	ret nz
+.fixed
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	or b
+	ret z
+	call AbilityActor
+	cp AB_MEASURED
+	jr nz, .defender
+	ld c, 80
+	call AbilityScaleDamage
+	call AbilityFixedMinimum
+.defender
+	call AbilityTarget
+	cp AB_THICK_HIDE
+	ret nz
+	call AbilityActorMoveType
+	cp FIRE
+	ret nc
+	ld c, 85
+	call AbilityScaleDamage
+AbilityFixedMinimum:
 	ld a, [wDamage]
 	ld b, a
 	ld a, [wDamage + 1]
@@ -838,6 +914,13 @@ AbilityGetTargetReactions:
 	ret nz
 	set 2, [hl]
 	call AbilityTarget
+	cp AB_PHYSICAL_POISON_POINT
+	jr nz, .staticCheck
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	ret nc
+	jp .poison
+.staticCheck
 	cp AB_STATIC
 	jr nz, .contactMove
 	ld a, [wAbilityMoveType]
@@ -926,15 +1009,29 @@ AbilityLowHP:
 	jr .stat
 .cornered
 	cp AB_CORNERED
-	ret nz
+	jr nz, .protective
 	xor a ; Attack
 	jr .stat
+.protective
+	cp AB_PROTECTIVE_INSTINCT
+	ret nz
+	ld a, 1 ; Defense
+	push af
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	jr z, .done
+	dec hl
+	call AbilityHalfHP
+	jr nc, .done
+	jr .eligible
 .speed
 	ld a, 2
 .stat
 	push af
 	call AbilityBelowThird
 	jr nc, .done
+.eligible
 	call AbilityFlagsPointer
 	bit 2, [hl]
 	jr nz, .done
@@ -1095,6 +1192,8 @@ AbilityCriticalGuard:
 	cp AB_SHELL_ARMOR
 	jr z, .block
 	cp AB_BATTLE_ARMOR
+	jr z, .block
+	cp AB_IRON_WILL
 	ret nz
 .block
 	ld a, 1

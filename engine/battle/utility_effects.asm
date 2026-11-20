@@ -128,7 +128,7 @@ UtilityHitEffect:
 	jr z, .fang
 	; Tri Attack: one 51/256 gate, one uniform three-way draw, no reroll
 	; when the selected ailment is blocked by typing or an existing status.
-	call CustomRandom
+	call CustomSecondaryRandom
 	ld a, [wCustomRandomValue]
 	cp 51
 	ret nc
@@ -155,7 +155,7 @@ UtilityHitEffect:
 	ld [wCustomDelta], a
 	jp UtilityInflictStatus
 .scald
-	call CustomRandom
+	call CustomSecondaryRandom
 	ld a, [wCustomRandomValue]
 	cp 77
 	ret nc
@@ -163,7 +163,7 @@ UtilityHitEffect:
 	ld [wCustomDelta], a
 	jp UtilityInflictStatus
 .fang
-	call CustomRandom
+	call CustomSecondaryRandom
 	ld a, [wCustomRandomValue]
 	cp 51
 	ret nc

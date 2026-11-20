@@ -133,7 +133,7 @@ CustomAttackEffect:
 	jr z, .success
 	ld [wCustomChance], a
 	; Store RNG before returning across the bank boundary.
-	call CustomRandom
+	call CustomSecondaryRandom
 	ld a, [wCustomChance]
 	ld b, a
 	ld a, [wCustomRandomValue]
@@ -384,6 +384,11 @@ CustomConfuse:
 	ld [de], a
 	ld hl, CustomConfusedText
 	jp PrintText
+
+CustomSecondaryRandom:
+	call CustomRandom
+	abilitycall AbilityMeasuredEffectRoll
+	ret
 
 CustomRandom:
 	jpab CustomRandomInBattleBank

@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 28 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 31 original species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -20,10 +20,13 @@ Implemented for 28 original species, with five equally likely slots per species.
 | Pikachu / Raichu | Static | Voltage | Overcharge | Quick Reflexes | Quick Feet |
 | Sandshrew | Rolling Defense | Sand Armor | Burrower | Sharp Claws | Sand Veil |
 | Sandslash | Spiny Armor | Sand Armor | Burrower | Sharp Claws | Sand Veil |
+| Nidoran♀ / Nidorina / Nidoqueen | Poison Point | Measured | Thick Hide | Protective Instinct | Iron Will |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Nidoran♀-family effects: Poison Point has a 25% chance to poison the attacker after a physical hit, including ranged attacks; Weedle retains its previously implemented contact-only Poison Point. Measured multiplies outgoing move damage by 0.8, including fixed-damage moves and Counter, and doubles the probability of move secondary effects using the existing single RNG draw, capped at certainty. Thick Hide multiplies incoming physical move damage by 0.85, including fixed damage. Protective Instinct raises Defense one stage below half HP once per battle. Iron Will prevents critical hits, including guaranteed critical hits. Existing Substitute, type/status immunity and minimum-damage rules apply.
 
 Sandshrew-family effects: Rolling Defense raises Defense one stage after executing a Normal move, once per battle. Spiny Armor damages a physical attacker by 1/16 of its maximum HP per direct hit, including ranged attacks and hits that KO the holder; it does not activate through Substitute. Sand Armor reduces super-effective damage by 25%. Burrower restores 1/8 maximum HP after executing a Ground move. Sharp Claws multiplies physical critical-hit chance by 1.5. Sand Veil raises Evasion one stage after executing a Ground move, once per battle. The Normal/Ground triggers apply when the move executes, including on a miss; two-turn moves trigger when their attack executes.
 
@@ -75,10 +78,10 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 ## Shared rules and menus
 
 - Physical/special uses this game's Gen 1 type categories. Contact is a separate explicit move list in `tools/generate_ability_moves.py`, compiled to `data/ability_move_metadata.asm`; ranged physical moves such as Earthquake do not trigger contact reactions.
-- Chance-based attack and contact abilities roll once per move, not once per strike. Shell Guard specifically responds to each surviving critical strike. The 10%, 15% and 25% ability proc probabilities use exact rejection-sampled percentages.
-- Substitute-protected targets do not trigger these post-damage/contact abilities. Contact reactions can still trigger on the hit that knocks out the ability holder; stat boosts for a hit recipient require it to survive. Poison Leaf, Poison Point and Toxic Shell inflict ordinary poison, not Toxic. Type/status immunities and the existing Curse/poison exclusion remain enforced.
+- Chance-based attack and reactive abilities roll once per move, not once per strike. Shell Guard specifically responds to each surviving critical strike, while Spiny Armor damages on each eligible hit. The 10%, 15%, 20%, 25% and 30% ability proc probabilities use exact rejection-sampled percentages.
+- Substitute-protected targets do not trigger defensive reactions. Eligible reactions can still trigger on the hit that knocks out the ability holder; stat boosts for a hit recipient require it to survive. Poison Leaf, both Poison Point variants and Toxic Shell inflict ordinary poison, not Toxic. Type/status immunities and the existing Curse/poison exclusion remain enforced.
 - Threshold once-per-battle flags, Hot Temper and Confident persist when switching. Quick Reflexes alone refreshes on a new entry.
-- Damage multipliers apply to ordinary move damage, not fixed-damage moves, confusion self-damage or residual damage. Multiple relevant damage factors combine multiplicatively with integer rounding.
+- Damage multipliers normally apply to ordinary move damage; Measured and Thick Hide also reduce applicable fixed-damage moves, Counter and Bide. One-hit-KO moves, confusion self-damage and residual damage are unaffected. Multiple relevant damage factors combine multiplicatively with integer rounding.
 - HP recovery rounds down, has a minimum of 1, caps at maximum HP and never revives.
 - Transform keeps the user's own ability. Nature and ability slot metadata remain separate.
 - Party menu **ABILITY** shows the selected Pokémon's current ability. Battle inspection remains **SELECT**, **LEFT/RIGHT** to switch side and **B/SELECT** to close. All new effects have descriptions.
@@ -87,4 +90,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 140 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 155 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
