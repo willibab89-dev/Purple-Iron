@@ -605,8 +605,9 @@ WriteMonMoves:
 	ld a, [wBuffer + 5]
 	pop hl
 	ld [hl], a
+	naturecall AbilityResourcefulDaycarePP
 	pop hl
-	jr .nextMove
+	jp .nextMove
 
 .done
 	pop bc

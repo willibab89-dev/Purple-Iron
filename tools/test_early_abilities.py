@@ -110,8 +110,9 @@ def validate(version):
                'PARAS':['EFFECT_SPORE','LEECHING','PARASITE','MYCELIUM','REGROWTH'],
                'PARASECT':['EFFECT_SPORE','LEECHING','PARASITE','MYCELIUM','DEATH_SPORE'],
                'VENONAT':['SHIELD_DUST','TOXIC_SCALES','TINTED_LENS','POISON_ABSORB','VENOMOUS'],
-               'DIGLETT':['AMBUSH','SUBTERRANEAN','ELUSIVE','AFTERSHOCK','SAND_RUSH']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT')]:
+               'DIGLETT':['AMBUSH','SUBTERRANEAN','ELUSIVE','AFTERSHOCK','SAND_RUSH'],
+               'MEOWTH':['OPPORTUNIST','GREEDY','RESOURCEFUL','QUICK_REFLEXES','TECHNICIAN']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -332,6 +333,15 @@ def validate(version):
                 init(turn);move(turn,attack);aid(turn,'SAND_RUSH');call('AbilityAttempt');put('wMoveMissed',1);call('AbilityAfterAction')
                 mod='w'+('Enemy' if turn else 'Player')+'MonSpeedMod';assert get(mod)==want
                 call('AbilityAfterAction');put('wAbilitySide',turn);call('AbilityEntry');call('AbilityAfterAction');assert get(mod)==want
+            for index in range(6):
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'OPPORTUNIST');game.memory[addr('w'+('Player' if turn else 'Enemy')+'MonStatMods')+index]=6;word('wDamage',100)
+                call('AbilityDamageBoost');assert readword('wDamage')==120,(turn,index,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'OPPORTUNIST');word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==100
+            ap,tp=init(turn);move(turn,'SEISMIC_TOSS');aid(turn,'OPPORTUNIST');game.memory[addr('w'+('Player' if turn else 'Enemy')+'MonStatMods')]=6;put('wUnusedC000',16);word('wDamage',100)
+            call('AbilityFixedDamageModifiers');assert readword('wDamage')==120
+            for attack,want in [('TACKLE',150),('MEGA_DRAIN',150),('EARTHQUAKE',100),('GROWL',100)]:
+                init(turn);move(turn,attack);aid(turn,'TECHNICIAN');word('wDamage',100);call('AbilityDamageBoost')
+                assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
             # Sound heals after an executed move, including misses, but not before use.
             for attack,hp,used,want in [('SING',80,True,100),('SNARL',80,True,100),('HEAL_BELL',150,True,160),('SING',0,True,0),('SING',80,False,80),('TACKLE',80,True,80)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'SOOTHING_VOICE');word(ap+'HP',hp)
@@ -612,6 +622,61 @@ def validate(version):
             for actor,target,attack,want in [('MYCELIUM',None,'SING',255),('MYCELIUM','WONDER_SKIN','SING',255),('MYCELIUM',None,'TACKLE',100),('POLLEN',None,'SLEEP_POWDER',151),('POLLEN','WONDER_SKIN','SPORE',75),('POLLEN',None,'POISON_GAS',100),('ECHOLOCATION',None,'SING',151),('ECHOLOCATION','WONDER_SKIN','SING',75),('ECHOLOCATION',None,'TACKLE',151),('PERFORMER',None,'SING',120),('PERFORMER','WONDER_SKIN','SING',60),('PERFORMER',None,'SNARL',120),('PERFORMER',None,'TACKLE',100),('COMPOUND_EYES',None,'SLEEP_POWDER',130),(None,'WONDER_SKIN','SLEEP_POWDER',50),('COMPOUND_EYES','WONDER_SKIN','SLEEP_POWDER',65),(None,'WONDER_SKIN','TACKLE',100)]:
                 init(turn);move(turn,attack);aid(turn,actor);aid(1-turn,target);game.memory[0xff97:0xff99]=[0,100]
                 call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,want]),(actor,target,attack,bytes(game.memory[0xff97:0xff99]))
+        # Greedy rewards only a participating holder and never stacks.
+        init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
+        game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
+        assert bytes(game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3])==bytes([0x00,0x24,0x68]),(version,bytes(game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]),get('wPartyCount'),get('wPartyMon1Type1'),get('wAbilityFlags'))
+        game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x60,0x00,0x00];call('AbilityGreedyPrize')
+        assert bytes(game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3])==bytes([0x99,0x99,0x99])
+        game.memory[addr('wAbilityFlags')]=0;game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];call('AbilityGreedyPrize')
+        assert bytes(game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3])==bytes([0x00,0x12,0x34])
+        metadata('wPartyMon1','MEOWTH',1);game.memory[addr('wAbilityFlags')]=64;call('AbilityGreedyPrize')
+        assert bytes(game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3])==bytes([0x00,0x12,0x34])
+        # Resourceful max PP, 63 cap, PP Ups, live/box/daycare sources and healing.
+        init();metadata('wPartyMon1','MEOWTH',3);put('wPartyCount',1);put('wPartySpecies',ids['MEOWTH']);game.memory[addr('wPartySpecies')+1]=255
+        put('wWhichPokemon',0);put('wMonDataLocation',0);put('wCurrentMenuItem',0);put('wPartyMon1Moves',MOVES['GROWL']);put('wPartyMon1PP',0xc0|50)
+        call('GetMaxPP');assert get('wMaxPP')==63,(version,'max PP',get('wMaxPP'))
+        put('wPartyMon1Moves',MOVES['TACKLE']);put('wPartyMon1PP',20);call('GetMaxPP');assert get('wMaxPP')==40,(version,'base max',get('wMaxPP'))
+        put('wPartyMon1Moves',MOVES['GROWL']);put('wPartyMon1PP',0xc0|50);put('wIsInBattle',0);call('HealParty')
+        assert get('wPartyMon1PP')==0xc0|63,(version,'heal',get('wPartyMon1PP'))
+        call('HealParty');assert get('wPartyMon1PP')==0xc0|63
+        put('wMonDataLocation',4);put('wPlayerMonNumber',0);put('wBattleMonMoves',MOVES['TACKLE']);put('wBattleMonPP',20);put('wPlayerBattleStatus3',0)
+        call('GetMaxPP');assert get('wMaxPP')==40
+        put('wPlayerBattleStatus3',8);call('GetMaxPP');assert get('wMaxPP')==35
+        put('wPlayerBattleStatus3',0)
+        for root,location in [('wBoxMon1',2),('wDayCareMon',3)]:
+            metadata(root,'MEOWTH',3);put(root+'Moves',MOVES['TACKLE']);put(root+'PP',20);put('wWhichPokemon',0);put('wMonDataLocation',location);call('GetMaxPP');assert get('wMaxPP')==40,(root,get('wMaxPP'))
+        # Capsule gain/loss adjusts by the real change at the PP-Up cap.
+        for base_move,packed,gained in [('TACKLE',20,25),('GROWL',0xc0|50,0xc0|52)]:
+            metadata('wPartyMon1','MEOWTH',1);put('wPartyMon1Moves',MOVES[base_move]);put('wPartyMon1PP',packed);put('wPartyMon1Moves' ,MOVES[base_move]);game.memory[addr('wPartyMon1Moves')+1:addr('wPartyMon1Moves')+4]=[0,0,0]
+            word('wNatureMonPtr',addr('wPartyMon1'));rng(2);call('AbilityCapsuleApply');assert get('wPartyMon1Type1')>>5==3 and get('wPartyMon1PP')==gained,(version,base_move,'gain',get('wPartyMon1PP'),gained)
+            rng(0);call('AbilityCapsuleApply');assert get('wPartyMon1Type1')>>5==1 and get('wPartyMon1PP')==packed,(version,base_move,'loss',get('wPartyMon1PP'),packed)
+        # A PP Up at the storage cap must not spill into its two count bits.
+        metadata('wPartyMon1','MEOWTH',3);put('wPartyMon1Moves',MOVES['GROWL']);put('wPartyMon1PP',0xc0|63);put('wUsingPPUp',1)
+        game.memory[addr('wNormalMaxPPList')]=40;call('AddBonusPP',HL=addr('wPartyMon1PP'),DE=addr('wNormalMaxPPList'))
+        assert get('wPartyMon1PP')==0xc0|63
+        # Newly obtained Resourceful Pokémon and moves receive their bonus immediately.
+        init();put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0);put('wCurEnemyLVL',20);put('wcf91',ids['MEOWTH']);rng(2,0,0,0);call('AddPartyMon')
+        assert get('wPartyMon1Type1')>>5==3,(version,'new ability',get('wPartyMon1Type1'))
+        for i in range(4):
+            m=game.memory[addr('wPartyMon1Moves')+i]
+            if m:
+                bank,base=syms['Moves'];normal=game.memory[bank,base+(m-1)*6+5]
+                assert game.memory[addr('wPartyMon1PP')+i]==min(normal+5,63),(version,'new PP',m)
+        put('wWhichPokemon',0);put('wIsInBattle',0);put('wMoveNum',MOVES['GROWL'])
+        game.memory[addr('wPartyMon1Moves'):addr('wPartyMon1Moves')+4]=[MOVES['TACKLE'],0,0,0]
+        game.memory[addr('wPartyMon1PP'):addr('wPartyMon1PP')+4]=[40,0,0,0]
+        call('LearnMove');assert game.memory[addr('wPartyMon1Moves')+1]==MOVES['GROWL'] and game.memory[addr('wPartyMon1PP')+1]==45,(version,'learn PP')
+        init();put('wEnemyMonSpecies2',ids['MEOWTH']);put('wCurEnemyLVL',20);put('wIsInBattle',1);put('wNatureMode',2);put('wNatureEnemySlot',3)
+        rng(0);call('LoadEnemyMonData');assert game.memory[addr('wActiveAbilities')+1]==ab['RESOURCEFUL']
+        for i in range(4):
+            m=game.memory[addr('wEnemyMonMoves')+i]
+            if m:
+                bank,base=syms['Moves'];normal=game.memory[bank,base+(m-1)*6+5]
+                assert game.memory[addr('wEnemyMonPP')+i]==min(normal+5,63),(version,'wild PP',m,game.memory[addr('wEnemyMonPP')+i],normal)
+        # A third PP Up preserves its count while reaching the six-bit cap.
+        metadata('wPartyMon1','MEOWTH',3);put('wPartyMon1PP',0xc0|59);put('wUsingPPUp',1);game.memory[addr('wNormalMaxPPList')]=40
+        call('AddBonusPP',HL=addr('wPartyMon1PP'),DE=addr('wNormalMaxPPList'));assert get('wPartyMon1PP')==0xc0|63
         # Exact 10%, 15%, 25% rolls, including high-byte rejection.
         for percent in (10,15,20,25,30):
             success=0
@@ -632,7 +697,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,106):
+        for n in range(1,110):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -706,6 +771,8 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='TECHNICIAN',random_value=100);assert 160-readword(tp+'HP')==normal*150//100,(turn,normal,readword(tp+'HP'))
             # Threshold triggers also run immediately after recoil and poison,
             # before the opposing Pokémon can take its action.
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -884,7 +951,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 52 species / 260 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 54 species / 270 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

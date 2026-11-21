@@ -67,6 +67,8 @@ AbilitySpeciesPools:
 	db VENOMOTH, 131
 	db DIGLETT, 136
 	db DUGTRIO, 136
+	db MEOWTH, 141
+	db PERSIAN, 141
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -97,6 +99,7 @@ AbilityPoolIds:
 	db AB_EFFECT_SPORE, AB_LEECHING, AB_PARASITE, AB_MYCELIUM, AB_DEATH_SPORE
 	db AB_SHIELD_DUST, AB_TOXIC_SCALES, AB_TINTED_LENS, AB_POISON_ABSORB, AB_VENOMOUS
 	db AB_AMBUSH, AB_SUBTERRANEAN, AB_ELUSIVE, AB_AFTERSHOCK, AB_SAND_RUSH
+	db AB_OPPORTUNIST, AB_GREEDY, AB_RESOURCEFUL, AB_QUICK_REFLEXES, AB_TECHNICIAN
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -141,7 +144,8 @@ AbilityResetBattle:
 	ret
 
 AbilityAssignNewMon:
-	ret ; NatureInitializeNewMon assigns the shared record before stat generation.
+	; NatureInitializeNewMon has already assigned the saved slot.
+	jp AbilityResourcefulNewMon
 
 AbilityLoadPlayer:
 	push af
@@ -694,6 +698,7 @@ AbilityTextPointers:
 	dw AbilityText93, AbilityText94, AbilityText95, AbilityText96, AbilityText97
 	dw AbilityText98, AbilityText99, AbilityText100
 	dw AbilityText101, AbilityText102, AbilityText103, AbilityText104, AbilityText105
+	dw AbilityText106, AbilityText107, AbilityText108, AbilityText109
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -922,5 +927,9 @@ AbilityText102: db "SUBTERRANEAN",$4e,"Super-effective",$4e,"damage x0.75.@"
 AbilityText103: db "ELUSIVE",$4e,"Evasion +1 until",$4e,"attacked.@"
 AbilityText104: db "AFTERSHOCK",$4e,"Ground hits: 20%",$4e,"chance to paralyze.@"
 AbilityText105: db "SAND RUSH",$4e,"Ground move: Speed",$4e,"+1 once per battle.@"
+AbilityText106: db "OPPORTUNIST",$4e,"Damage x1.2 if foe",$4e,"has lowered stats.@"
+AbilityText107: db "GREEDY",$4e,"Doubles trainer",$4e,"prize money.@"
+AbilityText108: db "RESOURCEFUL",$4e,"Moves gain 5 PP",$4e,"up to 63 maximum.@"
+AbilityText109: db "TECHNICIAN",$4e,"Moves with power",$4e,"at most 60: x1.5.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

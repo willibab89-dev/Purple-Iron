@@ -91,6 +91,7 @@ HealParty:
 .ppup
 	push bc
 	call RestoreBonusPP
+	abilitycall AbilityResourcefulHeal
 	pop bc
 	ld hl, wWhichPokemon
 	inc [hl]

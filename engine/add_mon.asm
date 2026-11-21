@@ -245,7 +245,9 @@ _AddPartyMon:
 
 LoadMovePPs:
 	call GetPredefRegisters
-	; fallthrough
+	call AddPartyMon_WriteMovePP
+	naturecall AbilityResourcefulEnemyLoadedPP
+	ret
 AddPartyMon_WriteMovePP:
 	ld b, NUM_MOVES
 .pploop

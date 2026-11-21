@@ -53,6 +53,7 @@ DontAbandonLearning:
 	pop de
 	pop hl
 	ld [hl], a
+	naturecall AbilityResourcefulLearnedPP
 	ld a, [wIsInBattle]
 	and a
 	jp z, PrintLearnedMove

@@ -202,7 +202,8 @@ def validate(version):
                 assert len(nonzero)==len(set(nonzero)),('duplicate',key,moves)
                 if (trainer,number) in revised:
                     pp=list(get(f'wEnemyMon{slot}PP',4))
-                    assert pp==[move_data[(m-1)*6+5] if m else 0 for m in moves],('PP',key,moves,pp)
+                    resourceful=index in (indexes['MEOWTH'],indexes['PERSIAN']) and get(f'wEnemyMon{slot}Type1')[0]>>5==3
+                    assert pp==[min(move_data[(m-1)*6+5]+(5 if resourceful else 0),63) if m else 0 for m in moves],('PP',key,moves,pp)
                     # Ditto's automatic transformation supplies its offense.
                     assert index==indexes['DITTO'] or any(move_data[(m-1)*6+2]>0 for m in nonzero),('no attack',key,moves)
                 d=tune[dex]

@@ -2662,14 +2662,34 @@ AddBonusPP:
 	srl a
 	srl a
 	ld c, a ; c = number of PP Ups used
+	and a
+	jr nz, .loop
+	ld a, [wUsingPPUp]
+	dec a
+	jr z, .loop
+	jr .done
 .loop
 	ld a, [H_QUOTIENT + 3]
 	cp 8 ; is the amount greater than or equal to 8?
 	jr c, .addAmount
 	ld a, 7 ; cap the amount at 7
 .addAmount
-	add b
+	; Add within the six-bit PP field without carrying into PP-Up bits.
+	push de
+	ld e, a
+	ld a, b
+	and $3f
+	add e
+	cp 64
+	jr c, .amountFits
+	ld a, 63
+.amountFits
+	ld e, a
+	ld a, b
+	and $c0
+	or e
 	ld b, a
+	pop de
 	ld a, [wUsingPPUp]
 	dec a ; is the player using a PP Up right now?
 	jr z, .done ; if so, only add the bonus once
@@ -2750,6 +2770,7 @@ GetMaxPP:
 	ld a, [hl]
 	and %00111111 ; mask out the PP Up count
 	ld [wMaxPP], a ; store max PP
+	abilitycall AbilityResourcefulMaxPP
 	ret
 
 GetSelectedMoveOffset:

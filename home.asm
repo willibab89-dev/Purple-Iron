@@ -2599,6 +2599,7 @@ EngageMapTrainer::
 	jp PlayTrainerMusic
 
 PrintEndBattleText::
+	abilitycall AbilityGreedyPrize
 	push hl
 	ld hl, wd72d
 	bit 7, [hl]
