@@ -67,6 +67,7 @@ AbilityTextPointers:
 	dw AbilityText132, AbilityText133, AbilityText134, AbilityText135, AbilityText136
 	dw AbilityText137, AbilityText138, AbilityText139, AbilityText140, AbilityText141, AbilityText142
 	dw AbilityText143, AbilityText144, AbilityText145, AbilityText146
+	dw AbilityText147, AbilityText148, AbilityText149, AbilityText150
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -281,3 +282,8 @@ AbilityText143: db "ACIDIC",$4e,"Poison hit: 25%",$4e,"foe Defense -1.@"
 AbilityText144: db "CARNIVOROUS",$4e,"Heal 20% max HP",$4e,"after a knockout.@"
 AbilityText145: db "STICKY TRAP",$4e,"Physical hit: 20%",$4e,"foe Speed -1.@"
 AbilityText146: db "DIGESTIVE ACID",$4e,"Poison power x1.25",$4e,"if foe Def > Spc.@"
+
+AbilityText147: db "CLEAR BODY",$4e,"Foes cannot lower",$4e,"your stats.@"
+AbilityText148: db "LIQUID OOZE",$4e,"Draining this mon",$4e,"hurts the attacker.@"
+AbilityText149: db "STINGING SKIN",$4e,"Physical hit: 20%",$4e,"poisons attacker.@"
+AbilityText150: db "JELLY BODY",$4e,"Physical damage",$4e,"received x0.8.@"

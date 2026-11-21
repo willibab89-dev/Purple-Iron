@@ -555,6 +555,10 @@ MainInBattleLoop:
 .AIActionUsedEnemyFirst
 	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
+	ld hl, wBattleMonHP
+	ld a, [hli]
+	or [hl]
+	jp z, HandlePlayerMonFainted
 	call DrawHUDsAndHPBars
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
@@ -565,6 +569,10 @@ MainInBattleLoop:
 	jp z, HandleEnemyMonFainted
 	call HandlePoisonBurnLeechSeed
 	jp z, HandlePlayerMonFainted
+	ld hl, wEnemyMonHP
+	ld a, [hli]
+	or [hl]
+	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
 	jp ResidualRoundComplete
 .playerMovesFirst	;joenote - reorganizing this so enemy AI item use and switching has priority over player moves
@@ -586,6 +594,10 @@ MainInBattleLoop:
 	jp z, HandleEnemyMonFainted
 	call HandlePoisonBurnLeechSeed
 	jp z, HandlePlayerMonFainted
+	ld hl, wEnemyMonHP
+	ld a, [hli]
+	or [hl]
+	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
 ;#3 - handle enemy using move
 	ld a, $1
@@ -603,6 +615,10 @@ MainInBattleLoop:
 .AIActionUsedPlayerFirst
 	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
+	ld hl, wBattleMonHP
+	ld a, [hli]
+	or [hl]
+	jp z, HandlePlayerMonFainted
 	call DrawHUDsAndHPBars
 	jp ResidualRoundComplete
 
@@ -687,7 +703,7 @@ HandlePoisonBurnLeechSeed:
 	ld [H_WHOSETURN], a
 	pop hl
 	call HandlePoisonBurnLeechSeed_DecreaseOwnHP
-	call HandlePoisonBurnLeechSeed_IncreaseEnemyHP
+	naturecall AbilityLeechSeedTransfer
 	push hl
 	ld hl, HurtByLeechSeedText
 	call PrintText
@@ -792,58 +808,6 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP:
 	ld [wHPBarNewHP+1], a
 .noOverkill
 	call UpdateCurMonHPBar
-	pop hl
-	ret
-
-; adds bc to enemy HP
-; bc isn't updated if HP subtracted was capped to prevent overkill
-HandlePoisonBurnLeechSeed_IncreaseEnemyHP:
-	push hl
-	ld hl, wEnemyMonMaxHP
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .playersTurn
-	ld hl, wBattleMonMaxHP
-.playersTurn
-	ld a, [hli]
-	ld [wHPBarMaxHP+1], a
-	ld a, [hl]
-	ld [wHPBarMaxHP], a
-	ld de, wBattleMonHP - wBattleMonMaxHP
-	add hl, de           ; skip back from max hp to current hp
-	ld a, [hl]
-	ld [wHPBarOldHP], a ; add bc to current HP
-	add c
-	ld [hld], a
-	ld [wHPBarNewHP], a
-	ld a, [hl]
-	ld [wHPBarOldHP+1], a
-	adc b
-	ld [hli], a
-	ld [wHPBarNewHP+1], a
-	ld a, [wHPBarMaxHP]
-	ld c, a
-	ld a, [hld]
-	sub c
-	ld a, [wHPBarMaxHP+1]
-	ld b, a
-	ld a, [hl]
-	sbc b
-	jr c, .noOverfullHeal
-	ld a, b                ; overfull heal, set HP to max HP
-	ld [hli], a
-	ld [wHPBarNewHP+1], a
-	ld a, c
-	ld [hl], a
-	ld [wHPBarNewHP], a
-.noOverfullHeal
-	ld a, [H_WHOSETURN]
-	xor $1
-	ld [H_WHOSETURN], a
-	call UpdateCurMonHPBar
-	ld a, [H_WHOSETURN]
-	xor $1
-	ld [H_WHOSETURN], a
 	pop hl
 	ret
 

@@ -162,6 +162,9 @@ AbilityIntimidate:
 	ld a, [wAbilitySide]
 	xor 1
 	ld [wAbilitySide], a
+	call AbilityGet
+	cp AB_CLEAR_BODY
+	jr z, .restoreSide
 	ld a, [wAbilitySide]
 	xor 1
 	call AbilityGet
@@ -203,7 +206,10 @@ AbilityKeenEyeCustom:
  ld a, [wCustomSide]
  call AbilityGet
  cp AB_CLOUD_NINE
+ jr z, .opponent
+ cp AB_CLEAR_BODY
  jr nz, .accuracy
+.opponent
  ld a, [wCustomSide]
  ld b, a
  ld a, [H_WHOSETURN]
@@ -229,6 +235,8 @@ AbilityKeenEyeTarget::
  ld [wAbilityCheckResult], a
  call AbilityTarget
  cp AB_CLOUD_NINE
+ jr z, .block
+ cp AB_CLEAR_BODY
  jr z, .block
  cp AB_KEEN_EYE
  jr z, .accuracy
@@ -844,6 +852,14 @@ AbilityModifyDamage:
 	jr z, .half
 	ret
 .notThickFat
+	cp AB_JELLY_BODY
+	jr nz, .physicalHide
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	ret nc
+	ld c, 80
+	jr .reduce
+.physicalHide
 	cp AB_THICK_HIDE
 	ret nz
 	ld a, [wAbilityMoveType]
@@ -1062,6 +1078,14 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 50
 	jr .scale
 .hide
+	cp AB_JELLY_BODY
+	jr nz, .fixedHide
+	call AbilityActorMoveType
+	cp FIRE
+	ret nc
+	ld c, 80
+	jr .scale
+.fixedHide
 	cp AB_THICK_HIDE
 	ret nz
 	call AbilityActorMoveType
@@ -2548,6 +2572,22 @@ AbilityGetTargetReactions:
 	ret nc
 	jp .poison
 .staticCheck
+	cp AB_STINGING_SKIN
+	jr nz, .static
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	ret nc
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	ld b, 20
+	call AbilityRoll
+	ret nc
+	jp .inflictReactivePoison
+.static
 	cp AB_STATIC
 	jr nz, .contactMove
 	ld a, [wAbilityMoveType]
@@ -2585,6 +2625,9 @@ AbilityGetTargetReactions:
 	ld b, 25
 	call AbilityRoll
 	ret nc
+	call AbilityActor
+	cp AB_CLEAR_BODY
+	ret z
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	ld a, 4
@@ -2605,6 +2648,7 @@ AbilityGetTargetReactions:
 	ld b, 25
 	call AbilityRoll
 	ret nc
+.inflictReactivePoison
 	; Reverse actor/target for the reactive status, then restore the real turn.
 	ld a, [H_WHOSETURN]
 	push af
@@ -3956,6 +4000,9 @@ AbilityStickyTrap:
  call AbilityTarget
  cp AB_STICKY_TRAP
  ret nz
+ call AbilityActor
+ cp AB_CLEAR_BODY
+ ret z
  ld a, [H_WHOSETURN]
  ld [wAbilitySide], a
  ld [wCustomSide], a
@@ -3975,3 +4022,76 @@ AbilityStickyTrap:
  dec a
  ld [wCustomDelta], a
  jpab CustomChangeStage
+
+; A drain on a Liquid Ooze holder damages the drainer instead of healing.
+AbilityLiquidOozeMoveCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wCustomTargetHadSub]
+ and a
+ ret nz
+ call AbilityTarget
+ cp AB_LIQUID_OOZE
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+AbilityLiquidOozeMoveDamage:
+ ld a, [wAbilitySide]
+ push af
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ ld a, [wDamage]
+ ld [wAbilityTemp], a
+ ld a, [wDamage + 1]
+ ld [wAbilityTemp + 1], a
+ call AbilityLiquidOozeHurt
+ pop af
+ ld [wAbilitySide], a
+ ret
+AbilityLiquidOozeSeedDamage:
+ ld a, [wAbilitySide]
+ push af
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ ld a, [wNatureInputBC]
+ ld [wAbilityTemp], a
+ ld a, [wNatureInputBC + 1]
+ ld [wAbilityTemp + 1], a
+ call AbilityLiquidOozeHurt
+ pop af
+ ld [wAbilitySide], a
+ ret
+AbilityLiquidOozeHurt:
+ ld a, [wAbilitySide]
+ call AbilityGet
+ cp AB_MAGIC_GUARD
+ ret z
+ call AbilityHP
+ ld a, [hli]
+ ld b, a
+ ld a, [hl]
+ ld c, a
+ or b
+ ret z
+ ld a, [wAbilityTemp + 1]
+ ld d, a
+ ld a, c
+ sub d
+ ld c, a
+ ld a, [wAbilityTemp]
+ ld d, a
+ ld a, b
+ sbc d
+ jr nc, .store
+ xor a
+ ld c, a
+.store
+ ld [hl], c
+ dec hl
+ ld [hl], a
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ callab UtilitySyncParty
+ jpab DrawHUDsAndHPBars

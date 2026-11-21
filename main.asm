@@ -2189,6 +2189,7 @@ INCLUDE "data/new_species_pics.asm"
 INCLUDE "engine/battle/abilities.asm"
 INCLUDE "engine/battle/ability_resourceful.asm"
 INCLUDE "engine/battle/ability_text.asm"
+INCLUDE "engine/battle/ability_ooze.asm"
 
 SECTION "Nature definitions", ROMX, BANK[$3b]
 INCLUDE "data/natures.asm"

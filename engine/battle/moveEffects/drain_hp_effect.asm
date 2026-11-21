@@ -16,6 +16,14 @@ DrainHPEffect_:
 	inc [hl]
 .getAttackerHP
 	abilitycall AbilityBloodsuckerAdd
+	abilitycall AbilityLiquidOozeMoveCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .ordinaryDrain
+	abilitycall AbilityLiquidOozeMoveDamage
+	ld hl, LiquidOozeText
+	jp PrintText
+.ordinaryDrain
 	ld hl, wBattleMonHP
 	ld de, wBattleMonMaxHP
 	ld a, [H_WHOSETURN]
@@ -106,3 +114,7 @@ SuckedHealthText:
 DreamWasEatenText:
 	TX_FAR _DreamWasEatenText
 	db "@"
+
+LiquidOozeText:
+	text "LIQUID OOZE!"
+	prompt

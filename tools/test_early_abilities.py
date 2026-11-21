@@ -127,8 +127,9 @@ def validate(version):
                'KADABRA':['SPOON_BENDER','MAGIC_GUARD','MIND_READER','GENIUS','MAGIC_BOUNCE'],
                'MACHOP':['NO_GUARD','GUTS','IRON_GRIP','GRAPPLER','BODYBUILDER'],
                'MACHAMP':['NO_GUARD','GUTS','FOUR_ARMS','GRAPPLER','BODYBUILDER'],
-               'BELLSPROUT':['ACIDIC','CARNIVOROUS','STICKY_TRAP','CHLOROPHYLL','DIGESTIVE_ACID']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT')]:
+               'BELLSPROUT':['ACIDIC','CARNIVOROUS','STICKY_TRAP','CHLOROPHYLL','DIGESTIVE_ACID'],
+               'TENTACOOL':['CLEAR_BODY','LIQUID_OOZE','STINGING_SKIN','JELLY_BODY','VENOMOUS']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -648,7 +649,7 @@ def validate(version):
             patch('DelayFrame',[0xc9])
             done_bank,done_address=syms['UpdateLoweredStatDone'];original_done=game.memory[done_bank,done_address]
             patch('UpdateLoweredStatDone',[0xc9])
-            for target_ability,attack,stat,want in [('KEEN_EYE','SMOKESCREEN','Accuracy',7),(None,'SMOKESCREEN','Accuracy',6),('MIND_READER','SMOKESCREEN','Accuracy',7),('CLOUD_NINE','SMOKESCREEN','Accuracy',7),('CLOUD_NINE','GROWL','Attack',7),('MIND_READER','GROWL','Attack',6)]:
+            for target_ability,attack,stat,want in [('KEEN_EYE','SMOKESCREEN','Accuracy',7),(None,'SMOKESCREEN','Accuracy',6),('MIND_READER','SMOKESCREEN','Accuracy',7),('CLOUD_NINE','SMOKESCREEN','Accuracy',7),('CLOUD_NINE','GROWL','Attack',7),('CLEAR_BODY','GROWL','Attack',7),('MIND_READER','GROWL','Attack',6)]:
                 init(turn);move(turn,attack);aid(1-turn,target_ability)
                 call('StatModifierDownEffect')
                 assert get('w'+('Player' if turn else 'Enemy')+'Mon'+stat+'Mod')==want,(turn,target_ability,attack)
@@ -789,6 +790,32 @@ def validate(version):
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'STICKY_TRAP');put('wCustomTargetHadSub',sub);word(tp+'HP',holder_hp);rng(roll);call('AbilityAfterHit');mod='w'+('Enemy' if turn else 'Player')+'MonSpeedMod';assert get(mod)==want,(turn,attack,roll,sub,holder_hp,'sticky trap',get(mod))
             for attack,defense,special,want in [('POISON_STING',101,100,125),('POISON_STING',100,100,100),('POISON_STING',255,256,100),('POISON_STING',256,255,125),('TACKLE',200,100,100)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'DIGESTIVE_ACID');word(tp+'Defense',defense);word(tp+'Special',special);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,defense,special,readword('wDamage'))
+        # Tentacool family: stat protection, reactive poison, physical defense and draining moves.
+        for turn in (0,1):
+            for stat in range(6):
+                init(turn);aid(1-turn,'CLEAR_BODY');put('wCustomSide',1-turn);put('wCustomStat',stat);put('wCustomDelta',255);call('AbilityKeenEyeCustom');assert get('wAbilityCheckResult')==1,(turn,stat,'clear body')
+                call('AbilityKeenEyeTarget');assert get('wAbilityCheckResult')==1
+            init(turn);aid(turn,'CLEAR_BODY');put('wCustomSide',turn);put('wCustomStat',0);put('wCustomDelta',255);call('AbilityKeenEyeCustom');assert get('wAbilityCheckResult')==0
+            init(turn);aid(turn,'INTIMIDATE');aid(1-turn,'CLEAR_BODY');put('wAbilitySide',turn);call('AbilityIntimidate');assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==7,(turn,'intimidate')
+            for reactive in ('STICKY_TRAP','DUST_CLOUD'):
+                init(turn);move(turn,'TACKLE');aid(turn,'CLEAR_BODY');aid(1-turn,reactive);rng(0);call('AbilityAfterHit');assert get('w'+('Enemy' if turn else 'Player')+'Mon'+('Speed' if reactive=='STICKY_TRAP' else 'Accuracy')+'Mod')==7,(turn,reactive,'clear body')
+            for attack,roll,sub,want in [('TACKLE',0,0,8),('TACKLE',39,0,8),('TACKLE',40,0,0),('EARTHQUAKE',0,0,8),('FLAMETHROWER',0,0,0),('TACKLE',0,1,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'STINGING_SKIN');put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(ap+'Status')==want,(turn,attack,roll,sub,'stinging skin',get(ap+'Status'))
+            for attack,want in [('TACKLE',80),('FLAMETHROWER',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'JELLY_BODY');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'jelly body')
+            init(turn);move(turn,'TACKLE');aid(1-turn,'JELLY_BODY');put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==80
+            for attack in ('ABSORB','MEGA_DRAIN','DRAIN_PUNCH','DREAM_EATER','SHADOW_LEECH'):
+                for source,expected in [(None,60),('MAGIC_GUARD',80)]:
+                    ap,tp=init(turn);move(turn,attack);aid(turn,source);aid(1-turn,'LIQUID_OOZE');word(ap+'HP',80);word('wDamage',40);call('DrainHPEffect_');assert readword(ap+'HP')==expected,(turn,attack,source,'ooze drain',readword(ap+'HP'))
+            ap,tp=init(turn);move(turn,'ABSORB');aid(1-turn,'LIQUID_OOZE');word(ap+'HP',300);word(ap+'MaxHP',400);word('wDamage',400);call('DrainHPEffect_');assert readword(ap+'HP')==100,(turn,'16-bit ooze',readword(ap+'HP'))
+            # Leech Seed damages the seeder by the amount it would have healed.
+            anim_patches={}
+            for n in ('PlayMoveAnimation','UpdateCurMonHPBar'):
+                bank,address=syms[n];anim_patches[n]=game.memory[bank,address];patch(n,[0xc9])
+            for holder_ability,seeder_ability,seeder_hp,expected in [('LIQUID_OOZE',None,80,70),('LIQUID_OOZE','MAGIC_GUARD',80,80),('LIQUID_OOZE',None,5,0),(None,None,80,90)]:
+                holder,seeder=init(turn);aid(turn,holder_ability);aid(1-turn,seeder_ability);word(seeder+'HP',seeder_hp);put('w'+('Enemy' if turn else 'Player')+'BattleStatus2',128);call('HandlePoisonBurnLeechSeed');assert readword(holder+'HP')==150 and readword(seeder+'HP')==expected,(turn,holder_ability,seeder_ability,seeder_hp,readword(holder+'HP'),readword(seeder+'HP'))
+            for n,original in anim_patches.items():
+                bank,address=syms[n];game.memory[bank,address]=original
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -864,7 +891,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,147):
+        for n in range(1,151):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -943,6 +970,8 @@ def validate(version):
         for turn in (0,1):
             ap,tp=execute('POISONPOWDER',turn,target='MAGIC_BOUNCE');assert get(ap+'Status')==8 and get(tp+'Status')==0,(turn,'live bounce')
             ap,tp=execute('GROWL',turn,target='MAGIC_BOUNCE');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==6
+            ap,tp=execute('ABSORB',turn,target='LIQUID_OOZE',actor_hp=80,random_value=100);damage=160-readword(tp+'HP');assert readword(ap+'HP')==80-max(1,damage//2),(turn,'live liquid ooze',damage,readword(ap+'HP'))
+            ap,tp=execute('ABSORB',turn,target='LIQUID_OOZE',actor_hp=1,random_value=100);assert readword(ap+'HP')==0,(turn,'ooze knockout')
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('TACKLE',turn,actor='TECHNICIAN',random_value=100);assert 160-readword(tp+'HP')==normal*150//100,(turn,normal,readword(tp+'HP'))
             # Threshold triggers also run immediately after recoil and poison,
@@ -1123,7 +1152,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 72 species / 360 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 74 species / 370 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
