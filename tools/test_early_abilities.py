@@ -61,7 +61,7 @@ def validate(version):
         return ('wEnemyMon','wBattleMon') if turn else ('wBattleMon','wEnemyMon')
     def ability(side,id):game.memory[addr('wActiveAbilities')+side]=id
     import re
-    from generate_ability_moves import render,CONTACT,SOUND,POWDER
+    from generate_ability_moves import render,CONTACT,SOUND,POWDER,PUNCH
     ab={n:int(v) for n,v in re.findall(r'^AB_(\w+) EQU (\d+)',(ROOT/'constants/ability_constants.asm').read_text(),re.M)}
     def aid(side,name):ability(side,ab[name] if name else 0)
     def move(side,name):
@@ -82,6 +82,10 @@ def validate(version):
             call('AbilityMoveFlags',A=MOVES[name]);assert game.register_file.A&32,name
         for name in ('TACKLE','SING','POISON_GAS'):
             call('AbilityMoveFlags',A=MOVES[name]);assert not(game.register_file.A&32),name
+        for name in PUNCH:
+            call('AbilityMoveFlags',A=MOVES[name]);assert game.register_file.A&128,name
+        for name in ('TACKLE','KARATE_CHOP','BRICK_BREAK'):
+            call('AbilityMoveFlags',A=MOVES[name]);assert not(game.register_file.A&128),name
         # All five evolution slots, including noncontiguous ability IDs.
         pools={'BULBASAUR':['POISON_LEAF','CHLOROPHYLL','OVERGROWTH','PHOTOSYNTHESIS','VINE_GUARD'],
                'CHARMANDER':['BLAZE','COMBUSTION','WILDFIRE','HOT_TEMPER','CONFIDENT'],
@@ -116,8 +120,10 @@ def validate(version):
                'GOLDUCK':['CLOUD_NINE','SWIFT_SWIM','DAMP','MIND_READER','WATER_VEIL'],
                'MANKEY':['DEFIANT','SHORT_TEMPER','SCRAPPY','UNSOPHISTICATED','BLOODLUST'],
                'GROWLITHE':['LOYALTY','MOMENTUM','STEADFAST','GROWL_INTIMIDATE','ELEGANT_MANE'],
-               'ARCANINE':['LEGENDARY','MOMENTUM','STEADFAST','GROWL_INTIMIDATE','ELEGANT_MANE']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY')]:
+               'ARCANINE':['LEGENDARY','MOMENTUM','STEADFAST','GROWL_INTIMIDATE','ELEGANT_MANE'],
+               'POLIWAG':['HYPNOTIC','SLIPPERY','SWIFT_SWIM','HYDRATION','WATER_VEIL'],
+               'POLIWRATH':['WRESTLER','SLIPPERY','SWIFT_SWIM','POWER_SWIM','IRON_FIST']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -696,6 +702,23 @@ def validate(version):
             init(turn);move(turn,'PSYCHIC_M');aid(turn,'CONFOUNDING');aid(1-turn,'STEADFAST');rng(0);call('AbilityAfterHit');assert not(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128)
             # The canine Intimidate can affect a target already intimidated, once per holder.
             init(turn);aid(turn,'GROWL_INTIMIDATE');put('wAbilitySide',turn);game.memory[addr('wAbilityFlags')+(0 if turn else 6)]|=128;call('AbilityIntimidate');mod='w'+('Player' if turn else 'Enemy')+'MonSpeedMod';assert get(mod)==6,(turn,'intimidate',get(mod));put('wAbilitySide',turn);call('AbilityIntimidate');assert get(mod)==6
+        # Poliwag family: sleep accuracy, reactive evasion, Water triggers, paralysis and punches.
+        for turn in (0,1):
+            for attack,want in [('SING',138),('HYPNOSIS',138),('SLEEP_POWDER',138),('SPORE',138),('TACKLE',100),('REST',100)]:
+                init(turn);move(turn,attack);aid(turn,'HYPNOTIC');game.memory[0xff97:0xff99]=[0,100];call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,want]),(turn,attack,'hypnotic')
+            for attack,want in [('TACKLE',8),('FLAMETHROWER',7)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'SLIPPERY');call('AbilityAfterHit');mod='w'+('Player' if turn else 'Enemy')+'MonEvasionMod';assert get(mod)==want,(turn,attack,'slippery',get(mod));call('AbilityAfterHit');assert get(mod)==want
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'SLIPPERY');put('wCustomTargetHadSub',1);call('AbilityAfterHit');assert get('w'+('Player' if turn else 'Enemy')+'MonEvasionMod')==7
+            for attack,hp,want in [('WATER_GUN',80,100),('WATER_GUN',150,160),('TACKLE',80,80)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'HYDRATION');word(ap+'HP',hp);put('wAbilityHit',8);call('AbilitySandAfterAction');assert readword(ap+'HP')==want,(turn,attack,'hydration',readword(ap+'HP'))
+                party='wEnemyMon1' if turn else 'wPartyMon1'
+                if want!=hp:assert readword(party+'HP')==want
+            for attack,want in [('WATER_GUN',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(turn,'POWER_SWIM');put('wAbilityHit',8);call('AbilitySandAfterAction');mod='w'+('Enemy' if turn else 'Player')+'MonAttackMod';assert get(mod)==want;(call('AbilitySandAfterAction'));assert get(mod)==want
+            for attack,roll,target_ability,sub,want in [('MEGA_PUNCH',0,None,0,64),('MEGA_PUNCH',39,None,0,64),('MEGA_PUNCH',40,None,0,0),('TACKLE',0,None,0,0),('MEGA_PUNCH',0,'SHIELD_DUST',0,0),('MEGA_PUNCH',0,None,1,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'WRESTLER');aid(1-turn,target_ability);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(tp+'Status')==want,(turn,attack,roll,target_ability,sub,get(tp+'Status'))
+            for attack,want in [('MEGA_PUNCH',125),('FIRE_PUNCH',125),('DRAIN_PUNCH',125),('KARATE_CHOP',100),('TACKLE',100)]:
+                init(turn);move(turn,attack);aid(turn,'IRON_FIST');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'iron fist',readword('wDamage'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -771,7 +794,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,126):
+        for n in range(1,132):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1025,7 +1048,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 60 species / 300 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 63 species / 315 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

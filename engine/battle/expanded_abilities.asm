@@ -533,6 +533,17 @@ AbilityModifyDamage:
 	ld [wDamageMultipliers], a
 	jp .defender
 .newOffense
+	cp AB_IRON_FIST
+	jr nz, .legendary
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 7, a
+	jp z, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jp .defender
+.legendary
 	cp AB_LEGENDARY
 	jr nz, .unsophisticated
 	call AbilityLegendaryCheck
@@ -1076,11 +1087,19 @@ AbilitySandAfterAction:
 	jr z, .normal
 	cp AB_SAND_VEIL
 	jr z, .evasion
+	cp AB_HYDRATION
+	jr nz, .burrower
+	call AbilityActorMoveType
+	cp WATER
+	ret nz
+	jr .healWaterOrGround
+.burrower
 	cp AB_BURROWER
 	jr nz, .sandRush
 	call AbilityActorMoveType
 	cp GROUND
 	ret nz
+.healWaterOrGround
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	call AbilityHP
@@ -1091,6 +1110,14 @@ AbilitySandAfterAction:
 	ld a, 3 ; 1/8 maximum HP
 	jp AbilityHealFractionFromHL
 .sandRush
+	cp AB_POWER_SWIM
+	jr nz, .momentum
+	call AbilityActorMoveType
+	cp WATER
+	ret nz
+	xor a ; Attack
+	jr .once
+.momentum
 	cp AB_MOMENTUM
 	jr nz, .actualSandRush
 	call AbilityMove
@@ -2292,11 +2319,19 @@ AbilityElusiveAfterAttack:
 
 AbilityAftershock:
 	call AbilityActor
+	cp AB_WRESTLER
+	jr nz, .aftershock
+	ld a, [wAbilityMoveType]
+	cp FIGHTING
+	ret nz
+	jr .paralyze
+.aftershock
 	cp AB_AFTERSHOCK
 	ret nz
 	ld a, [wAbilityMoveType]
 	cp GROUND
 	ret nz
+.paralyze
 	call AbilityTarget
 	cp AB_SHIELD_DUST
 	ret z
@@ -2719,6 +2754,19 @@ AbilityGetTargetReactions:
 	or [hl]
 	jp z, .contact
 	call AbilityTarget
+	cp AB_SLIPPERY
+	jr nz, .inflatable
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jr nc, .contact
+	call AbilityFlagsPointer
+	bit 2, [hl]
+	jr nz, .contact
+	set 2, [hl]
+	ld a, 5 ; Evasion
+	call AbilityRaiseStage
+	jr .contact
+.inflatable
 	cp AB_INFLATABLE
 	jr nz, .hotTemper
 	ld a, [wAbilityMoveType]
@@ -3242,6 +3290,21 @@ AbilityBurnGate:
 ; Accuracy is scaled after nature and stage factors, before final byte cap.
 AbilityAccuracy:
 	call AbilityActor
+	cp AB_HYPNOTIC
+	jr nz, .mycelium
+	call AbilityMove
+	inc hl
+	ld a, [hl]
+	cp SLEEP_EFFECT
+	jp nz, .target
+	ld a, [H_QUOTIENT + 3]
+	add 38 ; 15 percentage points on the 0..255 scale
+	ld [H_QUOTIENT + 3], a
+	jp nc, .target
+	ld hl, H_QUOTIENT + 2
+	inc [hl]
+	jp .target
+.mycelium
 	cp AB_MYCELIUM
 	jr nz, .pollen
 	call AbilityMove

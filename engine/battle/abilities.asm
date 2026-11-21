@@ -75,6 +75,9 @@ AbilitySpeciesPools:
 	db PRIMEAPE, 156
 	db GROWLITHE, 161
 	db ARCANINE, 166
+	db POLIWAG, 171
+	db POLIWHIRL, 171
+	db POLIWRATH, 176
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -111,6 +114,8 @@ AbilityPoolIds:
 	db AB_DEFIANT, AB_SHORT_TEMPER, AB_SCRAPPY, AB_UNSOPHISTICATED, AB_BLOODLUST
 	db AB_LOYALTY, AB_MOMENTUM, AB_STEADFAST, AB_GROWL_INTIMIDATE, AB_ELEGANT_MANE
 	db AB_LEGENDARY, AB_MOMENTUM, AB_STEADFAST, AB_GROWL_INTIMIDATE, AB_ELEGANT_MANE
+	db AB_HYPNOTIC, AB_SLIPPERY, AB_SWIFT_SWIM, AB_HYDRATION, AB_WATER_VEIL
+	db AB_WRESTLER, AB_SLIPPERY, AB_SWIFT_SWIM, AB_POWER_SWIM, AB_IRON_FIST
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -716,6 +721,7 @@ AbilityTextPointers:
 	dw AbilityText114, AbilityText115, AbilityText116
 	dw AbilityText117, AbilityText118, AbilityText119
 	dw AbilityText120, AbilityText121, AbilityText122, AbilityText123, AbilityText124, AbilityText125
+	dw AbilityText126, AbilityText127, AbilityText128, AbilityText129, AbilityText130, AbilityText131
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -970,3 +976,10 @@ AbilityText122: db "MOMENTUM",$4e,"Recoil move: Speed",$4e,"+1 once per battle.@
 AbilityText123: db "STEADFAST",$4e,"Cannot be confused",$4e,"or flinched.@"
 AbilityText124: db "ELEGANT MANE",$4e,"Special damage",$4e,"received x0.8.@"
 AbilityText125: db "INTIMIDATE",$4e,"Entry: foe Speed",$4e,"-1 once per battle.@"
+
+AbilityText126: db "HYPNOTIC",$4e,"Sleep moves:",$4e,"accuracy +15.@"
+AbilityText127: db "SLIPPERY",$4e,"Physical hit:",$4e,"Evasion +1 once.@"
+AbilityText128: db "HYDRATION",$4e,"Water move heals",$4e,"1/8 maximum HP.@"
+AbilityText129: db "WRESTLER",$4e,"Fighting hits: 20%",$4e,"chance to paralyze.@"
+AbilityText130: db "POWER SWIM",$4e,"Water move: Attack",$4e,"+1 once per battle.@"
+AbilityText131: db "IRON FIST",$4e,"Punching moves",$4e,"deal 25% more.@"
