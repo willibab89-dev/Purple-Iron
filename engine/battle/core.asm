@@ -7958,8 +7958,7 @@ StatModifierDownEffect:
 	jr c, .decrementStatMod
 	sub ATTACK_DOWN2_EFFECT - ATTACK_DOWN1_EFFECT ; map -2 effects to corresponding -1 effect
 .decrementStatMod
-	cp 4 ; accuracy
-	jr nz, .keenEyeAllowed
+	ld [wCustomStat], a
 	abilitycall AbilityKeenEyeTarget
 	push af
 	ld a, [wAbilityCheckResult]

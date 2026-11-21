@@ -40,7 +40,7 @@ def validate(version):
         i=s['index'];game.register_file.A=s['values'][min(i,len(s['values'])-1)];s['index']+=1
     def init(move,turn=0):
         game.memory[0xfff3]=turn
-        for n in ('wEscapedFromBattle','wFlags_D733','wMoveMissed','wCriticalHitOrOHKO','wObtainedBadges','wOptions','wUnusedC000','wPlayerMonNumber','wEnemyMonPartyPos','wPlayerMoveListIndex','wCustomTargetHadSub','wActionResultOrTookBattleTurn','wPlayerDisabledMoveNumber','wEnemyDisabledMoveNumber','wPlayerDisabledMove','wEnemyDisabledMove'):
+        for n in ('wEscapedFromBattle','wFlags_D733','wMoveMissed','wCriticalHitOrOHKO','wObtainedBadges','wOptions','wUnusedC000','wPlayerMonNumber','wEnemyMonPartyPos','wPlayerMoveListIndex','wCustomTargetHadSub','wActionResultOrTookBattleTurn','wPlayerDisabledMoveNumber','wEnemyDisabledMoveNumber','wPlayerDisabledMove','wEnemyDisabledMove','wNatureMode'):
             put(n,0)
         put('wIsInBattle',2);put('wLinkState',0);put('wCurMap',0)
         call('ClearCounterRecord');call('ResidualClearAll')

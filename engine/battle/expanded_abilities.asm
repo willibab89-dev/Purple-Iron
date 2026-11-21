@@ -175,31 +175,68 @@ AbilityTarget:
 
 ; Called by CustomChangeStage before modifying a stage.
 AbilityKeenEyeCustom:
-	xor a
-	ld [wAbilityCheckResult], a
-	ld a, [wCustomStat]
-	cp 4 ; accuracy
-	ret nz
-	ld a, [wCustomDelta]
-	bit 7, a
-	ret z
-	ld a, [wCustomSide]
-	call AbilityGet
-	cp AB_KEEN_EYE
-	ret nz
-	ld a, 1
-	ld [wAbilityCheckResult], a
-	ret
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wCustomDelta]
+ bit 7, a
+ ret z
+ ld a, [wCustomSide]
+ call AbilityGet
+ cp AB_CLOUD_NINE
+ jr nz, .accuracy
+ ld a, [wCustomSide]
+ ld b, a
+ ld a, [H_WHOSETURN]
+ cp b
+ jr nz, .block
+ ret
+.accuracy
+ cp AB_KEEN_EYE
+ jr z, .checkStat
+ cp AB_MIND_READER
+ ret nz
+.checkStat
+ ld a, [wCustomStat]
+ cp 4
+ ret nz
+.block
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
 
 AbilityKeenEyeTarget::
-	xor a
-	ld [wAbilityCheckResult], a
-	call AbilityTarget
-	cp AB_KEEN_EYE
-	ret nz
-	ld a, 1
-	ld [wAbilityCheckResult], a
-	ret
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityTarget
+ cp AB_CLOUD_NINE
+ jr z, .block
+ cp AB_KEEN_EYE
+ jr z, .accuracy
+ cp AB_MIND_READER
+ ret nz
+.accuracy
+ ld a, [wCustomStat]
+ cp 4
+ ret nz
+.block
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityDampCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityMove
+ inc hl
+ ld a, [hl]
+ cp EXPLODE_EFFECT
+ ret nz
+ call AbilityTarget
+ cp AB_DAMP
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
 
 AbilityPiercingBeakCheck:
 	xor a
@@ -655,8 +692,11 @@ AbilityModifyDamage:
 	jr z, .half
 	ret
 .veil
+	cp AB_DAMP
+	jr z, .fireHalf
 	cp AB_WATER_VEIL
 	jr nz, .shell
+.fireHalf
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	ret nz
@@ -1037,6 +1077,7 @@ AbilityHitEvents:
 	call AbilityAftershock
 	call AbilityToxicScales
 	call AbilityParasite
+	call AbilityConfounding
 	ld a, [wDamage]
 	ld b, a
 	ld a, [wDamage + 1]
@@ -1107,6 +1148,53 @@ AbilityHitEvents:
 	jp AbilityInflictOrdinaryStatus
 
 ; Each successful damaging strike counts, including a hit on a Substitute.
+AbilityConfounding:
+ ld hl, wAbilityHit
+ bit 1, [hl]
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ call AbilityActor
+ cp AB_CONFOUNDING
+ ret nz
+ ld a, [wAbilityMoveType]
+ cp PSYCHIC
+ ret nz
+ call AbilityTarget
+ cp AB_SHIELD_DUST
+ ret z
+ ld hl, wEnemyBattleStatus1
+ ld de, wEnemyConfusedCounter
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .target
+ ld hl, wPlayerBattleStatus1
+ ld de, wPlayerConfusedCounter
+.target
+ bit CONFUSED, [hl]
+ ret nz
+ push hl
+ push de
+ ld b, 20
+ call AbilityRoll
+ pop de
+ pop hl
+ ret nc
+ set CONFUSED, [hl]
+ push de
+ callab CustomRandomInBattleBank
+ pop de
+ ld a, [wCustomRandomValue]
+ and 3
+ add 2
+ ld [de], a
+ ret
+
 AbilityRelentlessHit:
 	call AbilityActor
 	cp AB_RELENTLESS
@@ -2535,6 +2623,30 @@ AbilityGetTargetReactions:
 	call AbilityRaiseStage
 	jr .contact
 .hotTemper
+	cp AB_HEADACHE
+	jr nz, .swiftSwim
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jr c, .contact
+	call AbilityFlagsPointer
+	bit 0, [hl]
+	jr nz, .contact
+	set 0, [hl]
+	ld a, 3
+	call AbilityRaiseStage
+	jr .contact
+.swiftSwim
+	cp AB_SWIFT_SWIM
+	jr nz, .hotTemperCheck
+	ld a, [wAbilityMoveType]
+	cp WATER
+	jr nz, .contact
+	ld a, 2
+	call AbilityRaiseStage
+	ld a, 2
+	call AbilityRaiseStage
+	jr .contact
+.hotTemperCheck
 	cp AB_HOT_TEMPER
 	jr nz, .shellGuard
 	ld a, [wAbilityMoveType]
@@ -2660,6 +2772,8 @@ AbilityLowHP:
 	xor a ; Attack
 	jr .stat
 .protective
+	cp AB_UNSTABLE
+	jr z, .unstable
 	cp AB_PROTECTIVE_INSTINCT
 	ret nz
 	ld a, 1 ; Defense
@@ -2672,8 +2786,27 @@ AbilityLowHP:
 	call AbilityHalfHP
 	jr nc, .done
 	jr .eligible
+.unstable
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ dec hl
+ call AbilityHalfHP
+ ret nc
+ call AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+.randomStat
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ and 7
+ cp 6
+ jr nc, .randomStat
+ jp AbilityRaiseStage
 .speed
-	ld a, 2
+ ld a, 2
 .stat
 	push af
 	call AbilityBelowThird

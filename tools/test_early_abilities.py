@@ -111,7 +111,9 @@ def validate(version):
                'PARASECT':['EFFECT_SPORE','LEECHING','PARASITE','MYCELIUM','DEATH_SPORE'],
                'VENONAT':['SHIELD_DUST','TOXIC_SCALES','TINTED_LENS','POISON_ABSORB','VENOMOUS'],
                'DIGLETT':['AMBUSH','SUBTERRANEAN','ELUSIVE','AFTERSHOCK','SAND_RUSH'],
-               'MEOWTH':['OPPORTUNIST','GREEDY','RESOURCEFUL','QUICK_REFLEXES','TECHNICIAN']}
+               'MEOWTH':['OPPORTUNIST','GREEDY','RESOURCEFUL','QUICK_REFLEXES','TECHNICIAN'],
+               'PSYDUCK':['HEADACHE','PSIONIC','DAMP','CONFOUNDING','UNSTABLE'],
+               'GOLDUCK':['CLOUD_NINE','SWIFT_SWIM','DAMP','MIND_READER','WATER_VEIL']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -601,7 +603,7 @@ def validate(version):
             for stat,delta,blocked in [(4,255,True),(4,1,False),(1,255,False)]:
                 init(turn);aid(1-turn,'KEEN_EYE');put('wCustomSide',1-turn);put('wCustomStat',stat);put('wCustomDelta',delta)
                 call('AbilityKeenEyeCustom');assert bool(get('wAbilityCheckResult'))==blocked,(turn,stat,delta)
-            init(turn);aid(1-turn,'KEEN_EYE');call('AbilityKeenEyeTarget');assert get('wAbilityCheckResult')==1
+            init(turn);aid(1-turn,'KEEN_EYE');put('wCustomStat',4);call('AbilityKeenEyeTarget');assert get('wAbilityCheckResult')==1
             # Exercise the actual legacy accuracy-drop routine as well.
             bank,address=syms['MoveHitTest'];original=game.memory[bank,address]
             patch('MoveHitTest',[0xc9])
@@ -611,10 +613,10 @@ def validate(version):
             patch('DelayFrame',[0xc9])
             done_bank,done_address=syms['UpdateLoweredStatDone'];original_done=game.memory[done_bank,done_address]
             patch('UpdateLoweredStatDone',[0xc9])
-            for target_ability,want in [('KEEN_EYE',7),(None,6)]:
-                init(turn);move(turn,'SMOKESCREEN');aid(1-turn,target_ability)
+            for target_ability,attack,stat,want in [('KEEN_EYE','SMOKESCREEN','Accuracy',7),(None,'SMOKESCREEN','Accuracy',6),('MIND_READER','SMOKESCREEN','Accuracy',7),('CLOUD_NINE','SMOKESCREEN','Accuracy',7),('CLOUD_NINE','GROWL','Attack',7),('MIND_READER','GROWL','Attack',6)]:
+                init(turn);move(turn,attack);aid(1-turn,target_ability)
                 call('StatModifierDownEffect')
-                assert get('w'+('Player' if turn else 'Enemy')+'MonAccuracyMod')==want,(turn,target_ability)
+                assert get('w'+('Player' if turn else 'Enemy')+'Mon'+stat+'Mod')==want,(turn,target_ability,attack)
             game.memory[bank,address]=original
             game.memory[delay_bank,delay_address]=original_delay
             game.memory[frame_bank,frame_address]=original_frame
@@ -622,6 +624,32 @@ def validate(version):
             for actor,target,attack,want in [('MYCELIUM',None,'SING',255),('MYCELIUM','WONDER_SKIN','SING',255),('MYCELIUM',None,'TACKLE',100),('POLLEN',None,'SLEEP_POWDER',151),('POLLEN','WONDER_SKIN','SPORE',75),('POLLEN',None,'POISON_GAS',100),('ECHOLOCATION',None,'SING',151),('ECHOLOCATION','WONDER_SKIN','SING',75),('ECHOLOCATION',None,'TACKLE',151),('PERFORMER',None,'SING',120),('PERFORMER','WONDER_SKIN','SING',60),('PERFORMER',None,'SNARL',120),('PERFORMER',None,'TACKLE',100),('COMPOUND_EYES',None,'SLEEP_POWDER',130),(None,'WONDER_SKIN','SLEEP_POWDER',50),('COMPOUND_EYES','WONDER_SKIN','SLEEP_POWDER',65),(None,'WONDER_SKIN','TACKLE',100)]:
                 init(turn);move(turn,attack);aid(turn,actor);aid(1-turn,target);game.memory[0xff97:0xff99]=[0,100]
                 call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,want]),(actor,target,attack,bytes(game.memory[0xff97:0xff99]))
+        # Psyduck and Golduck: damage, reactive boosts, stat protection and confusion.
+        for turn in (0,1):
+            for attack,want in [('FLAMETHROWER',20),('TACKLE',40)]:
+                init(turn);move(turn,attack);aid(1-turn,'DAMP');call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
+            for attack,blocked in [('EXPLOSION',True),('SELFDESTRUCT',True),('TACKLE',False)]:
+                init(turn);move(turn,attack);aid(1-turn,'DAMP');call('AbilityDampCheck');assert bool(get('wAbilityCheckResult'))==blocked,(turn,attack)
+            for attack,blocked in [('EXPLOSION',True),('SELFDESTRUCT',True),('TACKLE',False)]:
+                init(turn);move(turn,attack);aid(1-turn,'DAMP');rng(0);call('MoveHitTest');assert bool(get('wMoveMissed'))==blocked,(turn,attack,'actual hit check')
+            for attack,want in [('PSYCHIC_M',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(1-turn,'HEADACHE');call('AbilityAfterHit');assert get('w'+('Player' if turn else 'Enemy')+'MonSpecialMod')==want,(turn,attack,'headache')
+                call('AbilityAfterHit');assert get('w'+('Player' if turn else 'Enemy')+'MonSpecialMod')==want
+            for attack,want in [('WATER_GUN',9),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(1-turn,'SWIFT_SWIM');call('AbilityAfterHit');assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==want,(turn,attack,'swift swim')
+            for stat in range(6):
+                init(turn);aid(1-turn,'CLOUD_NINE');put('wCustomSide',1-turn);put('wCustomStat',stat);put('wCustomDelta',255);call('AbilityKeenEyeCustom');assert get('wAbilityCheckResult')==1,(turn,stat)
+                put('wCustomSide',turn);aid(turn,'CLOUD_NINE');call('AbilityKeenEyeCustom');assert get('wAbilityCheckResult')==0,(turn,'self',stat)
+                put('wCustomStat',stat);call('AbilityKeenEyeTarget');assert get('wAbilityCheckResult')==1,(turn,'legacy',stat)
+            for stat in (0,4):
+                init(turn);aid(1-turn,'MIND_READER');put('wCustomStat',stat);call('AbilityKeenEyeTarget');assert bool(get('wAbilityCheckResult'))==(stat==4)
+            for target_ability,attack,roll,want in [(None,'PSYCHIC_M',0,True),(None,'PSYCHIC_M',40,False),('SHIELD_DUST','PSYCHIC_M',0,False),(None,'TACKLE',0,False)]:
+                init(turn);move(turn,attack);aid(turn,'CONFOUNDING');aid(1-turn,target_ability);rng(roll,0);call('AbilityAfterHit')
+                assert bool(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128)==want,(turn,target_ability,attack,roll)
+            for chosen in range(6):
+                init(turn);aid(turn,'UNSTABLE');word(('wEnemyMon' if turn else 'wBattleMon')+'HP',79);put('wAbilitySide',turn);rng(chosen);call('AbilityLowHP')
+                assert game.memory[addr('w'+('Enemy' if turn else 'Player')+'MonStatMods')+chosen]==8,(turn,chosen,'unstable')
+                call('AbilityLowHP');assert game.memory[addr('w'+('Enemy' if turn else 'Player')+'MonStatMods')+chosen]==8
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -697,7 +725,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,110):
+        for n in range(1,117):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -951,7 +979,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 54 species / 270 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 56 species / 280 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

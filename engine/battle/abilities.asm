@@ -69,6 +69,8 @@ AbilitySpeciesPools:
 	db DUGTRIO, 136
 	db MEOWTH, 141
 	db PERSIAN, 141
+	db PSYDUCK, 146
+	db GOLDUCK, 151
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -100,6 +102,8 @@ AbilityPoolIds:
 	db AB_SHIELD_DUST, AB_TOXIC_SCALES, AB_TINTED_LENS, AB_POISON_ABSORB, AB_VENOMOUS
 	db AB_AMBUSH, AB_SUBTERRANEAN, AB_ELUSIVE, AB_AFTERSHOCK, AB_SAND_RUSH
 	db AB_OPPORTUNIST, AB_GREEDY, AB_RESOURCEFUL, AB_QUICK_REFLEXES, AB_TECHNICIAN
+	db AB_HEADACHE, AB_PSIONIC, AB_DAMP, AB_CONFOUNDING, AB_UNSTABLE
+	db AB_CLOUD_NINE, AB_SWIFT_SWIM, AB_DAMP, AB_MIND_READER, AB_WATER_VEIL
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -699,6 +703,8 @@ AbilityTextPointers:
 	dw AbilityText98, AbilityText99, AbilityText100
 	dw AbilityText101, AbilityText102, AbilityText103, AbilityText104, AbilityText105
 	dw AbilityText106, AbilityText107, AbilityText108, AbilityText109
+	dw AbilityText110, AbilityText111, AbilityText112, AbilityText113
+	dw AbilityText114, AbilityText115, AbilityText116
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -933,3 +939,11 @@ AbilityText108: db "RESOURCEFUL",$4e,"Moves gain 5 PP",$4e,"up to 63 maximum.@"
 AbilityText109: db "TECHNICIAN",$4e,"Moves with power",$4e,"at most 60: x1.5.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"
+
+AbilityText110: db "HEADACHE",$4e,"Special hit:",$4e,"Special +1 once.@"
+AbilityText111: db "DAMP",$4e,"Explosion immune;",$4e,"Fire damage halved.@"
+AbilityText112: db "CONFOUNDING",$4e,"Psychic hits may",$4e,"confuse the foe.@"
+AbilityText113: db "UNSTABLE",$4e,"Below half HP:",$4e,"random stat +1.@"
+AbilityText114: db "CLOUD NINE",$4e,"Foe cannot lower",$4e,"your stats.@"
+AbilityText115: db "SWIFT SWIM",$4e,"Water hit raises",$4e,"Speed two stages.@"
+AbilityText116: db "MIND READER",$4e,"Accuracy cannot",$4e,"be lowered.@"

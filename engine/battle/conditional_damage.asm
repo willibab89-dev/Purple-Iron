@@ -289,10 +289,15 @@ ConditionalAccuracyCheck:
 	push hl
 	push de
 	push bc
+	abilitycall AbilityDampCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr nz, .immune
 	abilitycall AbilityRubberSkinCheck
 	ld a, [wAbilityCheckResult]
 	and a
 	jr z, .checkMove
+.immune
 	xor a
 	ld [wDamage], a
 	ld [wDamage + 1], a

@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 54 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 56 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -33,10 +33,14 @@ Implemented for 54 species, with five equally likely slots per species. The save
 | Venonat / Venomoth | Shield Dust | Toxic Scales | Tinted Lens | Poison Absorb | Venomous |
 | Diglett / Dugtrio | Ambush | Subterranean | Elusive | Aftershock | Sand Rush |
 | Meowth / Persian | Opportunist | Greedy | Resourceful | Quick Reflexes | Technician |
+| Psyduck | Headache | Psionic | Damp | Confounding | Unstable |
+| Golduck | Cloud Nine | Swift Swim | Damp | Mind Reader | Water Veil |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Psyduck-family effects: Headache raises Special after a special hit once per battle. Psionic boosts Psychic damage by 20%. Damp grants immunity to Explosion and Selfdestruct and halves Fire damage. Confounding gives Psychic hits a 20% chance to confuse. Unstable raises a random battle stat once below half HP. Cloud Nine blocks stat drops from opponents’ moves. Swift Swim raises Speed two stages after a Water hit. Mind Reader prevents Accuracy drops. Water Veil prevents burns and halves Fire damage.
 
 Meowth-family effects: Opportunist increases move damage by 20% if any opposing stat stage is below neutral. Greedy doubles trainer prize money if a holder participated in the battle; Pay Day money is separate. Resourceful increases the maximum PP of each move by 5, capped at the game’s 63-PP storage limit. Quick Reflexes gives the first damaging move after entry +1 priority. Technician boosts damaging moves with listed base power at most 60 by 50%; fixed-damage moves are excluded.
 
@@ -122,4 +126,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 270 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 280 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
