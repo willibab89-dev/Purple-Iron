@@ -1,5 +1,9 @@
 SECTION "Status balance", ROMX, BANK[$3c]
 HalveSpeedDueToParalysis:
+	abilitycall AbilityDefiantTarget
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playerTurn
@@ -39,6 +43,10 @@ HalveSpeedDueToParalysis:
 	ret
 
 StatusHalveAttackDueToBurn:
+	abilitycall AbilityDefiantTarget
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	ld a, [H_WHOSETURN]
 	and a
 	jr z, .playerTurn
@@ -80,6 +88,10 @@ StatusHalveAttackDueToBurn:
 
 ; Same target convention as burn/paralysis: turn 0 affects enemy, turn 1 player.
 PoisonSpecialPenalty:
+	abilitycall AbilityDefiantTarget
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	ld hl, wEnemyMonStatus
 	ld de, wEnemyMonSpecial
 	ld a, [H_WHOSETURN]

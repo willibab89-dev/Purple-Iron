@@ -71,6 +71,8 @@ AbilitySpeciesPools:
 	db PERSIAN, 141
 	db PSYDUCK, 146
 	db GOLDUCK, 151
+	db MANKEY, 156
+	db PRIMEAPE, 156
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -104,6 +106,7 @@ AbilityPoolIds:
 	db AB_OPPORTUNIST, AB_GREEDY, AB_RESOURCEFUL, AB_QUICK_REFLEXES, AB_TECHNICIAN
 	db AB_HEADACHE, AB_PSIONIC, AB_DAMP, AB_CONFOUNDING, AB_UNSTABLE
 	db AB_CLOUD_NINE, AB_SWIFT_SWIM, AB_DAMP, AB_MIND_READER, AB_WATER_VEIL
+	db AB_DEFIANT, AB_SHORT_TEMPER, AB_SCRAPPY, AB_UNSOPHISTICATED, AB_BLOODLUST
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -705,6 +708,7 @@ AbilityTextPointers:
 	dw AbilityText106, AbilityText107, AbilityText108, AbilityText109
 	dw AbilityText110, AbilityText111, AbilityText112, AbilityText113
 	dw AbilityText114, AbilityText115, AbilityText116
+	dw AbilityText117, AbilityText118, AbilityText119
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -947,3 +951,7 @@ AbilityText113: db "UNSTABLE",$4e,"Below half HP:",$4e,"random stat +1.@"
 AbilityText114: db "CLOUD NINE",$4e,"Foe cannot lower",$4e,"your stats.@"
 AbilityText115: db "SWIFT SWIM",$4e,"Water hit raises",$4e,"Speed two stages.@"
 AbilityText116: db "MIND READER",$4e,"Accuracy cannot",$4e,"be lowered.@"
+
+AbilityText117: db "DEFIANT",$4e,"Status conditions",$4e,"do not lower stats.@"
+AbilityText118: db "SCRAPPY",$4e,"Normal and Fighting",$4e,"moves hit Ghosts.@"
+AbilityText119: db "UNSOPHISTICATED",$4e,"100% moves: power",$4e,"x1.25; accuracy -10.@"

@@ -5243,13 +5243,11 @@ AdjustDamageForMoveType:
 	ld [H_MULTIPLIER], a
 	dec hl
 	ld a, [hli] ; defending type of this chart entry
-	cp ROCK
-	jr nz, .corrosiveDone
+	ld [wAbilityTemp], a
 	abilitycall AbilityCorrosiveCheck
 	ld a, [wAbilityCheckResult]
 	and a
 	jr z, .corrosiveDone
-	ld a, 20
 	ld [H_MULTIPLIER], a
 .corrosiveDone
 	ld a, [H_MULTIPLIER]
@@ -5275,7 +5273,11 @@ AdjustDamageForMoveType:
 	jr .endmulti	;done with the fix, so skip onward
 .nothalf
 	cp $14	;multiplier is still in a, so see if it's double damage
-	jr nz, .endmulti	;skip ahead if not double since at this point it has to be zero
+	jr z, .doubleTypeMultiplier
+	ld a, [wDamageMultipliers]
+	and $7f
+	jr .endmulti
+.doubleTypeMultiplier
 	ld a, [wDamageMultipliers]	;otherwise get the original stored multiplier (should be $0A if first time)
 	and $7f	;a AND 0111111. this makes only the highest bit (used for STAB) zero.
 	sla a	; multiply a by 2
@@ -5367,13 +5369,13 @@ AIGetTypeEffectiveness:
 .AImatchingPairFound
 	dec hl
 	ld a, [hli] ; defending type
-	cp ROCK
-	jr nz, .normalAIMultiplier
+	ld [wAbilityTemp], a
 	abilitycall AbilityCorrosiveAICheck
 	ld a, [wAbilityCheckResult]
 	and a
 	jr z, .normalAIMultiplier
-	ld a, $14
+	cp 10
+	jr z, .nextTypePair2
 	jr .gotAIMultiplier
 .normalAIMultiplier
 	ld a, [hl]
@@ -7497,23 +7499,7 @@ DrainHPEffect:
 	jpab DrainHPEffect_
 
 ExplodeEffect:
-	ld hl, wBattleMonHP
-	ld de, wPlayerBattleStatus2
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .faintUser
-	ld hl, wEnemyMonHP
-	ld de, wEnemyBattleStatus2
-.faintUser
-	xor a
-	ld [hli], a ; set the mon's HP to 0
-	ld [hli], a
-	inc hl
-	ld [hl], a ; set mon's status to 0
-	ld a, [de]
-	res SEEDED, a ; clear mon's leech seed status
-	ld [de], a
-	ret
+	jpab AbilityExplodeEffect
 
 FreezeBurnParalyzeEffect:
 	xor a

@@ -260,44 +260,70 @@ AbilityPiercingBeakCheck:
 	ld [wAbilityCheckResult], a
 	ret
 
-; Battle type-chart hook: called only for a Rock matchup.
+; The chart supplies the matched defending type in wAbilityTemp. The result
+; is the replacement multiplier (0 means no override).
 AbilityCorrosiveCheck:
-	xor a
-	ld [wAbilityCheckResult], a
-	ld a, [wMoveType]
-	cp POISON
-	ret nz
-	call AbilityActor
-	cp AB_CORROSIVE_VENOM
-	ret nz
-	ld a, 1
-	ld [wAbilityCheckResult], a
-	ret
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wMoveType]
+ ld [wAbilityTemp + 1], a
+ call AbilityActor
+ jr AbilityTypeOverride
 
-; AI's bit 3 selects whether it is evaluating the player or enemy move.
 AbilityCorrosiveAICheck:
-	xor a
-	ld [wAbilityCheckResult], a
-	ld a, [wUnusedC000]
-	bit 3, a
-	ld a, [wEnemyMoveType]
-	jr z, .move
-	ld a, [wPlayerMoveType]
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wUnusedC000]
+ bit 3, a
+ ld a, [wEnemyMoveType]
+ jr z, .move
+ ld a, [wPlayerMoveType]
 .move
-	cp POISON
-	ret nz
-	ld a, [wUnusedC000]
-	bit 3, a
-	ld a, 1
-	jr z, .side
-	xor a
+ ld [wAbilityTemp + 1], a
+ ld a, [wUnusedC000]
+ bit 3, a
+ ld a, 1
+ jr z, .side
+ xor a
 .side
-	call AbilityGet
-	cp AB_CORROSIVE_VENOM
-	ret nz
-	ld a, 1
-	ld [wAbilityCheckResult], a
-	ret
+ call AbilityGet
+AbilityTypeOverride:
+ cp AB_CORROSIVE_VENOM
+ jr nz, .scrappy
+ ld a, [wAbilityTemp]
+ cp ROCK
+ ret nz
+ ld a, [wAbilityTemp + 1]
+ cp POISON
+ ret nz
+ ld a, 20
+ ld [wAbilityCheckResult], a
+ ret
+.scrappy
+ cp AB_SCRAPPY
+ ret nz
+ ld a, [wAbilityTemp]
+ cp GHOST
+ ret nz
+ ld a, [wAbilityTemp + 1]
+ cp NORMAL
+ jr z, .neutral
+ cp FIGHTING
+ ret nz
+.neutral
+ ld a, 10
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityDefiantTarget:
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityTarget
+ cp AB_DEFIANT
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
 
 AbilityMove:
 	ld hl, wPlayerMoveNum
@@ -497,6 +523,17 @@ AbilityModifyDamage:
 	ld [wDamageMultipliers], a
 	jp .defender
 .newOffense
+	cp AB_UNSOPHISTICATED
+	jr nz, .strongJaw
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 6, a
+	jp z, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jp .defender
+.strongJaw
 	cp AB_STRONG_JAW
 	jr z, .physicalStrong
 	cp AB_HUSTLE
@@ -807,6 +844,20 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityFixedMinimum
 	jp .defender
 .male
+	cp AB_UNSOPHISTICATED
+	jr nz, .fixedOpportunist
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jp z, .defender
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 6, a
+	jp z, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jp .defender
+.fixedOpportunist
 	cp AB_OPPORTUNIST
 	jr nz, .ambushAbility
 	call AbilityTargetHasLoweredStage
@@ -2904,6 +2955,30 @@ AbilityPoisonHeal:
 ; Accuracy is stored on a 0..255 scale: 15 percentage points = 38 units.
 AbilityHustleAccuracy:
 	call AbilityActor
+	cp AB_UNSOPHISTICATED
+	jr nz, .hustle
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 6, a
+	ret z
+	call AbilityMove
+	inc hl
+	inc hl
+	inc hl
+	inc hl
+	ld a, [hl]
+	sub 25
+	jr nc, .writeUnsophisticated
+	ld a, 1
+.writeUnsophisticated
+	and a
+	jr nz, .storeUnsophisticated
+	inc a
+.storeUnsophisticated
+	ld [hl], a
+	ret
+.hustle
 	cp AB_HUSTLE
 	ret nz
 	call AbilityMove
@@ -3485,3 +3560,22 @@ AbilityInflictOrdinaryStatus:
 	jp PrintText
 .burn
 	jpab UtilityInflictStatus
+
+AbilityExplodeEffect:
+	ld hl, wBattleMonHP
+	ld de, wPlayerBattleStatus2
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .faintUser
+	ld hl, wEnemyMonHP
+	ld de, wEnemyBattleStatus2
+.faintUser
+	xor a
+	ld [hli], a ; set the mon's HP to 0
+	ld [hli], a
+	inc hl
+	ld [hl], a ; set mon's status to 0
+	ld a, [de]
+	res SEEDED, a ; clear mon's leech seed status
+	ld [de], a
+	ret

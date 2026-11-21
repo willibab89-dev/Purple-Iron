@@ -113,8 +113,9 @@ def validate(version):
                'DIGLETT':['AMBUSH','SUBTERRANEAN','ELUSIVE','AFTERSHOCK','SAND_RUSH'],
                'MEOWTH':['OPPORTUNIST','GREEDY','RESOURCEFUL','QUICK_REFLEXES','TECHNICIAN'],
                'PSYDUCK':['HEADACHE','PSIONIC','DAMP','CONFOUNDING','UNSTABLE'],
-               'GOLDUCK':['CLOUD_NINE','SWIFT_SWIM','DAMP','MIND_READER','WATER_VEIL']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH')]:
+               'GOLDUCK':['CLOUD_NINE','SWIFT_SWIM','DAMP','MIND_READER','WATER_VEIL'],
+               'MANKEY':['DEFIANT','SHORT_TEMPER','SCRAPPY','UNSOPHISTICATED','BLOODLUST']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -426,6 +427,23 @@ def validate(version):
             ap,tp=init(turn);aid(turn,'CORROSIVE_VENOM');put(ap+'Type1',TYPES['POISON']);put(ap+'Type2',TYPES['POISON'])
             put(tp+'Type1',TYPES['ROCK']);put(tp+'Type2',TYPES['ROCK']);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES['POISON'])
             word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==300 and get('wDamageMultipliers')==0x94
+            # Scrappy removes only Ghost immunity; retain the other type's multiplier and AI assessment.
+            for attack,t1,t2,enabled,want in [('NORMAL','GHOST','GHOST',True,10),('FIGHTING','GHOST','GHOST',True,10),('NORMAL','GHOST','ROCK',True,5),('FIGHTING','GHOST','ROCK',True,20),('NORMAL','GHOST','GHOST',False,0),('FIGHTING','GHOST','GHOST',False,0),('NORMAL','ROCK','ROCK',True,5)]:
+                ap,tp=init(turn);put(ap+'Type1',TYPES['FIRE']);put(ap+'Type2',TYPES['FIRE']);aid(turn,'SCRAPPY' if enabled else None);put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2]);put('w'+('Enemy' if turn else 'Player')+'MoveType',TYPES[attack]);word('wDamage',100)
+                call('AdjustDamageForMoveType');assert readword('wDamage')==want*10 and get('wDamageMultipliers')==want,(turn,attack,t1,t2,enabled,readword('wDamage'),get('wDamageMultipliers'))
+                put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==want,(turn,'scrappy AI',attack,t1,t2,want,get('wTypeEffectiveness'))
+            # Defiant suppresses only the stat penalties, not the conditions.
+            for status,stat,routine in [(16,'Attack','StatusHalveAttackDueToBurn'),(64,'Speed','HalveSpeedDueToParalysis'),(8,'Special','PoisonSpecialPenalty')]:
+                for active in (False,True):
+                    ap,tp=init(turn);aid(1-turn,'DEFIANT' if active else None);put(tp+'Status',status);word(tp+stat,100);call(routine)
+                    assert readword(tp+stat)==(100 if active else 25 if status==8 else 50),(turn,status,active,readword(tp+stat))
+                    assert get(tp+'Status')==status
+            # The base move table, not its current accuracy, controls the bonus.
+            for attack,want in [('POUND',125),('TACKLE',100),('FIRE_BLAST',100)]:
+                init(turn);move(turn,attack);aid(turn,'UNSOPHISTICATED');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
+            for attack,want in [('POUND',230),('TACKLE',242),('FIRE_BLAST',229)]:
+                init(turn);move(turn,attack);aid(turn,'UNSOPHISTICATED');call('AbilityHustleAccuracy');assert get('w'+('Enemy' if turn else 'Player')+'MoveAccuracy')==want,(turn,attack)
+            init(turn);move(turn,'SEISMIC_TOSS');aid(turn,'UNSOPHISTICATED');put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==125
             # Short Temper responds to misses, including status moves, but not immunities.
             for attack,miss,multiplier,hp,want in [('TACKLE',1,10,160,8),('GROWL',1,10,160,8),('TACKLE',0,10,160,7),('TACKLE',1,0,160,7),('TACKLE',1,10,0,7)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'SHORT_TEMPER');put('wMoveMissed',miss);put('wDamageMultipliers',multiplier);word(ap+'HP',hp)
@@ -725,7 +743,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,117):
+        for n in range(1,120):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -979,7 +997,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 56 species / 280 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 58 species / 290 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
