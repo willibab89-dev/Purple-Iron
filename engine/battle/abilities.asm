@@ -78,6 +78,9 @@ AbilitySpeciesPools:
 	db POLIWAG, 171
 	db POLIWHIRL, 171
 	db POLIWRATH, 176
+	db ABRA, 181
+	db KADABRA, 186
+	db ALAKAZAM, 186
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -116,6 +119,8 @@ AbilityPoolIds:
 	db AB_LEGENDARY, AB_MOMENTUM, AB_STEADFAST, AB_GROWL_INTIMIDATE, AB_ELEGANT_MANE
 	db AB_HYPNOTIC, AB_SLIPPERY, AB_SWIFT_SWIM, AB_HYDRATION, AB_WATER_VEIL
 	db AB_WRESTLER, AB_SLIPPERY, AB_SWIFT_SWIM, AB_POWER_SWIM, AB_IRON_FIST
+	db AB_RUN_AWAY, AB_MENTAL_SHIELD, AB_TELEPATHY, AB_GENIUS, AB_MAGIC_BOUNCE
+	db AB_SPOON_BENDER, AB_MAGIC_GUARD, AB_MIND_READER, AB_GENIUS, AB_MAGIC_BOUNCE
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -722,6 +727,7 @@ AbilityTextPointers:
 	dw AbilityText117, AbilityText118, AbilityText119
 	dw AbilityText120, AbilityText121, AbilityText122, AbilityText123, AbilityText124, AbilityText125
 	dw AbilityText126, AbilityText127, AbilityText128, AbilityText129, AbilityText130, AbilityText131
+	dw AbilityText132, AbilityText133, AbilityText134, AbilityText135, AbilityText136
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -983,3 +989,9 @@ AbilityText128: db "HYDRATION",$4e,"Water move heals",$4e,"1/8 maximum HP.@"
 AbilityText129: db "WRESTLER",$4e,"Fighting hits: 20%",$4e,"chance to paralyze.@"
 AbilityText130: db "POWER SWIM",$4e,"Water move: Attack",$4e,"+1 once per battle.@"
 AbilityText131: db "IRON FIST",$4e,"Punching moves",$4e,"deal 25% more.@"
+
+AbilityText132: db "MENTAL SHIELD",$4e,"Special damage",$4e,"received x0.8.@"
+AbilityText133: db "TELEPATHY",$4e,"Psychic move:",$4e,"Evasion +1 once.@"
+AbilityText134: db "GENIUS",$4e,"Status moves:",$4e,"accuracy +15.@"
+AbilityText135: db "MAGIC BOUNCE",$4e,"Reflects status",$4e,"moves at the foe.@"
+AbilityText136: db "SPOON BENDER",$4e,"Psychic hits ignore",$4e,"20% of Special.@"

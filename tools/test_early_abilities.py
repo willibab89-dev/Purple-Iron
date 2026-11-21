@@ -122,8 +122,10 @@ def validate(version):
                'GROWLITHE':['LOYALTY','MOMENTUM','STEADFAST','GROWL_INTIMIDATE','ELEGANT_MANE'],
                'ARCANINE':['LEGENDARY','MOMENTUM','STEADFAST','GROWL_INTIMIDATE','ELEGANT_MANE'],
                'POLIWAG':['HYPNOTIC','SLIPPERY','SWIFT_SWIM','HYDRATION','WATER_VEIL'],
-               'POLIWRATH':['WRESTLER','SLIPPERY','SWIFT_SWIM','POWER_SWIM','IRON_FIST']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG')]:
+               'POLIWRATH':['WRESTLER','SLIPPERY','SWIFT_SWIM','POWER_SWIM','IRON_FIST'],
+               'ABRA':['RUN_AWAY','MENTAL_SHIELD','TELEPATHY','GENIUS','MAGIC_BOUNCE'],
+               'KADABRA':['SPOON_BENDER','MAGIC_GUARD','MIND_READER','GENIUS','MAGIC_BOUNCE']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -719,6 +721,34 @@ def validate(version):
                 ap,tp=init(turn);move(turn,attack);aid(turn,'WRESTLER');aid(1-turn,target_ability);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(tp+'Status')==want,(turn,attack,roll,target_ability,sub,get(tp+'Status'))
             for attack,want in [('MEGA_PUNCH',125),('FIRE_PUNCH',125),('DRAIN_PUNCH',125),('KARATE_CHOP',100),('TACKLE',100)]:
                 init(turn);move(turn,attack);aid(turn,'IRON_FIST');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'iron fist',readword('wDamage'))
+        # Abra family: special protection, Psychic move trigger, status accuracy and defense bypass.
+        bounce_patches={}
+        for n in ('PlayCurrentMoveAnimation','PlayCurrentMoveAnimation2','DelayFrames'):
+            b,a=syms[n];bounce_patches[n]=game.memory[b,a];patch(n,[0xc9])
+        for turn in (0,1):
+            for attack,want in [('FLAMETHROWER',80),('TACKLE',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'MENTAL_SHIELD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'mental shield')
+            init(turn);move(turn,'FLAMETHROWER');aid(1-turn,'MENTAL_SHIELD');put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==80
+            for attack,want in [('PSYCHIC_M',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(turn,'TELEPATHY');put('wAbilityHit',8);call('AbilitySandAfterAction');mod='w'+('Enemy' if turn else 'Player')+'MonEvasionMod';assert get(mod)==want;(call('AbilitySandAfterAction'));assert get(mod)==want
+            for attack,want in [('SING',138),('SWORDS_DANCE',138),('PSYCHIC_M',100),('TACKLE',100)]:
+                init(turn);move(turn,attack);aid(turn,'GENIUS');game.memory[0xff97:0xff99]=[0,100];call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,want]),(turn,attack,'genius')
+            for attack,want in [('PSYCHIC_M',80),('TACKLE',100),('CONFUSION',80)]:
+                init(turn);move(turn,attack);aid(turn,'SPOON_BENDER');call('AdjustPiercingBeakDefense',BC=100);assert game.register_file.B*256+game.register_file.C==want,(turn,attack,'spoon')
+            # Actual effect dispatch reflects target status and stat drops exactly once.
+            for attack in ('SING','POISONPOWDER','THUNDER_WAVE','WILL_O_WISP'):
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'MAGIC_BOUNCE');rng(0,2);before=bytes(game.memory[addr('w'+('Player' if turn else 'Enemy')+'MoveNum'):addr('w'+('Player' if turn else 'Enemy')+'MoveNum')+6]);call('_JumpMoveEffect')
+                assert get(ap+'Status')!=0 and get(tp+'Status')==0,(turn,attack,'bounce',get(ap+'Status'),get(tp+'Status'))
+                assert get('turn')==turn and bytes(game.memory[addr('w'+('Player' if turn else 'Enemy')+'MoveNum'):addr('w'+('Player' if turn else 'Enemy')+'MoveNum')+6])==before,(turn,attack,'restore')
+            ap,tp=init(turn);move(turn,'GROWL');aid(1-turn,'MAGIC_BOUNCE');rng(0);call('_JumpMoveEffect');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==6 and get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7,(turn,'growl')
+            ap,tp=init(turn);move(turn,'LEECH_SEED');aid(1-turn,'MAGIC_BOUNCE');rng(0);call('_JumpMoveEffect');assert get('w'+('Enemy' if turn else 'Player')+'BattleStatus2')&128 and not(get('w'+('Player' if turn else 'Enemy')+'BattleStatus2')&128),(turn,'leech seed')
+            ap,tp=init(turn);move(turn,'DISABLE');aid(1-turn,'MAGIC_BOUNCE');put(ap+'Moves',MOVES['TACKLE']);put(ap+'PP',20);put('wPlayerDisabledMove',0);put('wEnemyDisabledMove',0);rng(0);call('_JumpMoveEffect');assert get('w'+('Enemy' if turn else 'Player')+'DisabledMove')!=0 and get('w'+('Player' if turn else 'Enemy')+'DisabledMove')==0,(turn,'disable')
+            for attack in ('KINESIS','SPLASH'):
+                init(turn);move(turn,attack);aid(1-turn,'MAGIC_BOUNCE');rng(0);call('_JumpMoveEffect');assert get('w'+('Enemy' if turn else 'Player')+'MonAccuracyMod')==6,(turn,attack,'bounce custom')
+            init(turn);move(turn,'SWORDS_DANCE');aid(1-turn,'MAGIC_BOUNCE');rng(0);call('_JumpMoveEffect');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==9
+            ap,tp=init(turn);move(turn,'POISONPOWDER');aid(turn,'MAGIC_BOUNCE');aid(1-turn,'MAGIC_BOUNCE');rng(0);call('_JumpMoveEffect');assert get(ap+'Status')==8 and get(tp+'Status')==0,(turn,'double bounce')
+        for n,original in bounce_patches.items():
+            b,a=syms[n];game.memory[b,a]=original
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -794,7 +824,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,132):
+        for n in range(1,137):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -868,6 +898,8 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('POISONPOWDER',turn,target='MAGIC_BOUNCE');assert get(ap+'Status')==8 and get(tp+'Status')==0,(turn,'live bounce')
+            ap,tp=execute('GROWL',turn,target='MAGIC_BOUNCE');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==6
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('TACKLE',turn,actor='TECHNICIAN',random_value=100);assert 160-readword(tp+'HP')==normal*150//100,(turn,normal,readword(tp+'HP'))
             # Threshold triggers also run immediately after recoil and poison,
@@ -1048,7 +1080,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 63 species / 315 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 66 species / 330 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

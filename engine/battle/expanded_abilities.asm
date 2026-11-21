@@ -254,6 +254,14 @@ AbilityPiercingBeakCheck:
 	call AbilityActor
 	cp AB_PIERCING_BEAK
 	jr z, .beak
+	cp AB_SPOON_BENDER
+	jr nz, .horn
+	call AbilityActorMoveType
+	cp PSYCHIC
+	ret nz
+	ld a, 2
+	jr .store
+.horn
 	cp AB_PIERCING_HORN
 	ret nz
 	call AbilityActorMoveType
@@ -791,7 +799,10 @@ AbilityModifyDamage:
 	jr .reduce
 .thickHide
 	cp AB_ELEGANT_MANE
+	jr z, .mentalShield
+	cp AB_MENTAL_SHIELD
 	jr nz, .checkThickFat
+.mentalShield
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	ret c
@@ -988,7 +999,10 @@ AbilityExistingFixedDamageModifiers:
 	jr .scale
 .thickFat
 	cp AB_ELEGANT_MANE
+	jr z, .fixedMentalShield
+	cp AB_MENTAL_SHIELD
 	jr nz, .fixedThickFat
+.fixedMentalShield
 	call AbilityActorMoveType
 	cp FIRE
 	ret c
@@ -1136,6 +1150,14 @@ AbilitySandAfterAction:
 	ld a, 2 ; Speed
 	jr .once
 .fox
+	cp AB_TELEPATHY
+	jr nz, .foxy
+	call AbilityActorMoveType
+	cp PSYCHIC
+	ret nz
+	ld a, 5
+	jr .once
+.foxy
 	cp AB_FOXS_CUNNING
 	ret nz
 	call AbilityActorMoveType
@@ -3290,6 +3312,16 @@ AbilityBurnGate:
 ; Accuracy is scaled after nature and stage factors, before final byte cap.
 AbilityAccuracy:
 	call AbilityActor
+	cp AB_GENIUS
+	jr nz, .hypnotic
+	call AbilityMove
+	inc hl
+	inc hl
+	ld a, [hl]
+	and a
+	jp nz, .target
+	jr .flat15
+.hypnotic
 	cp AB_HYPNOTIC
 	jr nz, .mycelium
 	call AbilityMove
@@ -3297,6 +3329,7 @@ AbilityAccuracy:
 	ld a, [hl]
 	cp SLEEP_EFFECT
 	jp nz, .target
+.flat15
 	ld a, [H_QUOTIENT + 3]
 	add 38 ; 15 percentage points on the 0..255 scale
 	ld [H_QUOTIENT + 3], a
@@ -3877,3 +3910,67 @@ AbilityHealFifth:
  ld a, [wAbilitySide]
  ld [wCustomSide], a
  jpab UtilitySyncParty
+
+; Bounce opposing status moves once, without spending a second move or PP.
+AbilityBounceDispatch:
+ call AbilityTarget
+ cp AB_MAGIC_BOUNCE
+ jp nz, .ordinary
+ call AbilityMove
+ ld a, [hli]
+ ld b, a
+ inc hl
+ ld a, [hl]
+ and a
+ jr nz, .ordinary
+ ld a, b
+ ld hl, AbilityBounceMoves
+ ld de, 1
+ call IsInArray
+ jr nc, .ordinary
+ ; Preserve the opposing move record on the stack, then lend it the move.
+ ld hl, wPlayerMoveNum
+ ld de, wEnemyMoveNum
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .copy
+ ld hl, wEnemyMoveNum
+ ld de, wPlayerMoveNum
+.copy
+ ld b, 6
+.saveLoop
+ ld a, [de]
+ push af
+ ld a, [hli]
+ ld [de], a
+ inc de
+ dec b
+ jr nz, .saveLoop
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [H_WHOSETURN], a
+ callab DispatchMoveEffect
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [H_WHOSETURN], a
+ ; Re-select the temporary record, restoring it from its last byte.
+ and a
+ ld hl, wEnemyMoveMaxPP
+ jr z, .restore
+ ld hl, wPlayerMoveMaxPP
+.restore
+ ld b, 6
+.restoreLoop
+ pop af
+ ld [hld], a
+ dec b
+ jr nz, .restoreLoop
+ ret
+.ordinary
+ jpab DispatchMoveEffect
+
+AbilityBounceMoves:
+ db WHIRLWIND, TAIL_WHIP, LEER, GROWL, ROAR, SING, SUPERSONIC, DISABLE
+ db LEECH_SEED, POISONPOWDER, STUN_SPORE, SLEEP_POWDER, THUNDER_WAVE, TOXIC
+ db HYPNOSIS, SCREECH, SMOKESCREEN, CONFUSE_RAY, KINESIS, SPLASH, GLARE, POISON_GAS
+ db LOVELY_KISS, SPORE, WILL_O_WISP, FLASH_FREEZE, CURSE, CHARM, $ff

@@ -7316,7 +7316,7 @@ JumpMoveEffect:
 	ret
 
 _JumpMoveEffect:
-	jpab DispatchMoveEffect
+	jpab AbilityBounceDispatch
 
 CustomRandomInBattleBank:
 	call BattleRandom

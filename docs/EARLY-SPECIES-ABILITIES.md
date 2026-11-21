@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 63 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 66 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -40,10 +40,14 @@ Implemented for 63 species, with five equally likely slots per species. The save
 | Arcanine | Legendary | Momentum | Steadfast | Intimidate | Elegant Mane |
 | Poliwag / Poliwhirl | Hypnotic | Slippery | Swift Swim | Hydration | Water Veil |
 | Poliwrath | Wrestler | Slippery | Swift Swim | Power Swim | Iron Fist |
+| Abra | Run Away | Mental Shield | Telepathy | Genius | Magic Bounce |
+| Kadabra / Alakazam | Spoon Bender | Magic Guard | Mind Reader | Genius | Magic Bounce |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Abra-family effects: Run Away guarantees escape from wild battles. Mental Shield reduces special damage by 20%. Telepathy raises Evasion after using a Psychic move once per battle. Genius adds 15 percentage points of accuracy to status moves. Magic Bounce reflects opposing status moves aimed at its holder, once per move. Spoon Bender makes Psychic attacks ignore 20% of the target’s Special. Magic Guard prevents indirect damage, and Mind Reader prevents Accuracy drops.
 
 Poliwag-family effects: Hypnotic adds 15 percentage points of accuracy to sleep-inducing moves. Slippery raises Evasion after a physical hit once per battle. Swift Swim raises Speed two stages after a Water hit. Hydration heals 1/8 maximum HP after using a Water move. Water Veil prevents burns and halves Fire damage. Wrestler gives Fighting hits a 20% chance to paralyze. Power Swim raises Attack after using a Water move once per battle. Iron Fist boosts punching-move damage by 25%.
 
@@ -137,4 +141,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 315 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 330 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
