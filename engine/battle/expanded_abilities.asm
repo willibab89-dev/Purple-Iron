@@ -122,7 +122,10 @@ AbilityIntimidate:
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_INTIMIDATE
+	jr z, .holder
+	cp AB_GROWL_INTIMIDATE
 	ret nz
+.holder
 	call AbilityFlagsPointer
 	bit 6, [hl]
 	ret nz
@@ -149,9 +152,16 @@ AbilityIntimidate:
 	ld a, [wAbilitySide]
 	xor 1
 	ld [wAbilitySide], a
+	ld a, [wAbilitySide]
+	xor 1
+	call AbilityGet
+	cp AB_GROWL_INTIMIDATE
+	jr z, .apply
 	call AbilityFlagsPointer
 	bit 7, [hl]
 	jr nz, .restoreSide
+.apply
+	call AbilityFlagsPointer
 	set 7, [hl]
 	ld a, 2 ; Speed
 	ld [wCustomStat], a
@@ -523,6 +533,14 @@ AbilityModifyDamage:
 	ld [wDamageMultipliers], a
 	jp .defender
 .newOffense
+	cp AB_LEGENDARY
+	jr nz, .unsophisticated
+	call AbilityLegendaryCheck
+	jp nc, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jp .defender
+.unsophisticated
 	cp AB_UNSOPHISTICATED
 	jr nz, .strongJaw
 	call AbilityMove
@@ -761,6 +779,14 @@ AbilityModifyDamage:
 	ld c, 75
 	jr .reduce
 .thickHide
+	cp AB_ELEGANT_MANE
+	jr nz, .checkThickFat
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	ret c
+	ld c, 80
+	jr .reduce
+.checkThickFat
 	cp AB_THICK_FAT
 	jr nz, .notThickFat
 	ld a, [wAbilityMoveType]
@@ -844,6 +870,14 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityFixedMinimum
 	jp .defender
 .male
+	cp AB_LEGENDARY
+	jr nz, .fixedUnsophisticated
+	call AbilityLegendaryCheck
+	jp nc, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jp .defender
+.fixedUnsophisticated
 	cp AB_UNSOPHISTICATED
 	jr nz, .fixedOpportunist
 	ld a, [wCriticalHitOrOHKO]
@@ -942,6 +976,14 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 75
 	jr .scale
 .thickFat
+	cp AB_ELEGANT_MANE
+	jr nz, .fixedThickFat
+	call AbilityActorMoveType
+	cp FIRE
+	ret c
+	ld c, 80
+	jr .scale
+.fixedThickFat
 	cp AB_THICK_FAT
 	jr nz, .hide
 	call AbilityActorMoveType
@@ -1049,6 +1091,16 @@ AbilitySandAfterAction:
 	ld a, 3 ; 1/8 maximum HP
 	jp AbilityHealFractionFromHL
 .sandRush
+	cp AB_MOMENTUM
+	jr nz, .actualSandRush
+	call AbilityMove
+	inc hl
+	ld a, [hl]
+	cp RECOIL_EFFECT
+	ret nz
+	ld a, 2
+	jr .once
+.actualSandRush
 	cp AB_SAND_RUSH
 	jr nz, .fox
 	call AbilityActorMoveType
@@ -1218,6 +1270,8 @@ AbilityConfounding:
  ret nz
  call AbilityTarget
  cp AB_SHIELD_DUST
+ ret z
+ cp AB_STEADFAST
  ret z
  ld hl, wEnemyBattleStatus1
  ld de, wEnemyConfusedCounter
@@ -2878,6 +2932,8 @@ AbilityFrenzy:
 	cp AB_FRENZY
 	jr z, .directKO
 	cp AB_SCAVENGER
+	jr z, .directKO
+	cp AB_LOYALTY
 	ret nz
 .directKO
 	ld a, [wAbilityHit]
@@ -2897,6 +2953,8 @@ AbilityFrenzy:
 	call AbilityActor
 	cp AB_SCAVENGER
 	jr z, AbilityHealQuarter
+	cp AB_LOYALTY
+	jp z, AbilityHealFifth
 	xor a
 	jp AbilityRaiseStage
 
@@ -3136,7 +3194,17 @@ AbilityEffectGate:
 	jr z, .checkThaw
 	call AbilityTarget
 	cp AB_SHIELD_DUST
+	jr z, .checkThaw
+	cp AB_STEADFAST
 	ret nz
+	ld a, b
+	cp FLINCH_SIDE_EFFECT1
+	jr z, .block
+	cp FLINCH_SIDE_EFFECT2
+	jr z, .block
+	cp CONFUSION_SIDE_EFFECT
+	ret nz
+	jr .block
 .checkThaw
 	ld a, b
 	cp BURN_SIDE_EFFECT1
@@ -3579,3 +3647,170 @@ AbilityExplodeEffect:
 	res SEEDED, a ; clear mon's leech seed status
 	ld [de], a
 	ret
+
+; Clear both volatile conditions from the actor, including self-confusion.
+AbilitySteadfastActor:
+ call AbilityActor
+ cp AB_STEADFAST
+ ret nz
+ ld hl, wPlayerBattleStatus1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .clear
+ ld hl, wEnemyBattleStatus1
+.clear
+ res CONFUSED, [hl]
+ res FLINCHED, [hl]
+ ret
+
+AbilitySteadfastDirectCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityMove
+ inc hl
+ ld a, [hl]
+ cp CONFUSION_EFFECT
+ ret nz
+ call AbilityTarget
+ jr AbilitySteadfastCheck
+
+AbilitySteadfastCustomCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wCustomSide]
+ call AbilityGet
+AbilitySteadfastCheck:
+ cp AB_STEADFAST
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; Carry iff the executing move's actual maximum PP is at most 10.
+AbilityLegendaryCheck:
+ ld a, [H_WHOSETURN]
+ and a
+ ld hl, wPlayerBattleStatus3
+ jr z, .transform
+ ld hl, wEnemyBattleStatus3
+.transform
+ bit TRANSFORMED, [hl]
+ jr z, .base
+ scf
+ ret
+.base
+ call AbilityMove
+ ld a, [hl]
+ and a
+ ret z
+ dec a
+ ld hl, Moves + 5
+ ld bc, MoveEnd - Moves
+ call AddNTimes
+ ld de, wAbilityTemp
+ ld bc, 1
+ ld a, BANK(Moves)
+ call FarCopyData
+ ld a, [wAbilityTemp]
+ cp 11
+ ret nc
+ cp 6
+ jr c, .yes
+ ; PP-Ups add floor(base PP / 5) each; here the base is 6..10.
+ ld b, a
+ ld hl, wBattleMonPP
+ ld a, [H_WHOSETURN]
+ and a
+ ld a, [wPlayerMoveListIndex]
+ jr z, .pp
+ ld hl, wEnemyMonPP
+ ld a, [wEnemyMoveListIndex]
+.pp
+ and 3
+ ld e, a
+ ld d, 0
+ add hl, de
+ ld a, [hl]
+ and $c0
+ rlca
+ rlca
+ ld c, a
+ ld a, b
+ cp 10
+ ld d, 1
+ jr nz, .add
+ inc d
+.add
+ ld a, c
+ and a
+ jr z, .compare
+ ld a, b
+ add d
+ ld b, a
+ dec c
+ jr .add
+.compare
+ ld a, b
+ cp 11
+ ret
+.yes
+ scf
+ ret
+
+; Restore floor(maximum HP / 5), with the usual minimum of 1 and HP cap.
+AbilityHealFifth:
+ call AbilityHP
+ push hl
+ push de
+ xor a
+ ld [H_DIVIDEND], a
+ ld [H_DIVIDEND + 1], a
+ ld a, [de]
+ ld [H_DIVIDEND + 2], a
+ inc de
+ ld a, [de]
+ ld [H_DIVIDEND + 3], a
+ ld a, 5
+ ld [H_DIVISOR], a
+ ld b, 4
+ call Divide
+ ld a, [H_QUOTIENT + 2]
+ ld b, a
+ ld a, [H_QUOTIENT + 3]
+ ld c, a
+ or b
+ jr nz, .amount
+ inc c
+.amount
+ pop de
+ pop hl
+ push hl
+ ld a, [hli]
+ ld l, [hl]
+ ld h, a
+ add hl, bc
+ ld a, [de]
+ ld b, a
+ inc de
+ ld a, [de]
+ ld c, a
+ ld a, h
+ cp b
+ jr c, .store
+ jr nz, .cap
+ ld a, l
+ cp c
+ jr c, .store
+.cap
+ ld h, b
+ ld l, c
+.store
+ ld b, h
+ ld c, l
+ pop hl
+ ld [hl], b
+ inc hl
+ ld [hl], c
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ jpab UtilitySyncParty

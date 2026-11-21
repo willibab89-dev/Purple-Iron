@@ -114,7 +114,9 @@ def validate(version):
                'MEOWTH':['OPPORTUNIST','GREEDY','RESOURCEFUL','QUICK_REFLEXES','TECHNICIAN'],
                'PSYDUCK':['HEADACHE','PSIONIC','DAMP','CONFOUNDING','UNSTABLE'],
                'GOLDUCK':['CLOUD_NINE','SWIFT_SWIM','DAMP','MIND_READER','WATER_VEIL'],
-               'MANKEY':['DEFIANT','SHORT_TEMPER','SCRAPPY','UNSOPHISTICATED','BLOODLUST']}
+               'MANKEY':['DEFIANT','SHORT_TEMPER','SCRAPPY','UNSOPHISTICATED','BLOODLUST'],
+               'GROWLITHE':['LOYALTY','MOMENTUM','STEADFAST','GROWL_INTIMIDATE','ELEGANT_MANE'],
+               'ARCANINE':['LEGENDARY','MOMENTUM','STEADFAST','GROWL_INTIMIDATE','ELEGANT_MANE']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -668,6 +670,32 @@ def validate(version):
                 init(turn);aid(turn,'UNSTABLE');word(('wEnemyMon' if turn else 'wBattleMon')+'HP',79);put('wAbilitySide',turn);rng(chosen);call('AbilityLowHP')
                 assert game.memory[addr('w'+('Enemy' if turn else 'Player')+'MonStatMods')+chosen]==8,(turn,chosen,'unstable')
                 call('AbilityLowHP');assert game.memory[addr('w'+('Enemy' if turn else 'Player')+'MonStatMods')+chosen]==8
+        # Growlithe/Arcanine abilities on both sides, including PP-Up boundaries.
+        for turn in (0,1):
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'LOYALTY');word(ap+'HP',80);word(tp+'HP',0);call('AbilityAfterHit');call('AbilityAfterAction');assert readword(ap+'HP')==112,(turn,'loyalty',readword(ap+'HP'))
+            party='wEnemyMon1' if turn else 'wPartyMon1';assert readword(party+'HP')==112
+            ap,tp=init(turn);aid(turn,'LOYALTY');word(ap+'HP',80);word(tp+'HP',0);call('AbilityAfterAction');assert readword(ap+'HP')==80
+            for hp,want in [(1,33),(150,160),(0,0)]:
+                ap,tp=init(turn);aid(turn,'LOYALTY');put('wAbilitySide',turn);word(ap+'HP',hp)
+                if hp:call('AbilityHealFifth');assert readword(ap+'HP')==want,(turn,hp,readword(ap+'HP'))
+            for attack,ups,want in [('DOUBLE_EDGE',0,125),('DOUBLE_EDGE',1,100),('FIRE_BLAST',3,125),('FLAMETHROWER',0,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'LEGENDARY');put(ap+'PP',(ups<<6)|1);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,ups,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'LEGENDARY');put('w'+('Enemy' if turn else 'Player')+'BattleStatus3',8);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==125
+            for attack,want in [('DOUBLE_EDGE',8),('TACKLE',7)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'MOMENTUM');put('wAbilityHit',8);call('AbilitySandAfterAction');mod='w'+('Enemy' if turn else 'Player')+'MonSpeedMod';assert get(mod)==want,(turn,attack,get(mod));call('AbilitySandAfterAction');assert get(mod)==want
+            ap,tp=init(turn);aid(turn,'LOYALTY');put('wAbilitySide',turn);word(ap+'HP',80);word(ap+'MaxHP',157);call('AbilityHealFifth');assert readword(ap+'HP')==111
+            for attack,want in [('FLAMETHROWER',80),('TACKLE',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'ELEGANT_MANE');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'PSYCHIC_M');aid(1-turn,'ELEGANT_MANE');put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==80
+            for attack,blocked in [('CONFUSE_RAY',True),('SUPERSONIC',True),('GROWL',False)]:
+                init(turn);move(turn,attack);aid(1-turn,'STEADFAST');rng(0);call('MoveHitTest');assert bool(get('wMoveMissed'))==blocked,(turn,attack,'steadfast')
+            for attack,blocked in [('PSYBEAM',True),('BITE',True),('FLAMETHROWER',False)]:
+                init(turn);move(turn,attack);aid(1-turn,'STEADFAST');call('AbilityEffectGate');assert bool(get('wAbilityCheckResult'))==blocked,(turn,attack,'secondary')
+            init(turn);aid(turn,'STEADFAST');n='w'+('Enemy' if turn else 'Player')+'BattleStatus1';put(n,136);call('AbilityBeforeAction');assert get(n)&136==0
+            init(turn);aid(1-turn,'STEADFAST');put('wCustomSide',1-turn);call('CustomConfuse');assert not(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128)
+            init(turn);move(turn,'PSYCHIC_M');aid(turn,'CONFOUNDING');aid(1-turn,'STEADFAST');rng(0);call('AbilityAfterHit');assert not(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128)
+            # The canine Intimidate can affect a target already intimidated, once per holder.
+            init(turn);aid(turn,'GROWL_INTIMIDATE');put('wAbilitySide',turn);game.memory[addr('wAbilityFlags')+(0 if turn else 6)]|=128;call('AbilityIntimidate');mod='w'+('Player' if turn else 'Enemy')+'MonSpeedMod';assert get(mod)==6,(turn,'intimidate',get(mod));put('wAbilitySide',turn);call('AbilityIntimidate');assert get(mod)==6
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -743,7 +771,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,120):
+        for n in range(1,126):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -997,7 +1025,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 58 species / 290 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 60 species / 300 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

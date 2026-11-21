@@ -289,6 +289,10 @@ ConditionalAccuracyCheck:
 	push hl
 	push de
 	push bc
+	abilitycall AbilitySteadfastDirectCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr nz, .immune
 	abilitycall AbilityDampCheck
 	ld a, [wAbilityCheckResult]
 	and a

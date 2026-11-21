@@ -73,6 +73,8 @@ AbilitySpeciesPools:
 	db GOLDUCK, 151
 	db MANKEY, 156
 	db PRIMEAPE, 156
+	db GROWLITHE, 161
+	db ARCANINE, 166
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -107,6 +109,8 @@ AbilityPoolIds:
 	db AB_HEADACHE, AB_PSIONIC, AB_DAMP, AB_CONFOUNDING, AB_UNSTABLE
 	db AB_CLOUD_NINE, AB_SWIFT_SWIM, AB_DAMP, AB_MIND_READER, AB_WATER_VEIL
 	db AB_DEFIANT, AB_SHORT_TEMPER, AB_SCRAPPY, AB_UNSOPHISTICATED, AB_BLOODLUST
+	db AB_LOYALTY, AB_MOMENTUM, AB_STEADFAST, AB_GROWL_INTIMIDATE, AB_ELEGANT_MANE
+	db AB_LEGENDARY, AB_MOMENTUM, AB_STEADFAST, AB_GROWL_INTIMIDATE, AB_ELEGANT_MANE
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -279,6 +283,7 @@ AbilityDamageBoost:
 AbilityPrepareSpeeds:
 	abilitycall AbilityLowHPBoth
 	abilitycall AbilityQuickFeetBoth
+	call AbilitySteadfastActor
 	push af
 	push bc
 	push de
@@ -353,6 +358,7 @@ AbilityBeforeAction:
 	ld a, [hl]
 	ld [wAbilityOldStatus], a
 	call AbilityInfiltratorStart
+	call AbilitySteadfastActor
 	call AbilityCachePP
 	pop hl
 	pop de
@@ -709,6 +715,7 @@ AbilityTextPointers:
 	dw AbilityText110, AbilityText111, AbilityText112, AbilityText113
 	dw AbilityText114, AbilityText115, AbilityText116
 	dw AbilityText117, AbilityText118, AbilityText119
+	dw AbilityText120, AbilityText121, AbilityText122, AbilityText123, AbilityText124, AbilityText125
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -734,9 +741,10 @@ AbilityConfident:
 
 ; Shared renderer: A = ability ID. Does not change either active battle ID.
 AbilityDrawDescription:
-	add a
 	ld c, a
 	ld b, 0
+	sla c
+	rl b
 	ld hl, AbilityTextPointers
 	add hl, bc
 	ld a, [hli]
@@ -955,3 +963,10 @@ AbilityText116: db "MIND READER",$4e,"Accuracy cannot",$4e,"be lowered.@"
 AbilityText117: db "DEFIANT",$4e,"Status conditions",$4e,"do not lower stats.@"
 AbilityText118: db "SCRAPPY",$4e,"Normal and Fighting",$4e,"moves hit Ghosts.@"
 AbilityText119: db "UNSOPHISTICATED",$4e,"100% moves: power",$4e,"x1.25; accuracy -10.@"
+
+AbilityText120: db "LOYALTY",$4e,"Heal 20% max HP",$4e,"after a knockout.@"
+AbilityText121: db "LEGENDARY",$4e,"Moves with max PP",$4e,"10 or less: x1.25.@"
+AbilityText122: db "MOMENTUM",$4e,"Recoil move: Speed",$4e,"+1 once per battle.@"
+AbilityText123: db "STEADFAST",$4e,"Cannot be confused",$4e,"or flinched.@"
+AbilityText124: db "ELEGANT MANE",$4e,"Special damage",$4e,"received x0.8.@"
+AbilityText125: db "INTIMIDATE",$4e,"Entry: foe Speed",$4e,"-1 once per battle.@"

@@ -366,6 +366,10 @@ CustomRecalculate:
 	ret
 
 CustomConfuse:
+	abilitycall AbilitySteadfastCustomCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	ld hl, wPlayerBattleStatus1
 	ld de, wPlayerConfusedCounter
 	ld a, [wCustomSide]
