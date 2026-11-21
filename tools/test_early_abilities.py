@@ -126,8 +126,9 @@ def validate(version):
                'ABRA':['RUN_AWAY','MENTAL_SHIELD','TELEPATHY','GENIUS','MAGIC_BOUNCE'],
                'KADABRA':['SPOON_BENDER','MAGIC_GUARD','MIND_READER','GENIUS','MAGIC_BOUNCE'],
                'MACHOP':['NO_GUARD','GUTS','IRON_GRIP','GRAPPLER','BODYBUILDER'],
-               'MACHAMP':['NO_GUARD','GUTS','FOUR_ARMS','GRAPPLER','BODYBUILDER']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP')]:
+               'MACHAMP':['NO_GUARD','GUTS','FOUR_ARMS','GRAPPLER','BODYBUILDER'],
+               'BELLSPROUT':['ACIDIC','CARNIVOROUS','STICKY_TRAP','CHLOROPHYLL','DIGESTIVE_ACID']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -136,6 +137,10 @@ def validate(version):
                 assert get('wPartyMon1CatchRate')==17
                 put('wEnemyMonSpecies2',ids[species]);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=17
                 call('AbilityLoadEnemy');assert game.memory[addr('wActiveAbilities')+1]==ab[name]
+        # Pool 53 starts beyond byte 255: offsets must not wrap.
+        pool_bank,pool_base=syms['AbilityPoolIds'];old=game.memory[pool_bank,pool_base+260];game.memory[pool_bank,pool_base+260]=0xa5
+        call('AbilityResolvePoolId',BC=(1<<8)|53);assert game.register_file.A==0xa5,(version,'extended pool')
+        game.memory[pool_bank,pool_base+260]=old
         # Load a real party member and ensure entry occurs after stage reset.
         init();metadata('wPartyMon1','PIDGEY',1,0);put('wBattleMonSpecies2',ids['PIDGEY'])
         call('LoadBattleMonFromParty')
@@ -773,6 +778,17 @@ def validate(version):
                 ap,tp=init(turn);move(turn,attack);aid(turn,'GRAPPLER');aid(1-turn,target);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');mod='w'+('Player' if turn else 'Enemy')+'MonDefenseMod';assert get(mod)==want,(turn,attack,roll,target,sub,get(mod))
             for attack,want in [('LOW_KICK',8),('TACKLE',7)]:
                 init(turn);move(turn,attack);aid(turn,'BODYBUILDER');put('wAbilityHit',8);call('AbilitySandAfterAction');mod='w'+('Enemy' if turn else 'Player')+'MonDefenseMod';assert get(mod)==want;call('AbilitySandAfterAction');assert get(mod)==want
+        # Bellsprout family: Poison attacks, knockouts, contact reactions and stat comparison.
+        for turn in (0,1):
+            for attack,roll,target,sub,want in [('POISON_STING',0,None,0,6),('POISON_STING',49,None,0,6),('POISON_STING',50,None,0,7),('TACKLE',0,None,0,7),('POISON_STING',0,'SHIELD_DUST',0,7),('POISON_STING',0,None,1,7)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'ACIDIC');aid(1-turn,target);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');mod='w'+('Player' if turn else 'Enemy')+'MonDefenseMod';assert get(mod)==want,(turn,attack,roll,target,sub,'acidic',get(mod))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'CARNIVOROUS');word(ap+'HP',80);word(tp+'HP',0);call('AbilityAfterHit');call('AbilityAfterAction');assert readword(ap+'HP')==112,(turn,'carnivorous',readword(ap+'HP'))
+            party='wEnemyMon1' if turn else 'wPartyMon1';assert readword(party+'HP')==112
+            ap,tp=init(turn);aid(turn,'CARNIVOROUS');word(ap+'HP',80);word(tp+'HP',0);call('AbilityAfterAction');assert readword(ap+'HP')==80
+            for attack,roll,sub,holder_hp,want in [('TACKLE',0,0,160,6),('TACKLE',39,0,160,6),('TACKLE',40,0,160,7),('FLAMETHROWER',0,0,160,7),('TACKLE',0,1,160,7),('TACKLE',0,0,0,6)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'STICKY_TRAP');put('wCustomTargetHadSub',sub);word(tp+'HP',holder_hp);rng(roll);call('AbilityAfterHit');mod='w'+('Enemy' if turn else 'Player')+'MonSpeedMod';assert get(mod)==want,(turn,attack,roll,sub,holder_hp,'sticky trap',get(mod))
+            for attack,defense,special,want in [('POISON_STING',101,100,125),('POISON_STING',100,100,100),('POISON_STING',255,256,100),('POISON_STING',256,255,125),('TACKLE',200,100,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'DIGESTIVE_ACID');word(tp+'Defense',defense);word(tp+'Special',special);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,defense,special,readword('wDamage'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -848,10 +864,13 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,143):
+        for n in range(1,147):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
+        for n,name in [(1,'POISON LEAF'),(135,'MAGIC BOUNCE'),(143,'ACIDIC'),(146,'DIGESTIVE ACID')]:
+            call('AbilityDrawDescription',A=n);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name)
+            assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(n,name)
         # AI avoids selecting a guaranteed-failing Will-O-Wisp against Water Veil.
         init();move(1,'WILL_O_WISP');aid(0,'WATER_VEIL');call('UtilityAIStatusScore');assert get('wCustomRandomValue')==1
         # Ancient is persistent stat scaling; nature remains independent.
@@ -1104,7 +1123,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 69 species / 345 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 72 species / 360 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

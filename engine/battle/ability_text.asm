@@ -1,0 +1,283 @@
+SECTION "Ability descriptions", ROMX, BANK[$3f]
+
+; The banked renderer reads its ID from scratch; the pointer is 16-bit.
+AbilityDrawDescriptionBanked:
+	ld a, [wAbilityTemp]
+	ld c, a
+	ld b, 0
+	sla c
+	rl b
+	ld hl, AbilityTextPointers
+	add hl, bc
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
+	coord hl, 2, 4
+	jp PlaceString
+
+AbilityTextPointers:
+	dw AbilityNone, AbilityPoisonLeaf, AbilityChlorophyll, AbilityOvergrowth, AbilityPhotosynthesisText, AbilityVineGuard
+	dw AbilityBlaze, AbilityCombustion, AbilityWildfire, AbilityHotTemper, AbilityConfident
+	dw AbilityText11
+	dw AbilityText12
+	dw AbilityText13
+	dw AbilityText14
+	dw AbilityText15
+	dw AbilityText16
+	dw AbilityText17
+	dw AbilityText18
+	dw AbilityText19
+	dw AbilityText20
+	dw AbilityText21
+	dw AbilityText22
+	dw AbilityText23
+	dw AbilityText24
+	dw AbilityText25
+	dw AbilityText26
+	dw AbilityText27
+	dw AbilityText28
+	dw AbilityText29
+	dw AbilityText30
+	dw AbilityText31
+	dw AbilityText32
+	dw AbilityText33
+	dw AbilityText34
+	dw AbilityText35, AbilityText36, AbilityText37, AbilityText38, AbilityText39, AbilityText40, AbilityText41, AbilityText42, AbilityText43, AbilityText44, AbilityText45
+	dw AbilityText46, AbilityText47, AbilityText48
+	dw AbilityText49, AbilityText50
+	dw AbilityText51, AbilityText52, AbilityText53
+	dw AbilityText54, AbilityText55, AbilityText56
+	dw AbilityText57, AbilityText58, AbilityText59, AbilityText60
+	dw AbilityText61, AbilityText62, AbilityText63, AbilityText64, AbilityText65
+	dw AbilityText66, AbilityText67, AbilityText68, AbilityText69
+	dw AbilityText70, AbilityText71, AbilityText72, AbilityText73
+	dw AbilityText74, AbilityText75, AbilityText76, AbilityText77, AbilityText78
+	dw AbilityText79, AbilityText80, AbilityText81, AbilityText82, AbilityText83
+	dw AbilityText84, AbilityText85, AbilityText86
+	dw AbilityText87, AbilityText88, AbilityText89, AbilityText90, AbilityText91, AbilityText92
+	dw AbilityText93, AbilityText94, AbilityText95, AbilityText96, AbilityText97
+	dw AbilityText98, AbilityText99, AbilityText100
+	dw AbilityText101, AbilityText102, AbilityText103, AbilityText104, AbilityText105
+	dw AbilityText106, AbilityText107, AbilityText108, AbilityText109
+	dw AbilityText110, AbilityText111, AbilityText112, AbilityText113
+	dw AbilityText114, AbilityText115, AbilityText116
+	dw AbilityText117, AbilityText118, AbilityText119
+	dw AbilityText120, AbilityText121, AbilityText122, AbilityText123, AbilityText124, AbilityText125
+	dw AbilityText126, AbilityText127, AbilityText128, AbilityText129, AbilityText130, AbilityText131
+	dw AbilityText132, AbilityText133, AbilityText134, AbilityText135, AbilityText136
+	dw AbilityText137, AbilityText138, AbilityText139, AbilityText140, AbilityText141, AbilityText142
+	dw AbilityText143, AbilityText144, AbilityText145, AbilityText146
+AbilityNone:
+	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
+AbilityPoisonLeaf:
+	db "POISON LEAF",$4e,"Grass hits have a",$4e,"25% poison odds.@"
+AbilityChlorophyll:
+	db "CHLOROPHYLL",$4e,"Speed x1.5 while",$4e,"HP is below 1/3.@"
+AbilityOvergrowth:
+	db "OVERGROWTH",$4e,"Grass power x1.25",$4e,"at full HP.@"
+AbilityPhotosynthesisText:
+	db "PHOTOSYNTHESIS",$4e,"Heal 1/16 HP each",$4e,"turn above 1/2.@"
+AbilityVineGuard:
+	db "VINE GUARD",$4e,"Flying damage",$4e,"received x0.5.@"
+AbilityBlaze:
+	db "BLAZE",$4e,"Fire power x1.25",$4e,"below 1/3 HP.@"
+AbilityCombustion:
+	db "COMBUSTION",$4e,"Non-Fire hits:",$4e,"15% burn chance.@"
+AbilityWildfire:
+	db "WILDFIRE",$4e,"Attack +1 when it",$4e,"burns an opponent.@"
+AbilityHotTemper:
+	db "HOT TEMPER",$4e,"Physical hit:",$4e,"Special +1 once",$4e,"per battle.@"
+AbilityConfident:
+	db "CONFIDENT",$4e,"After a miss:",$4e,"Accuracy +1 once",$4e,"per battle.@"
+
+AbilityText11:
+	db "WATER PRESSURE",$4e,"Water +2% per PP",$4e,"left, cap +50%.@"
+
+AbilityText12:
+	db "SHELL GUARD",$4e,"After a crit:",$4e,"Defense +1.@"
+
+AbilityText13:
+	db "ANCIENT",$4e,"Maximum HP x1.2.@"
+
+AbilityText14:
+	db "WATER VEIL",$4e,"Prevents burns.",$4e,"Fire damage",$4e,"x0.5.@"
+
+AbilityText15:
+	db "SHELL ARMOR",$4e,"Cannot be hit by",$4e,"critical hits.@"
+
+AbilityText16:
+	db "RUN AWAY",$4e,"Always escape",$4e,"wild battles.@"
+
+AbilityText17:
+	db "REPULSIVE",$4e,"Damaging hits:",$4e,"10% flinch odds.@"
+
+AbilityText18:
+	db "SURVIVAL INST.",$4e,"Below 1/3 HP:",$4e,"Speed +1 once",$4e,"per battle.@"
+
+AbilityText19:
+	db "QUICK REFLEXES",$4e,"First attack",$4e,"move each entry:",$4e,"priority +1.@"
+
+AbilityText20:
+	db "SHIELD DUST",$4e,"Blocks extra",$4e,"effects of",$4e,"moves.@"
+
+AbilityText21:
+	db "HARD SHELL",$4e,"Physical damage",$4e,"received x0.75.@"
+
+AbilityText22:
+	db "FORTIFY",$4e,"Below 1/3 HP:",$4e,"Defense +1 once",$4e,"per battle.@"
+
+AbilityText23:
+	db "REGENERATION",$4e,"Heal 1/16 max HP",$4e,"at each turn",$4e,"end.@"
+
+AbilityText24:
+	db "BATTLE ARMOR",$4e,"Cannot be hit by",$4e,"critical",$4e,"attacks.@"
+
+AbilityText25:
+	db "COMPOUND EYES",$4e,"Move accuracy",$4e,"multiplied x1.3.@"
+
+AbilityText26:
+	db "PSIONIC",$4e,"Psychic damage",$4e,"multiplied x1.2.@"
+
+AbilityText27:
+	db "DUST CLOUD",$4e,"Contact taken:",$4e,"25% lower foe",$4e,"Accuracy 1",$4e,"stage.@"
+
+AbilityText28:
+	db "WONDER SKIN",$4e,"Incoming status",$4e,"move accuracy",$4e,"multiplied x0.5.@"
+
+AbilityText29:
+	db "POISON POINT",$4e,"Contact taken:",$4e,"25% poison odds.@"
+
+AbilityText30:
+	db "VENOMOUS",$4e,"Damage x1.25 to",$4e,"poisoned foes.@"
+
+AbilityText31:
+	db "PIERCING STING",$4e,"Poison hits Bug",$4e,"at double power.@"
+
+AbilityText32:
+	db "TOXIC SHELL",$4e,"Contact taken:",$4e,"25% poison odds.@"
+
+AbilityText33:
+	db "RUTHLESS",$4e,"Crit odds x2 vs",$4e,"foes with",$4e,"status.@"
+
+AbilityText34:
+	db "FRENZY",$4e,"Direct move KO:",$4e,"Attack +1.@"
+
+AbilityText35: db "STRONG JAW",$4e,"Physical damage",$4e,"x1.15.@"
+AbilityText36: db "VOLTAGE",$4e,"Electric damage",$4e,"x1.2 vs paralysis.@"
+AbilityText37: db "SNIPER",$4e,"Critical damage",$4e,"x1.5.@"
+AbilityText38: db "SAND ARMOR",$4e,"Super effective",$4e,"damage x0.75.@"
+AbilityText39: db "SHARP CLAWS",$4e,"Physical crit",$4e,"chance x1.5.@"
+AbilityText40: db "CORNERED",$4e,"Below 1/3 HP:",$4e,"Attack +1 once.@"
+AbilityText41: db "PREDATOR",$4e,"Physical damage",$4e,"x1.2 vs slower",$4e,"foes.@"
+AbilityText42: db "KEEN EYE",$4e,"Accuracy cannot",$4e,"be lowered.@"
+AbilityText43: db "TAILWIND",$4e,"Speed +1 on",$4e,"entry.@"
+AbilityText44: db "GALE WINGS",$4e,"Flying priority",$4e,"+1 at full HP.@"
+AbilityText45: db "PIERCING BEAK",$4e,"Flying ignores",$4e,"25% of Defense.@"
+AbilityText46: db "SCAVENGER",$4e,"Direct KO heals",$4e,"1/4 max HP.@"
+AbilityText47: db "HUSTLE",$4e,"Physical damage",$4e,"x1.25; accuracy",$4e,"-15 points.@"
+AbilityText48: db "POISON HEAL",$4e,"Poison heals",$4e,"1/8 max HP.@"
+AbilityText49: db "SHORT TEMPER",$4e,"Attack +1 when",$4e,"a move misses.@"
+AbilityText50: db "RELENTLESS",$4e,"Each hit boosts",$4e,"next damage 10%",$4e,"up to 30%.@"
+AbilityText51: db "INTIMIDATE",$4e,"Foe Speed -1 on",$4e,"entry, once.@"
+AbilityText52: db "SHED SKIN",$4e,"30% chance to",$4e,"cure status at",$4e,"turn end.@"
+AbilityText53: db "CORROSIVE VENOM",$4e,"Poison is strong",$4e,"against Rock.@"
+AbilityText54: db "STATIC",$4e,"Physical hits:",$4e,"20% paralyze",$4e,"attacker.@"
+AbilityText55: db "OVERCHARGE",$4e,"Critical hit:",$4e,"Special +1 once",$4e,"per battle.@"
+AbilityText56: db "QUICK FEET",$4e,"Status raises",$4e,"Speed 1 stage.@"
+AbilityText57: db "ROLLING DEFENSE",$4e,"Normal move:",$4e,"Defense +1 once",$4e,"per battle.@"
+AbilityText58: db "BURROWER",$4e,"Ground move heals",$4e,"1/8 max HP.@"
+AbilityText59: db "SAND VEIL",$4e,"Ground move:",$4e,"Evasion +1 once",$4e,"per battle.@"
+AbilityText60: db "SPINY ARMOR",$4e,"Physical hits",$4e,"hurt attacker",$4e,"1/16 max HP.@"
+AbilityText61: db "POISON POINT",$4e,"Physical hits:",$4e,"25% poison",$4e,"attacker.@"
+AbilityText62: db "MEASURED",$4e,"Damage x0.8;",$4e,"extra effect",$4e,"chance x2.@"
+AbilityText63: db "THICK HIDE",$4e,"Physical damage",$4e,"received x0.85.@"
+AbilityText64: db "PROTECTIVE INST.",$4e,"Below 1/2 HP:",$4e,"Defense +1 once",$4e,"per battle.@"
+AbilityText65: db "IRON WILL",$4e,"Cannot be hit by",$4e,"critical hits.@"
+AbilityText66: db "PIERCING HORN",$4e,"Physical hits ignore",$4e,"20% of Defense.@"
+AbilityText67: db "SHEER FORCE",$4e,"Secondary moves x1.2",$4e,"lose added effects.@"
+AbilityText68: db "BLOODLUST",$4e,"Physical hits x1.25",$4e,"if foe below 1/2.@"
+AbilityText69: db "RAMPAGE",$4e,"Physical hits x1.25",$4e,"recoil 10% damage.@"
+AbilityText70: db "LUCKY STAR",$4e,"10% chance to deal",$4e,"50% more damage.@"
+AbilityText71: db "MAGIC GUARD",$4e,"Blocks indirect",$4e,"damage.@"
+AbilityText72: db "MOON CHILD",$4e,"Heal 1/16 max HP",$4e,"each turn.@"
+AbilityText73: db "UNPREDICTABLE",$4e,"Metronome damage",$4e,"is boosted 30%.@"
+AbilityText74: db "AFTERMATH",$4e,"Curse the foe that",$4e,"knocks this out.@"
+AbilityText75: db "FOXFIRE",$4e,"Inflict burn:",$4e,"Special +1 once.@"
+AbilityText76: db "NINE LIVES",$4e,"Survive a fatal hit",$4e,"once per battle.@"
+AbilityText77: db "FOX'S CUNNING",$4e,"Ghost move: Evasion",$4e,"+1 once per battle.@"
+AbilityText78: db "ILLUSION",$4e,"First attack taken",$4e,"is halved on entry.@"
+AbilityText79: db "INFLATABLE",$4e,"Physical hit:",$4e,"Defense +1.@"
+AbilityText80: db "PERFORMER",$4e,"Sound move accuracy",$4e,"is increased 20%.@"
+AbilityText81: db "RUBBER SKIN",$4e,"Immune to Electric",$4e,"moves.@"
+AbilityText82: db "SOOTHING VOICE",$4e,"Sound move: heal",$4e,"1/8 maximum HP.@"
+AbilityText83: db "THICK FAT",$4e,"Fire and Ice damage",$4e,"is halved.@"
+AbilityText84: db "ECHOLOCATION",$4e,"Move accuracy",$4e,"gains 20 points.@"
+AbilityText85: db "BLOODSUCKER",$4e,"Drain moves heal an",$4e,"extra 25% damage.@"
+AbilityText86: db "INFILTRATOR",$4e,"Bypasses screens",$4e,"and Substitute.@"
+AbilityText87: db "PERFUME",$4e,"Evasion +1 when",$4e,"entering battle.@"
+AbilityText88: db "ABSORPTION",$4e,"Drain moves heal an",$4e,"extra 25% damage.@"
+AbilityText89: db "POLLEN",$4e,"Powder accuracy",$4e,"gains 20 points.@"
+AbilityText90: db "EFFECT SPORE",$4e,"Physical hits: 20%",$4e,"poison, para or",$4e,"sleep.@"
+AbilityText91: db "STENCH",$4e,"Poisoned foes deal",$4e,"25% less damage.@"
+AbilityText92: db "TOXIC WASTE",$4e,"Heal 1/16 max HP",$4e,"if foe is poisoned.@"
+AbilityText93: db "LEECHING",$4e,"Physical hits heal",$4e,"10% of damage.@"
+AbilityText94: db "PARASITE",$4e,"Contact spreads",$4e,"this ability.@"
+AbilityText95: db "MYCELIUM",$4e,"Status moves bypass",$4e,"accuracy checks.@"
+AbilityText96: db "REGROWTH",$4e,"Heal 1/16 max HP",$4e,"each turn.@"
+AbilityText97: db "DEATH SPORE",$4e,"When knocked out:",$4e,"curse or poison foe.@"
+AbilityText98: db "TOXIC SCALES",$4e,"Physical hits: 30%",$4e,"chance to poison.@"
+AbilityText99: db "TINTED LENS",$4e,"Resisted damage",$4e,"is doubled.@"
+AbilityText100: db "POISON ABSORB",$4e,"Heal 1/8 max HP",$4e,"if foe is poisoned.@"
+AbilityText101: db "AMBUSH",$4e,"First attack after",$4e,"entry deals x1.25.@"
+AbilityText102: db "SUBTERRANEAN",$4e,"Super-effective",$4e,"damage x0.75.@"
+AbilityText103: db "ELUSIVE",$4e,"Evasion +1 until",$4e,"attacked.@"
+AbilityText104: db "AFTERSHOCK",$4e,"Ground hits: 20%",$4e,"chance to paralyze.@"
+AbilityText105: db "SAND RUSH",$4e,"Ground move: Speed",$4e,"+1 once per battle.@"
+AbilityText106: db "OPPORTUNIST",$4e,"Damage x1.2 if foe",$4e,"has lowered stats.@"
+AbilityText107: db "GREEDY",$4e,"Doubles trainer",$4e,"prize money.@"
+AbilityText108: db "RESOURCEFUL",$4e,"Moves gain 5 PP",$4e,"up to 63 maximum.@"
+AbilityText109: db "TECHNICIAN",$4e,"Moves with power",$4e,"at most 60: x1.5.@"
+
+AbilityText110: db "HEADACHE",$4e,"Special hit:",$4e,"Special +1 once.@"
+AbilityText111: db "DAMP",$4e,"Explosion immune;",$4e,"Fire damage halved.@"
+AbilityText112: db "CONFOUNDING",$4e,"Psychic hits may",$4e,"confuse the foe.@"
+AbilityText113: db "UNSTABLE",$4e,"Below half HP:",$4e,"random stat +1.@"
+AbilityText114: db "CLOUD NINE",$4e,"Foe cannot lower",$4e,"your stats.@"
+AbilityText115: db "SWIFT SWIM",$4e,"Water hit raises",$4e,"Speed two stages.@"
+AbilityText116: db "MIND READER",$4e,"Accuracy cannot",$4e,"be lowered.@"
+
+AbilityText117: db "DEFIANT",$4e,"Status conditions",$4e,"do not lower stats.@"
+AbilityText118: db "SCRAPPY",$4e,"Normal and Fighting",$4e,"moves hit Ghosts.@"
+AbilityText119: db "UNSOPHISTICATED",$4e,"100% moves: power",$4e,"x1.25; accuracy -10.@"
+
+AbilityText120: db "LOYALTY",$4e,"Heal 20% max HP",$4e,"after a knockout.@"
+AbilityText121: db "LEGENDARY",$4e,"Moves with max PP",$4e,"10 or less: x1.25.@"
+AbilityText122: db "MOMENTUM",$4e,"Recoil move: Speed",$4e,"+1 once per battle.@"
+AbilityText123: db "STEADFAST",$4e,"Cannot be confused",$4e,"or flinched.@"
+AbilityText124: db "ELEGANT MANE",$4e,"Special damage",$4e,"received x0.8.@"
+AbilityText125: db "INTIMIDATE",$4e,"Entry: foe Speed",$4e,"-1 once per battle.@"
+
+AbilityText126: db "HYPNOTIC",$4e,"Sleep moves:",$4e,"accuracy +15.@"
+AbilityText127: db "SLIPPERY",$4e,"Physical hit:",$4e,"Evasion +1 once.@"
+AbilityText128: db "HYDRATION",$4e,"Water move heals",$4e,"1/8 maximum HP.@"
+AbilityText129: db "WRESTLER",$4e,"Fighting hits: 20%",$4e,"chance to paralyze.@"
+AbilityText130: db "POWER SWIM",$4e,"Water move: Attack",$4e,"+1 once per battle.@"
+AbilityText131: db "IRON FIST",$4e,"Punching moves",$4e,"deal 25% more.@"
+
+AbilityText132: db "MENTAL SHIELD",$4e,"Special damage",$4e,"received x0.8.@"
+AbilityText133: db "TELEPATHY",$4e,"Psychic move:",$4e,"Evasion +1 once.@"
+AbilityText134: db "GENIUS",$4e,"Status moves:",$4e,"accuracy +15.@"
+AbilityText135: db "MAGIC BOUNCE",$4e,"Reflects status",$4e,"moves at the foe.@"
+AbilityText136: db "SPOON BENDER",$4e,"Psychic hits ignore",$4e,"20% of Special.@"
+
+AbilityText137: db "NO GUARD",$4e,"Both sides' moves",$4e,"cannot miss.@"
+AbilityText138: db "GUTS",$4e,"Status condition:",$4e,"Attack +1.@"
+AbilityText139: db "IRON GRIP",$4e,"Physical damage",$4e,"x1.2 vs high Def.@"
+AbilityText140: db "FOUR ARMS",$4e,"Multi-hit moves",$4e,"always hit maximum.@"
+AbilityText141: db "GRAPPLER",$4e,"Physical hit: 10%",$4e,"foe Defense -1.@"
+AbilityText142: db "BODYBUILDER",$4e,"Fighting move:",$4e,"Defense +1 once.@"
+
+AbilityText143: db "ACIDIC",$4e,"Poison hit: 25%",$4e,"foe Defense -1.@"
+AbilityText144: db "CARNIVOROUS",$4e,"Heal 20% max HP",$4e,"after a knockout.@"
+AbilityText145: db "STICKY TRAP",$4e,"Physical hit: 20%",$4e,"foe Speed -1.@"
+AbilityText146: db "DIGESTIVE ACID",$4e,"Poison power x1.25",$4e,"if foe Def > Spc.@"

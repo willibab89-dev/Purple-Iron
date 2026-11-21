@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 69 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 72 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -44,10 +44,13 @@ Implemented for 69 species, with five equally likely slots per species. The save
 | Kadabra / Alakazam | Spoon Bender | Magic Guard | Mind Reader | Genius | Magic Bounce |
 | Machop / Machoke | No Guard | Guts | Iron Grip | Grappler | Bodybuilder |
 | Machamp | No Guard | Guts | Four Arms | Grappler | Bodybuilder |
+| Bellsprout / Weepinbell / Victreebel | Acidic | Carnivorous | Sticky Trap | Chlorophyll | Digestive Acid |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Bellsprout-family effects: Acidic gives Poison hits a 25% chance to lower Defense. Carnivorous heals 20% of maximum HP after a direct knockout. Sticky Trap gives incoming physical hits a 20% chance to lower the attacker’s Speed. Chlorophyll increases Speed by 50% below one-third HP. Digestive Acid boosts Poison damage by 25% if the target’s Defense exceeds its Special.
 
 Machop-family effects: No Guard makes moves used by or against the holder bypass accuracy and Fly/Dig evasion, while type and ability immunities still apply. Guts adds an Attack stage while a major status condition is present. Iron Grip boosts physical damage by 20% against higher Defense than the holder’s Attack. Four Arms makes variable-hit moves hit five times and prevents subsequent Triple Kick accuracy failures. Grappler gives physical hits a 10% chance to lower Defense. Bodybuilder raises Defense after using a Fighting move once per battle. Machamp learns Barrage at level 50; Barrage is a variable-hit Grass-type move in this game.
 
@@ -143,6 +146,10 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 - The trainer AI discourages Will-O-Wisp against Water Veil.
 - Ability Capsules now work on every species in the table, changing to a different slot while preserving nature. Changing into or out of Ancient recalculates HP immediately. Nature Capsules preserve the ability slot. Species without a pool still reject Ability Capsules without consuming one.
 
+## Storage
+
+Ability descriptions and Resourceful PP routines are in the expanded ability bank, leaving room for additional battle mechanics and ability descriptions. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged.
+
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 345 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 360 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
