@@ -61,6 +61,13 @@ SequenceHPBelowHalf:
 ; A temporary Fly/Dig status alone is insufficient: the target must be using
 ; Fly, and this must be the real Twister record, not confusion self-damage.
 SequenceAirborneHit:
+	abilitycall AbilityNoGuardCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .normal
+	scf
+	ret
+.normal
 	call CustomActorMove
 	ld a, [hl]
 	cp RAZOR_WIND
@@ -262,6 +269,10 @@ SequenceTripleAccuracy:
 	call CustomActorMove
 	ld a, [hl]
 	cp TRIPLE_KICK
+	jr nz, .hit
+	abilitycall AbilityFourArmsCheck
+	ld a, [wAbilityCheckResult]
+	and a
 	jr nz, .hit
 	ld hl, wPlayerMoveAccuracy
 	ld a, [H_WHOSETURN]

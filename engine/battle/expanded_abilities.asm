@@ -63,10 +63,18 @@ AbilityEntrySpeed:
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_QUICK_FEET
-	jr nz, .checkIntimidate
+	jr nz, .checkGuts
 	call AbilityFlagsPointer
 	res 0, [hl] ; reapply the boost after stages reset on each entry
 	call AbilityQuickFeet
+.checkGuts
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_GUTS
+	jr nz, .checkIntimidate
+	call AbilityFlagsPointer
+	res 0, [hl]
+	call AbilityGuts
 .checkIntimidate
 	ld a, [wFirstMonsNotOutYet]
 	and a
@@ -88,9 +96,11 @@ AbilityQuickFeetBoth:
 	xor a
 	ld [wAbilitySide], a
 	call AbilityQuickFeet
+	call AbilityGuts
 	ld a, 1
 	ld [wAbilitySide], a
-	jp AbilityQuickFeet
+	call AbilityQuickFeet
+	jp AbilityGuts
 
 AbilityQuickFeet:
 	ld a, [wAbilitySide]
@@ -541,6 +551,14 @@ AbilityModifyDamage:
 	ld [wDamageMultipliers], a
 	jp .defender
 .newOffense
+	cp AB_IRON_GRIP
+	jr nz, .ironFist
+	call AbilityIronGripCheck
+	jp nc, .defender
+	ld c, 120
+	call AbilityScaleDamage
+	jp .defender
+.ironFist
 	cp AB_IRON_FIST
 	jr nz, .legendary
 	call AbilityMove
@@ -892,6 +910,14 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityFixedMinimum
 	jp .defender
 .male
+	cp AB_IRON_GRIP
+	jr nz, .fixedLegendary
+	call AbilityIronGripCheck
+	jp nc, .defender
+	ld c, 120
+	call AbilityScaleDamage
+	jp .defender
+.fixedLegendary
 	cp AB_LEGENDARY
 	jr nz, .fixedUnsophisticated
 	call AbilityLegendaryCheck
@@ -1098,9 +1124,9 @@ AbilitySandAfterAction:
 	ret z
 	call AbilityActor
 	cp AB_ROLLING_DEFENSE
-	jr z, .normal
+	jp z, .normal
 	cp AB_SAND_VEIL
-	jr z, .evasion
+	jp z, .evasion
 	cp AB_HYDRATION
 	jr nz, .burrower
 	call AbilityActorMoveType
@@ -1124,6 +1150,14 @@ AbilitySandAfterAction:
 	ld a, 3 ; 1/8 maximum HP
 	jp AbilityHealFractionFromHL
 .sandRush
+	cp AB_BODYBUILDER
+	jr nz, .powerSwim
+	call AbilityActorMoveType
+	cp FIGHTING
+	ret nz
+	ld a, 1
+	jr .once
+.powerSwim
 	cp AB_POWER_SWIM
 	jr nz, .momentum
 	call AbilityActorMoveType
@@ -1227,6 +1261,7 @@ AbilityHitEvents:
 	call AbilitySpinyArmor
 	call AbilityEffectSpore
 	call AbilityAftershock
+	call AbilityGrappler
 	call AbilityToxicScales
 	call AbilityParasite
 	call AbilityConfounding
@@ -3974,3 +4009,221 @@ AbilityBounceMoves:
  db LEECH_SEED, POISONPOWDER, STUN_SPORE, SLEEP_POWDER, THUNDER_WAVE, TOXIC
  db HYPNOSIS, SCREECH, SMOKESCREEN, CONFUSE_RAY, KINESIS, SPLASH, GLARE, POISON_GAS
  db LOVELY_KISS, SPORE, WILL_O_WISP, FLASH_FREEZE, CURSE, CHARM, $ff
+
+AbilityMultiHitEffect:
+	ld hl, wPlayerBattleStatus1
+	ld de, wPlayerNumAttacksLeft
+	ld bc, wPlayerNumHits
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .twoToFiveAttacksEffect
+	ld hl, wEnemyBattleStatus1
+	ld de, wEnemyNumAttacksLeft
+	ld bc, wEnemyNumHits
+.twoToFiveAttacksEffect
+	bit ATTACKING_MULTIPLE_TIMES, [hl] ; is mon attacking multiple times?
+	ret nz
+	set ATTACKING_MULTIPLE_TIMES, [hl] ; mon is now attacking multiple times
+	ld hl, wPlayerMoveEffect
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .setNumberOfHits
+	ld hl, wEnemyMoveEffect
+.setNumberOfHits
+	push hl
+	ld a, [H_WHOSETURN]
+	and a
+	ld a, [wPlayerMoveNum]
+	jr z, .checkTripleKick
+	ld a, [wEnemyMoveNum]
+.checkTripleKick
+	cp TRIPLE_KICK
+	pop hl
+	ld a, 3
+	jr z, .saveNumberOfHits
+	ld a, [hl]
+	cp TWINEEDLE_EFFECT
+	jr z, .twineedle
+	cp ATTACK_TWICE_EFFECT
+	ld a, $2 ; number of hits it's always 2 for ATTACK_TWICE_EFFECT
+	jr z, .saveNumberOfHits
+; Four Arms gives variable-hit attacks their maximum of five hits.
+	call AbilityActor
+	cp AB_FOUR_ARMS
+	jr nz, .rollHits
+	ld a, 5
+	jr .saveNumberOfHits
+.rollHits
+	push bc
+	push de
+	callab CustomRandomInBattleBank
+	pop de
+	pop bc
+	ld a, [wCustomRandomValue]
+	and $3
+	cp $2
+	jr c, .gotNumHits
+; if the number of hits was greater than 2, re-roll again for a lower chance
+	push bc
+	push de
+	callab CustomRandomInBattleBank
+	pop de
+	pop bc
+	ld a, [wCustomRandomValue]
+	and $3
+.gotNumHits
+	inc a
+	inc a
+.saveNumberOfHits
+	ld [de], a
+	ld [bc], a
+	ret
+.twineedle
+	ld a, POISON_SIDE_EFFECT1
+	ld [hl], a ; set Twineedle's effect to poison effect
+	jr .saveNumberOfHits
+
+
+; No Guard bypasses accuracy/evasion and the Fly/Dig invulnerability check.
+; Type immunities and ability immunities are handled separately.
+AbilityNoGuardCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityActor
+ cp AB_NO_GUARD
+ jr z, .yes
+ call AbilityTarget
+ cp AB_NO_GUARD
+ ret nz
+.yes
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; Guts grants one Attack stage only while a major condition is present.
+AbilityGuts:
+ ld a, [wAbilitySide]
+ call AbilityGet
+ cp AB_GUTS
+ ret nz
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ inc hl
+ inc hl
+ ld a, [hl]
+ and a
+ jr z, .healthy
+ call AbilityFlagsPointer
+ bit 0, [hl]
+ ret nz
+ xor a
+ call AbilityRaiseStage
+ ld a, [wCustomChanged]
+ and a
+ ret z
+ call AbilityFlagsPointer
+ set 0, [hl]
+ ret
+.healthy
+ call AbilityFlagsPointer
+ bit 0, [hl]
+ ret z
+ res 0, [hl]
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ xor a
+ ld [wCustomStat], a
+ ld [wCustomChanged], a
+ dec a
+ ld [wCustomDelta], a
+ jpab CustomChangeStage
+
+; Carry when the current physical move faces greater Defense than Attack.
+AbilityIronGripCheck:
+ call AbilityActorMoveType
+ cp FIRE
+ ret nc
+ ld hl, wBattleMonAttack
+ ld de, wEnemyMonDefense
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .compare
+ ld hl, wEnemyMonAttack
+ ld de, wBattleMonDefense
+.compare
+ ld a, [de]
+ ld b, a
+ ld a, [hli]
+ cp b
+ ret nz
+ inc de
+ ld a, [de]
+ ld b, a
+ ld a, [hl]
+ cp b
+ ret
+
+AbilityGrappler:
+ call AbilityActor
+ cp AB_GRAPPLER
+ ret nz
+ ld a, [wAbilityMoveType]
+ cp FIRE
+ ret nc
+ call AbilityTarget
+ cp AB_SHIELD_DUST
+ ret z
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ ld [wCustomSide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab CustomTargetProtected
+ ret nz
+ ld b, 10
+ call AbilityRoll
+ ret nc
+ ld a, 1 ; Defense
+ ld [wCustomStat], a
+ xor a
+ ld [wCustomChanged], a
+ dec a
+ ld [wCustomDelta], a
+ jpab CustomChangeStage
+
+AbilityFourArmsCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityActor
+ cp AB_FOUR_ARMS
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; Haze clears both status and stages together, so no old Guts stage remains.
+AbilityGutsHazeReset:
+ ld a, [wAbilitySide]
+ push af
+ xor a
+ ld [wAbilitySide], a
+ call .one
+ ld a, 1
+ ld [wAbilitySide], a
+ call .one
+ pop af
+ ld [wAbilitySide], a
+ ret
+.one
+ ld a, [wAbilitySide]
+ call AbilityGet
+ cp AB_GUTS
+ ret nz
+ call AbilityFlagsPointer
+ res 0, [hl]
+ ret

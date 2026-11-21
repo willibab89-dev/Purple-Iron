@@ -81,6 +81,9 @@ AbilitySpeciesPools:
 	db ABRA, 181
 	db KADABRA, 186
 	db ALAKAZAM, 186
+	db MACHOP, 191
+	db MACHOKE, 191
+	db MACHAMP, 196
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -121,6 +124,8 @@ AbilityPoolIds:
 	db AB_WRESTLER, AB_SLIPPERY, AB_SWIFT_SWIM, AB_POWER_SWIM, AB_IRON_FIST
 	db AB_RUN_AWAY, AB_MENTAL_SHIELD, AB_TELEPATHY, AB_GENIUS, AB_MAGIC_BOUNCE
 	db AB_SPOON_BENDER, AB_MAGIC_GUARD, AB_MIND_READER, AB_GENIUS, AB_MAGIC_BOUNCE
+	db AB_NO_GUARD, AB_GUTS, AB_IRON_GRIP, AB_GRAPPLER, AB_BODYBUILDER
+	db AB_NO_GUARD, AB_GUTS, AB_FOUR_ARMS, AB_GRAPPLER, AB_BODYBUILDER
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -728,6 +733,7 @@ AbilityTextPointers:
 	dw AbilityText120, AbilityText121, AbilityText122, AbilityText123, AbilityText124, AbilityText125
 	dw AbilityText126, AbilityText127, AbilityText128, AbilityText129, AbilityText130, AbilityText131
 	dw AbilityText132, AbilityText133, AbilityText134, AbilityText135, AbilityText136
+	dw AbilityText137, AbilityText138, AbilityText139, AbilityText140, AbilityText141, AbilityText142
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -995,3 +1001,10 @@ AbilityText133: db "TELEPATHY",$4e,"Psychic move:",$4e,"Evasion +1 once.@"
 AbilityText134: db "GENIUS",$4e,"Status moves:",$4e,"accuracy +15.@"
 AbilityText135: db "MAGIC BOUNCE",$4e,"Reflects status",$4e,"moves at the foe.@"
 AbilityText136: db "SPOON BENDER",$4e,"Psychic hits ignore",$4e,"20% of Special.@"
+
+AbilityText137: db "NO GUARD",$4e,"Both sides' moves",$4e,"cannot miss.@"
+AbilityText138: db "GUTS",$4e,"Status condition:",$4e,"Attack +1.@"
+AbilityText139: db "IRON GRIP",$4e,"Physical damage",$4e,"x1.2 vs high Def.@"
+AbilityText140: db "FOUR ARMS",$4e,"Multi-hit moves",$4e,"always hit maximum.@"
+AbilityText141: db "GRAPPLER",$4e,"Physical hit: 10%",$4e,"foe Defense -1.@"
+AbilityText142: db "BODYBUILDER",$4e,"Fighting move:",$4e,"Defense +1 once.@"

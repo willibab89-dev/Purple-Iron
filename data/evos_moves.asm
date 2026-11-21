@@ -1710,6 +1710,7 @@ MachampEvosMoves:
 	db 36, DOUBLESLAP
 	db 41, SUBMISSION
 	db 49, TRIPLE_KICK
+	db 50, BARRAGE
 	db 56, PIERCE
 	db 63, MEGA_KICK
 	db 0

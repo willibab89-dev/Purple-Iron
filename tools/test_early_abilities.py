@@ -124,8 +124,10 @@ def validate(version):
                'POLIWAG':['HYPNOTIC','SLIPPERY','SWIFT_SWIM','HYDRATION','WATER_VEIL'],
                'POLIWRATH':['WRESTLER','SLIPPERY','SWIFT_SWIM','POWER_SWIM','IRON_FIST'],
                'ABRA':['RUN_AWAY','MENTAL_SHIELD','TELEPATHY','GENIUS','MAGIC_BOUNCE'],
-               'KADABRA':['SPOON_BENDER','MAGIC_GUARD','MIND_READER','GENIUS','MAGIC_BOUNCE']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA')]:
+               'KADABRA':['SPOON_BENDER','MAGIC_GUARD','MIND_READER','GENIUS','MAGIC_BOUNCE'],
+               'MACHOP':['NO_GUARD','GUTS','IRON_GRIP','GRAPPLER','BODYBUILDER'],
+               'MACHAMP':['NO_GUARD','GUTS','FOUR_ARMS','GRAPPLER','BODYBUILDER']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -749,6 +751,28 @@ def validate(version):
             ap,tp=init(turn);move(turn,'POISONPOWDER');aid(turn,'MAGIC_BOUNCE');aid(1-turn,'MAGIC_BOUNCE');rng(0);call('_JumpMoveEffect');assert get(ap+'Status')==8 and get(tp+'Status')==0,(turn,'double bounce')
         for n,original in bounce_patches.items():
             b,a=syms[n];game.memory[b,a]=original
+        # Machop family: sure hits, status-dependent Attack, damage and hit count.
+        for turn in (0,1):
+            for no_guard_side in (turn,1-turn):
+                for airborne in (False,True):
+                    ap,tp=init(turn);move(turn,'TACKLE');aid(no_guard_side,'NO_GUARD');put('w'+('Player' if turn else 'Enemy')+'BattleStatus1',64 if airborne else 0);rng(255);call('MoveHitTest');assert get('wMoveMissed')==0,(turn,no_guard_side,airborne)
+            init(turn);move(turn,'TACKLE');aid(turn,'NO_GUARD');put('wMoveMissed',1);rng(255);call('MoveHitTest');assert get('wMoveMissed')==1,(turn,'immunity preserved')
+            for status in (8,16,32,64,1):
+                ap,tp=init(turn);aid(turn,'GUTS');put(ap+'Status',status);put('wAbilitySide',turn);call('AbilityGuts');mod='w'+('Enemy' if turn else 'Player')+'MonAttackMod';assert get(mod)==8,(turn,status,'guts');call('AbilityGuts');assert get(mod)==8;put(ap+'Status',0);call('AbilityGuts');assert get(mod)==7,(turn,status,'guts cure')
+            ap,tp=init(turn);aid(turn,'GUTS');put(ap+'Status',16);put('wAbilitySide',turn);call('AbilityGuts')
+            animation_bank,animation_address=syms['PlayCurrentMoveAnimation'];animation_original=game.memory[animation_bank,animation_address];patch('PlayCurrentMoveAnimation',[0xc9])
+            call('HazeEffect_');call('AbilityQuickFeetBoth');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==7,(turn,'guts haze')
+            game.memory[animation_bank,animation_address]=animation_original
+            for attack,offense,defense,want in [('TACKLE',100,101,120),('TACKLE',101,101,100),('TACKLE',256,255,100),('FLAMETHROWER',100,200,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'IRON_GRIP');word(ap+'Attack',offense);word(tp+'Defense',defense);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,offense,defense,readword('wDamage'))
+            for attack,ability_name,roll,want in [('BARRAGE','FOUR_ARMS',0,5),('BARRAGE',None,0,2),('DOUBLESLAP','FOUR_ARMS',0,2),('TRIPLE_KICK','FOUR_ARMS',0,3)]:
+                init(turn);move(turn,attack);aid(turn,ability_name);rng(roll);call('TwoToFiveAttacksEffect');assert get('w'+('Enemy' if turn else 'Player')+'NumHits')==want,(turn,attack,ability_name,get('w'+('Enemy' if turn else 'Player')+'NumHits'))
+            for active,want in [(True,0),(False,1)]:
+                init(turn);move(turn,'TRIPLE_KICK');aid(turn,'FOUR_ARMS' if active else None);rng(255);call('SequenceTripleAccuracy');assert get('wMoveMissed')==want,(turn,'triple kick',active)
+            for attack,roll,target,sub,want in [('TACKLE',0,None,0,6),('TACKLE',19,None,0,6),('TACKLE',20,None,0,7),('FLAMETHROWER',0,None,0,7),('TACKLE',0,'SHIELD_DUST',0,7),('TACKLE',0,None,1,7)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'GRAPPLER');aid(1-turn,target);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');mod='w'+('Player' if turn else 'Enemy')+'MonDefenseMod';assert get(mod)==want,(turn,attack,roll,target,sub,get(mod))
+            for attack,want in [('LOW_KICK',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(turn,'BODYBUILDER');put('wAbilityHit',8);call('AbilitySandAfterAction');mod='w'+('Enemy' if turn else 'Player')+'MonDefenseMod';assert get(mod)==want;call('AbilitySandAfterAction');assert get(mod)==want
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -824,7 +848,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,137):
+        for n in range(1,143):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1080,7 +1104,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 66 species / 330 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 69 species / 345 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

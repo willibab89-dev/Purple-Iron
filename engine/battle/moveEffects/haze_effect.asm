@@ -1,4 +1,5 @@
 HazeEffect_:
+	abilitycall AbilityGutsHazeReset
 	ld a, $7
 ; store 7 on every stat mod
 	ld hl, wPlayerMonAttackMod
