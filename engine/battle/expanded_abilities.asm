@@ -4,6 +4,7 @@
 ; 3 first damaging move spent; 4..5 Relentless hit count; 6 Intimidate spent;
 ; 7 already affected by Intimidate. Bits 0..2 and 6..7 persist in battle.
 AbilityEntry:
+	call AbilityRolloutResetSide
 	call AbilityClearRelentless
 	call AbilityFlagsPointer
 	res 3, [hl]
@@ -37,6 +38,7 @@ AbilityClearRelentless:
 
 ; Called after the newly loaded combatant's stat stages are initialized.
 AbilityEntrySpeed:
+	call AbilityImmunityOnEntry
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_ELUSIVE
@@ -559,6 +561,27 @@ AbilityModifyDamage:
 	ld [wDamageMultipliers], a
 	jp .defender
 .newOffense
+	cp AB_DIGGER
+	jr nz, .heavyweight
+	call AbilityDiggerCheck
+	jp nc, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jp .defender
+.heavyweight
+	cp AB_HEAVYWEIGHT
+	jr nz, .rollout
+	call AbilityHeavyweightCheck
+	jp nc, .defender
+	ld c, 120
+	call AbilityScaleDamage
+	jp .defender
+.rollout
+	cp AB_ROLLOUT
+	jr nz, .digestive
+	call AbilityRolloutScale
+	jp .defender
+.digestive
 	cp AB_DIGESTIVE_ACID
 	jr nz, .ironGrip
 	call AbilityDigestiveAcidCheck
@@ -934,6 +957,27 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityFixedMinimum
 	jp .defender
 .male
+	cp AB_DIGGER
+	jr nz, .fixedHeavyweight
+	call AbilityDiggerCheck
+	jp nc, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jp .defender
+.fixedHeavyweight
+	cp AB_HEAVYWEIGHT
+	jr nz, .fixedRollout
+	call AbilityHeavyweightCheck
+	jp nc, .defender
+	ld c, 120
+	call AbilityScaleDamage
+	jp .defender
+.fixedRollout
+	cp AB_ROLLOUT
+	jr nz, .fixedDigestive
+	call AbilityRolloutScale
+	jp .defender
+.fixedDigestive
 	cp AB_DIGESTIVE_ACID
 	jr nz, .fixedIronGrip
 	call AbilityDigestiveAcidCheck
@@ -1481,6 +1525,8 @@ AbilityIncomingDamage:
 	xor 1
 	ld [wAbilitySide], a
 	call AbilityTarget
+	cp AB_STURDY
+	jp z, AbilitySturdyIncoming
 	cp AB_ILLUSION
 	jr z, .illusion
 	cp AB_NINE_LIVES
@@ -3041,11 +3087,21 @@ AbilityBurnGate:
 	xor a
 	ld [wAbilityCheckResult], a
 	ld a, [wCustomDelta]
+	cp 1 << PSN
+	jr nz, .burn
+	ld a, [wCustomSide]
+	call AbilityGet
+	cp AB_IMMUNITY
+	jr z, .block
+	ret
+.burn
+	ld a, [wCustomDelta]
 	cp 1 << BRN
 	ret nz
 	call AbilityTarget
 	cp AB_WATER_VEIL
 	ret nz
+.block
 	ld a, 1
 	ld [wAbilityCheckResult], a
 	ret
@@ -3355,6 +3411,8 @@ AbilityDustOnly:
 	xor a
 	ld [wAbilityCheckResult], a
 	call AbilityTarget
+	cp AB_IMMUNITY
+	jr z, .block
 	cp AB_SHIELD_DUST
 	ret nz
 	call AbilityMove
@@ -3363,6 +3421,7 @@ AbilityDustOnly:
 	ld a, [hl]
 	and a
 	ret z
+.block
 	ld a, 1
 	ld [wAbilityCheckResult], a
 	ret
@@ -3389,6 +3448,8 @@ AbilityHalfHP:
 	ret
 
 AbilityPlayerEntry:
+	xor a
+	ld [wRolloutStacks], a
 	call AbilityClearRelentless
 	ld hl, wAbilityFlags
 	ld a, [wWhichPokemon]
@@ -3414,6 +3475,10 @@ AbilityInflictOrdinaryStatus:
 	ld a, [wCustomDelta]
 	cp 1 << PSN
 	jp nz, .burn
+	ld a, [wCustomSide]
+	call AbilityGet
+	cp AB_IMMUNITY
+	ret z
 	xor a
 	ld [wCustomChanged], a
 	ld hl, wBattleMonStatus
@@ -4095,3 +4160,282 @@ AbilityLiquidOozeHurt:
  ld [wCustomSide], a
  callab UtilitySyncParty
  jpab DrawHUDsAndHPBars
+
+AbilityLevitateCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityActorMoveType
+ cp GROUND
+ ret nz
+ call AbilityTarget
+ cp AB_LEVITATE
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityLevitateAICheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wUnusedC000]
+ bit 3, a
+ ld a, [wEnemyMoveType]
+ jr z, .type
+ ld a, [wPlayerMoveType]
+.type
+ cp GROUND
+ ret nz
+ ld a, [wUnusedC000]
+ bit 3, a
+ ld a, 0
+ jr z, .side
+ inc a
+.side
+ call AbilityGet
+ cp AB_LEVITATE
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; A direct lethal hit at full HP leaves the defender at 1 HP.
+AbilitySturdyIncoming:
+ call AbilityHP
+ ld a, [de]
+ cp [hl]
+ ret nz
+ inc de
+ inc hl
+ ld a, [de]
+ cp [hl]
+ ret nz
+ dec hl
+ ld a, [hli]
+ ld b, a
+ ld a, [hl]
+ ld c, a
+ or b
+ ret z
+ ld a, [wDamage]
+ cp b
+ ret c
+ jr nz, .survive
+ ld a, [wDamage + 1]
+ cp c
+ ret c
+.survive
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ jr nz, .notOHKO
+ xor a
+ ld [wCriticalHitOrOHKO], a
+.notOHKO
+ ld a, c
+ sub 1
+ ld [wDamage + 1], a
+ ld a, b
+ sbc 0
+ ld [wDamage], a
+ ret
+
+AbilityDiggerCheck:
+ ld hl, wEnemyMonType1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .types
+ ld hl, wBattleMonType1
+.types
+ ld a, [hli]
+ cp GROUND
+ jr z, .yes
+ ld a, [hl]
+ cp GROUND
+ jr z, .yes
+ and a
+ ret
+.yes
+ scf
+ ret
+
+AbilityHeavyweightCheck:
+ call AbilityActorMoveType
+ cp ROCK
+ jr z, .rock
+ and a
+ ret
+.rock
+ ld hl, wBattleMonDefense
+ ld de, wEnemyMonDefense
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .compare
+ ld hl, wEnemyMonDefense
+ ld de, wBattleMonDefense
+.compare
+ ld a, [de]
+ cp [hl]
+ ret nz
+ inc de
+ inc hl
+ ld a, [de]
+ cp [hl]
+ ret
+
+AbilityRolloutSidePointer:
+ ld hl, wRolloutStacks
+ ld a, [wAbilitySide]
+ and a
+ ret z
+ inc hl
+ ret
+AbilityRolloutResetSide:
+ call AbilityRolloutSidePointer
+ ld [hl], 0
+ ret
+
+; Add 10% of the attack's unboosted damage for each prior successful move.
+; The multiplier is calculated with a 32-bit product and saturates at 65535.
+AbilityRolloutScale:
+ call AbilityActorMoveType
+ cp GROUND
+ jr z, .eligible
+ cp ROCK
+ ret nz
+.eligible
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ ld a, [hl]
+ and a
+ ret z
+ ld [H_MULTIPLIER], a
+ xor a
+ ld [H_MULTIPLICAND], a
+ ld a, [wDamage]
+ ld [H_MULTIPLICAND + 1], a
+ ld a, [wDamage + 1]
+ ld [H_MULTIPLICAND + 2], a
+ call Multiply
+ ld a, 10
+ ld [H_DIVISOR], a
+ ld b, 4
+ call Divide
+ ld a, [H_QUOTIENT]
+ ld b, a
+ ld a, [H_QUOTIENT + 1]
+ or b
+ jr nz, .cap
+ ld a, [H_QUOTIENT + 3]
+ ld b, a
+ ld a, [wDamage + 1]
+ add b
+ ld [wDamage + 1], a
+ ld a, [H_QUOTIENT + 2]
+ ld b, a
+ ld a, [wDamage]
+ adc b
+ jr c, .cap
+ ld [wDamage], a
+ ret
+.cap
+ ld a, $ff
+ ld [wDamage], a
+ ld [wDamage + 1], a
+ ret
+
+; One stack per completed Ground/Rock attack. Misses and other moves reset it.
+AbilityRolloutAfterAction:
+ call AbilityActor
+ cp AB_ROLLOUT
+ ret nz
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ push hl
+ call AbilityMove
+ inc hl
+ inc hl
+ ld a, [hli]
+ and a
+ jr z, .reset
+ ld a, [hl]
+ cp GROUND
+ jr z, .checkHit
+ cp ROCK
+ jr nz, .reset
+.checkHit
+ ld a, [wMoveMissed]
+ and a
+ jr nz, .reset
+ ld a, [wDamageMultipliers]
+ and $7f
+ jr z, .reset
+ pop hl
+ ld a, [hl]
+ cp $ff
+ ret z
+ inc [hl]
+ ret
+.reset
+ pop hl
+ ld [hl], 0
+ ret
+
+; Clear pre-existing poison when an Immunity holder enters battle.
+AbilityImmunityOnEntry:
+ ld a, [wAbilitySide]
+ call AbilityGet
+ cp AB_IMMUNITY
+ ret nz
+ call AbilityHP
+ inc hl
+ inc hl
+ inc hl
+ bit PSN, [hl]
+ ret z
+ res PSN, [hl]
+ ld hl, wPlayerBattleStatus3
+ ld de, wPlayerToxicCounter
+ ld a, [wAbilitySide]
+ and a
+ jr z, .clear
+ ld hl, wEnemyBattleStatus3
+ ld de, wEnemyToxicCounter
+.clear
+ res BADLY_POISONED, [hl]
+ xor a
+ ld [de], a
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ callab CustomRecalculate
+ jpab UtilitySyncParty
+
+; The capsule operates on party records outside battle.
+AbilityImmunityCapsule:
+ ld a, [wNatureMonPtr]
+ ld h, a
+ ld a, [wNatureMonPtr + 1]
+ ld l, a
+ ld a, [hl]
+ cp GEODUDE
+ jr z, .family
+ cp GRAVELER
+ jr z, .family
+ cp GOLEM
+ ret nz
+.family
+ push hl
+ ld bc, wPartyMon1Type1 - wPartyMon1
+ add hl, bc
+ ld a, [hl]
+ and $e0
+ cp 2 << 5
+ pop hl
+ ret nz
+ ld bc, wPartyMon1Status - wPartyMon1
+ add hl, bc
+ res PSN, [hl]
+ ret

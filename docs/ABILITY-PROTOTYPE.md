@@ -52,7 +52,7 @@ The stored slot survives evolution, saving and normal party/box/daycare copies. 
 
 The nature update supersedes the prototype’s old F9–FD catch-rate tags. Nature IDs now use that byte; ability slots use the stored first type’s high bits, with a version marker in the second type. Legacy ability slots migrate without rerolling. Actual battle types and capture odds remain separate from this metadata. See [the nature guide](NATURE-SYSTEM.md) for save compatibility and storage details.
 
-Enemy trainer parties roll when generated, so the rival is not guaranteed the same ability slot in a later encounter. External Cable Club play is blocked with an explanation because its old protocol cannot safely carry the new metadata; NPC trades remain available. Ability-specific tactical AI scoring is a later pass. Nature scratch and ability scratch share former stack space; the stack top remains unchanged and the remaining allocation is 189 bytes, checked with emulator stack guards.
+Enemy trainer parties roll when generated, so the rival is not guaranteed the same ability slot in a later encounter. External Cable Club play is blocked with an explanation because its old protocol cannot safely carry the new metadata; NPC trades remain available. Ability-specific tactical AI scoring is a later pass. Nature scratch and ability scratch share former stack space; the stack top remains unchanged and the remaining allocation is 187 bytes, checked with emulator stack guards.
 
 
 ## Validation

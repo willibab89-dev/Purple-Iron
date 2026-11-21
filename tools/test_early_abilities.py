@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf42:0xdf62]=[0xa5]*32
+        game.memory[0xdf44:0xdf64]=[0xa5]*32
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf42:0xdf62])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf44:0xdf64])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -128,8 +128,10 @@ def validate(version):
                'MACHOP':['NO_GUARD','GUTS','IRON_GRIP','GRAPPLER','BODYBUILDER'],
                'MACHAMP':['NO_GUARD','GUTS','FOUR_ARMS','GRAPPLER','BODYBUILDER'],
                'BELLSPROUT':['ACIDIC','CARNIVOROUS','STICKY_TRAP','CHLOROPHYLL','DIGESTIVE_ACID'],
-               'TENTACOOL':['CLEAR_BODY','LIQUID_OOZE','STINGING_SKIN','JELLY_BODY','VENOMOUS']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL')]:
+               'TENTACOOL':['CLEAR_BODY','LIQUID_OOZE','STINGING_SKIN','JELLY_BODY','VENOMOUS'],
+               'GEODUDE':['LEVITATE','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT'],
+               'GRAVELER':['DIGGER','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -816,6 +818,37 @@ def validate(version):
                 holder,seeder=init(turn);aid(turn,holder_ability);aid(1-turn,seeder_ability);word(seeder+'HP',seeder_hp);put('w'+('Enemy' if turn else 'Player')+'BattleStatus2',128);call('HandlePoisonBurnLeechSeed');assert readword(holder+'HP')==150 and readword(seeder+'HP')==expected,(turn,holder_ability,seeder_ability,seeder_hp,readword(holder+'HP'),readword(seeder+'HP'))
             for n,original in anim_patches.items():
                 bank,address=syms[n];game.memory[bank,address]=original
+        # Geodude family: ground and poison immunity, full-HP survival and streaks.
+        for turn in (0,1):
+            for attack,blocked in [('EARTHQUAKE',True),('BONE_CLUB',True),('TACKLE',False)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'LEVITATE');rng(0);call('MoveHitTest');assert bool(get('wMoveMissed'))==blocked,(turn,attack,'levitate')
+                put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert bool(get('wTypeEffectiveness')==0)==blocked,(turn,attack,'levitate AI')
+            ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'NO_GUARD');aid(1-turn,'LEVITATE');rng(0);call('MoveHitTest');assert get('wMoveMissed')==1
+            for attack in ('POISONPOWDER','TOXIC','POISON_STING'):
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'IMMUNITY');call('AbilityDustOnly');assert get('wAbilityCheckResult')==1,(turn,attack,'immunity legacy')
+            for entry in ('AbilityInflictOrdinaryStatus','UtilityInflictStatus'):
+                ap,tp=init(turn);aid(1-turn,'IMMUNITY');put('wCustomSide',1-turn);put('wCustomDelta',8);call(entry);assert get(tp+'Status')==0,(turn,entry,'immunity')
+            for status,want in [(8,0),(16,16)]:
+                ap,tp=init(turn);aid(turn,'IMMUNITY');put(ap+'Status',status);put('wAbilitySide',turn);put('w'+('Enemy' if turn else 'Player')+'BattleStatus3',1);put('w'+('Enemy' if turn else 'Player')+'ToxicCounter',4);call('AbilityEntrySpeed');assert get(ap+'Status')==want,(turn,status,'immunity entry')
+                if status==8:assert not(get('w'+('Enemy' if turn else 'Player')+'BattleStatus3')&1) and get('w'+('Enemy' if turn else 'Player')+'ToxicCounter')==0
+            for status,want in [(8,0),(16,16)]:
+                init();metadata('wPartyMon1','GEODUDE',1);put('wPartyMon1Status',status);word('wNatureMonPtr',addr('wPartyMon1'));rng(1);call('AbilityCapsuleApply');assert get('wPartyMon1Type1')>>5==2 and get('wPartyMon1Status')==want,(turn,status,'immunity capsule')
+            for hp,maxhp,damage,ohko,sub,want in [(160,160,160,0,0,159),(160,160,400,0,0,159),(159,160,160,0,0,160),(160,160,159,0,0,159),(1,1,10,0,0,0),(160,160,65535,2,0,159),(160,160,160,0,1,160)]:
+                ap,tp=init(turn);aid(1-turn,'STURDY');word(tp+'HP',hp);word(tp+'MaxHP',maxhp);word('wDamage',damage);put('wCriticalHitOrOHKO',ohko);put('wCustomTargetHadSub',sub);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==want,(turn,hp,maxhp,damage,ohko,sub,readword('wDamage'))
+                if ohko and not sub:assert get('wCriticalHitOrOHKO')==0
+            for attack,t1,t2,want in [('TACKLE','GROUND','ROCK',125),('FLAMETHROWER','GROUND','GROUND',125),('TACKLE','ROCK','ROCK',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'DIGGER');put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2]);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,t1,t2,'digger')
+            for attack,own,foe,want in [('ROCK_THROW',101,100,120),('ROCK_THROW',100,100,100),('ROCK_THROW',255,256,100),('ROCK_THROW',256,255,120),('TACKLE',200,100,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'HEAVYWEIGHT');word(ap+'Defense',own);word(tp+'Defense',foe);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,own,foe,'heavyweight')
+            init(turn);aid(turn,'ROLLOUT');move(turn,'EARTHQUAKE');slot=addr('wRolloutStacks')+turn
+            for count in range(4):
+                word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100+count*10,(turn,count,'rollout',readword('wDamage'));put('wAbilityHit',8);call('AbilityRolloutAfterAction');assert game.memory[slot]==count+1
+            move(turn,'ROCK_THROW');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==140
+            put('wAbilityHit',8);put('wMoveMissed',1);call('AbilityRolloutAfterAction');assert game.memory[slot]==0
+            game.memory[slot]=3;move(turn,'TACKLE');put('wMoveMissed',0);put('wAbilityHit',8);call('AbilityRolloutAfterAction');assert game.memory[slot]==0
+            game.memory[slot]=200;move(turn,'EARTHQUAKE');word('wDamage',999);call('AbilityModifyDamage');assert readword('wDamage')==20979,(turn,'rollout 16bit',readword('wDamage'))
+            game.memory[slot]=10;word('wDamage',50000);call('AbilityModifyDamage');assert readword('wDamage')==65535,(turn,'rollout cap')
+            game.memory[slot]=4;put('wAbilitySide',turn);call('AbilityEntry');assert game.memory[slot]==0
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -891,7 +924,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,151):
+        for n in range(1,157):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1152,7 +1185,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 74 species / 370 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 77 species / 385 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

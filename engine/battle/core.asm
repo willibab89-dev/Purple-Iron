@@ -5291,6 +5291,14 @@ AdjustDamageForMoveType:
 ; ($00 is immune, $02 is 4x uneffective, $28 is 4x super effective)
 ; as far is can tell, this is only used once in some AI code to help decide which move to use
 AIGetTypeEffectiveness:
+	abilitycall AbilityLevitateAICheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .normalAbility
+	xor a
+	ld [wTypeEffectiveness], a
+	ret
+.normalAbility
 ;joenote - if type-effectiveness bit is set, then do wPlayerMoveType and wEnemyMonType
 ;		-also changed neutral value from $10 to $0A since it makes more sense
 ;		-and modifying this to take into account both types

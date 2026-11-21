@@ -89,6 +89,9 @@ AbilitySpeciesPools:
 	db VICTREEBEL, 41
 	db TENTACOOL, 42
 	db TENTACRUEL, 42
+	db GEODUDE, 43
+	db GRAVELER, 44
+	db GOLEM, 44
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -133,6 +136,8 @@ AbilityPoolIds:
 	db AB_NO_GUARD, AB_GUTS, AB_FOUR_ARMS, AB_GRAPPLER, AB_BODYBUILDER
 	db AB_ACIDIC, AB_CARNIVOROUS, AB_STICKY_TRAP, AB_CHLOROPHYLL, AB_DIGESTIVE_ACID
 	db AB_CLEAR_BODY, AB_LIQUID_OOZE, AB_STINGING_SKIN, AB_JELLY_BODY, AB_VENOMOUS
+	db AB_LEVITATE, AB_IMMUNITY, AB_STURDY, AB_ROLLOUT, AB_HEAVYWEIGHT
+	db AB_DIGGER, AB_IMMUNITY, AB_STURDY, AB_ROLLOUT, AB_HEAVYWEIGHT
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -173,6 +178,8 @@ AbilityEnsureMon:
 
 AbilityResetBattle:
 	xor a
+	ld [wRolloutStacks], a
+	ld [wRolloutStacks + 1], a
 	ld [wAbilityHit], a
 	ld [wAbilityPPLeft], a
 	ld [wAbilityCheckResult], a
@@ -459,6 +466,7 @@ AbilityAfterAction:
 	abilitycall AbilityFrenzy
 	abilitycall AbilityShortTemper
 	abilitycall AbilitySandAfterAction
+	abilitycall AbilityRolloutAfterAction
 	abilitycall AbilityFoxfire
 	abilitycall AbilitySoothingVoice
 	abilitycall AbilityQuickFeetBoth

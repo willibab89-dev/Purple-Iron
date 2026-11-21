@@ -68,6 +68,7 @@ AbilityTextPointers:
 	dw AbilityText137, AbilityText138, AbilityText139, AbilityText140, AbilityText141, AbilityText142
 	dw AbilityText143, AbilityText144, AbilityText145, AbilityText146
 	dw AbilityText147, AbilityText148, AbilityText149, AbilityText150
+	dw AbilityText151, AbilityText152, AbilityText153, AbilityText154, AbilityText155, AbilityText156
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -287,3 +288,10 @@ AbilityText147: db "CLEAR BODY",$4e,"Foes cannot lower",$4e,"your stats.@"
 AbilityText148: db "LIQUID OOZE",$4e,"Draining this mon",$4e,"hurts the attacker.@"
 AbilityText149: db "STINGING SKIN",$4e,"Physical hit: 20%",$4e,"poisons attacker.@"
 AbilityText150: db "JELLY BODY",$4e,"Physical damage",$4e,"received x0.8.@"
+
+AbilityText151: db "LEVITATE",$4e,"Immune to Ground",$4e,"moves.@"
+AbilityText152: db "IMMUNITY",$4e,"Cannot be poisoned.@"
+AbilityText153: db "STURDY",$4e,"Survive lethal hit",$4e,"at full HP with 1.@"
+AbilityText154: db "ROLLOUT",$4e,"Ground/Rock streak:",$4e,"power +10% each.@"
+AbilityText155: db "HEAVYWEIGHT",$4e,"Rock damage x1.2",$4e,"if Defense is higher.@"
+AbilityText156: db "DIGGER",$4e,"Damage x1.25 vs",$4e,"Ground types.@"

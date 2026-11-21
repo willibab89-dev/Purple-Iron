@@ -974,6 +974,7 @@ AbilityCapsuleApply::
 	call NatureCapsuleLoadRoot
 	call NatureWriteAtHL
 	abilitycall AbilityResourcefulCapsuleAdjust
+	abilitycall AbilityImmunityCapsule
 	ld a, [hl]
 	cp SQUIRTLE
 	jr z, .hp

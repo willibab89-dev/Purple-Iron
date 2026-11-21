@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 74 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 77 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -46,10 +46,14 @@ Implemented for 74 species, with five equally likely slots per species. The save
 | Machamp | No Guard | Guts | Four Arms | Grappler | Bodybuilder |
 | Bellsprout / Weepinbell / Victreebel | Acidic | Carnivorous | Sticky Trap | Chlorophyll | Digestive Acid |
 | Tentacool / Tentacruel | Clear Body | Liquid Ooze | Stinging Skin | Jelly Body | Venomous |
+| Geodude | Levitate | Immunity | Sturdy | Rollout | Heavyweight |
+| Graveler / Golem | Digger | Immunity | Sturdy | Rollout | Heavyweight |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Geodude-family effects: Levitate blocks Ground moves. Immunity prevents poison and clears existing poison on entry or when gained by capsule. Sturdy leaves the holder at 1 HP when a direct hit would otherwise knock it out from full HP. Rollout boosts Ground and Rock attacks by 10% per prior consecutive successful Ground or Rock attack; a miss, different move or switch resets the streak. The counter saturates at 255 consecutive attacks. Heavyweight boosts Rock damage by 20% when the holder’s Defense exceeds the target’s Defense. Digger boosts damage by 25% against Ground types.
 
 Tentacool-family effects: Clear Body prevents opposing stat reductions. Liquid Ooze damages the attacker by the amount a draining move would restore, including Leech Seed; Magic Guard prevents this damage. Stinging Skin gives incoming physical hits a 20% chance to poison the attacker. Jelly Body reduces physical damage by 20%. Venomous increases damage by 25% against poisoned targets.
 
@@ -151,8 +155,8 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Storage
 
-Ability descriptions and Resourceful PP routines are in the expanded ability bank, leaving room for additional battle mechanics and ability descriptions. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged.
+Ability descriptions and Resourceful PP routines are in the expanded ability bank, leaving room for additional battle mechanics and ability descriptions. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged. Rollout reserves two transient bytes at the bottom of the stack allocation, leaving 187 stack bytes with the same stack top.
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 370 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 385 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

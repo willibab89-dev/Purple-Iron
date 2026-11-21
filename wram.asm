@@ -3410,8 +3410,11 @@ wNatureOverride:: ds 1
 wNatureTemp:: ds 2
 wNatureUiPage:: ds 1
 wNatureScratchEnd::
-SECTION "Stack", WRAM0[$df42]
-	ds $bd
+; Two active-side Rollout streaks; reset at battle start and on switch.
+SECTION "Rollout scratch", WRAM0[$df42]
+wRolloutStacks:: ds 2
+SECTION "Stack", WRAM0[$df44]
+	ds $bb
 wStack:: ; dfff
 
 

@@ -297,6 +297,10 @@ ConditionalAccuracyCheck:
 	ld a, [wAbilityCheckResult]
 	and a
 	jr nz, .immune
+	abilitycall AbilityLevitateCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr nz, .immune
 	abilitycall AbilityRubberSkinCheck
 	ld a, [wAbilityCheckResult]
 	and a
