@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 50 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 52 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -31,10 +31,13 @@ Implemented for 50 species, with five equally likely slots per species. The save
 | Paras | Effect Spore | Leeching | Parasite | Mycelium | Regrowth |
 | Parasect | Effect Spore | Leeching | Parasite | Mycelium | Death Spore |
 | Venonat / Venomoth | Shield Dust | Toxic Scales | Tinted Lens | Poison Absorb | Venomous |
+| Diglett / Dugtrio | Ambush | Subterranean | Elusive | Aftershock | Sand Rush |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Diglett-family effects: Ambush increases the first damaging move after entry by 25%, including fixed damage and all hits of a multi-hit move. A miss or immunity consumes it; a charging move consumes it when the attack executes. Subterranean reduces super-effective damage by 25%. Elusive raises Evasion on entry and removes that stage after the first opposing damaging move executes, including a miss or a hit on Substitute; status moves do not consume it. Aftershock gives Ground hits a 20% chance to paralyze, subject to existing status immunity, Substitute and Shield Dust. Sand Rush raises Speed one stage after a Ground move executes, once per battle.
 
 Venonat-family effects: Shield Dust blocks added effects of incoming attacks. Toxic Scales gives each physical hit a 30% chance to inflict ordinary poison, subject to existing status and type immunities. Tinted Lens doubles damage from resisted attacks without changing type effectiveness or immunity. Poison Absorb heals 1/8 maximum HP each turn while the opposing active Pokémon is alive and poisoned. Venomous increases move damage by 25% against poisoned targets, including fixed-damage moves.
 
@@ -116,4 +119,4 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 250 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 260 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack boundary remain unchanged. A complete manual playthrough has not been performed.

@@ -65,6 +65,8 @@ AbilitySpeciesPools:
 	db PARASECT, 126
 	db VENONAT, 131
 	db VENOMOTH, 131
+	db DIGLETT, 136
+	db DUGTRIO, 136
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -94,6 +96,7 @@ AbilityPoolIds:
 	db AB_EFFECT_SPORE, AB_LEECHING, AB_PARASITE, AB_MYCELIUM, AB_REGROWTH
 	db AB_EFFECT_SPORE, AB_LEECHING, AB_PARASITE, AB_MYCELIUM, AB_DEATH_SPORE
 	db AB_SHIELD_DUST, AB_TOXIC_SCALES, AB_TINTED_LENS, AB_POISON_ABSORB, AB_VENOMOUS
+	db AB_AMBUSH, AB_SUBTERRANEAN, AB_ELUSIVE, AB_AFTERSHOCK, AB_SAND_RUSH
 
 ; A = one-based pool offset plus zero-based slot.
 AbilityResolvePoolId:
@@ -403,6 +406,7 @@ AbilityRaiseStage:
 
 AbilityAfterAction:
 	abilitycall AbilityInfiltratorRestore
+	abilitycall AbilityElusiveAfterAttack
 	abilitycall AbilityLowHPBoth ; recoil can cross a threshold mid-turn
 	abilitycall AbilityFrenzy
 	abilitycall AbilityShortTemper
@@ -689,6 +693,7 @@ AbilityTextPointers:
 	dw AbilityText87, AbilityText88, AbilityText89, AbilityText90, AbilityText91, AbilityText92
 	dw AbilityText93, AbilityText94, AbilityText95, AbilityText96, AbilityText97
 	dw AbilityText98, AbilityText99, AbilityText100
+	dw AbilityText101, AbilityText102, AbilityText103, AbilityText104, AbilityText105
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -912,5 +917,10 @@ AbilityText97: db "DEATH SPORE",$4e,"When knocked out:",$4e,"curse or poison foe
 AbilityText98: db "TOXIC SCALES",$4e,"Physical hits: 30%",$4e,"chance to poison.@"
 AbilityText99: db "TINTED LENS",$4e,"Resisted damage",$4e,"is doubled.@"
 AbilityText100: db "POISON ABSORB",$4e,"Heal 1/8 max HP",$4e,"if foe is poisoned.@"
+AbilityText101: db "AMBUSH",$4e,"First attack after",$4e,"entry deals x1.25.@"
+AbilityText102: db "SUBTERRANEAN",$4e,"Super-effective",$4e,"damage x0.75.@"
+AbilityText103: db "ELUSIVE",$4e,"Evasion +1 until",$4e,"attacked.@"
+AbilityText104: db "AFTERSHOCK",$4e,"Ground hits: 20%",$4e,"chance to paralyze.@"
+AbilityText105: db "SAND RUSH",$4e,"Ground move: Speed",$4e,"+1 once per battle.@"
 
 INCLUDE "engine/battle/expanded_abilities.asm"

@@ -109,8 +109,9 @@ def validate(version):
                'GLOOM':['STENCH','ABSORPTION','POLLEN','EFFECT_SPORE','TOXIC_WASTE'],
                'PARAS':['EFFECT_SPORE','LEECHING','PARASITE','MYCELIUM','REGROWTH'],
                'PARASECT':['EFFECT_SPORE','LEECHING','PARASITE','MYCELIUM','DEATH_SPORE'],
-               'VENONAT':['SHIELD_DUST','TOXIC_SCALES','TINTED_LENS','POISON_ABSORB','VENOMOUS']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT')]:
+               'VENONAT':['SHIELD_DUST','TOXIC_SCALES','TINTED_LENS','POISON_ABSORB','VENOMOUS'],
+               'DIGLETT':['AMBUSH','SUBTERRANEAN','ELUSIVE','AFTERSHOCK','SAND_RUSH']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -296,6 +297,41 @@ def validate(version):
             for value in range(200):
                 put(tp+'Status',0);put('wAbilityHit',0);word('wDamage',40);rng(value);call('AbilityAfterHit');success+=bool(get(tp+'Status'))
             assert success==60,(turn,success)
+            # A status move does not spend Ambush; all hits of the first attack benefit.
+            ap,tp=init(turn);aid(turn,'AMBUSH');move(turn,'GROWL');call('AbilityAttempt')
+            call('AbilityBeforeAction');move(turn,'TACKLE');call('AbilityAttempt');word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==125
+            word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==125
+            call('AbilityBeforeAction');move(turn,'TACKLE');call('AbilityAttempt');word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==100
+            # Metronome cannot revive a spent Ambush; switching in resets it.
+            call('AbilityBeforeAction');move(turn,'METRONOME');call('AbilityAttempt');move(turn,'TACKLE');call('AbilityAttempt');word('wDamage',100);call('AbilityDamageBoost');assert readword('wDamage')==100
+            put('wAbilitySide',turn);call('AbilityEntry');call('AbilityBeforeAction');move(turn,'SEISMIC_TOSS');call('AbilityAttempt');put('wUnusedC000',16);word('wDamage',100)
+            call('AbilityFixedDamageModifiers');assert readword('wDamage')==125
+            ap,tp=init(turn);aid(turn,'AMBUSH');move(turn,'BIDE');put('w'+('Enemy' if turn else 'Player')+'MovePower',1);put('wAbilityHit',32);word('wDamage',40)
+            call('AbilityFixedDamageModifiers');assert readword('wDamage')==50 and get('wAbilityHit')&8
+            for multiplier,damage,want in [(0,100,100),(5,100,100),(10,100,100),(20,100,75),(40,100,75),(148,100,75),(20,1,1)]:
+                init(turn);aid(1-turn,'SUBTERRANEAN');put('wDamageMultipliers',multiplier);word('wDamage',damage)
+                call('AbilityDamageBoost');assert readword('wDamage')==want,(turn,multiplier,damage,readword('wDamage'))
+            # Elusive persists through status moves, and expires after a missed attack.
+            ap,tp=init(turn);aid(1-turn,'ELUSIVE');put('wAbilitySide',1-turn);call('AbilityEntry');call('AbilityEntrySpeed')
+            mod='w'+('Player' if turn else 'Enemy')+'MonEvasionMod';assert get(mod)==8
+            move(turn,'GROWL');call('AbilityAttempt');call('AbilityAfterAction');assert get(mod)==8
+            call('AbilityBeforeAction');move(turn,'TACKLE');call('AbilityAttempt');put('wMoveMissed',1);word('wDamage',0);call('AbilityAfterAction');assert get(mod)==7
+            call('AbilityAfterAction');assert get(mod)==7
+            put('wAbilitySide',1-turn);call('AbilityEntry');call('AbilityEntrySpeed');assert get(mod)==8
+            # Starting to store Bide is not an incoming attack, even with stale damage.
+            call('AbilityBeforeAction');move(turn,'BIDE');call('AbilityAttempt');put('w'+('Enemy' if turn else 'Player')+'BattleStatus1',1);word('wDamage',40);call('AbilityAfterAction');assert get(mod)==8
+            for attack,sub,targethp,oldstatus,targetability in [('TACKLE',0,160,0,None),('EARTHQUAKE',1,160,0,None),('EARTHQUAKE',0,0,0,None),('EARTHQUAKE',0,160,8,None),('EARTHQUAKE',0,160,0,'SHIELD_DUST')]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'AFTERSHOCK');aid(1-turn,targetability);put('wCustomTargetHadSub',sub);word(tp+'HP',targethp);put(tp+'Status',oldstatus);rng(0)
+                call('AbilityAfterHit');assert get(tp+'Status')==oldstatus,(turn,attack,sub,targethp,oldstatus,get(tp+'Status'))
+            ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'AFTERSHOCK');put(tp+'Type1',TYPES['ELECTRIC']);rng(0);call('AbilityAfterHit');assert get(tp+'Status')==0
+            ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'AFTERSHOCK');success=0
+            for value in range(200):
+                put(tp+'Status',0);put('wAbilityHit',0);word('wDamage',40);rng(value);call('AbilityAfterHit');success+=bool(get(tp+'Status'))
+            assert success==40,(turn,success)
+            for attack,want in [('EARTHQUAKE',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(turn,'SAND_RUSH');call('AbilityAttempt');put('wMoveMissed',1);call('AbilityAfterAction')
+                mod='w'+('Enemy' if turn else 'Player')+'MonSpeedMod';assert get(mod)==want
+                call('AbilityAfterAction');put('wAbilitySide',turn);call('AbilityEntry');call('AbilityAfterAction');assert get(mod)==want
             # Sound heals after an executed move, including misses, but not before use.
             for attack,hp,used,want in [('SING',80,True,100),('SNARL',80,True,100),('HEAL_BELL',150,True,160),('SING',0,True,0),('SING',80,False,80),('TACKLE',80,True,80)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'SOOTHING_VOICE');word(ap+'HP',hp)
@@ -596,7 +632,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,101):
+        for n in range(1,106):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -645,7 +681,7 @@ def validate(version):
                   'DrawPlayerHUDAndHPBar','DrawEnemyHUDAndHPBar','UpdateHPBar2','MoveAnimation',
                   'HideSubstituteShowMonAnim','ReshowSubstituteAnim','DrawHUDsAndHPBars'):
             patch(n,[0xc9])
-        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None,random_value=0,subhp=None,screens=0,target_types=None):
+        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None,random_value=0,subhp=None,screens=0,target_types=None,target_entry=False,bide_damage=None):
             ap,tp=init(turn)
             put('wActionResultOrTookBattleTurn',0);put('wMonIsDisobedient',0)
             for side in (0,1):
@@ -661,6 +697,10 @@ def validate(version):
             put('w'+target_name+'BattleStatus3',screens)
             if subhp is not None:
                 put('w'+target_name+'BattleStatus2',16);put('w'+target_name+'SubstituteHP',subhp)
+            if target_entry:
+                put('wAbilitySide',1-turn);call('AbilityEntry');call('AbilityEntrySpeed')
+            if bide_damage is not None:
+                side='Enemy' if turn else 'Player';put('w'+side+'BattleStatus1',1);put('w'+side+'MoveEffect',0);word('w'+side+'BideAccumulatedDamage',bide_damage)
             if counter_damage is not None:
                 word('wCounterDamage',counter_damage);put('wCounterRecipient',turn)
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
@@ -668,6 +708,25 @@ def validate(version):
         for turn in (0,1):
             # Threshold triggers also run immediately after recoil and poison,
             # before the opposing Pokémon can take its action.
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='AMBUSH',random_value=100);assert 160-readword(tp+'HP')==normal*125//100
+            ap,tp=execute('DOUBLESLAP',turn,random_value=100);multi=160-readword(tp+'HP')
+            ap,tp=execute('DOUBLESLAP',turn,actor='AMBUSH',random_value=100);assert 160-readword(tp+'HP')==2*((multi//2)*125//100),(turn,multi,readword(tp+'HP'))
+            ap,tp=execute('DIG',turn,random_value=100);assert readword(tp+'HP')==160;call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove');normal=160-readword(tp+'HP')
+            ap,tp=execute('DIG',turn,actor='AMBUSH',random_value=100);assert readword(tp+'HP')==160;call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
+            assert 160-readword(tp+'HP')==normal*125//100,(turn,normal,readword(tp+'HP'))
+            ap,tp=execute('SEISMIC_TOSS',turn,actor='AMBUSH');assert readword(tp+'HP')==98
+            ap,tp=execute('BIDE',turn,actor='AMBUSH',bide_damage=20);assert readword(tp+'HP')==110,(turn,readword(tp+'HP'),get('wMoveMissed'),readword('wDamage'),get('wAbilityHit'),get('wPlayerMoveNum'),get('wPlayerMovePower'),get('wPlayerBattleStatus1'),get('wPlayerNumAttacksLeft'),readword('wPlayerBideAccumulatedDamage'))
+            ap,tp=execute('BIDE',turn,target='ELUSIVE',target_entry=True,bide_damage=20)
+            assert readword(tp+'HP')==120 and get('w'+('Player' if turn else 'Enemy')+'MonEvasionMod')==7
+            ap,tp=execute('TACKLE',turn,target='ELUSIVE',target_entry=True,random_value=254)
+            assert get('wMoveMissed')==1 and get('w'+('Player' if turn else 'Enemy')+'MonEvasionMod')==7
+            ap,tp=execute('TACKLE',turn,target='ELUSIVE',target_entry=True,subhp=120);assert readword(tp+'HP')==160 and get('w'+('Player' if turn else 'Enemy')+'MonEvasionMod')==7
+            ap,tp=execute('GROWL',turn,target='ELUSIVE',target_entry=True)
+            assert get('w'+('Player' if turn else 'Enemy')+'MonEvasionMod')==8
+            ap,tp=execute('EARTHQUAKE',turn,actor='SAND_RUSH');assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8
+            ap,tp=execute('EARTHQUAKE',turn,actor='AFTERSHOCK');assert get(tp+'Status')==64
+            ap,tp=execute('EARTHQUAKE',turn,actor='AFTERSHOCK',target='SHIELD_DUST');assert get(tp+'Status')==0
             ap,tp=execute('TACKLE',turn,actor='LEECHING',actor_hp=80);damage=160-readword(tp+'HP')
             assert readword(ap+'HP')==80+max(1,damage//10),(turn,damage,readword(ap+'HP'))
             ap,tp=execute('TACKLE',turn,actor='LEECHING',actor_hp=80,subhp=20);assert readword(ap+'HP')==82
@@ -825,7 +884,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 50 species / 250 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 52 species / 260 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

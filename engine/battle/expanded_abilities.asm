@@ -10,7 +10,10 @@ AbilityEntry:
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_ILLUSION
+	jr z, .resetEntryFlag
+	cp AB_ELUSIVE
 	ret nz
+.resetEntryFlag
 	call AbilityFlagsPointer
 	res 0, [hl]
 	ret
@@ -28,6 +31,15 @@ AbilityClearRelentless:
 
 ; Called after the newly loaded combatant's stat stages are initialized.
 AbilityEntrySpeed:
+	ld a, [wAbilitySide]
+	call AbilityGet
+	cp AB_ELUSIVE
+	jr nz, .perfume
+	call AbilityFlagsPointer
+	set 0, [hl]
+	ld a, 5 ; Evasion
+	call AbilityRaiseStage
+.perfume
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_PERFUME
@@ -528,6 +540,18 @@ AbilityModifyDamage:
 	call AbilityScaleDamage
 	jp .defender
 .nidoMale
+	cp AB_AMBUSH
+	jr nz, .luckyStar
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jp z, .defender
+	ld a, [wAbilityHit]
+	bit 4, a
+	jp z, .defender
+	ld c, 125
+	call AbilityScaleDamage
+	jp .defender
+.luckyStar
 	cp AB_LUCKY_STAR
 	jr nz, .unpredictable
 	ld a, [wCriticalHitOrOHKO]
@@ -618,7 +642,10 @@ AbilityModifyDamage:
 	jr .reduce
 .sandArmor
 	cp AB_SAND_ARMOR
+	jr z, .superEffective
+	cp AB_SUBTERRANEAN
 	jr nz, .thickHide
+.superEffective
 	ld a, [wDamageMultipliers]
 	and $7f
 	cp 11 ; neutral is 10
@@ -690,14 +717,51 @@ AbilityExistingFixedDamageModifiers:
 	ld a, [wDamage + 1]
 	or b
 	ret z
+	; Bide releases without the usual AbilityAttempt hook.
+	ld a, [wAbilityHit]
+	bit 5, a
+	jr z, .fixedActor
+	call AbilityMove
+	ld a, [hl]
+	cp BIDE
+	jr nz, .fixedActor
+	ld hl, wAbilityHit
+	set 3, [hl]
+.fixedActor
 	call AbilityActor
 	cp AB_MEASURED
 	jr nz, .male
 	ld c, 80
 	call AbilityScaleDamage
 	call AbilityFixedMinimum
-	jr .defender
+	jp .defender
 .male
+	cp AB_AMBUSH
+	jr nz, .venomous
+	ld a, [wCriticalHitOrOHKO]
+	cp 2
+	jr z, .defender
+	ld a, [wAbilityHit]
+	bit 4, a
+	jr nz, .ambushBoost
+	; Bide releases outside AbilityAttempt, so claim its first hit here.
+	call AbilityMove
+	ld a, [hl]
+	cp BIDE
+	jr nz, .defender
+	ld a, [H_WHOSETURN]
+	ld [wAbilitySide], a
+	call AbilityFlagsPointer
+	bit 3, [hl]
+	jr nz, .defender
+	set 3, [hl]
+	ld hl, wAbilityHit
+	set 4, [hl]
+.ambushBoost
+	ld c, 125
+	call AbilityScaleDamage
+	jr .defender
+.venomous
 	cp AB_VENOMOUS
 	jr nz, .luckyStar
 	call AbilityTargetStatus
@@ -804,17 +868,30 @@ AbilityAttempt:
 	ld a, [hl]
 	cp METRONOME
 	jr nz, .notMetronome
+	call AbilityActor
+	cp AB_UNPREDICTABLE
+	jr nz, .metronomeDone
 	ld hl, wAbilityHit
 	set 4, [hl]
+.metronomeDone
 	ld a, METRONOME
 .notMetronome
 	call AbilityMoveFlags
 	bit 0, a
-	jr z, AbilityAttemptStatusMove
+	jp z, AbilityAttemptStatusMove
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	call AbilityFlagsPointer
+	bit 3, [hl]
+	jr nz, .alreadySpent
 	set 3, [hl]
+	call AbilityActor
+	cp AB_AMBUSH
+	ret nz
+	ld hl, wAbilityHit
+	set 4, [hl] ; applies to all hits of this first damaging move
+	ret
+.alreadySpent
 	ret
 
 ; Ground/Normal abilities trigger only when a move was actually executed.
@@ -828,7 +905,7 @@ AbilitySandAfterAction:
 	cp AB_SAND_VEIL
 	jr z, .evasion
 	cp AB_BURROWER
-	jr nz, .fox
+	jr nz, .sandRush
 	call AbilityActorMoveType
 	cp GROUND
 	ret nz
@@ -841,6 +918,14 @@ AbilitySandAfterAction:
 	dec hl
 	ld a, 3 ; 1/8 maximum HP
 	jp AbilityHealFractionFromHL
+.sandRush
+	cp AB_SAND_RUSH
+	jr nz, .fox
+	call AbilityActorMoveType
+	cp GROUND
+	ret nz
+	ld a, 2 ; Speed
+	jr .once
 .fox
 	cp AB_FOXS_CUNNING
 	ret nz
@@ -910,6 +995,7 @@ AbilityHitEvents:
 	ld [wAbilityMoveType], a
 	call AbilitySpinyArmor
 	call AbilityEffectSpore
+	call AbilityAftershock
 	call AbilityToxicScales
 	call AbilityParasite
 	ld a, [wDamage]
@@ -1481,6 +1567,94 @@ AbilityToxicWaste:
 	xor 1
 	ld [wAbilitySide], a
 	ret
+
+; The entry bonus applies to the first incoming damaging action, including
+; misses and Substitute hits; status moves do not consume it.
+AbilityElusiveAfterAttack:
+	ld a, [wAbilityHit]
+	bit 3, a
+	ret z
+	call AbilityMove
+	ld a, [hl]
+	cp BIDE
+	jr nz, .ordinary
+	; Storage is not an attack; a release must have dealt damage.
+	ld hl, wPlayerBattleStatus1
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .bideStatus
+	ld hl, wEnemyBattleStatus1
+.bideStatus
+	bit STORING_ENERGY, [hl]
+	ret nz
+	ld a, [wDamage]
+	ld b, a
+	ld a, [wDamage + 1]
+	or b
+	ret z
+	jr .target
+.ordinary
+	call AbilityMove
+	ld a, [hl]
+	call AbilityMoveFlags
+	bit 0, a
+	ret z
+.target
+	call AbilityTarget
+	cp AB_ELUSIVE
+	ret nz
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityFlagsPointer
+	bit 0, [hl]
+	ret z
+	res 0, [hl]
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	ld a, [wAbilitySide]
+	ld [wCustomSide], a
+	ld a, 5
+	ld [wCustomStat], a
+	ld a, -1
+	ld [wCustomDelta], a
+	xor a
+	ld [wCustomChanged], a
+	jpab CustomChangeStage
+
+AbilityAftershock:
+	call AbilityActor
+	cp AB_AFTERSHOCK
+	ret nz
+	ld a, [wAbilityMoveType]
+	cp GROUND
+	ret nz
+	call AbilityTarget
+	cp AB_SHIELD_DUST
+	ret z
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wAbilitySide], a
+	call AbilityHP
+	ld a, [hli]
+	or [hl]
+	ret z
+	inc hl
+	inc hl
+	ld a, [hl]
+	and a
+	ret nz
+	ld b, 20
+	call AbilityRoll
+	ret nc
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wCustomSide], a
+	ld a, 1 << PAR
+	ld [wCustomDelta], a
+	jpab UtilityInflictStatus
 
 ; Each physical hit may inflict ordinary poison.
 AbilityToxicScales:
