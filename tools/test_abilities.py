@@ -72,7 +72,7 @@ def validate(version):
                 put('wPartyMon1Species',ids[species]);put('wPartyMon1Type1',0);put('wPartyMon1Type2',0);put('wPartyMon1CatchRate',249+slot)
                 call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==base+slot
                 assert get('wPartyMon1Type1')>>5==slot+1 and get('wPartyMon1CatchRate')<196
-        put('wPartyMon1Species',ids['PONYTA']);put('wPartyMon1CatchRate',45)
+        put('wPartyMon1Species',ids['SLOWPOKE']);put('wPartyMon1CatchRate',45)
         call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==0 and get('wPartyMon1CatchRate')==45
         put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1Type1',0);put('wPartyMon1Type2',0);rng(3)
         call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert get('wPartyMon1Type1')>>5==4

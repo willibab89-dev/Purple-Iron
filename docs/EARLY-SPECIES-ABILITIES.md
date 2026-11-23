@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 77 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 79 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -48,10 +48,13 @@ Implemented for 77 species, with five equally likely slots per species. The save
 | Tentacool / Tentacruel | Clear Body | Liquid Ooze | Stinging Skin | Jelly Body | Venomous |
 | Geodude | Levitate | Immunity | Sturdy | Rollout | Heavyweight |
 | Graveler / Golem | Digger | Immunity | Sturdy | Rollout | Heavyweight |
+| Ponyta / Rapidash | Flame Body | Competitive | Blazing Trail | Wild Charge | Stamina |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Ponyta-family effects: Flame Body gives incoming physical hits a 20% chance to burn the attacker. Competitive raises Attack once per battle when an opponent raises a stat. Blazing Trail boosts Fire damage by 20% when the holder is faster. Wild Charge raises Speed after using a damaging physical move once per battle. Stamina raises Defense after each hit received, including individual hits of a multi-hit attack.
 
 Geodude-family effects: Levitate blocks Ground moves. Immunity prevents poison and clears existing poison on entry or when gained by capsule. Sturdy leaves the holder at 1 HP when a direct hit would otherwise knock it out from full HP. Rollout boosts Ground and Rock attacks by 10% per prior consecutive successful Ground or Rock attack; a miss, different move or switch resets the streak. The counter saturates at 255 consecutive attacks. Heavyweight boosts Rock damage by 20% when the holder’s Defense exceeds the target’s Defense. Digger boosts damage by 25% against Ground types.
 
@@ -159,4 +162,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 385 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 395 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

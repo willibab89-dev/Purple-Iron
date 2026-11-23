@@ -7838,6 +7838,7 @@ UpdateStatDone:
 	xor $1	;revert the turn back to normal
 	ld [H_WHOSETURN], a	;store the normal turn
 	pop de	;restore de from the stack
+	abilitycall AbilityCompetitiveLegacy
 	ret	;remember to return
 	
 RestoreOriginalStatModifier:

@@ -561,6 +561,14 @@ AbilityModifyDamage:
 	ld [wDamageMultipliers], a
 	jp .defender
 .newOffense
+	cp AB_BLAZING_TRAIL
+	jr nz, .digger
+	call AbilityBlazingTrailCheck
+	jp nc, .defender
+	ld c, 120
+	call AbilityScaleDamage
+	jp .defender
+.digger
 	cp AB_DIGGER
 	jr nz, .heavyweight
 	call AbilityDiggerCheck
@@ -957,6 +965,14 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityFixedMinimum
 	jp .defender
 .male
+	cp AB_BLAZING_TRAIL
+	jr nz, .fixedDigger
+	call AbilityBlazingTrailCheck
+	jp nc, .defender
+	ld c, 120
+	call AbilityScaleDamage
+	jp .defender
+.fixedDigger
 	cp AB_DIGGER
 	jr nz, .fixedHeavyweight
 	call AbilityDiggerCheck
@@ -1234,6 +1250,20 @@ AbilitySandAfterAction:
 	ld a, 3 ; 1/8 maximum HP
 	jp AbilityHealFractionFromHL
 .sandRush
+	cp AB_WILD_CHARGE
+	jr nz, .bodybuilder
+	call AbilityMove
+	inc hl
+	inc hl
+	ld a, [hli]
+	and a
+	ret z
+	ld a, [hl]
+	cp FIRE
+	ret nc
+	ld a, 2
+	jp .once
+.bodybuilder
 	cp AB_BODYBUILDER
 	jr nz, .powerSwim
 	call AbilityActorMoveType
@@ -2539,6 +2569,12 @@ AbilityGetTargetReactions:
 	or [hl]
 	jp z, .contact
 	call AbilityTarget
+	cp AB_STAMINA
+	jr nz, .slippery
+	ld a, 1 ; Defense
+	call AbilityRaiseStage
+	jp .contact
+.slippery
 	cp AB_SLIPPERY
 	jr nz, .inflatable
 	ld a, [wAbilityMoveType]
@@ -2610,6 +2646,7 @@ AbilityGetTargetReactions:
 	bit 2, [hl]
 	ret nz
 	set 2, [hl]
+	call AbilityFlameBody
 	call AbilityTarget
 	cp AB_PHYSICAL_POISON_POINT
 	jr nz, .staticCheck
@@ -4438,4 +4475,140 @@ AbilityImmunityCapsule:
  ld bc, wPartyMon1Status - wPartyMon1
  add hl, bc
  res PSN, [hl]
+ ret
+
+; Carry iff a Fire move's user is strictly faster using current battle speeds.
+AbilityBlazingTrailCheck:
+ call AbilityActorMoveType
+ cp FIRE
+ jr z, .fire
+ and a
+ ret
+.fire
+ call AbilityPrepareSpeeds
+ ld hl, wAbilityPlayerSpeed
+ ld de, wAbilityEnemySpeed
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .compare
+ ld hl, wAbilityEnemySpeed
+ ld de, wAbilityPlayerSpeed
+.compare
+ ld a, [de]
+ cp [hl]
+ ret nz
+ inc de
+ inc hl
+ ld a, [de]
+ cp [hl]
+ ret
+
+; Physical hits can burn their attacker, including hits that knock the holder out.
+AbilityFlameBody:
+ call AbilityTarget
+ cp AB_FLAME_BODY
+ ret nz
+ ld a, [wAbilityMoveType]
+ cp FIRE
+ ret nc
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld b, 20
+ call AbilityRoll
+ ret nc
+ ld a, [H_WHOSETURN]
+ push af
+ ld [wCustomSide], a
+ xor 1
+ ld [H_WHOSETURN], a
+ ld a, 1 << BRN
+ ld [wCustomDelta], a
+ callab UtilityInflictStatus
+ pop af
+ ld [H_WHOSETURN], a
+ ret
+
+; Legacy stat-up effects raise the active side. Preserve their scratch state.
+AbilityCompetitiveLegacy:
+ ld a, [wCustomSide]
+ push af
+ ld a, [H_WHOSETURN]
+ ld [wCustomSide], a
+ call AbilityCompetitiveFromSide
+ pop af
+ ld [wCustomSide], a
+ ret
+
+; wCustomSide is the side whose stage actually rose. Save shared scratch
+; because a Competitive response itself uses the generic stat-change path.
+AbilityCompetitiveFromSide:
+ ld a, [wCustomSide]
+ xor 1
+ call AbilityGet
+ cp AB_COMPETITIVE
+ ret nz
+ ld a, [wAbilitySide]
+ push af
+ ld a, [wCustomSide]
+ push af
+ ld a, [wCustomStat]
+ push af
+ ld a, [wCustomDelta]
+ push af
+ ld a, [wCustomChanged]
+ push af
+ ld a, [wCustomSavedTurn]
+ push af
+ ld a, [wCustomMove]
+ push af
+ ld a, [wCustomChance]
+ push af
+ ld a, [wCustomRandomValue]
+ push af
+ ld a, [wAbilityCheckResult]
+ push af
+ ld a, [wCustomSide]
+ xor 1
+ ld [wAbilitySide], a
+ and a
+ jr nz, .checkHP
+ ld a, [wBattleMonSpecies]
+ and a
+ jr z, .restore
+.checkHP
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .restore
+ call AbilityFlagsPointer
+ bit 0, [hl]
+ jr nz, .restore
+ set 0, [hl]
+ xor a ; Attack
+ call AbilityRaiseStage
+.restore
+ pop af
+ ld [wAbilityCheckResult], a
+ pop af
+ ld [wCustomRandomValue], a
+ pop af
+ ld [wCustomChance], a
+ pop af
+ ld [wCustomMove], a
+ pop af
+ ld [wCustomSavedTurn], a
+ pop af
+ ld [wCustomChanged], a
+ pop af
+ ld [wCustomDelta], a
+ pop af
+ ld [wCustomStat], a
+ pop af
+ ld [wCustomSide], a
+ pop af
+ ld [wAbilitySide], a
  ret

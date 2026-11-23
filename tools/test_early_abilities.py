@@ -130,8 +130,9 @@ def validate(version):
                'BELLSPROUT':['ACIDIC','CARNIVOROUS','STICKY_TRAP','CHLOROPHYLL','DIGESTIVE_ACID'],
                'TENTACOOL':['CLEAR_BODY','LIQUID_OOZE','STINGING_SKIN','JELLY_BODY','VENOMOUS'],
                'GEODUDE':['LEVITATE','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT'],
-               'GRAVELER':['DIGGER','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER')]:
+               'GRAVELER':['DIGGER','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT'],
+               'PONYTA':['FLAME_BODY','COMPETITIVE','BLAZING_TRAIL','WILD_CHARGE','STAMINA']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -849,6 +850,39 @@ def validate(version):
             game.memory[slot]=200;move(turn,'EARTHQUAKE');word('wDamage',999);call('AbilityModifyDamage');assert readword('wDamage')==20979,(turn,'rollout 16bit',readword('wDamage'))
             game.memory[slot]=10;word('wDamage',50000);call('AbilityModifyDamage');assert readword('wDamage')==65535,(turn,'rollout cap')
             game.memory[slot]=4;put('wAbilitySide',turn);call('AbilityEntry');assert game.memory[slot]==0
+        # Ponyta family: reactive burn, opposing stat changes, speed and hit reactions.
+        for turn in (0,1):
+            for attack,roll,sub,actor_ability,actor_fire,want in [('TACKLE',0,0,None,False,16),('TACKLE',39,0,None,False,16),('TACKLE',40,0,None,False,0),('EARTHQUAKE',0,0,None,False,16),('FLAMETHROWER',0,0,None,False,0),('TACKLE',0,1,None,False,0),('TACKLE',0,0,'WATER_VEIL',False,0),('TACKLE',0,0,None,True,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,actor_ability);aid(1-turn,'FLAME_BODY');put('wCustomTargetHadSub',sub)
+                if actor_fire:put(ap+'Type1',TYPES['FIRE']);put(ap+'Type2',TYPES['FIRE'])
+                rng(roll);call('AbilityAfterHit');assert get(ap+'Status')==want,(turn,attack,roll,sub,actor_ability,actor_fire,'flame body',get(ap+'Status'))
+            for attack,actor_speed,target_speed,want in [('FLAMETHROWER',101,100,120),('FLAMETHROWER',100,100,100),('FLAMETHROWER',255,256,100),('FLAMETHROWER',256,255,120),('TACKLE',200,100,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'BLAZING_TRAIL');word(ap+'Speed',actor_speed);word(tp+'Speed',target_speed);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,actor_speed,target_speed,'blazing trail',readword('wDamage'))
+            ap,tp=init(turn);move(turn,'EMBER');aid(turn,'BLAZING_TRAIL');word(ap+'Speed',101);word(tp+'Speed',100);put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==120,(turn,'fixed blazing trail')
+            for attack,want in [('TACKLE',8),('FLAMETHROWER',7),('GROWL',7)]:
+                init(turn);move(turn,attack);aid(turn,'WILD_CHARGE');put('wAbilityHit',8);call('AbilitySandAfterAction');mod='w'+('Enemy' if turn else 'Player')+'MonSpeedMod';assert get(mod)==want,(turn,attack,'wild charge');call('AbilitySandAfterAction');assert get(mod)==want
+            for attack,sub,want in [('TACKLE',0,8),('FLAMETHROWER',0,8),('TACKLE',1,7)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'STAMINA');put('wCustomTargetHadSub',sub);call('AbilityAfterHit');mod='w'+('Player' if turn else 'Enemy')+'MonDefenseMod';assert get(mod)==want,(turn,attack,sub,'stamina');call('AbilityAfterHit');assert get(mod)==(9 if not sub else 7)
+            # A successful opponent stage increase triggers once; decreases and capped increases do not.
+            for delta,stage,want in [(1,7,8),(-1,7,7),(1,13,7)]:
+                init(turn);aid(1-turn,'COMPETITIVE');put('wCustomSide',turn);put('wCustomStat',1);put('wCustomDelta',delta&255);put('w'+('Enemy' if turn else 'Player')+'MonDefenseMod',stage);call('CustomChangeStage');mod='w'+('Player' if turn else 'Enemy')+'MonAttackMod';assert get(mod)==want,(turn,delta,stage,'competitive',get(mod));call('CustomChangeStage');assert get(mod)==want
+            # Both holders may react once without looping or corrupting the original stage change.
+            init(turn);aid(turn,'COMPETITIVE');aid(1-turn,'COMPETITIVE');put('wCustomSide',turn);put('wCustomStat',1);put('wCustomDelta',1);call('CustomChangeStage');assert get('wPlayerMonAttackMod')==8 and get('wEnemyMonAttackMod')==8 and get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==8,(turn,'double competitive')
+            # Entry abilities such as Tailwind also raise a stage.
+            init(turn);aid(turn,'TAILWIND');aid(1-turn,'COMPETITIVE');put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'entry competitive')
+            # A defending Stamina holder's increase is visible to opposing Competitive.
+            init(turn);move(turn,'TACKLE');aid(turn,'COMPETITIVE');aid(1-turn,'STAMINA');call('AbilityAfterHit');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==8
+            # Real legacy stat-up move and a multi-stat custom move each trigger exactly once.
+            patches={}
+            for n in ('PlayCurrentMoveAnimation','PrintStatText','DelayFrames'):
+                bank,address=syms[n];patches[n]=game.memory[bank,address];patch(n,[0xc9])
+            init(turn);move(turn,'SWORDS_DANCE');aid(1-turn,'COMPETITIVE');call('StatModifierUpEffect');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'legacy competitive')
+            init(turn);move(turn,'SWORDS_DANCE');aid(1-turn,'COMPETITIVE');put('w'+('Enemy' if turn else 'Player')+'MonAttackMod',13);call('StatModifierUpEffect');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7,(turn,'capped legacy competitive')
+            init(turn);move(turn,'BULK_UP');aid(1-turn,'COMPETITIVE');call('_JumpMoveEffect');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'bulk up competitive')
+            # Psych Up can raise several stages at once, but Competitive still triggers once.
+            init(turn);move(turn,'PSYCH_UP');aid(1-turn,'COMPETITIVE');put('w'+('Player' if turn else 'Enemy')+'MonDefenseMod',9);put('w'+('Player' if turn else 'Enemy')+'MonSpeedMod',9);call('UtilityPsychUp');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'psych up competitive')
+            for n,original in patches.items():
+                bank,address=syms[n];game.memory[bank,address]=original
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -924,7 +958,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,157):
+        for n in range(1,162):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1001,6 +1035,9 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,target='FLAME_BODY',random_value=0);assert get(ap+'Status')==16,(turn,'live flame body')
+            ap,tp=execute('DOUBLESLAP',turn,target='STAMINA',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==9,(turn,'live stamina')
+            ap,tp=execute('SWORDS_DANCE',turn,target='COMPETITIVE',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'live competitive')
             ap,tp=execute('POISONPOWDER',turn,target='MAGIC_BOUNCE');assert get(ap+'Status')==8 and get(tp+'Status')==0,(turn,'live bounce')
             ap,tp=execute('GROWL',turn,target='MAGIC_BOUNCE');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==6
             ap,tp=execute('ABSORB',turn,target='LIQUID_OOZE',actor_hp=80,random_value=100);damage=160-readword(tp+'HP');assert readword(ap+'HP')==80-max(1,damage//2),(turn,'live liquid ooze',damage,readword(ap+'HP'))
@@ -1185,7 +1222,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 77 species / 385 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 79 species / 395 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

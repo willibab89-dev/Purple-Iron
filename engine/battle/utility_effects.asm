@@ -292,6 +292,9 @@ UtilityPsychUp:
 .same
 	ld a, [hli]
 	ld [de], a
+	jr nc, .noIncrease
+	abilitycall AbilityCompetitiveFromSide
+.noIncrease
 	inc de
 	dec b
 	jr nz, .copy

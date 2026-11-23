@@ -69,6 +69,7 @@ AbilityTextPointers:
 	dw AbilityText143, AbilityText144, AbilityText145, AbilityText146
 	dw AbilityText147, AbilityText148, AbilityText149, AbilityText150
 	dw AbilityText151, AbilityText152, AbilityText153, AbilityText154, AbilityText155, AbilityText156
+	dw AbilityText157, AbilityText158, AbilityText159, AbilityText160, AbilityText161
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -295,3 +296,9 @@ AbilityText153: db "STURDY",$4e,"Survive lethal hit",$4e,"at full HP with 1.@"
 AbilityText154: db "ROLLOUT",$4e,"Ground/Rock streak:",$4e,"power +10% each.@"
 AbilityText155: db "HEAVYWEIGHT",$4e,"Rock damage x1.2",$4e,"if Defense is higher.@"
 AbilityText156: db "DIGGER",$4e,"Damage x1.25 vs",$4e,"Ground types.@"
+
+AbilityText157: db "FLAME BODY",$4e,"Physical hit: 20%",$4e,"burns attacker.@"
+AbilityText158: db "COMPETITIVE",$4e,"Foe raises stat:",$4e,"Attack +1 once.@"
+AbilityText159: db "BLAZING TRAIL",$4e,"Fire damage x1.2",$4e,"if faster than foe.@"
+AbilityText160: db "WILD CHARGE",$4e,"Physical move:",$4e,"Speed +1 once.@"
+AbilityText161: db "STAMINA",$4e,"When hit by an",$4e,"attack: Defense +1.@"

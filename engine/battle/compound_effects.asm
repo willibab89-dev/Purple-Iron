@@ -269,6 +269,7 @@ CustomAmnesia:
 	ld [hl], 7
 	ld a, 1
 	ld [wCustomChanged], a
+	abilitycall AbilityCompetitiveFromSide
 .next
 	inc hl
 	dec b
@@ -339,6 +340,12 @@ CustomChangeStage:
 	call PrintText
 	ld a, [wCustomSavedTurn]
 	ld [H_WHOSETURN], a
+	ld a, [wCustomDelta]
+	bit 7, a
+	ret nz
+	and a
+	ret z
+	abilitycall AbilityCompetitiveFromSide
 	ret
 
 ; Rebuild all four from unmodified stats, then apply badge/status modifiers once.
