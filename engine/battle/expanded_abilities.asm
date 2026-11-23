@@ -853,6 +853,17 @@ AbilityModifyDamage:
 
 .defender
 	call AbilityTarget
+	cp AB_SOFT_BODY
+	jr nz, .notSoftBody
+	ld a, [wAbilityMoveType]
+	cp NORMAL
+	jr z, .softBody
+	cp FIGHTING
+	ret nz
+.softBody
+	ld c, 75
+	jp .reduce
+.notSoftBody
 	cp AB_HEADSTRONG
 	jr nz, .notHeadstrong
 	ld a, [wAbilityMoveType]
@@ -1163,6 +1174,17 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityScaleDamage
 .defender
 	call AbilityTarget
+	cp AB_SOFT_BODY
+	jr nz, .notSoftBody
+	call AbilityActorMoveType
+	cp NORMAL
+	jr z, .softBody
+	cp FIGHTING
+	ret nz
+.softBody
+	ld c, 75
+	jp .scale
+.notSoftBody
 	cp AB_HEADSTRONG
 	jr nz, .notHeadstrong
 	call AbilityActorMoveType
@@ -1501,6 +1523,15 @@ AbilityHitEvents:
 	set FLINCHED, [hl]
 	ret
 .leaf
+	cp AB_CONTAMINATION
+	jr nz, .poisonLeaf
+	ld a, [wAbilityMoveType]
+	cp GROUND
+	ret nz
+	ld b, 30
+	ld c, 1 << PSN
+	jr .rollStatus
+.poisonLeaf
 	cp AB_POISON_LEAF
 	jr nz, .combustion
 	ld a, [wAbilityMoveType]
@@ -4263,7 +4294,10 @@ AbilityStickyTrap:
  ret nc
  call AbilityTarget
  cp AB_STICKY_TRAP
+ jr z, .sticky
+ cp AB_STICKY_BODY
  ret nz
+.sticky
  call AbilityActor
  cp AB_CLEAR_BODY
  ret z
@@ -5438,3 +5472,37 @@ AbilityRefrigerateFixedDamage:
  ret z
  ld c, 120
  jp AbilityScaleDamage
+
+; Grimer-family Toxic Waste checks either living battler for poison.
+AbilityGrimerToxicWaste:
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ inc hl
+ inc hl
+ bit PSN, [hl]
+ jr nz, .heal
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .restoreNoHeal
+ inc hl
+ inc hl
+ bit PSN, [hl]
+ jr z, .restoreNoHeal
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+.heal
+ call AbilityHP
+ ld a, 4
+ jp AbilityHealFractionFromHL
+.restoreNoHeal
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ ret

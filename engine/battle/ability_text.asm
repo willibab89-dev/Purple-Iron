@@ -75,6 +75,7 @@ AbilityTextPointers:
 	dw AbilityText170, AbilityText171, AbilityText172, AbilityText173, AbilityText174
 	dw AbilityText175, AbilityText176, AbilityText177, AbilityText178, AbilityText179
 	dw AbilityText180, AbilityText181, AbilityText182, AbilityText183
+	dw AbilityText184, AbilityText185, AbilityText186, AbilityText187
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -334,3 +335,8 @@ AbilityText180: db "BLUBBER",$4e,"Fire damage x0.5;",$4e,"maximum HP x1.2.@"
 AbilityText181: db "REFRIGERATE",$4e,"Normal attack: Ice",$4e,"type and power x1.2@"
 AbilityText182: db "ICEBREAKER",$4e,"Ice moves are x2",$4e,"against Water.@"
 AbilityText183: db "SNOW VEIL",$4e,"Ice move: Evasion",$4e,"+1 once per battle.@"
+
+AbilityText184: db "CONTAMINATION",$4e,"Ground hits: 30%",$4e,"chance to poison.@"
+AbilityText185: db "TOXIC WASTE",$4e,"Poison on field:",$4e,"heal 1/16 max HP.@"
+AbilityText186: db "STICKY BODY",$4e,"Physical hit: 20%",$4e,"foe Speed -1.@"
+AbilityText187: db "SOFT BODY",$4e,"Normal/Fighting",$4e,"damage taken x.75.@"

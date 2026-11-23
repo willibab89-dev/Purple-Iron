@@ -103,6 +103,8 @@ AbilitySpeciesPools:
 	db DODRIO, 50
 	db SEEL, 51
 	db DEWGONG, 51
+	db GRIMER, 52
+	db MUK, 52
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -156,6 +158,7 @@ AbilityPoolIds:
 	db AB_TWIN_BEAKS, AB_STAMPEDE, AB_QUICK_FEET, AB_BIRD_RELENTLESS, AB_HEADSTRONG
 	db AB_TRIPLE_THREAT, AB_STAMPEDE, AB_QUICK_FEET, AB_BIRD_RELENTLESS, AB_HEADSTRONG
 	db AB_BLUBBER, AB_HYDRATION, AB_REFRIGERATE, AB_ICEBREAKER, AB_SNOW_VEIL
+	db AB_CONTAMINATION, AB_GRIMER_TOXIC_WASTE, AB_STICKY_BODY, AB_LIQUID_OOZE, AB_SOFT_BODY
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -569,6 +572,8 @@ AbilityPhotosynthesis:
 	call AbilityGet
 	cp AB_REGENERATION
 	jp z, AbilityRegeneration
+	cp AB_GRIMER_TOXIC_WASTE
+	jp z, AbilityGrimerToxicWaste
 	cp AB_TOXIC_WASTE
 	jr z, .poisonRecovery
 	cp AB_POISON_ABSORB
