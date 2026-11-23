@@ -1,6 +1,24 @@
 SECTION "Conditional damage and hybrid stats", ROMX, BANK[$35]
 
 BankedPlayerDamageVars:
+ call UnawareBegin
+ call UnawarePlayerDamageVars
+ jr UnawareFinish
+BankedEnemyDamageVars:
+ call UnawareBegin
+ call UnawareEnemyDamageVars
+UnawareFinish:
+ push af
+ push bc
+ push de
+ push hl
+ call UnawareEnd
+ pop hl
+ pop de
+ pop bc
+ pop af
+ jp StoreBankedDamageVars
+UnawarePlayerDamageVars:
 	call InfiltratorMaskScreens
 	push af
 	call IsConditionalDamageMove
@@ -10,7 +28,7 @@ BankedPlayerDamageVars:
 .custom
 	call ConditionalDamageVars
 	jr InfiltratorFinishDamageVars
-BankedEnemyDamageVars:
+UnawareEnemyDamageVars:
 	call InfiltratorMaskScreens
 	push af
 	call IsConditionalDamageMove
@@ -1015,3 +1033,118 @@ ConditionalElectroBall:
 	ret
 .powers
 	db 40, 60, 80, 120, 150
+
+; Temporarily neutralize positive attacking stages when the defender has Unaware.
+; Recalculation preserves burn, poison and badge effects; restore the battle
+; stats and stages immediately after damage variables have been captured.
+UnawareBegin:
+ xor a
+ ld [wUnawareActive], a
+ abilitycall AbilityUnawareCheck
+ ld a, [wAbilityCheckResult]
+ and a
+ ret z
+ call UnawareActorMods
+ ld de, wUnawareSaved
+ ld a, [hl]
+ ld [de], a
+ cp 8
+ jr c, .attackDone
+ ld [hl], 7
+.attackDone
+ inc de
+ inc hl
+ inc hl
+ inc hl
+ ld a, [hl]
+ ld [de], a
+ cp 8
+ jr c, .specialDone
+ ld [hl], 7
+.specialDone
+ ; Eight consecutive combat stats begin with Attack.
+ inc de
+ call UnawareActorStats
+ ld b, 8
+.save
+ ld a, [hli]
+ ld [de], a
+ inc de
+ dec b
+ jr nz, .save
+ ld a, 1
+ ld [wUnawareActive], a
+ ld a, [wCustomSide]
+ push af
+ ld a, [H_WHOSETURN]
+ ld [wCustomSide], a
+ callab CustomRecalculate
+ pop af
+ ld [wCustomSide], a
+ ; Recalculation touches all stats: retain the original values except where
+ ; a positive offensive stage was actually masked.
+ call UnawareActorStats
+ ld de, wUnawareSaved + 2
+ ld a, [wUnawareSaved]
+ cp 8
+ call c, UnawareRestoreWord
+ jr c, .attackRestored
+ inc hl
+ inc hl
+ inc de
+ inc de
+.attackRestored
+ call UnawareRestoreWord ; Defense
+ call UnawareRestoreWord ; Speed
+ ld a, [wUnawareSaved + 1]
+ cp 8
+ ret nc
+ jp UnawareRestoreWord
+UnawareRestoreWord:
+ ld a, [de]
+ ld [hli], a
+ inc de
+ ld a, [de]
+ ld [hli], a
+ inc de
+ ret
+UnawareEnd:
+ ld a, [wUnawareActive]
+ and a
+ ret z
+ call UnawareActorMods
+ ld de, wUnawareSaved
+ ld a, [de]
+ ld [hl], a
+ inc de
+ inc hl
+ inc hl
+ inc hl
+ ld a, [de]
+ ld [hl], a
+ inc de
+ call UnawareActorStats
+ ld b, 8
+.restore
+ ld a, [de]
+ ld [hli], a
+ inc de
+ dec b
+ jr nz, .restore
+ xor a
+ ld [wUnawareActive], a
+ ret
+UnawareActorMods:
+ ld hl, wPlayerMonStatMods
+ ld a, [H_WHOSETURN]
+ and a
+ ret z
+ ld hl, wEnemyMonStatMods
+ ret
+UnawareActorStats:
+ ld hl, wBattleMonAttack
+ ld a, [H_WHOSETURN]
+ and a
+ ret z
+ ld hl, wEnemyMonAttack
+ ret

@@ -104,6 +104,7 @@ SequenceAirborneHit:
 SequenceNewRound:
 	xor a
 	ld [wResidualRoundDone], a
+	ld [wPatientActed], a
 	ld hl, wPlayerBattleStatus1
 	ld de, wPlayerNumAttacksLeft
 	call SequenceBideClock

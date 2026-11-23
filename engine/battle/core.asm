@@ -511,6 +511,8 @@ MainInBattleLoop:
 	ld [wPlayerSelectedMove], a
 .specialMoveNotUsed
 	callab SwitchEnemyMon	;joedebug - both AI and link enemy use this to switch
+	ld hl, wPatientActed
+	set 1, [hl]
 .noLinkBattle
 	abilitycall AbilityPriority
 	ld a, [wAbilityCheckResult]
@@ -553,6 +555,8 @@ MainInBattleLoop:
 	and a
 	jp z, HandlePlayerMonFainted
 .AIActionUsedEnemyFirst
+	ld hl, wPatientActed
+	set 1, [hl]
 	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
 	ld hl, wBattleMonHP
@@ -7672,7 +7676,7 @@ StatModifierUpEffect:
 	jr nc, .ok
 	ld b, a
 .ok
-	ld [hl], b
+	call SimpleLegacyUpHook
 	ld a, c
 	cp $4
 	jr nc, UpdateStatDone ; jump if mod affected is evasion/accuracy
@@ -7949,7 +7953,7 @@ StatModifierDownEffect:
 	jr nz, .ok
 	inc b ; increment mod to 1 (-6) if it would become 0 (-7)
 .ok
-	ld [hl], b ; save modified mod
+	call SimpleLegacyDownHook ; save modified mod
 	ld a, c
 	cp $4
 	jr nc, UpdateLoweredStatDone ; jump for evasion/accuracy

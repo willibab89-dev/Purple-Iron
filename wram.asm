@@ -3413,8 +3413,11 @@ wNatureScratchEnd::
 ; Two active-side Rollout streaks; reset at battle start and on switch.
 SECTION "Rollout scratch", WRAM0[$df42]
 wRolloutStacks:: ds 2
-SECTION "Stack", WRAM0[$df44]
-	ds $bb
+wPatientActed:: ds 1
+wUnawareActive:: ds 1
+wUnawareSaved:: ds 10
+SECTION "Stack", WRAM0[$df50]
+	ds $af
 wStack:: ; dfff
 
 

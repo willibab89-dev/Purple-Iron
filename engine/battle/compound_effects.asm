@@ -292,6 +292,19 @@ CustomFailed:
 
 ; Stage caps are independent. No second hit test, animation, or RNG here.
 CustomChangeStage:
+	ld a, [wCustomDelta]
+	push af
+	abilitycall AbilitySimpleCustomDelta
+	call CustomChangeStageInner
+	push af
+	ld hl, sp + 3
+	ld a, [hl]
+	ld [wCustomDelta], a
+	pop af
+	inc sp
+	inc sp
+	ret
+CustomChangeStageInner:
 	abilitycall AbilityKeenEyeCustom
 	ld a, [wAbilityCheckResult]
 	and a

@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 79 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 81 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -49,10 +49,13 @@ Implemented for 79 species, with five equally likely slots per species. The save
 | Geodude | Levitate | Immunity | Sturdy | Rollout | Heavyweight |
 | Graveler / Golem | Digger | Immunity | Sturdy | Rollout | Heavyweight |
 | Ponyta / Rapidash | Flame Body | Competitive | Blazing Trail | Wild Charge | Stamina |
+| Slowpoke / Slowbro | Shell Armor | Oblivious | Unaware | Patient | Simple |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Slowpoke-family effects: Shell Armor prevents critical hits. Oblivious prevents confusion and flinching. Unaware ignores positive Attack and Special stages when calculating incoming move damage, while retaining negative stages and status penalties. Patient boosts move damage by 20% when the opponent has already acted during the round. Simple doubles positive and negative stat-stage changes, subject to normal caps.
 
 Ponyta-family effects: Flame Body gives incoming physical hits a 20% chance to burn the attacker. Competitive raises Attack once per battle when an opponent raises a stat. Blazing Trail boosts Fire damage by 20% when the holder is faster. Wild Charge raises Speed after using a damaging physical move once per battle. Stamina raises Defense after each hit received, including individual hits of a multi-hit attack.
 
@@ -158,8 +161,8 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Storage
 
-Ability descriptions and Resourceful PP routines are in the expanded ability bank, leaving room for additional battle mechanics and ability descriptions. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged. Rollout reserves two transient bytes at the bottom of the stack allocation, leaving 187 stack bytes with the same stack top.
+Ability descriptions and Resourceful PP routines are in the expanded ability bank, leaving room for additional battle mechanics and ability descriptions. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged. Rollout and Slowpoke-family mechanics reserve transient bytes at the bottom of the stack allocation, leaving 175 stack bytes with the same stack top.
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 395 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 405 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

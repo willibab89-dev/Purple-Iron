@@ -425,6 +425,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityPatientDamage
 	ld a, [wUnusedC000]
 	bit 4, a
 	ret nz ; fixed damage ignores ordinary damage modifiers
@@ -957,6 +958,11 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityPatientCheck
+	jr nc, .patientFixedDone
+	ld c, 120
+	call AbilityScaleDamage
+.patientFixedDone
 	call AbilityActor
 	cp AB_MEASURED
 	jr nz, .male
@@ -1472,6 +1478,8 @@ AbilityConfounding:
  cp AB_SHIELD_DUST
  ret z
  cp AB_STEADFAST
+ ret z
+ cp AB_OBLIVIOUS
  ret z
  ld hl, wEnemyBattleStatus1
  ld de, wEnemyConfusedCounter
@@ -3090,7 +3098,10 @@ AbilityEffectGate:
 	cp AB_SHIELD_DUST
 	jr z, .checkThaw
 	cp AB_STEADFAST
+	jr z, .steadfast
+	cp AB_OBLIVIOUS
 	ret nz
+.steadfast
 	ld a, b
 	cp FLINCH_SIDE_EFFECT1
 	jr z, .block
@@ -3591,7 +3602,10 @@ AbilityExplodeEffect:
 AbilitySteadfastActor:
  call AbilityActor
  cp AB_STEADFAST
+ jr z, .immune
+ cp AB_OBLIVIOUS
  ret nz
+.immune
  ld hl, wPlayerBattleStatus1
  ld a, [H_WHOSETURN]
  and a
@@ -3620,7 +3634,10 @@ AbilitySteadfastCustomCheck:
  call AbilityGet
 AbilitySteadfastCheck:
  cp AB_STEADFAST
+ jr z, .immune
+ cp AB_OBLIVIOUS
  ret nz
+.immune
  ld a, 1
  ld [wAbilityCheckResult], a
  ret
@@ -4611,4 +4628,129 @@ AbilityCompetitiveFromSide:
  ld [wCustomSide], a
  pop af
  ld [wAbilitySide], a
+ ret
+
+; Track completed actions independently for both sides during the round.
+AbilityPatientMarkAction:
+ ld a, [H_WHOSETURN]
+ and a
+ jr nz, AbilityPatientMarkEnemy
+ ld hl, wPatientActed
+ set 0, [hl]
+ ret
+AbilityPatientMarkEnemy:
+ ld hl, wPatientActed
+ set 1, [hl]
+ ret
+AbilityPatientDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz ; fixed damage is handled separately
+ call AbilityPatientCheck
+ ret nc
+ ld c, 120
+ jp AbilityScaleDamage
+AbilityPatientCheck:
+ call AbilityActor
+ cp AB_PATIENT
+ jr nz, .no
+ ld a, [H_WHOSETURN]
+ and a
+ jr nz, .enemy
+ ld a, [wPatientActed]
+ bit 1, a
+ jr nz, .yes
+ ld a, [wUnusedC000]
+ bit 1, a ; enemy item or switch has already taken its action
+ jr nz, .yes
+ jr .no
+.enemy
+ ld a, [wPatientActed]
+ bit 0, a
+ jr nz, .yes
+ ld a, [wActionResultOrTookBattleTurn]
+ and a
+ jr z, .no
+.yes
+ scf
+ ret
+.no
+ and a
+ ret
+
+AbilitySimpleCustomDelta:
+ ld a, [wCustomSide]
+ call AbilityGet
+ cp AB_SIMPLE
+ ret nz
+ ld a, [wCustomDelta]
+ bit 7, a
+ jr nz, .negative
+ cp 7
+ jr c, .double
+ ld a, 12
+ jr .store
+.negative
+ cp -6 & $ff
+ jr nc, .double
+ ld a, -12 & $ff
+ jr .store
+.double
+ add a
+.store
+ ld [wCustomDelta], a
+ ret
+
+; wAbilityTemp is the already-clamped new stage.
+AbilitySimpleLegacyUp:
+ ld a, [H_WHOSETURN]
+ jr AbilitySimpleLegacy
+AbilitySimpleLegacyDown:
+ ld a, [H_WHOSETURN]
+ xor 1
+AbilitySimpleLegacy:
+ push af
+ call AbilityGet
+ cp AB_SIMPLE
+ jr nz, .done
+ pop af
+ ld hl, wPlayerMonStatMods
+ and a
+ jr z, .index
+ ld hl, wEnemyMonStatMods
+.index
+ ld a, [wUnusedD71B]
+ dec a
+ ld e, a
+ ld d, 0
+ add hl, de
+ ld a, [wAbilityTemp]
+ sub [hl]
+ add a
+ add [hl]
+ bit 7, a
+ jr nz, .min
+ and a
+ jr nz, .max
+.min
+ ld a, 1
+.max
+ cp 14
+ jr c, .save
+ ld a, 13
+.save
+ ld [wAbilityTemp], a
+ ret
+.done
+ pop af
+ ret
+
+AbilityUnawareCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityTarget
+ cp AB_UNAWARE
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
  ret

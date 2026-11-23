@@ -2200,3 +2200,19 @@ INCLUDE "engine/battle/status_balance.asm"
 INCLUDE "engine/overworld/walking_speed.asm"
 
 INCLUDE "engine/items/curated_supplies.asm"
+
+SECTION "Simple stat hooks", ROM0
+SimpleLegacyUpHook:
+ ld a, b
+ ld [wAbilityTemp], a
+ abilitycall AbilitySimpleLegacyUp
+ jr SimpleLegacyFinish
+SimpleLegacyDownHook:
+ ld a, b
+ ld [wAbilityTemp], a
+ abilitycall AbilitySimpleLegacyDown
+SimpleLegacyFinish:
+ ld a, [wAbilityTemp]
+ ld b, a
+ ld [hl], b
+ ret

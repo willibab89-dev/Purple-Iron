@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf44:0xdf64]=[0xa5]*32
+        game.memory[0xdf50:0xdf70]=[0xa5]*32
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf44:0xdf64])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf50:0xdf70])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -45,7 +45,7 @@ def validate(version):
     def init(turn=0):
         call('AbilityResetBattle');put('turn',turn);put('wLinkState',0);put('wIsInBattle',2)
         put('wPlayerMonNumber',0);put('wWhichPokemon',0);put('wEnemyMonPartyPos',0)
-        put('wUnusedC000',0);put('wCustomTargetHadSub',0);put('wCriticalHitOrOHKO',0)
+        put('wUnusedC000',0);put('wActionResultOrTookBattleTurn',0);put('wCustomTargetHadSub',0);put('wCriticalHitOrOHKO',0)
         put('wOptions',0);put('wObtainedBadges',0);put('wFirstMonsNotOutYet',0);put('wResidualRoundDone',0)
         put('wBattleMonSpecies',ids['PIDGEY']);put('wEnemyMonSpecies',ids['PIDGEY'])
         for side,prefix,party in (('Player','wBattleMon','wPartyMon1'),('Enemy','wEnemyMon','wEnemyMon1')):
@@ -131,8 +131,9 @@ def validate(version):
                'TENTACOOL':['CLEAR_BODY','LIQUID_OOZE','STINGING_SKIN','JELLY_BODY','VENOMOUS'],
                'GEODUDE':['LEVITATE','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT'],
                'GRAVELER':['DIGGER','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT'],
-               'PONYTA':['FLAME_BODY','COMPETITIVE','BLAZING_TRAIL','WILD_CHARGE','STAMINA']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA')]:
+               'PONYTA':['FLAME_BODY','COMPETITIVE','BLAZING_TRAIL','WILD_CHARGE','STAMINA'],
+               'SLOWPOKE':['SHELL_ARMOR','OBLIVIOUS','UNAWARE','PATIENT','SIMPLE']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -883,6 +884,47 @@ def validate(version):
             init(turn);move(turn,'PSYCH_UP');aid(1-turn,'COMPETITIVE');put('w'+('Player' if turn else 'Enemy')+'MonDefenseMod',9);put('w'+('Player' if turn else 'Enemy')+'MonSpeedMod',9);call('UtilityPsychUp');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'psych up competitive')
             for n,original in patches.items():
                 bank,address=syms[n];game.memory[bank,address]=original
+        # Slowpoke / Slowbro: both sides and ordinary/custom stat changes.
+        patches={}
+        for n in ('PlayCurrentMoveAnimation','PrintStatText','DelayFrames','MoveHitTest','UpdateLoweredStatDone'):
+            bank,address=syms[n];patches[n]=game.memory[bank,address];patch(n,[0xc9])
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player')
+            target='w'+('Player' if turn else 'Enemy')
+            for delta,stage,want in [(1,7,9),(2,7,11),(-1,7,5),(-2,7,3),(2,12,13),(-2,2,1)]:
+                init(turn);aid(turn,'SIMPLE');put('wCustomSide',turn);put('wCustomStat',0);put('wCustomDelta',delta&255);put(actor+'MonAttackMod',stage)
+                call('CustomChangeStage');assert get(actor+'MonAttackMod')==want,(turn,delta,stage,get(actor+'MonAttackMod'))
+                assert get('wCustomDelta')==delta&255
+            for attack,want in [('SWORDS_DANCE',11),('GROWL',5)]:
+                init(turn);move(turn,attack);side=turn if attack=='SWORDS_DANCE' else 1-turn;aid(side,'SIMPLE')
+                call('StatModifierUpEffect' if attack=='SWORDS_DANCE' else 'StatModifierDownEffect')
+                assert get(('wEnemyMonAttackMod' if side else 'wPlayerMonAttackMod'))==want,(turn,attack,get(('wEnemyMonAttackMod' if side else 'wPlayerMonAttackMod')))
+            # Patient applies only after the opposing side has completed an action.
+            for acted,want in [(0,100),(1<<turn,100),(1<<(1-turn),120)]:
+                init(turn);move(turn,'TACKLE');aid(turn,'PATIENT');put('wPatientActed',acted);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,acted,readword('wDamage'))
+            init(turn);aid(turn,'PATIENT');put('wPatientActed',1<<(1-turn));put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==120
+            init(turn);call('AbilityPatientMarkAction');assert get('wPatientActed')==1<<turn;call('SequenceNewRound');assert get('wPatientActed')==0
+            if turn:
+                init(turn);move(turn,'TACKLE');aid(turn,'PATIENT');put('wActionResultOrTookBattleTurn',1);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==120
+            # Oblivious blocks confusion and flinch on the existing Steadfast paths.
+            init(turn);aid(turn,'OBLIVIOUS');put(actor+'BattleStatus1',0x88);call('AbilitySteadfastActor');assert get(actor+'BattleStatus1')&0x88==0
+            init(turn);aid(1-turn,'OBLIVIOUS');move(turn,'CONFUSE_RAY');call('AbilitySteadfastDirectCheck');assert get('wAbilityCheckResult')==1
+            # Unaware uses neutral offense for positive boosts, but not drops.
+            for attack in ('TACKLE','EMBER','PSYSHOCK'):
+                for stage,stat in [(7,100),(9,200),(5,50)]:
+                    ap,tp=init(turn);move(turn,attack);aid(1-turn,'UNAWARE');put(actor+'MonAttackMod',stage);put(actor+'MonSpecialMod',stage);word(ap+'Attack',stat);word(ap+'Special',stat)
+                    call('BankedEnemyDamageVars' if turn else 'BankedPlayerDamageVars')
+                    # The exported offense byte is H_MULTIPLICAND+1.
+                    offense=game.memory[0xff97]
+                    assert offense==(50 if stage==5 else 100),(turn,attack,stage,offense)
+                    assert get(actor+'MonAttackMod')==stage and get(actor+'MonSpecialMod')==stage and readword(ap+'Attack')==stat and readword(ap+'Special')==stat
+            # A positive Attack stage must not alter a negative Special stage,
+            # and burn still halves the neutralized Attack.
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'UNAWARE');put(actor+'MonAttackMod',9);put(actor+'MonSpecialMod',5);word(ap+'Attack',100);word(ap+'Special',37);put(ap+'Status',16)
+            call('UnawareBegin');assert readword(ap+'Attack')==50 and readword(ap+'Special')==37,(turn,readword(ap+'Attack'),readword(ap+'Special'));call('UnawareEnd')
+            assert readword(ap+'Attack')==100 and readword(ap+'Special')==37
+        for n,original in patches.items():
+            bank,address=syms[n];game.memory[bank,address]=original
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1222,7 +1264,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 79 species / 395 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 81 species / 405 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

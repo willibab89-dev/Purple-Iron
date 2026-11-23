@@ -70,6 +70,7 @@ AbilityTextPointers:
 	dw AbilityText147, AbilityText148, AbilityText149, AbilityText150
 	dw AbilityText151, AbilityText152, AbilityText153, AbilityText154, AbilityText155, AbilityText156
 	dw AbilityText157, AbilityText158, AbilityText159, AbilityText160, AbilityText161
+	dw AbilityText162, AbilityText163, AbilityText164, AbilityText165
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -302,3 +303,8 @@ AbilityText158: db "COMPETITIVE",$4e,"Foe raises stat:",$4e,"Attack +1 once.@"
 AbilityText159: db "BLAZING TRAIL",$4e,"Fire damage x1.2",$4e,"if faster than foe.@"
 AbilityText160: db "WILD CHARGE",$4e,"Physical move:",$4e,"Speed +1 once.@"
 AbilityText161: db "STAMINA",$4e,"When hit by an",$4e,"attack: Defense +1.@"
+
+AbilityText162: db "OBLIVIOUS",$4e,"Cannot be confused",$4e,"or flinched.@"
+AbilityText163: db "UNAWARE",$4e,"Ignores foe boosts",$4e,"when taking damage.@"
+AbilityText164: db "PATIENT",$4e,"After foe acts:",$4e,"move damage x1.2.@"
+AbilityText165: db "SIMPLE",$4e,"Stat changes are",$4e,"doubled.@"

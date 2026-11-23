@@ -71,7 +71,7 @@ Battle types are restored from the actual species header. Capture odds and the e
 
 ## Validation and limits
 
-Both Red and Blue build as the same 1 MiB cartridge format. No custom sprite assets were edited. Nature/ability scratch occupy former bottom-of-stack space, leaving 187 stack bytes and the same DFFF stack top; emulator checks guard the lower 32 stack bytes during the new test paths.
+Both Red and Blue build as the same 1 MiB cartridge format. No custom sprite assets were edited. Nature/ability scratch occupy former bottom-of-stack space, leaving 175 stack bytes and the same DFFF stack top; emulator checks guard the lower 32 stack bytes during the new test paths.
 
 The nature harness verifies:
 

@@ -94,6 +94,8 @@ AbilitySpeciesPools:
 	db GOLEM, 44
 	db PONYTA, 45
 	db RAPIDASH, 45
+	db SLOWPOKE, 46
+	db SLOWBRO, 46
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -141,6 +143,7 @@ AbilityPoolIds:
 	db AB_LEVITATE, AB_IMMUNITY, AB_STURDY, AB_ROLLOUT, AB_HEAVYWEIGHT
 	db AB_DIGGER, AB_IMMUNITY, AB_STURDY, AB_ROLLOUT, AB_HEAVYWEIGHT
 	db AB_FLAME_BODY, AB_COMPETITIVE, AB_BLAZING_TRAIL, AB_WILD_CHARGE, AB_STAMINA
+	db AB_SHELL_ARMOR, AB_OBLIVIOUS, AB_UNAWARE, AB_PATIENT, AB_SIMPLE
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -183,6 +186,7 @@ AbilityResetBattle:
 	xor a
 	ld [wRolloutStacks], a
 	ld [wRolloutStacks + 1], a
+	ld [wPatientActed], a
 	ld [wAbilityHit], a
 	ld [wAbilityPPLeft], a
 	ld [wAbilityCheckResult], a
@@ -463,6 +467,7 @@ AbilityRaiseStage:
 	jpab CustomChangeStage
 
 AbilityAfterAction:
+	abilitycall AbilityPatientMarkAction
 	abilitycall AbilityInfiltratorRestore
 	abilitycall AbilityElusiveAfterAttack
 	abilitycall AbilityLowHPBoth ; recoil can cross a threshold mid-turn
