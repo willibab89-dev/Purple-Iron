@@ -132,8 +132,9 @@ def validate(version):
                'GEODUDE':['LEVITATE','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT'],
                'GRAVELER':['DIGGER','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT'],
                'PONYTA':['FLAME_BODY','COMPETITIVE','BLAZING_TRAIL','WILD_CHARGE','STAMINA'],
-               'SLOWPOKE':['SHELL_ARMOR','OBLIVIOUS','UNAWARE','PATIENT','SIMPLE']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE')]:
+               'SLOWPOKE':['SHELL_ARMOR','OBLIVIOUS','UNAWARE','PATIENT','SIMPLE'],
+               'MAGNEMITE':['LEVITATE','BATTERY','OVERLOAD','CHAIN_REACTION','MAGNETIC_FIELD']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -925,6 +926,41 @@ def validate(version):
             assert readword(ap+'Attack')==100 and readword(ap+'Special')==37
         for n,original in patches.items():
             bank,address=syms[n];game.memory[bank,address]=original
+        # Magnemite / Magneton abilities on both sides.
+        patches={}
+        for n in ('PlayCurrentMoveAnimation','PrintStatText','DelayFrames','PrintNothingHappenedText'):
+            bank,address=syms[n];patches[n]=game.memory[bank,address];patch(n,[0xc9])
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player')
+            target='w'+('Player' if turn else 'Enemy')
+            # Thunderbolt has 15 max PP; each PP Up adds 3.
+            for ups,pp,want in [(0,7,100),(0,8,120),(1,9,100),(1,10,120),(3,12,100),(3,13,120)]:
+                ap,tp=init(turn);move(turn,'THUNDERBOLT');aid(turn,'BATTERY');put(ap+'Moves',MOVES['THUNDERBOLT']);put(ap+'PP',(ups<<6)|pp);put('wAbilityPPLeft',pp);word('wDamage',100)
+                call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,ups,pp,readword('wDamage'))
+            # A transformed user's copied moves always have maximum 5 PP.
+            ap,tp=init(turn);move(turn,'THUNDERBOLT');aid(turn,'BATTERY');put(actor+'BattleStatus3',8)
+            for pp,want in [(2,100),(3,120)]:
+                put('wAbilityPPLeft',pp);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'transformed PP',pp)
+            # An Electric attack arms the next; intervening other moves do not consume it.
+            ap,tp=init(turn);aid(turn,'CHAIN_REACTION');move(turn,'THUNDERBOLT');put('wAbilityHit',8);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+            call('AbilityRolloutAfterAction');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==120
+            move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==120
+            put('wAbilitySide',turn);call('AbilityEntry');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+            # Only a surviving target hit by a special attack gets Overload, once per battle.
+            for attack,want in [('TACKLE',7),('EMBER',8)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'OVERLOAD');call('AbilityAfterHit');assert get(target+'MonSpecialMod')==want,(turn,attack,get(target+'MonSpecialMod'))
+                put('wAbilityHit',0);call('AbilityAfterHit');assert get(target+'MonSpecialMod')==want
+            # A fainted field holder cannot prevent stage increases.
+            ap,tp=init(turn);aid(1-turn,'MAGNETIC_FIELD');word(tp+'HP',0);put('wCustomSide',turn);put('wCustomStat',2);put('wCustomDelta',1);call('CustomChangeStage');assert get(actor+'MonSpeedMod')==8
+            for stat,delta,want in [(2,1,7),(5,1,7),(0,1,8),(2,-1,6),(5,-1,6)]:
+                init(turn);aid(1-turn,'MAGNETIC_FIELD');put('wCustomSide',turn);put('wCustomStat',stat);put('wCustomDelta',delta&255);call('CustomChangeStage')
+                name=actor+'Mon'+('Attack','Defense','Speed','Special','Accuracy','Evasion')[stat]+'Mod';assert get(name)==want,(turn,stat,delta,get(name))
+            for attack,stat in [('AGILITY','Speed'),('MINIMIZE','Evasion')]:
+                init(turn);move(turn,attack);aid(1-turn,'MAGNETIC_FIELD');call('StatModifierUpEffect');assert get(actor+'Mon'+stat+'Mod')==7,(turn,attack)
+            init(turn);move(turn,'PSYCH_UP');aid(1-turn,'MAGNETIC_FIELD');put(target+'MonSpeedMod',10);put(target+'MonEvasionMod',10);put(target+'MonDefenseMod',9);call('UtilityPsychUp')
+            assert get(actor+'MonSpeedMod')==7 and get(actor+'MonEvasionMod')==7 and get(actor+'MonDefenseMod')==9,(turn,'psych up')
+        for n,original in patches.items():
+            bank,address=syms[n];game.memory[bank,address]=original
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1264,7 +1300,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 81 species / 405 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 83 species / 415 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

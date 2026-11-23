@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 81 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 83 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -50,10 +50,13 @@ Implemented for 81 species, with five equally likely slots per species. The save
 | Graveler / Golem | Digger | Immunity | Sturdy | Rollout | Heavyweight |
 | Ponyta / Rapidash | Flame Body | Competitive | Blazing Trail | Wild Charge | Stamina |
 | Slowpoke / Slowbro | Shell Armor | Oblivious | Unaware | Patient | Simple |
+| Magnemite / Magneton | Levitate | Battery | Overload | Chain Reaction | Magnetic Field |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Magnemite-family effects: Levitate grants Ground immunity. Battery boosts Electric damage by 20% while the move has more than half its maximum PP before use, including PP Ups. Overload raises Special once per battle after receiving a special attack. Chain Reaction makes the next Electric attack deal 20% more damage after using an Electric attack; it stays armed through other moves and resets on switching. Magnetic Field prevents the opposing Pokémon from raising Speed or Evasion while its holder is active.
 
 Slowpoke-family effects: Shell Armor prevents critical hits. Oblivious prevents confusion and flinching. Unaware ignores positive Attack and Special stages when calculating incoming move damage, while retaining negative stages and status penalties. Patient boosts move damage by 20% when the opponent has already acted during the round. Simple doubles positive and negative stat-stage changes, subject to normal caps.
 
@@ -165,4 +168,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 405 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 415 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

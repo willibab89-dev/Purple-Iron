@@ -7677,6 +7677,7 @@ StatModifierUpEffect:
 	ld b, a
 .ok
 	call SimpleLegacyUpHook
+	jp c, PrintNothingHappenedText
 	ld a, c
 	cp $4
 	jr nc, UpdateStatDone ; jump if mod affected is evasion/accuracy

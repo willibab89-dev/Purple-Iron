@@ -284,6 +284,21 @@ UtilityPsychUp:
 	xor a
 	ld [wCustomChanged], a
 .copy
+ ; Psych Up may copy a lower stage, but Magnetic Field blocks increases.
+ ld a, b
+ cp 4 ; Speed
+ jr z, .magnetic
+ cp 1 ; Evasion
+ jr nz, .compare
+.magnetic
+ ld a, [de]
+ cp [hl]
+ jr nc, .compare
+ abilitycall AbilityMagneticPsych
+ ld a, [wAbilityCheckResult]
+ and a
+ jr nz, .skipCopy
+.compare
 	ld a, [de]
 	cp [hl]
 	jr z, .same
@@ -298,6 +313,13 @@ UtilityPsychUp:
 	inc de
 	dec b
 	jr nz, .copy
+ jr .copyDone
+.skipCopy
+ inc hl
+ inc de
+ dec b
+ jr nz, .copy
+.copyDone
 	ld a, [wCustomChanged]
 	and a
 	jp z, CustomFailed

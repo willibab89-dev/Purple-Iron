@@ -71,6 +71,7 @@ AbilityTextPointers:
 	dw AbilityText151, AbilityText152, AbilityText153, AbilityText154, AbilityText155, AbilityText156
 	dw AbilityText157, AbilityText158, AbilityText159, AbilityText160, AbilityText161
 	dw AbilityText162, AbilityText163, AbilityText164, AbilityText165
+	dw AbilityText166, AbilityText167, AbilityText168, AbilityText169
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -308,3 +309,8 @@ AbilityText162: db "OBLIVIOUS",$4e,"Cannot be confused",$4e,"or flinched.@"
 AbilityText163: db "UNAWARE",$4e,"Ignores foe boosts",$4e,"when taking damage.@"
 AbilityText164: db "PATIENT",$4e,"After foe acts:",$4e,"move damage x1.2.@"
 AbilityText165: db "SIMPLE",$4e,"Stat changes are",$4e,"doubled.@"
+
+AbilityText166: db "BATTERY",$4e,"Electric damage x1.2",$4e,"above half max PP.@"
+AbilityText167: db "OVERLOAD",$4e,"Special hit: Special",$4e,"+1 once per battle.@"
+AbilityText168: db "CHAIN REACTION",$4e,"Electric attack:",$4e,"next Electric x1.2.@"
+AbilityText169: db "MAGNETIC FIELD",$4e,"Foe cannot raise",$4e,"Speed or Evasion.@"

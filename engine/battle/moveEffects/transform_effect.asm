@@ -126,9 +126,11 @@ TransformEffect_:
 	ld hl, wEnemyMonUnmodifiedAttack
 	ld de, wPlayerMonUnmodifiedAttack
 	call .copyBasedOnTurn ; original (unmodified) stats
+	abilitycall AbilityMagneticSnapshot
 	ld hl, wEnemyMonStatMods
 	ld de, wPlayerMonStatMods
 	call .copyBasedOnTurn ; stat mods
+	abilitycall AbilityMagneticRestoreCopiedStages
 	callab CustomSetActor
 	callab CustomRecalculate
 	ld hl, TransformedText

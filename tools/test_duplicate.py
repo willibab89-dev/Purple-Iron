@@ -95,6 +95,17 @@ def validate(version):
             game.memory[addr(tp+'Moves'):addr(tp+'Moves')+4]=[233,3,4,5]
             call('EntryAutoBoth');assert get(f'w{actor}BattleStatus3')&8 and get(ap+'Species')==159
             assert not(get(f'w{target}BattleStatus3')&8)
+        # A real entry Transform copies other stages, while Magnetic Field
+        # prevents the opponent's Speed and Evasion from increasing.
+        for turn in (0,1):
+            actor,target,ap,tp=init('TACKLE',turn);put(ap+'Species',76);put(tp+'Species',159)
+            game.memory[addr('wActiveAbilities')+turn]=0
+            game.memory[addr('wActiveAbilities')+1-turn]=169 # Magnetic Field
+            put(f'w{target}MonSpeedMod',10);put(f'w{target}MonEvasionMod',10);put(f'w{target}MonDefenseMod',9)
+            call('EntryAutoBoth')
+            assert get(f'w{actor}BattleStatus3')&8
+            assert get(f'w{actor}MonSpeedMod')==7 and get(f'w{actor}MonEvasionMod')==7 and get(f'w{actor}MonDefenseMod')==9,(turn,'magnetic transform')
+            game.memory[addr('wActiveAbilities')+1-turn]=0
         # Test actual damage effectiveness for the approved new typings.
         for turn in (0,1):
             for types,checks in [([26,26],[(25,200),(26,200),(4,100),(5,100),(23,50)]),([5,26],[(25,200),(1,200),(4,200),(26,200),(21,100),(22,100),(23,50)]),([5,4],[(21,400),(22,400),(23,0)])]:

@@ -2206,7 +2206,11 @@ SimpleLegacyUpHook:
  ld a, b
  ld [wAbilityTemp], a
  abilitycall AbilitySimpleLegacyUp
- jr SimpleLegacyFinish
+ ld a, [wAbilityCheckResult]
+ and a
+ jr z, SimpleLegacyFinish
+ scf
+ ret
 SimpleLegacyDownHook:
  ld a, b
  ld [wAbilityTemp], a
@@ -2215,4 +2219,5 @@ SimpleLegacyFinish:
  ld a, [wAbilityTemp]
  ld b, a
  ld [hl], b
+ and a
  ret

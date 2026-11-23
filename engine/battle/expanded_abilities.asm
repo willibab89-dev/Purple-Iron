@@ -200,6 +200,10 @@ AbilityTarget:
 
 ; Called by CustomChangeStage before modifying a stage.
 AbilityKeenEyeCustom:
+ call AbilityMagneticCustom
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
  xor a
  ld [wAbilityCheckResult], a
  ld a, [wCustomDelta]
@@ -425,6 +429,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityMagnetDamage
 	call AbilityPatientDamage
 	ld a, [wUnusedC000]
 	bit 4, a
@@ -2587,10 +2592,10 @@ AbilityGetTargetReactions:
 	jr nz, .inflatable
 	ld a, [wAbilityMoveType]
 	cp FIRE
-	jr nc, .contact
+	jp nc, .contact
 	call AbilityFlagsPointer
 	bit 2, [hl]
-	jr nz, .contact
+	jp nz, .contact
 	set 2, [hl]
 	ld a, 5 ; Evasion
 	call AbilityRaiseStage
@@ -2600,19 +2605,22 @@ AbilityGetTargetReactions:
 	jr nz, .hotTemper
 	ld a, [wAbilityMoveType]
 	cp FIRE
-	jr nc, .contact
+	jp nc, .contact
 	ld a, 1 ; Defense
 	call AbilityRaiseStage
 	jr .contact
 .hotTemper
+	cp AB_OVERLOAD
+	jr z, .overload
 	cp AB_HEADACHE
 	jr nz, .swiftSwim
+.overload
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	jr c, .contact
 	call AbilityFlagsPointer
 	bit 0, [hl]
-	jr nz, .contact
+	jp nz, .contact
 	set 0, [hl]
 	ld a, 3
 	call AbilityRaiseStage
@@ -2622,7 +2630,7 @@ AbilityGetTargetReactions:
 	jr nz, .hotTemperCheck
 	ld a, [wAbilityMoveType]
 	cp WATER
-	jr nz, .contact
+	jp nz, .contact
 	ld a, 2
 	call AbilityRaiseStage
 	ld a, 2
@@ -2633,17 +2641,17 @@ AbilityGetTargetReactions:
 	jr nz, .shellGuard
 	ld a, [wAbilityMoveType]
 	cp FIRE
-	jr nc, .contact
+	jp nc, .contact
 	call AbilityFlagsPointer
 	bit 0, [hl]
-	jr nz, .contact
+	jp nz, .contact
 	set 0, [hl]
 	ld a, 3
 	call AbilityRaiseStage
 	jr .contact
 .shellGuard
 	cp AB_SHELL_GUARD
-	jr nz, .contact
+	jp nz, .contact
 	ld a, [wCriticalHitOrOHKO]
 	and a
 	jr z, .contact
@@ -4400,6 +4408,8 @@ AbilityRolloutScale:
 ; One stack per completed Ground/Rock attack. Misses and other moves reset it.
 AbilityRolloutAfterAction:
  call AbilityActor
+ cp AB_CHAIN_REACTION
+ jp z, AbilityChainAfterAction
  cp AB_ROLLOUT
  ret nz
  ld a, [wAbilityHit]
@@ -4703,6 +4713,10 @@ AbilitySimpleCustomDelta:
 
 ; wAbilityTemp is the already-clamped new stage.
 AbilitySimpleLegacyUp:
+ call AbilityMagneticLegacy
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
  ld a, [H_WHOSETURN]
  jr AbilitySimpleLegacy
 AbilitySimpleLegacyDown:
@@ -4753,4 +4767,268 @@ AbilityUnawareCheck:
  ret nz
  ld a, 1
  ld [wAbilityCheckResult], a
+ ret
+
+; Carry when the opposite living battler has Magnetic Field.
+AbilityMagneticAgainstSide:
+ xor 1
+ ld b, a
+ call AbilityGet
+ cp AB_MAGNETIC_FIELD
+ jr nz, .no
+ ld a, b
+ ld hl, wBattleMonHP
+ and a
+ jr z, .hp
+ ld hl, wEnemyMonHP
+.hp
+ ld a, [hli]
+ or [hl]
+ jr z, .no
+ scf
+ ret
+.no
+ and a
+ ret
+
+AbilityMagneticCustom:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wCustomDelta]
+ and a
+ ret z
+ bit 7, a
+ ret nz
+ ld a, [wCustomStat]
+ cp 2
+ jr z, .check
+ cp 5
+ ret nz
+.check
+ ld a, [wCustomSide]
+ call AbilityMagneticAgainstSide
+ ret nc
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; Legacy stat-up hooks put the stat index in wUnusedD71B (one-based).
+AbilityMagneticLegacy:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wUnusedD71B]
+ cp 3
+ jr z, .check
+ cp 6
+ ret nz
+.check
+ ld a, [H_WHOSETURN]
+ call AbilityMagneticAgainstSide
+ ret nc
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityMagneticPsych:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wCustomSide]
+ call AbilityMagneticAgainstSide
+ ret nc
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityMagnetDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ call AbilityActor
+ cp AB_BATTERY
+ jr z, .battery
+ cp AB_CHAIN_REACTION
+ ret nz
+ call AbilityActorMoveType
+ cp ELECTRIC
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ ld a, [hl]
+ and a
+ ret z
+ jr .boost
+.battery
+ call AbilityActorMoveType
+ cp ELECTRIC
+ ret nz
+ call AbilityBatteryCheck
+ ret nc
+.boost
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 120
+ jp AbilityScaleDamage
+
+; Compare pre-deduction PP to the selected move's maximum, including PP Ups.
+AbilityBatteryCheck:
+ ld a, [H_WHOSETURN]
+ and a
+ ld hl, wPlayerBattleStatus3
+ jr z, .transform
+ ld hl, wEnemyBattleStatus3
+.transform
+ bit TRANSFORMED, [hl]
+ jr z, .normal
+ ld b, 5
+ jr .compare
+.normal
+ ld hl, wBattleMonMoves
+ ld a, [H_WHOSETURN]
+ and a
+ ld a, [wPlayerMoveListIndex]
+ jr z, .slot
+ ld hl, wEnemyMonMoves
+ ld a, [wEnemyMoveListIndex]
+.slot
+ and 3
+ ld e, a
+ ld d, 0
+ add hl, de
+ ld a, [hl]
+ and a
+ ret z
+ dec a
+ ld hl, Moves + 5
+ ld bc, MoveEnd - Moves
+ call AddNTimes
+ ld de, wAbilityTemp
+ ld bc, 1
+ ld a, BANK(Moves)
+ call FarCopyData
+ ld a, [wAbilityTemp]
+ ld b, a
+ ; floor(base PP / 5), capped at 7, matches AddBonusPP.
+ ld c, 0
+.divide
+ cp 5
+ jr c, .divided
+ sub 5
+ inc c
+ ld a, c
+ cp 7
+ jr z, .divided
+ ld a, [wAbilityTemp]
+ ld d, a
+ ld a, c
+ add a
+ add a
+ add c
+ ld e, a
+ ld a, d
+ sub e
+ jr .divide
+.divided
+ ld hl, wBattleMonPP
+ ld a, [H_WHOSETURN]
+ and a
+ ld a, [wPlayerMoveListIndex]
+ jr z, .ppslot
+ ld hl, wEnemyMonPP
+ ld a, [wEnemyMoveListIndex]
+.ppslot
+ and 3
+ ld e, a
+ ld d, 0
+ add hl, de
+ ld a, [hl]
+ and $c0
+ rlca
+ rlca
+ ld d, a
+.add
+ ld a, d
+ and a
+ jr z, .cap
+ ld a, b
+ add c
+ ld b, a
+ dec d
+ jr .add
+.cap
+ ld a, b
+ cp 64
+ jr c, .compare
+ ld b, 63
+.compare
+ ld a, [wAbilityPPLeft]
+ add a
+ cp b
+ ret z
+ ccf
+ ret
+
+; Once an Electric attack is used, its next Electric attack is boosted.
+; The side-local Rollout byte is shared: these abilities are mutually exclusive.
+AbilityChainAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ call AbilityMove
+ inc hl
+ inc hl
+ ld a, [hli]
+ and a
+ ret z
+ ld a, [hl]
+ cp ELECTRIC
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ ld [hl], 1
+ ret
+
+; Transform directly copies stages; retain the previous Speed/Evasion when
+; the copy would increase them under an opposing Magnetic Field.
+AbilityMagneticSnapshot:
+ ld hl, wPlayerMonSpeedMod
+ ld de, wPlayerMonEvasionMod
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .save
+ ld hl, wEnemyMonSpeedMod
+ ld de, wEnemyMonEvasionMod
+.save
+ ld a, [hl]
+ ld [wAbilityTemp], a
+ ld a, [de]
+ ld [wAbilityTemp + 1], a
+ ret
+AbilityMagneticRestoreCopiedStages:
+ ld a, [H_WHOSETURN]
+ call AbilityMagneticAgainstSide
+ ret nc
+ ld hl, wPlayerMonSpeedMod
+ ld de, wPlayerMonEvasionMod
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .restore
+ ld hl, wEnemyMonSpeedMod
+ ld de, wEnemyMonEvasionMod
+.restore
+ ld a, [wAbilityTemp]
+ cp [hl]
+ jr nc, .evasion
+ ld [hl], a
+.evasion
+ ld a, [de]
+ ld b, a
+ ld a, [wAbilityTemp + 1]
+ cp b
+ ret nc
+ ld [de], a
  ret
