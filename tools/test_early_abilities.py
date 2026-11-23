@@ -133,7 +133,8 @@ def validate(version):
                'GRAVELER':['DIGGER','IMMUNITY','STURDY','ROLLOUT','HEAVYWEIGHT'],
                'PONYTA':['FLAME_BODY','COMPETITIVE','BLAZING_TRAIL','WILD_CHARGE','STAMINA'],
                'SLOWPOKE':['SHELL_ARMOR','OBLIVIOUS','UNAWARE','PATIENT','SIMPLE'],
-               'MAGNEMITE':['LEVITATE','BATTERY','OVERLOAD','CHAIN_REACTION','MAGNETIC_FIELD']}
+               'MAGNEMITE':['LEVITATE','BATTERY','OVERLOAD','CHAIN_REACTION','MAGNETIC_FIELD'],
+               'FARFETCHD':['UNDERDOG','UNYIELDING','TASTY_LEEK','PRECISION','RAZOR_EDGE']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -143,10 +144,10 @@ def validate(version):
                 assert get('wPartyMon1CatchRate')==17
                 put('wEnemyMonSpecies2',ids[species]);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=17
                 call('AbilityLoadEnemy');assert game.memory[addr('wActiveAbilities')+1]==ab[name]
-        # Pool 53 starts beyond byte 255: offsets must not wrap.
-        pool_bank,pool_base=syms['AbilityPoolIds'];old=game.memory[pool_bank,pool_base+260];game.memory[pool_bank,pool_base+260]=0xa5
-        call('AbilityResolvePoolId',BC=(1<<8)|53);assert game.register_file.A==0xa5,(version,'extended pool')
-        game.memory[pool_bank,pool_base+260]=old
+        # Pool 60 starts beyond byte 255: offsets must not wrap.
+        pool_bank,pool_base=syms['AbilityPoolIds'];old=game.memory[pool_bank,pool_base+295];game.memory[pool_bank,pool_base+295]=0xa5
+        call('AbilityResolvePoolId',BC=(1<<8)|60);assert game.register_file.A==0xa5,(version,'extended pool')
+        game.memory[pool_bank,pool_base+295]=old
         # Load a real party member and ensure entry occurs after stage reset.
         init();metadata('wPartyMon1','PIDGEY',1,0);put('wBattleMonSpecies2',ids['PIDGEY'])
         call('LoadBattleMonFromParty')
@@ -961,6 +962,35 @@ def validate(version):
             assert get(actor+'MonSpeedMod')==7 and get(actor+'MonEvasionMod')==7 and get(actor+'MonDefenseMod')==9,(turn,'psych up')
         for n,original in patches.items():
             bank,address=syms[n];game.memory[bank,address]=original
+        # Farfetch'd's five abilities: both actor sides and exact boundaries.
+        move_rows=re.findall(r'^\s*move (\w+),\s*\w+,\s*\d+,\s*\w+,\s*(\d+),',(ROOT/'data/moves.asm').read_text(),re.M)
+        precision_names={name for name,accuracy in move_rows if int(accuracy)==95}
+        move_list=(ROOT/'data/farfetch_ability_moves.asm').read_text().split('AbilityPrecisionMoves:')[1].split('$ff')[0]
+        assert {n.strip() for n in move_list.replace('db','').replace('\n','').split(',') if n.strip()}==precision_names
+        far_patches={}
+        for n in ('MoveHitTest','CantLowerAnymore','UpdateLoweredStatDone'):
+            bank,address=syms[n];far_patches[n]=game.memory[bank,address];patch(n,[0xc9])
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for foe,want in [('PIDGEY',100),('FARFETCHD',100),('PIDGEOT',120)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'UNDERDOG');put(ap+'Species',ids['FARFETCHD']);put(tp+'Species',ids[foe]);word('wDamage',100);call('AbilityModifyDamage')
+                assert readword('wDamage')==want,(turn,foe,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'UNDERDOG');put(ap+'Species',ids['FARFETCHD']);put(tp+'Species',ids['PIDGEOT']);put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==120
+            for stat,delta,side,want in [(0,-1,1-turn,7),(1,-1,1-turn,7),(2,-1,1-turn,6),(0,1,1-turn,8),(0,-1,turn,6)]:
+                init(turn);aid(side,'UNYIELDING');put('wCustomSide',side);put('wCustomStat',stat);put('wCustomDelta',delta&255);call('CustomChangeStage')
+                name=('wEnemy' if side else 'wPlayer')+'Mon'+('Attack','Defense','Speed')[stat]+'Mod';assert get(name)==want,(turn,stat,delta,side,get(name))
+            for attack,stat in [('GROWL','Attack'),('LEER','Defense')]:
+                init(turn);move(turn,attack);aid(1-turn,'UNYIELDING');call('StatModifierDownEffect');assert get(target+'Mon'+stat+'Mod')==7,(turn,attack)
+            for hp,critical,want in [(80,1,96),(155,1,160),(80,0,80),(0,1,0)]:
+                ap,tp=init(turn);aid(turn,'TASTY_LEEK');word(ap+'HP',hp);put('wCriticalHitOrOHKO',critical);call('AbilityTastyLeek');assert readword(ap+'HP')==want,(turn,hp,critical,readword(ap+'HP'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'TASTY_LEEK');word(ap+'HP',80);put('wCriticalHitOrOHKO',1);call('AbilityAfterHit');assert readword(ap+'HP')==96
+            for attack,want in [('TACKLE',120),('CUT',120),('SLASH',100),('CONFUSE_RAY',120)]:
+                init(turn);move(turn,attack);aid(turn,'PRECISION');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
+            init(turn);move(turn,'TACKLE');aid(turn,'PRECISION');call('CalcHitChance');assert get(actor+'MoveAccuracy')==255,(turn,get(actor+'MoveAccuracy'))
+            for attack,base,want in [('CUT',20,58),('SLASH',240,255),('TACKLE',20,20)]:
+                init(turn);move(turn,attack);aid(turn,'RAZOR_EDGE');put('wNatureResult',base);call('AbilityRuthless');assert get('wNatureResult')==want,(turn,attack,get('wNatureResult'))
+        for n,original in far_patches.items():
+            bank,address=syms[n];game.memory[bank,address]=original
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1300,7 +1330,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 83 species / 415 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 84 species / 420 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

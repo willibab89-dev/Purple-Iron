@@ -214,7 +214,12 @@ AbilityKeenEyeCustom:
  cp AB_CLOUD_NINE
  jr z, .opponent
  cp AB_CLEAR_BODY
+ jr z, .opponent
+ cp AB_UNYIELDING
  jr nz, .accuracy
+ ld a, [wCustomStat]
+ cp 2
+ ret nc
 .opponent
  ld a, [wCustomSide]
  ld b, a
@@ -244,6 +249,13 @@ AbilityKeenEyeTarget::
  jr z, .block
  cp AB_CLEAR_BODY
  jr z, .block
+ cp AB_UNYIELDING
+ jr nz, .keen
+ ld a, [wCustomStat]
+ cp 2
+ jr c, .block
+ ret
+.keen
  cp AB_KEEN_EYE
  jr z, .accuracy
  cp AB_MIND_READER
@@ -429,6 +441,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityFarfetchDamage
 	call AbilityMagnetDamage
 	call AbilityPatientDamage
 	ld a, [wUnusedC000]
@@ -963,6 +976,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityFarfetchFixedDamage
 	call AbilityPatientCheck
 	jr nc, .patientFixedDone
 	ld c, 120
@@ -1377,6 +1391,7 @@ AbilityHitEvents:
 	call AbilityDeathSpore
 	call AbilityRelentlessHit
 	call AbilityOvercharge
+	call AbilityTastyLeek
 	call AbilityRampage
 	ld a, [wCustomTargetHadSub]
 	and a
@@ -3058,6 +3073,8 @@ AbilityRuthless:
 	ld [wNatureResult], a
 	ret
 .sharpClaws
+	cp AB_RAZOR_EDGE
+	jr z, .razorEdge
 	cp AB_SHARP_CLAWS
 	ret nz
 	call AbilityActorMoveType
@@ -3070,6 +3087,17 @@ AbilityRuthless:
 	jr nc, .store
 	ld a, 255
 	jr .store
+
+.razorEdge
+ call AbilityCuttingCheck
+ ret nc
+ ld a, [wNatureResult]
+ add 38 ; 15 percentage points in the 256-value critical threshold
+ jr nc, .razorStore
+ ld a, 255
+.razorStore
+ ld [wNatureResult], a
+ ret
 
 ; Shield Dust blocks target-directed secondary effects only. Multi-hit,
 ; recoil, draining, screen removal and primary trapping effects still execute.
@@ -3723,6 +3751,9 @@ AbilityLegendaryCheck:
 
 ; Restore floor(maximum HP / 5), with the usual minimum of 1 and HP cap.
 AbilityHealFifth:
+ ld a, 5
+AbilityHealDivided:
+ ld [wAbilityTemp + 1], a
  call AbilityHP
  push hl
  push de
@@ -3734,7 +3765,7 @@ AbilityHealFifth:
  inc de
  ld a, [de]
  ld [H_DIVIDEND + 3], a
- ld a, 5
+ ld a, [wAbilityTemp + 1]
  ld [H_DIVISOR], a
  ld b, 4
  call Divide
@@ -5032,3 +5063,144 @@ AbilityMagneticRestoreCopiedStages:
  ret nc
  ld [de], a
  ret
+
+INCLUDE "data/farfetch_ability_moves.asm"
+
+AbilityPrecisionCheck:
+ call AbilityMove
+ ld a, [hl]
+ ld hl, AbilityPrecisionMoves
+ ld de, 1
+ jp IsInArray
+AbilityCuttingCheck:
+ call AbilityMove
+ ld a, [hl]
+ ld hl, AbilityCuttingMoves
+ ld de, 1
+ jp IsInArray
+
+; Set the base chance before the ordinary accuracy/evasion multipliers.
+AbilityPrecisionAccuracy:
+ call AbilityActor
+ cp AB_PRECISION
+ ret nz
+ call AbilityPrecisionCheck
+ ret nc
+ ld hl, wPlayerMoveAccuracy
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .set
+ ld hl, wEnemyMoveAccuracy
+.set
+ ld [hl], $ff
+ ret
+
+AbilityFarfetchDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityFarfetchFixedDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_UNDERDOG
+ jr z, .underdog
+ cp AB_PRECISION
+ ret nz
+ call AbilityPrecisionCheck
+ jr nc, .done
+ jr .boost
+.underdog
+ call AbilityUnderdogCheck
+ jr nc, .done
+.boost
+ ld c, 120
+ jp AbilityScaleDamage
+.done
+ ret
+
+; Sum the five Gen 1 base stats for each current species, including variants.
+AbilityUnderdogCheck:
+ ld a, [H_WHOSETURN]
+ and a
+ ld a, [wBattleMonSpecies]
+ jr z, .actor
+ ld a, [wEnemyMonSpecies]
+.actor
+ call AbilityBaseStatSum
+ push bc
+ ld a, [H_WHOSETURN]
+ and a
+ ld a, [wEnemyMonSpecies]
+ jr z, .target
+ ld a, [wBattleMonSpecies]
+.target
+ call AbilityBaseStatSum
+ pop de
+ ld a, d
+ cp b
+ ret nz
+ ld a, e
+ cp c
+ ret
+
+; Input internal species ID; output BC = HP + Attack + Defense + Speed + Special.
+AbilityBaseStatSum:
+ and a
+ jr z, .zero
+ dec a
+ ld hl, PokedexOrder
+ ld e, a
+ ld d, 0
+ add hl, de
+ ld de, wAbilityTemp
+ ld bc, 1
+ ld a, BANK(PokedexOrder)
+ call FarCopyData
+ ld a, [wAbilityTemp]
+ and a
+ jr z, .zero
+ dec a
+ ld hl, BaseStats + 1
+ ld bc, MonBaseStatsEnd - MonBaseStats
+ call AddNTimes
+ ld de, wUnawareSaved
+ ld bc, 5
+ ld a, BANK(BaseStats)
+ call FarCopyData
+ ld hl, wUnawareSaved
+ ld b, 0
+ ld c, 0
+ ld d, 5
+.sum
+ ld a, [hli]
+ add c
+ ld c, a
+ jr nc, .next
+ inc b
+.next
+ dec d
+ jr nz, .sum
+ ret
+.zero
+ ld bc, 0
+ ret
+
+AbilityTastyLeek:
+ call AbilityActor
+ cp AB_TASTY_LEEK
+ ret nz
+ ld a, [wCriticalHitOrOHKO]
+ cp 1
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, 10
+ jp AbilityHealDivided

@@ -72,6 +72,7 @@ AbilityTextPointers:
 	dw AbilityText157, AbilityText158, AbilityText159, AbilityText160, AbilityText161
 	dw AbilityText162, AbilityText163, AbilityText164, AbilityText165
 	dw AbilityText166, AbilityText167, AbilityText168, AbilityText169
+	dw AbilityText170, AbilityText171, AbilityText172, AbilityText173, AbilityText174
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -314,3 +315,9 @@ AbilityText166: db "BATTERY",$4e,"Electric damage x1.2",$4e,"above half max PP.@
 AbilityText167: db "OVERLOAD",$4e,"Special hit: Special",$4e,"+1 once per battle.@"
 AbilityText168: db "CHAIN REACTION",$4e,"Electric attack:",$4e,"next Electric x1.2.@"
 AbilityText169: db "MAGNETIC FIELD",$4e,"Foe cannot raise",$4e,"Speed or Evasion.@"
+
+AbilityText170: db "UNDERDOG",$4e,"Damage x1.2 if foe",$4e,"has higher base sum.@"
+AbilityText171: db "UNYIELDING",$4e,"Foe cannot lower",$4e,"Attack or Defense.@"
+AbilityText172: db "TASTY LEEK",$4e,"Critical hits heal",$4e,"1/10 maximum HP.@"
+AbilityText173: db "PRECISION",$4e,"95 accuracy moves:",$4e,"100 accuracy, x1.2.@"
+AbilityText174: db "RAZOR EDGE",$4e,"Cutting moves gain",$4e,"15% critical chance.@"
