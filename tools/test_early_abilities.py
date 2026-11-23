@@ -136,8 +136,9 @@ def validate(version):
                'MAGNEMITE':['LEVITATE','BATTERY','OVERLOAD','CHAIN_REACTION','MAGNETIC_FIELD'],
                'FARFETCHD':['UNDERDOG','UNYIELDING','TASTY_LEEK','PRECISION','RAZOR_EDGE'],
                'DODUO':['TWIN_BEAKS','STAMPEDE','QUICK_FEET','BIRD_RELENTLESS','HEADSTRONG'],
-               'DODRIO':['TRIPLE_THREAT','STAMPEDE','QUICK_FEET','BIRD_RELENTLESS','HEADSTRONG']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE')]:
+               'DODRIO':['TRIPLE_THREAT','STAMPEDE','QUICK_FEET','BIRD_RELENTLESS','HEADSTRONG'],
+               'SEEL':['BLUBBER','HYDRATION','REFRIGERATE','ICEBREAKER','SNOW_VEIL']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1022,6 +1023,38 @@ def validate(version):
             for attack,want in [('PSYCHIC_M',75),('EMBER',100)]:
                 init(turn);move(turn,attack);aid(1-turn,'HEADSTRONG');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
                 init(turn);move(turn,attack);aid(1-turn,'HEADSTRONG');put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,attack,'fixed',readword('wDamage'))
+        # Seel / Dewgong: normal moves change type before damage and STAB.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player')
+            for attack,expected_type,damage in [('TACKLE','ICE',120),('ICE_BEAM','ICE',100),('GROWL','NORMAL',100),('EMBER','FIRE',100)]:
+                init(turn);move(turn,attack);aid(turn,'REFRIGERATE');call('AbilityAttempt');assert get(actor+'MoveType')==TYPES[expected_type],(turn,attack,get(actor+'MoveType'))
+                word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==damage,(turn,attack,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'FACADE');aid(turn,'REFRIGERATE');call('AbilityAttempt');put(ap+'Status',16);word(ap+'Attack',50);word(ap+'Special',150);put('wCustomSide',turn);put('wCustomMove',MOVES['FACADE']);put('wCustomStat',3);call('ConditionalOffense');assert game.register_file.HL==150,(turn,'ice facade uses Special')
+            for attack,want in [('EMBER',50),('ICE_BEAM',100),('TACKLE',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'BLUBBER');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
+                init(turn);move(turn,attack);aid(1-turn,'BLUBBER');put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,attack,'fixed')
+            for attack,t1,t2,want in [('ICE','WATER','WATER',20),('ICE','WATER','GRASS',40),('ICE','WATER','ICE',10),('FIRE','WATER','WATER',5)]:
+                ap,tp=init(turn);aid(turn,'ICEBREAKER');put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2]);put(actor+'MoveType',TYPES[attack]);word('wDamage',100);call('AdjustDamageForMoveType')
+                assert readword('wDamage')==want*10 and get('wDamageMultipliers')==want,(turn,attack,t1,t2,readword('wDamage'),get('wDamageMultipliers'))
+                put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==want,(turn,attack,t1,t2,'AI')
+            for attack,want in [('ICE_BEAM',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(turn,'SNOW_VEIL');put('wAbilityHit',8);call('AbilitySandAfterAction');assert get(actor+'MonEvasionMod')==want,(turn,attack)
+                call('AbilitySandAfterAction');assert get(actor+'MonEvasionMod')==want
+        # Blubber HP scaling uses persistent slot 1 and recalculates on capsules.
+        for species in ('SEEL','DEWGONG'):
+            for nature in (0,33,195):
+                root='wPartyMon1';game.memory[addr(root):addr(root)+44]=[0]*44;metadata(root,species,2,nature);put(root+'Level',50);word(root+'HP',100);word(root+'MaxHP',100);word('wNatureMonPtr',addr(root));call('NatureMigrateOne');base=readword(root+'MaxHP')
+                metadata(root,species,1,nature);call('NatureMigrateOne');assert readword(root+'MaxHP')==base*120//100,(species,nature,base,readword(root+'MaxHP'))
+                expected=readword(root+'MaxHP');word(root+'HP',expected-20);call('NatureMigrateOne');assert readword(root+'HP')==expected-20
+                word(root+'HP',0);rng(1);call('AbilityCapsuleApply');assert readword(root+'MaxHP')==base and readword(root+'HP')==0 and get(root+'CatchRate')==nature,(species,nature,'capsule')
+                word(root+'HP',base-20);rng(0);call('AbilityCapsuleApply');assert readword(root+'MaxHP')==base*120//100 and readword(root+'HP')==base*120//100-20,(species,nature,'gain blubber')
+        maxima=[]
+        for slot in (2,1):
+            put('wEnemyMonSpecies2',ids['SEEL']);put('wCurEnemyLVL',20);put('wIsInBattle',1);put('wNatureMode',2);put('wNatureEnemySlot',slot)
+            game.memory[addr('wNatureIDs')+1]=0;game.memory[addr('wNatureStatSources')+1]=0;rng(0);call('LoadEnemyMonData');maxima.append(readword('wEnemyMonMaxHP'))
+        assert maxima[1]==maxima[0]*120//100,('wild Blubber',maxima)
+        put('wPartyCount',0);put('wMonDataLocation',0x80);put('wcf91',ids['SEEL']);put('wCurEnemyLVL',20);call('AddPartyMon')
+        assert get('wPartyMon1Type1')>>5==1 and readword('wPartyMon1MaxHP')==maxima[1],('caught Blubber',maxima,readword('wPartyMon1MaxHP'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1097,7 +1130,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,162):
+        for n in range(1,184):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1174,6 +1207,12 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('SONICBOOM',turn,actor='REFRIGERATE');assert readword(tp+'HP')==136,(turn,'fixed refrigerate',readword(tp+'HP'))
+            ap,tp=execute('ICE_BEAM',turn,target_types=('WATER','WATER'));resisted=160-readword(tp+'HP')
+            ap,tp=execute('ICE_BEAM',turn,actor='ICEBREAKER',target_types=('WATER','WATER'));assert 160-readword(tp+'HP')>resisted,(turn,'live icebreaker')
+            ap,tp=execute('TACKLE',turn,target_types=('GRASS','GRASS'));normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='REFRIGERATE',target_types=('GRASS','GRASS'));assert get('w'+('Enemy' if turn else 'Player')+'MoveType')==TYPES['ICE'] and 160-readword(tp+'HP')>normal,(turn,'live refrigerate')
+            ap,tp=execute('METRONOME',turn,actor='REFRIGERATE',target_types=('GRASS','GRASS'),random_value=MOVES['TACKLE']);assert get('w'+('Enemy' if turn else 'Player')+'MoveType')==TYPES['ICE'] and readword(tp+'HP')<160,(turn,'metronome refrigerate')
             ap,tp=execute('TACKLE',turn,target='FLAME_BODY',random_value=0);assert get(ap+'Status')==16,(turn,'live flame body')
             ap,tp=execute('DOUBLESLAP',turn,target='STAMINA',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==9,(turn,'live stamina')
             ap,tp=execute('SWORDS_DANCE',turn,target='COMPETITIVE',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'live competitive')
@@ -1361,7 +1400,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 86 species / 430 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 88 species / 440 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

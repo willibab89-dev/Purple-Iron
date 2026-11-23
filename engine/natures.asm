@@ -976,18 +976,27 @@ AbilityCapsuleApply::
 	abilitycall AbilityResourcefulCapsuleAdjust
 	abilitycall AbilityImmunityCapsule
 	ld a, [hl]
+	cp SEEL
+	jr z, .blubber
+	cp DEWGONG
+	jr z, .blubber
 	cp SQUIRTLE
-	jr z, .hp
+	jr z, .ancient
 	cp WARTORTLE
-	jr z, .hp
+	jr z, .ancient
 	cp BLASTOISE
 	ret nz
+.ancient
+	ld b, 3
+	jr .hp
+.blubber
+	ld b, 1
 .hp
 	ld a, [wNatureResult]
-	cp 3
+	cp b
 	jp z, NatureMigrateOne
 	ld a, [wNatureSlot]
-	cp 3
+	cp b
 	ret nz
 	jp NatureMigrateOne
 

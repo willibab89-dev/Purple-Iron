@@ -342,6 +342,18 @@ AbilityCorrosiveAICheck:
 .side
  call AbilityGet
 AbilityTypeOverride:
+ cp AB_ICEBREAKER
+ jr nz, .notIcebreaker
+ ld a, [wAbilityTemp]
+ cp WATER
+ ret nz
+ ld a, [wAbilityTemp + 1]
+ cp ICE
+ ret nz
+ ld a, 20
+ ld [wAbilityCheckResult], a
+ ret
+.notIcebreaker
  cp AB_CORROSIVE_VENOM
  jr nz, .scrappy
  ld a, [wAbilityTemp]
@@ -444,6 +456,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityRefrigerateDamage
 	call AbilityDoduoOffense
 	call AbilityFarfetchDamage
 	call AbilityMagnetDamage
@@ -864,6 +877,8 @@ AbilityModifyDamage:
 .veil
 	cp AB_DAMP
 	jr z, .fireHalf
+	cp AB_BLUBBER
+	jr z, .fireHalf
 	cp AB_WATER_VEIL
 	jr nz, .shell
 .fireHalf
@@ -988,6 +1003,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityRefrigerateFixedDamage
 	call AbilityDoduoFixedOffense
 	call AbilityFarfetchFixedDamage
 	call AbilityPatientCheck
@@ -1173,6 +1189,13 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 80
 	jr .scale
 .fixedThickFat
+	cp AB_BLUBBER
+	jr nz, .notBlubber
+	call AbilityActorMoveType
+	cp FIRE
+	jr z, .half
+	ret
+.notBlubber
 	cp AB_THICK_FAT
 	jr nz, .hide
 	call AbilityActorMoveType
@@ -1230,6 +1253,7 @@ AbilityCachePP:
 
 ; Called only after the Pokémon can actually execute its move.
 AbilityAttempt:
+	call AbilityRefrigerateConvert
 	call AbilityCachePP
 	ld hl, wAbilityHit
 	set 3, [hl] ; a move was actually executed this action
@@ -1273,6 +1297,8 @@ AbilitySandAfterAction:
 	jp z, .normal
 	cp AB_SAND_VEIL
 	jp z, .evasion
+	cp AB_SNOW_VEIL
+	jp z, .snowVeil
 	cp AB_HYDRATION
 	jr nz, .burrower
 	call AbilityActorMoveType
@@ -1364,6 +1390,12 @@ AbilitySandAfterAction:
 	cp NORMAL
 	ret nz
 	ld a, 1 ; Defense
+	jr .once
+.snowVeil
+	call AbilityActorMoveType
+	cp ICE
+	ret nz
+	ld a, 5
 	jr .once
 .evasion
 	call AbilityActorMoveType
@@ -3461,7 +3493,7 @@ AbilityAncientHP:
 	cp e
 	jr nz, .player
 	ld a, [wMonHIndex]
-	call AbilitySquirtleFamily
+	call AbilityHPScalingFamily
 	ret nz
 	ld a, [wNatureEnemySlot]
 	jr .slot
@@ -3475,13 +3507,15 @@ AbilityAncientHP:
 	jr nz, .stored
 	ld a, [wActiveAbilities]
 	cp AB_ANCIENT
+	jr z, .boost
+	cp AB_BLUBBER
 	ret nz
 	jr .boost
 .stored
 	ld de, -16
 	add hl, de
 	ld a, [hl]
-	call AbilitySquirtleFamily
+	call AbilityHPScalingFamily
 	ret nz
 	ld de, 5
 	add hl, de
@@ -3491,7 +3525,7 @@ AbilityAncientHP:
 	rlca
 	and 7
 .slot
-	cp 3
+	cp b
 	ret nz
 .boost
 	ld c, 120
@@ -3510,6 +3544,22 @@ AbilityAncientHP:
 	ld [H_QUOTIENT + 3], a
 .done
 	ret
+; A = species; Z and B = its HP-boosting slot, or NZ if unsupported.
+AbilityHPScalingFamily:
+ cp SEEL
+ jr z, .blubber
+ cp DEWGONG
+ jr z, .blubber
+ call AbilitySquirtleFamily
+ ret nz
+ ld b, 3
+ xor a
+ ret
+.blubber
+ ld b, 1
+ xor a
+ ret
+
 AbilitySquirtleFamily:
 	cp SQUIRTLE
 	ret z
@@ -5334,3 +5384,57 @@ AbilityBirdRelentlessAfterAction:
  pop hl
  ld [hl], 0
  ret
+
+; Convert only damaging Normal moves before damage and type calculations.
+AbilityRefrigerateConvert:
+ call AbilityActor
+ cp AB_REFRIGERATE
+ ret nz
+ call AbilityMove
+ inc hl
+ inc hl
+ ld a, [hli]
+ and a
+ ret z
+ ld a, [hl]
+ cp NORMAL
+ ret nz
+ ld [hl], ICE
+ ret
+
+AbilityRefrigerateDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityRefrigerateFixedDamage:
+ call AbilityActor
+ cp AB_REFRIGERATE
+ ret nz
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ ret z
+ call AbilityActorMoveType
+ cp ICE
+ ret nz
+ call AbilityMove
+ ld a, [hl]
+ and a
+ ret z
+ dec a
+ ld hl, Moves + 3 ; the original type in the ROM move record
+ ld bc, MoveEnd - Moves
+ call AddNTimes
+ ld de, wAbilityTemp
+ ld bc, 1
+ ld a, BANK(Moves)
+ call FarCopyData
+ ld a, [wAbilityTemp]
+ cp NORMAL
+ ret nz
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 120
+ jp AbilityScaleDamage

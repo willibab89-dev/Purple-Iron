@@ -487,6 +487,9 @@ ConditionalReadStat:
 	ret
 
 ConditionalOffense:
+	ld a, [wCustomStat]
+	and a
+	jr nz, .ordinary ; only physical Facade ignores the burn penalty
 	ld a, [wCustomMove]
 	cp FACADE
 	jr nz, .ordinary

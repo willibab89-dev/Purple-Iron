@@ -74,6 +74,7 @@ AbilityTextPointers:
 	dw AbilityText166, AbilityText167, AbilityText168, AbilityText169
 	dw AbilityText170, AbilityText171, AbilityText172, AbilityText173, AbilityText174
 	dw AbilityText175, AbilityText176, AbilityText177, AbilityText178, AbilityText179
+	dw AbilityText180, AbilityText181, AbilityText182, AbilityText183
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -328,3 +329,8 @@ AbilityText176: db "TRIPLE THREAT",$4e,"Multi-hit moves:",$4e,"at least 3 times.
 AbilityText177: db "STAMPEDE",$4e,"Normal damage x1.2",$4e,"when faster.@"
 AbilityText178: db "HEADSTRONG",$4e,"No confusion;",$4e,"Psychic taken x.75.@"
 AbilityText179: db "RELENTLESS",$4e,"Streak: +10% each",$4e,"up to +30%.@"
+
+AbilityText180: db "BLUBBER",$4e,"Fire damage x0.5;",$4e,"maximum HP x1.2.@"
+AbilityText181: db "REFRIGERATE",$4e,"Normal attack: Ice",$4e,"type and power x1.2@"
+AbilityText182: db "ICEBREAKER",$4e,"Ice moves are x2",$4e,"against Water.@"
+AbilityText183: db "SNOW VEIL",$4e,"Ice move: Evasion",$4e,"+1 once per battle.@"

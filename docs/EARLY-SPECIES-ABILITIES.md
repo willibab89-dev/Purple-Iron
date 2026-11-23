@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 86 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 88 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -54,10 +54,13 @@ Implemented for 86 species, with five equally likely slots per species. The save
 | Farfetch’d | Underdog | Unyielding | Tasty Leek | Precision | Razor Edge |
 | Doduo | Twin Beaks | Stampede | Quick Feet | Relentless | Headstrong |
 | Dodrio | Triple Threat | Stampede | Quick Feet | Relentless | Headstrong |
+| Seel / Dewgong | Blubber | Hydration | Refrigerate | Icebreaker | Snow Veil |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Seel and Dewgong effects: Blubber halves Fire damage and multiplies maximum HP by 1.2. Hydration heals 1/8 maximum HP after a Water move. Refrigerate changes damaging Normal moves to Ice and boosts their damage by 20%; this also applies to moves called by Metronome or Mirror Move. Icebreaker makes Ice attacks super effective against Water types, combining normally with a second type. Snow Veil raises Evasion one stage after an Ice move, once per battle.
 
 Doduo and Dodrio effects: Twin Beaks doubles move secondary-effect chances. Triple Threat makes variable multi-hit moves hit at least three times and guarantees Triple Kick’s follow-up hits after the first connects; moves limited to two hits stay at two. Stampede boosts Normal damage by 20% when faster than the target. Quick Feet raises Speed one stage upon a major status condition. Relentless raises damage by 10% per previous consecutive successful damaging attack, up to 30%, and resets on a miss, status move or switching out. Headstrong prevents confusion and reduces Psychic damage by 25%.
 
@@ -175,4 +178,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 430 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 440 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

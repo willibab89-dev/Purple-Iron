@@ -5049,6 +5049,7 @@ ReloadMoveData:
 	call AddNTimes
 	ld a, BANK(Moves)
 	call FarCopyData ; copy the move's stats
+	abilitycall AbilityRefrigerateConvert
 	call IncrementMovePP
 ; the follow two function calls are used to reload the move name
 	call GetMoveName
