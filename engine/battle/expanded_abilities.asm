@@ -923,6 +923,8 @@ AbilityModifyDamage:
 	cp AB_ELEGANT_MANE
 	jr z, .mentalShield
 	cp AB_MENTAL_SHIELD
+	jr z, .mentalShield
+	cp AB_DEEPSEA_PEARL
 	jr nz, .checkThickFat
 .mentalShield
 	ld a, [wAbilityMoveType]
@@ -1203,6 +1205,8 @@ AbilityExistingFixedDamageModifiers:
 	cp AB_ELEGANT_MANE
 	jr z, .fixedMentalShield
 	cp AB_MENTAL_SHIELD
+	jr z, .fixedMentalShield
+	cp AB_DEEPSEA_PEARL
 	jr nz, .fixedThickFat
 .fixedMentalShield
 	call AbilityActorMoveType
@@ -2584,7 +2588,10 @@ AbilitySpinyArmor:
 	ret z
 	call AbilityTarget
 	cp AB_SPINY_ARMOR
+	jr z, .physical
+	cp AB_SPIKED_SHELL
 	ret nz
+.physical
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	ret nc
@@ -2629,8 +2636,18 @@ AbilitySpinyArmor:
 	ld [wCustomSide], a
 	callab UtilitySyncParty
 	callab DrawHUDsAndHPBars
+	call AbilityTarget
+	cp AB_SPIKED_SHELL
 	ld hl, AbilitySpinyArmorText
+	jr nz, .print
+	ld hl, AbilitySpikedShellText
+.print
 	jp PrintText
+
+AbilitySpikedShellText:
+	text "Hurt by"
+	line "SPIKED SHELL!"
+	prompt
 
 AbilitySpinyArmorText:
 	text "Hurt by"
@@ -4036,7 +4053,10 @@ AbilityMultiHitEffect:
 ; Four Arms gives variable-hit attacks their maximum of five hits.
 	call AbilityActor
 	cp AB_FOUR_ARMS
+	jr z, .maximumHits
+	cp AB_SKILL_LINK
 	jr nz, .rollHits
+.maximumHits
 	ld a, 5
 	jr .saveNumberOfHits
 .rollHits
@@ -4201,6 +4221,8 @@ AbilityFourArmsCheck:
  cp AB_FOUR_ARMS
  jr z, .guaranteed
  cp AB_TRIPLE_THREAT
+ jr z, .guaranteed
+ cp AB_SKILL_LINK
  ret nz
 .guaranteed
  ld a, 1
@@ -5419,11 +5441,18 @@ AbilityBirdRelentlessAfterAction:
  ld [hl], 0
  ret
 
-; Convert only damaging Normal moves before damage and type calculations.
+; Convert damaging Normal moves to Ice or Water before damage and type checks.
 AbilityRefrigerateConvert:
  call AbilityActor
  cp AB_REFRIGERATE
+ jr z, .ice
+ cp AB_LIQUIDATE
  ret nz
+ ld b, WATER
+ jr .move
+.ice
+ ld b, ICE
+.move
  call AbilityMove
  inc hl
  inc hl
@@ -5433,7 +5462,7 @@ AbilityRefrigerateConvert:
  ld a, [hl]
  cp NORMAL
  ret nz
- ld [hl], ICE
+ ld [hl], b
  ret
 
 AbilityRefrigerateDamage:
@@ -5443,13 +5472,21 @@ AbilityRefrigerateDamage:
 AbilityRefrigerateFixedDamage:
  call AbilityActor
  cp AB_REFRIGERATE
+ jr z, .ice
+ cp AB_LIQUIDATE
  ret nz
- ld a, [wCriticalHitOrOHKO]
- cp 2
- ret z
+ call AbilityActorMoveType
+ cp WATER
+ ret nz
+ jr .converted
+.ice
  call AbilityActorMoveType
  cp ICE
  ret nz
+.converted
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ ret z
  call AbilityMove
  ld a, [hl]
  and a

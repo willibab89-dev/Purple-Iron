@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 90 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 92 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -56,10 +56,13 @@ Implemented for 90 species, with five equally likely slots per species. The save
 | Dodrio | Triple Threat | Stampede | Quick Feet | Relentless | Headstrong |
 | Seel / Dewgong | Blubber | Hydration | Refrigerate | Icebreaker | Snow Veil |
 | Grimer / Muk | Contamination | Toxic Waste | Sticky Body | Liquid Ooze | Soft Body |
+| Shellder / Cloyster | Shell Armor | Skill Link | Spiked Shell | Deepsea Pearl | Liquidate |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Shellder and Cloyster effects: Shell Armor prevents critical hits. Skill Link makes multi-hit moves hit their maximum number of times and guarantees Triple Kick’s follow-up hits after the first connects. Spiked Shell damages physical attackers for 1/16 of their maximum HP per hit. Deepsea Pearl reduces special damage by 20%. Liquidate changes damaging Normal moves to Water and boosts their damage by 20%, including moves called through Metronome or Mirror Move.
 
 Grimer and Muk effects: Contamination gives successful Ground attacks a 30% chance to poison. Toxic Waste heals 1/16 maximum HP at round end if either living Pokémon is poisoned; Gloom’s version continues to check its opponent only. Sticky Body gives incoming physical attacks a 20% chance to lower the attacker’s Speed one stage. Liquid Ooze damages Pokémon that drain the holder instead of healing them. Soft Body reduces incoming Normal and Fighting damage by 25%.
 
@@ -181,4 +184,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 450 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 460 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

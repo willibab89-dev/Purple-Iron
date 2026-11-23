@@ -76,6 +76,7 @@ AbilityTextPointers:
 	dw AbilityText175, AbilityText176, AbilityText177, AbilityText178, AbilityText179
 	dw AbilityText180, AbilityText181, AbilityText182, AbilityText183
 	dw AbilityText184, AbilityText185, AbilityText186, AbilityText187
+	dw AbilityText188, AbilityText189, AbilityText190, AbilityText191
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -340,3 +341,8 @@ AbilityText184: db "CONTAMINATION",$4e,"Ground hits: 30%",$4e,"chance to poison.
 AbilityText185: db "TOXIC WASTE",$4e,"Poison on field:",$4e,"heal 1/16 max HP.@"
 AbilityText186: db "STICKY BODY",$4e,"Physical hit: 20%",$4e,"foe Speed -1.@"
 AbilityText187: db "SOFT BODY",$4e,"Normal/Fighting",$4e,"damage taken x.75.@"
+
+AbilityText188: db "SKILL LINK",$4e,"Multi-hit moves:",$4e,"maximum times.@"
+AbilityText189: db "SPIKED SHELL",$4e,"Physical attacker",$4e,"loses 1/16 max HP.@"
+AbilityText190: db "DEEPSEA PEARL",$4e,"Special damage",$4e,"received x0.8.@"
+AbilityText191: db "LIQUIDATE",$4e,"Normal attacks:",$4e,"Water; damage x1.2@"

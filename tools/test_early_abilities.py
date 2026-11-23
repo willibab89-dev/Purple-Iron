@@ -138,8 +138,9 @@ def validate(version):
                'DODUO':['TWIN_BEAKS','STAMPEDE','QUICK_FEET','BIRD_RELENTLESS','HEADSTRONG'],
                'DODRIO':['TRIPLE_THREAT','STAMPEDE','QUICK_FEET','BIRD_RELENTLESS','HEADSTRONG'],
                'SEEL':['BLUBBER','HYDRATION','REFRIGERATE','ICEBREAKER','SNOW_VEIL'],
-               'GRIMER':['CONTAMINATION','GRIMER_TOXIC_WASTE','STICKY_BODY','LIQUID_OOZE','SOFT_BODY']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER')]:
+               'GRIMER':['CONTAMINATION','GRIMER_TOXIC_WASTE','STICKY_BODY','LIQUID_OOZE','SOFT_BODY'],
+               'SHELLDER':['SHELL_ARMOR','SKILL_LINK','SPIKED_SHELL','DEEPSEA_PEARL','LIQUIDATE']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1076,6 +1077,23 @@ def validate(version):
             for attack,want in [('TACKLE',75),('KARATE_CHOP',75),('EMBER',100),('PSYCHIC_M',100)]:
                 init(turn);move(turn,attack);aid(1-turn,'SOFT_BODY');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'soft body',readword('wDamage'))
                 init(turn);move(turn,attack);aid(1-turn,'SOFT_BODY');put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,attack,'fixed soft body')
+        # Shellder and Cloyster use all five ability slots on both sides.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player')
+            for attack,roll,want in [('BARRAGE',0,5),('BARRAGE',1,5),('BARRAGE',255,5),('DOUBLESLAP',0,2),('TWINEEDLE',0,2),('TRIPLE_KICK',0,3)]:
+                init(turn);move(turn,attack);aid(turn,'SKILL_LINK');rng(roll);call('TwoToFiveAttacksEffect');assert get(actor+'NumHits')==want,(turn,attack,roll,get(actor+'NumHits'))
+            init(turn);move(turn,'TRIPLE_KICK');aid(turn,'SKILL_LINK');rng(255);call('SequenceTripleAccuracy');assert get('wMoveMissed')==0
+            for attack,holderhp,sub,actor_ability,actorhp,want in [('TACKLE',160,0,None,80,70),('EARTHQUAKE',160,0,None,80,70),('EMBER',160,0,None,80,80),('TACKLE',0,0,None,80,70),('TACKLE',160,1,None,80,80),('TACKLE',160,0,'MAGIC_GUARD',80,80),('TACKLE',160,0,None,5,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'SPIKED_SHELL');aid(turn,actor_ability);put('wCustomTargetHadSub',sub);word(ap+'HP',actorhp);word(tp+'HP',holderhp);call('AbilityAfterHit');assert readword(ap+'HP')==want,(turn,attack,holderhp,sub,actor_ability,actorhp,readword(ap+'HP'))
+            ap,tp=init(turn);move(turn,'DOUBLESLAP');aid(1-turn,'SPIKED_SHELL');word(ap+'HP',80);call('AbilityAfterHit');call('AbilityAfterHit');assert readword(ap+'HP')==60,(turn,'spiked shell per hit')
+            for attack,want in [('TACKLE',100),('EARTHQUAKE',100),('EMBER',80),('PSYCHIC_M',80)]:
+                init(turn);move(turn,attack);aid(1-turn,'DEEPSEA_PEARL');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
+                init(turn);move(turn,attack);aid(1-turn,'DEEPSEA_PEARL');put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,attack,'fixed')
+            for attack,expected_type,damage in [('TACKLE','WATER',120),('WATER_GUN','WATER',100),('GROWL','NORMAL',100),('EMBER','FIRE',100)]:
+                init(turn);move(turn,attack);aid(turn,'LIQUIDATE');call('AbilityAttempt');assert get(actor+'MoveType')==TYPES[expected_type],(turn,attack,get(actor+'MoveType'))
+                word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==damage,(turn,attack,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'LIQUIDATE');call('AbilityAttempt');put(ap+'Type1',TYPES['WATER']);put(ap+'Type2',TYPES['WATER']);put(tp+'Type1',TYPES['FIRE']);put(tp+'Type2',TYPES['FIRE']);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==300 and get('wDamageMultipliers')==0x94,(turn,'liquidate STAB')
+            ap,tp=init(turn);move(turn,'FACADE');aid(turn,'LIQUIDATE');call('AbilityAttempt');put(ap+'Status',16);word(ap+'Attack',50);word(ap+'Special',150);put('wCustomSide',turn);put('wCustomMove',MOVES['FACADE']);put('wCustomStat',3);call('ConditionalOffense');assert game.register_file.HL==150,(turn,'water facade uses Special')
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1151,7 +1169,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,188):
+        for n in range(1,192):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1228,6 +1246,11 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('SONICBOOM',turn,actor='LIQUIDATE');assert readword(tp+'HP')==136,(turn,'fixed liquidate',readword(tp+'HP'))
+            ap,tp=execute('TACKLE',turn,target_types=('FIRE','FIRE'));normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='LIQUIDATE',target_types=('FIRE','FIRE'));assert get('w'+('Enemy' if turn else 'Player')+'MoveType')==TYPES['WATER'] and 160-readword(tp+'HP')>normal,(turn,'live liquidate')
+            ap,tp=execute('METRONOME',turn,actor='LIQUIDATE',target_types=('FIRE','FIRE'),random_value=MOVES['TACKLE']);assert get('w'+('Enemy' if turn else 'Player')+'MoveType')==TYPES['WATER'] and readword(tp+'HP')<160,(turn,'metronome liquidate')
+            ap,tp=execute('TACKLE',turn,target='SPIKED_SHELL',actor_hp=80);assert readword(ap+'HP')==70,(turn,'live spiked shell')
             ap,tp=execute('EARTHQUAKE',turn,actor='CONTAMINATION',random_value=0);assert get(tp+'Status')==8,(turn,'live contamination',get(tp+'Status'))
             ap,tp=execute('TACKLE',turn,target='STICKY_BODY',random_value=0);assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==6,(turn,'live sticky body')
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -1425,7 +1448,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 90 species / 450 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 92 species / 460 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
