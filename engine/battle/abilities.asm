@@ -107,6 +107,9 @@ AbilitySpeciesPools:
 	db MUK, 52
 	db SHELLDER, 53
 	db CLOYSTER, 53
+	db GASTLY, 54
+	db HAUNTER, 55
+	db GENGAR, 55
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -162,6 +165,8 @@ AbilityPoolIds:
 	db AB_BLUBBER, AB_HYDRATION, AB_REFRIGERATE, AB_ICEBREAKER, AB_SNOW_VEIL
 	db AB_CONTAMINATION, AB_GRIMER_TOXIC_WASTE, AB_STICKY_BODY, AB_LIQUID_OOZE, AB_SOFT_BODY
 	db AB_SHELL_ARMOR, AB_SKILL_LINK, AB_SPIKED_SHELL, AB_DEEPSEA_PEARL, AB_LIQUIDATE
+	db AB_LEVITATE, AB_GAS_BODY, AB_PRANKSTER, AB_NOCTURNAL, AB_MIND_GAMES
+	db AB_LEVITATE, AB_CURSED_TOUCH, AB_PRANKSTER, AB_CURSED_BODY, AB_MIND_GAMES
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -422,6 +427,7 @@ AbilityBeforeAction:
 	ld [wAbilityOldStatus], a
 	call AbilityInfiltratorStart
 	call AbilitySteadfastActor
+	call AbilityMindGamesBefore
 	call AbilityCachePP
 	pop hl
 	pop de
@@ -485,6 +491,7 @@ AbilityRaiseStage:
 	jpab CustomChangeStage
 
 AbilityAfterAction:
+	abilitycall AbilityMindGamesAfter
 	abilitycall AbilityPatientMarkAction
 	abilitycall AbilityInfiltratorRestore
 	abilitycall AbilityElusiveAfterAttack

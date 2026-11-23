@@ -77,6 +77,7 @@ AbilityTextPointers:
 	dw AbilityText180, AbilityText181, AbilityText182, AbilityText183
 	dw AbilityText184, AbilityText185, AbilityText186, AbilityText187
 	dw AbilityText188, AbilityText189, AbilityText190, AbilityText191
+	dw AbilityText192, AbilityText193, AbilityText194, AbilityText195, AbilityText196, AbilityText197
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -346,3 +347,10 @@ AbilityText188: db "SKILL LINK",$4e,"Multi-hit moves:",$4e,"maximum times.@"
 AbilityText189: db "SPIKED SHELL",$4e,"Physical attacker",$4e,"loses 1/16 max HP.@"
 AbilityText190: db "DEEPSEA PEARL",$4e,"Special damage",$4e,"received x0.8.@"
 AbilityText191: db "LIQUIDATE",$4e,"Normal attacks:",$4e,"Water; damage x1.2@"
+
+AbilityText192: db "GAS BODY",$4e,"Physical hit: 30%",$4e,"foe Accuracy -1.@"
+AbilityText193: db "PRANKSTER",$4e,"Status moves gain",$4e,"+1 priority.@"
+AbilityText194: db "NOCTURNAL",$4e,"Damage x1.2 vs",$4e,"sleeping foes.@"
+AbilityText195: db "MIND GAMES",$4e,"Confuse foe:",$4e,"Special +1 once.@"
+AbilityText196: db "CURSED TOUCH",$4e,"Physical hit: 20%",$4e,"curses attacker.@"
+AbilityText197: db "CURSED BODY",$4e,"When hit: 30% to",$4e,"disable foe move.@"

@@ -456,6 +456,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityNocturnalDamage
 	call AbilityRefrigerateDamage
 	call AbilityDoduoOffense
 	call AbilityFarfetchDamage
@@ -1016,6 +1017,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityNocturnalFixedDamage
 	call AbilityRefrigerateFixedDamage
 	call AbilityDoduoFixedOffense
 	call AbilityFarfetchFixedDamage
@@ -1485,6 +1487,7 @@ AbilityHitEvents:
 	call AbilityToxicScales
 	call AbilityParasite
 	call AbilityConfounding
+	call AbilityGhostReaction
 	ld a, [wDamage]
 	ld b, a
 	ld a, [wDamage + 1]
@@ -3500,6 +3503,23 @@ AbilityPriorityOne:
 	ld a, b
 	ret
 .gale
+	cp AB_PRANKSTER
+	jr nz, .wings
+	ld a, [wAbilityTemp + 1]
+	and a
+	jr z, .plain
+	cp MAX_MOVE_ID + 1
+	jr nc, .plain
+	cp BIDE ; zero power but it is a damaging move
+	jr z, .plain
+	call AbilityMoveFlags
+	bit 0, a
+	jr nz, .plain
+	pop bc
+	inc b
+	ld a, b
+	ret
+.wings
 	cp AB_GALE_WINGS
 	jr nz, .plain
 	call AbilityHP
@@ -5543,3 +5563,222 @@ AbilityGrimerToxicWaste:
  xor 1
  ld [wAbilitySide], a
  ret
+
+; Nocturnal modifies damaging moves against sleeping living targets.
+AbilityNocturnalDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityNocturnalFixedDamage:
+ call AbilityActor
+ cp AB_NOCTURNAL
+ ret nz
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ ret z
+ call AbilityTargetStatus
+ ld a, [hl]
+ and SLP
+ ret z
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 120
+ jp AbilityScaleDamage
+
+; Store the opponent's pre-action confusion in the active-side scratch byte.
+; Rollout is mutually exclusive with Mind Games and resets this byte on entry.
+AbilityMindGamesBefore:
+ call AbilityActor
+ cp AB_MIND_GAMES
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ push hl
+ ld hl, wEnemyBattleStatus1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .target
+ ld hl, wPlayerBattleStatus1
+.target
+ ld a, [hl]
+ and 1 << CONFUSED
+ pop hl
+ ld [hl], a
+ ret
+AbilityMindGamesAfter:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ call AbilityActor
+ cp AB_MIND_GAMES
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ ld a, [hl]
+ and a
+ ret nz
+ ld hl, wEnemyBattleStatus1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .target
+ ld hl, wPlayerBattleStatus1
+.target
+ bit CONFUSED, [hl]
+ ret z
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ call AbilityFlagsPointer
+ bit 0, [hl]
+ ret nz
+ set 0, [hl]
+ ld a, 3 ; Special
+ jp AbilityRaiseStage
+
+; Called only after a damaging hit that did not strike a Substitute.
+AbilityGhostReaction:
+ call AbilityTarget
+ cp AB_CURSED_BODY
+ jp z, AbilityCursedBody
+ cp AB_GAS_BODY
+ jr z, .physical
+ cp AB_CURSED_TOUCH
+ ret nz
+.physical
+ ld a, [wAbilityMoveType]
+ cp FIRE
+ ret nc
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ call AbilityTarget
+ cp AB_CURSED_TOUCH
+ jr z, .curse
+ ; Gas Body applies to all physical attacks, including ranged ones.
+ call AbilityActor
+ cp AB_CLEAR_BODY
+ ret z
+ ld b, 30
+ call AbilityRoll
+ ret nc
+ ld a, [H_WHOSETURN]
+ ld [wCustomSide], a
+ ld a, 4
+ ld [wCustomStat], a
+ ld a, -1
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChanged], a
+ jpab CustomChangeStage
+.curse
+ ld b, 20
+ call AbilityRoll
+ ret nc
+ ld hl, wPlayerResidual
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .applyCurse
+ ld hl, wEnemyResidual
+.applyCurse
+ bit 1, [hl]
+ ret nz
+ set 1, [hl]
+ ld hl, AbilityCursedTouchText
+ jp PrintText
+AbilityCursedTouchText:
+ text "CURSED TOUCH"
+ line "cursed its foe!"
+ prompt
+
+; Disable the damaging move for 1-8 actions; counters tick before action.
+; Copied moves not present in the attacker's moveset cannot be disabled.
+AbilityCursedBody:
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld hl, wPlayerDisabledMove
+ ld de, wBattleMonMoves
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .side
+ ld hl, wEnemyDisabledMove
+ ld de, wEnemyMonMoves
+.side
+ ld a, [hl]
+ and a
+ ret nz
+ call AbilityMove
+ ld a, [hl]
+ ld c, a
+ and a
+ ret z
+ ld hl, wBattleMonMoves
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .find
+ ld hl, wEnemyMonMoves
+.find
+ ld b, 0
+.loop
+ ld a, [hli]
+ cp c
+ jr z, .found
+ inc b
+ ld a, b
+ cp 4
+ jr c, .loop
+ ret
+.found
+ push bc
+ ld b, 30
+ call AbilityRoll
+ pop bc
+ ret nc
+ push bc
+ callab CustomRandomInBattleBank
+ pop bc
+ ld a, [wCustomRandomValue]
+ and 7
+ add 2 ; pre-action decrement must still leave 1-8 blocked actions
+ inc b
+ swap b
+ add b
+ ld hl, wPlayerDisabledMove
+ ld de, wPlayerDisabledMoveNumber
+ ld b, a
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .store
+ ld hl, wEnemyDisabledMove
+ ld de, wEnemyDisabledMoveNumber
+.store
+ ld [hl], b
+ ld a, c
+ ld [de], a
+ ld hl, AbilityCursedBodyText
+ jp PrintText
+AbilityCursedBodyText:
+ text "CURSED BODY"
+ line "disabled its foe!"
+ prompt

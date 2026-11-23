@@ -139,8 +139,10 @@ def validate(version):
                'DODRIO':['TRIPLE_THREAT','STAMPEDE','QUICK_FEET','BIRD_RELENTLESS','HEADSTRONG'],
                'SEEL':['BLUBBER','HYDRATION','REFRIGERATE','ICEBREAKER','SNOW_VEIL'],
                'GRIMER':['CONTAMINATION','GRIMER_TOXIC_WASTE','STICKY_BODY','LIQUID_OOZE','SOFT_BODY'],
-               'SHELLDER':['SHELL_ARMOR','SKILL_LINK','SPIKED_SHELL','DEEPSEA_PEARL','LIQUIDATE']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER')]:
+               'SHELLDER':['SHELL_ARMOR','SKILL_LINK','SPIKED_SHELL','DEEPSEA_PEARL','LIQUIDATE'],
+               'GASTLY':['LEVITATE','GAS_BODY','PRANKSTER','NOCTURNAL','MIND_GAMES'],
+               'HAUNTER':['LEVITATE','CURSED_TOUCH','PRANKSTER','CURSED_BODY','MIND_GAMES']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -149,10 +151,8 @@ def validate(version):
                 assert get('wPartyMon1CatchRate')==17
                 put('wEnemyMonSpecies2',ids[species]);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=17
                 call('AbilityLoadEnemy');assert game.memory[addr('wActiveAbilities')+1]==ab[name]
-        # Pool 60 starts beyond byte 255: offsets must not wrap.
-        pool_bank,pool_base=syms['AbilityPoolIds'];old=game.memory[pool_bank,pool_base+295];game.memory[pool_bank,pool_base+295]=0xa5
-        call('AbilityResolvePoolId',BC=(1<<8)|60);assert game.register_file.A==0xa5,(version,'extended pool')
-        game.memory[pool_bank,pool_base+295]=old
+        # Existing pool 55 and its final slot are beyond byte 255.
+        call('AbilityResolvePoolId',BC=(5<<8)|55);assert game.register_file.A==ab['MIND_GAMES'],(version,'extended pool')
         # Load a real party member and ensure entry occurs after stage reset.
         init();metadata('wPartyMon1','PIDGEY',1,0);put('wBattleMonSpecies2',ids['PIDGEY'])
         call('LoadBattleMonFromParty')
@@ -1094,6 +1094,28 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==damage,(turn,attack,readword('wDamage'))
             ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'LIQUIDATE');call('AbilityAttempt');put(ap+'Type1',TYPES['WATER']);put(ap+'Type2',TYPES['WATER']);put(tp+'Type1',TYPES['FIRE']);put(tp+'Type2',TYPES['FIRE']);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==300 and get('wDamageMultipliers')==0x94,(turn,'liquidate STAB')
             ap,tp=init(turn);move(turn,'FACADE');aid(turn,'LIQUIDATE');call('AbilityAttempt');put(ap+'Status',16);word(ap+'Attack',50);word(ap+'Special',150);put('wCustomSide',turn);put('wCustomMove',MOVES['FACADE']);put('wCustomStat',3);call('ConditionalOffense');assert game.register_file.HL==150,(turn,'water facade uses Special')
+        # Gastly / Haunter / Gengar, including their distinct evolution slots.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,want in [('GROWL',1),('CONFUSE_RAY',1),('METRONOME',1),('TACKLE',0),('BIDE',0),('QUICK_ATTACK',1)]:
+                init(turn);move(turn,attack);aid(turn,'PRANKSTER');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==want,(turn,attack,game.register_file.A)
+            init(turn);aid(turn,'PRANKSTER');put(actor+'SelectedMove',255);put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,'no action priority')
+            for status,want in [(0,100),(1,120),(7,120),(8,100)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'NOCTURNAL');put(tp+'Status',status);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,status,readword('wDamage'))
+                ap,tp=init(turn);move(turn,'SONICBOOM');aid(turn,'NOCTURNAL');put(tp+'Status',status);put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,status,'fixed nocturnal')
+            for attack,roll,sub,attacker_ability,want in [('TACKLE',0,0,None,6),('EARTHQUAKE',59,0,None,6),('TACKLE',60,0,None,7),('EMBER',0,0,None,7),('TACKLE',0,1,None,7),('TACKLE',0,0,'KEEN_EYE',7),('TACKLE',0,0,'CLEAR_BODY',7)]:
+                init(turn);move(turn,attack);aid(1-turn,'GAS_BODY');aid(turn,attacker_ability);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(actor+'MonAccuracyMod')==want,(turn,attack,roll,sub,attacker_ability,get(actor+'MonAccuracyMod'))
+            for attack,roll,sub,actorhp,want in [('TACKLE',0,0,160,True),('EARTHQUAKE',39,0,160,True),('TACKLE',40,0,160,False),('EMBER',0,0,160,False),('TACKLE',0,1,160,False),('TACKLE',0,0,0,False)]:
+                ap,tp=init(turn);call('ResidualClearAll');move(turn,attack);aid(1-turn,'CURSED_TOUCH');put('wCustomTargetHadSub',sub);word(ap+'HP',actorhp);rng(roll);call('AbilityAfterHit');res='wEnemyResidual' if turn else 'wPlayerResidual';assert bool(get(res)&2)==want,(turn,attack,roll,sub,actorhp,get(res))
+            for roll,sub,known,already,want in [(0,0,True,False,True),(59,0,True,False,True),(60,0,True,False,False),(0,1,True,False,False),(0,0,False,False,False),(0,0,True,True,False)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'CURSED_BODY');put('wCustomTargetHadSub',sub);game.memory[addr(ap+'Moves'):addr(ap+'Moves')+4]=[MOVES['GROWL'],MOVES['EMBER'],MOVES['TACKLE'] if known else MOVES['CUT'],0]
+                disabled=actor+'DisabledMove';number=actor+'DisabledMoveNumber';put(disabled,0x21 if already else 0);put(number,MOVES['EMBER'] if already else 0);rng(roll,3);call('AbilityAfterHit')
+                assert (get(disabled)==0x35 and get(number)==MOVES['TACKLE'])==want,(turn,roll,sub,known,already,get(disabled),get(number))
+                if already:assert get(disabled)==0x21 and get(number)==MOVES['EMBER']
+            # Mind Games triggers only on new confusion, once per holder/battle.
+            for previously,want in [(0,8),(128,7)]:
+                init(turn);move(turn,'CONFUSE_RAY');aid(turn,'MIND_GAMES');put(target+'BattleStatus1',previously);call('AbilityBeforeAction');call('AbilityAttempt');put(target+'BattleStatus1',128);call('AbilityAfterAction');assert get(actor+'MonSpecialMod')==want,(turn,previously,get(actor+'MonSpecialMod'))
+                put(target+'BattleStatus1',0);call('AbilityBeforeAction');call('AbilityAttempt');put(target+'BattleStatus1',128);call('AbilityAfterAction');assert get(actor+'MonSpecialMod')==8,(turn,'mind games once')
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1169,7 +1191,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,192):
+        for n in range(1,198):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1246,6 +1268,16 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('SONICBOOM',turn,actor='NOCTURNAL',status=1);assert readword(tp+'HP')==136,(turn,'live fixed nocturnal',readword(tp+'HP'))
+            ap,tp=execute('COUNTER',turn,actor='NOCTURNAL',status=1,counter_damage=20);assert readword(tp+'HP')==112,(turn,'counter nocturnal',readword(tp+'HP'))
+            ap,tp=execute('BIDE',turn,actor='NOCTURNAL',status=1,bide_damage=20);assert readword(tp+'HP')==112,(turn,'bide nocturnal',readword(tp+'HP'))
+            call('ResidualClearAll');ap,tp=execute('TACKLE',turn,target='CURSED_TOUCH',random_value=0);assert get('wEnemyResidual' if turn else 'wPlayerResidual')&2,(turn,'live cursed touch')
+            call('ResidualClearAll')
+            ap,tp=execute('TACKLE',turn,target='CURSED_BODY',random_value=0);assert get('w'+('Enemy' if turn else 'Player')+'DisabledMoveNumber')==MOVES['TACKLE'] and get('w'+('Enemy' if turn else 'Player')+'DisabledMove')==0x12,(turn,'live cursed body')
+            target_hp=readword(tp+'HP');call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove');assert readword(tp+'HP')==target_hp and get('w'+('Enemy' if turn else 'Player')+'DisabledMove')==0x11,(turn,'disabled next action')
+            ap,tp=execute('PSYBEAM',turn,actor='MIND_GAMES',random_value=0);assert get('w'+('Enemy' if turn else 'Player')+'MonSpecialMod')==8,(turn,'live mind games secondary')
+            ap,tp=execute('CONFUSE_RAY',turn,actor='MIND_GAMES',random_value=0);assert get('w'+('Enemy' if turn else 'Player')+'MonSpecialMod')==8,(turn,'live mind games')
+            ap,tp=execute('TACKLE',turn,target='GAS_BODY',random_value=0);assert get('w'+('Enemy' if turn else 'Player')+'MonAccuracyMod')==6,(turn,'live gas body')
             ap,tp=execute('SONICBOOM',turn,actor='LIQUIDATE');assert readword(tp+'HP')==136,(turn,'fixed liquidate',readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,target_types=('FIRE','FIRE'));normal=160-readword(tp+'HP')
             ap,tp=execute('TACKLE',turn,actor='LIQUIDATE',target_types=('FIRE','FIRE'));assert get('w'+('Enemy' if turn else 'Player')+'MoveType')==TYPES['WATER'] and 160-readword(tp+'HP')>normal,(turn,'live liquidate')
@@ -1448,7 +1480,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 92 species / 460 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 95 species / 475 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
