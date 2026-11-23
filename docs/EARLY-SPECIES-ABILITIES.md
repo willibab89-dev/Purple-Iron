@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 84 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 86 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -52,10 +52,14 @@ Implemented for 84 species, with five equally likely slots per species. The save
 | Slowpoke / Slowbro | Shell Armor | Oblivious | Unaware | Patient | Simple |
 | Magnemite / Magneton | Levitate | Battery | Overload | Chain Reaction | Magnetic Field |
 | Farfetch’d | Underdog | Unyielding | Tasty Leek | Precision | Razor Edge |
+| Doduo | Twin Beaks | Stampede | Quick Feet | Relentless | Headstrong |
+| Dodrio | Triple Threat | Stampede | Quick Feet | Relentless | Headstrong |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Doduo and Dodrio effects: Twin Beaks doubles move secondary-effect chances. Triple Threat makes variable multi-hit moves hit at least three times and guarantees Triple Kick’s follow-up hits after the first connects; moves limited to two hits stay at two. Stampede boosts Normal damage by 20% when faster than the target. Quick Feet raises Speed one stage upon a major status condition. Relentless raises damage by 10% per previous consecutive successful damaging attack, up to 30%, and resets on a miss, status move or switching out. Headstrong prevents confusion and reduces Psychic damage by 25%.
 
 Farfetch’d effects: Underdog boosts damage by 20% against a Pokémon with a higher total of the five base stats. Unyielding prevents opponents from lowering Attack or Defense. Tasty Leek heals 1/10 maximum HP per critical hit. Precision gives moves with 95 base accuracy 100 base accuracy and boosts their damage by 20%. Razor Edge adds 15 percentage points to the critical-hit chance of Cut, Slash, X-Scissor, Razor Leaf and Razor Wind.
 
@@ -171,4 +175,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 420 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 430 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

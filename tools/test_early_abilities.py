@@ -134,7 +134,9 @@ def validate(version):
                'PONYTA':['FLAME_BODY','COMPETITIVE','BLAZING_TRAIL','WILD_CHARGE','STAMINA'],
                'SLOWPOKE':['SHELL_ARMOR','OBLIVIOUS','UNAWARE','PATIENT','SIMPLE'],
                'MAGNEMITE':['LEVITATE','BATTERY','OVERLOAD','CHAIN_REACTION','MAGNETIC_FIELD'],
-               'FARFETCHD':['UNDERDOG','UNYIELDING','TASTY_LEEK','PRECISION','RAZOR_EDGE']}
+               'FARFETCHD':['UNDERDOG','UNYIELDING','TASTY_LEEK','PRECISION','RAZOR_EDGE'],
+               'DODUO':['TWIN_BEAKS','STAMPEDE','QUICK_FEET','BIRD_RELENTLESS','HEADSTRONG'],
+               'DODRIO':['TRIPLE_THREAT','STAMPEDE','QUICK_FEET','BIRD_RELENTLESS','HEADSTRONG']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -991,6 +993,35 @@ def validate(version):
                 init(turn);move(turn,attack);aid(turn,'RAZOR_EDGE');put('wNatureResult',base);call('AbilityRuthless');assert get('wNatureResult')==want,(turn,attack,get('wNatureResult'))
         for n,original in far_patches.items():
             bank,address=syms[n];game.memory[bank,address]=original
+        # Doduo and Dodrio each have their own first slot.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for value in (0,51,52,127,128,254,255):
+                init(turn);aid(turn,'TWIN_BEAKS');rng(value);call('MeasuredEffectRandom');assert game.register_file.A==value//2,(turn,value,game.register_file.A)
+            for roll,changed in [(153,True),(154,False)]:
+                ap,tp=init(turn);move(turn,'SCALD');aid(turn,'TWIN_BEAKS');rng(roll);call('UtilityHitEffect');assert bool(get(tp+'Status')&16)==changed,(turn,'twin beaks',roll)
+            for attack,roll,want in [('BARRAGE',0,3),('BARRAGE',1,3),('BARRAGE',3,5),('DOUBLESLAP',0,2),('TRIPLE_KICK',0,3)]:
+                init(turn);move(turn,attack);aid(turn,'TRIPLE_THREAT');rng(roll);call('TwoToFiveAttacksEffect');assert get(actor+'NumHits')==want,(turn,attack,roll,get(actor+'NumHits'))
+            init(turn);move(turn,'TRIPLE_KICK');aid(turn,'TRIPLE_THREAT');rng(255);call('SequenceTripleAccuracy');assert get('wMoveMissed')==0
+            for attack,want in [('BITE',0),('PSYBEAM',1)]:
+                init(turn);move(turn,attack);aid(1-turn,'HEADSTRONG');call('AbilityEffectGate');assert get('wAbilityCheckResult')==want,(turn,attack)
+            for attack,speed,foespeed,want in [('TACKLE',101,100,120),('TACKLE',100,100,100),('TACKLE',99,100,100),('EMBER',200,100,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'STAMPEDE');word(ap+'Speed',speed);word(tp+'Speed',foespeed);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,speed,foespeed,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'STAMPEDE');word(ap+'Speed',101);word(tp+'Speed',100);put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==120
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'BIRD_RELENTLESS');slot=addr('wRolloutStacks')+turn
+            for count in range(4):
+                word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100+count*10,(turn,count,readword('wDamage'))
+                # Multiple hits within one attack do not increase its boost.
+                word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100+count*10
+                put('wAbilityHit',8);call('AbilityRolloutAfterAction');assert game.memory[slot]==min(3,count+1)
+            put('wAbilitySide',1-turn);call('AbilityEntry');assert game.memory[slot]==3
+            put('wAbilityHit',8);move(turn,'GROWL');call('AbilityRolloutAfterAction');assert game.memory[slot]==0
+            move(turn,'TACKLE');game.memory[slot]=2;put('wMoveMissed',1);call('AbilityRolloutAfterAction');assert game.memory[slot]==0
+            init(turn);aid(turn,'HEADSTRONG');put(actor+'BattleStatus1',0x88);call('AbilitySteadfastActor');assert get(actor+'BattleStatus1')&0x88==8
+            init(turn);move(turn,'CONFUSE_RAY');aid(1-turn,'HEADSTRONG');call('AbilitySteadfastDirectCheck');assert get('wAbilityCheckResult')==1
+            for attack,want in [('PSYCHIC_M',75),('EMBER',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'HEADSTRONG');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,readword('wDamage'))
+                init(turn);move(turn,attack);aid(1-turn,'HEADSTRONG');put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,attack,'fixed',readword('wDamage'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1330,7 +1361,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 84 species / 420 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 86 species / 430 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

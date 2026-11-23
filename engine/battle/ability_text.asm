@@ -73,6 +73,7 @@ AbilityTextPointers:
 	dw AbilityText162, AbilityText163, AbilityText164, AbilityText165
 	dw AbilityText166, AbilityText167, AbilityText168, AbilityText169
 	dw AbilityText170, AbilityText171, AbilityText172, AbilityText173, AbilityText174
+	dw AbilityText175, AbilityText176, AbilityText177, AbilityText178, AbilityText179
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -321,3 +322,9 @@ AbilityText171: db "UNYIELDING",$4e,"Foe cannot lower",$4e,"Attack or Defense.@"
 AbilityText172: db "TASTY LEEK",$4e,"Critical hits heal",$4e,"1/10 maximum HP.@"
 AbilityText173: db "PRECISION",$4e,"95 accuracy moves:",$4e,"100 accuracy, x1.2.@"
 AbilityText174: db "RAZOR EDGE",$4e,"Cutting moves gain",$4e,"15% critical chance.@"
+
+AbilityText175: db "TWIN BEAKS",$4e,"Move side effects",$4e,"odds are doubled.@"
+AbilityText176: db "TRIPLE THREAT",$4e,"Multi-hit moves:",$4e,"at least 3 times.@"
+AbilityText177: db "STAMPEDE",$4e,"Normal damage x1.2",$4e,"when faster.@"
+AbilityText178: db "HEADSTRONG",$4e,"No confusion;",$4e,"Psychic taken x.75.@"
+AbilityText179: db "RELENTLESS",$4e,"Streak: +10% each",$4e,"up to +30%.@"

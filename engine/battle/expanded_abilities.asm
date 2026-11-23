@@ -410,7 +410,10 @@ AbilityRoll:
 AbilityMeasuredEffectRoll:
 	call AbilityActor
 	cp AB_MEASURED
+	jr z, .double
+	cp AB_TWIN_BEAKS
 	ret nz
+.double
 	ld a, [wCustomRandomValue]
 	srl a
 	ld [wCustomRandomValue], a
@@ -441,6 +444,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityDoduoOffense
 	call AbilityFarfetchDamage
 	call AbilityMagnetDamage
 	call AbilityPatientDamage
@@ -836,6 +840,14 @@ AbilityModifyDamage:
 
 .defender
 	call AbilityTarget
+	cp AB_HEADSTRONG
+	jr nz, .notHeadstrong
+	ld a, [wAbilityMoveType]
+	cp PSYCHIC
+	ret nz
+	ld c, 75
+	jp .reduce
+.notHeadstrong
 	cp AB_STENCH
 	jr nz, .vineGuard
 	call AbilityActorPoisoned
@@ -976,6 +988,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityDoduoFixedOffense
 	call AbilityFarfetchFixedDamage
 	call AbilityPatientCheck
 	jr nc, .patientFixedDone
@@ -1134,6 +1147,14 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityScaleDamage
 .defender
 	call AbilityTarget
+	cp AB_HEADSTRONG
+	jr nz, .notHeadstrong
+	call AbilityActorMoveType
+	cp PSYCHIC
+	ret nz
+	ld c, 75
+	jp .scale
+.notHeadstrong
 	cp AB_STENCH
 	jr nz, .thickFat
 	call AbilityActorPoisoned
@@ -1500,6 +1521,8 @@ AbilityConfounding:
  cp AB_STEADFAST
  ret z
  cp AB_OBLIVIOUS
+ ret z
+ cp AB_HEADSTRONG
  ret z
  ld hl, wEnemyBattleStatus1
  ld de, wEnemyConfusedCounter
@@ -3136,7 +3159,13 @@ AbilityEffectGate:
 	cp AB_STEADFAST
 	jr z, .steadfast
 	cp AB_OBLIVIOUS
+	jr z, .steadfast
+	cp AB_HEADSTRONG
 	ret nz
+	ld a, b
+	cp CONFUSION_SIDE_EFFECT
+	jr z, .block
+	ret
 .steadfast
 	ld a, b
 	cp FLINCH_SIDE_EFFECT1
@@ -3640,7 +3669,17 @@ AbilitySteadfastActor:
  cp AB_STEADFAST
  jr z, .immune
  cp AB_OBLIVIOUS
+ jr z, .immune
+ cp AB_HEADSTRONG
  ret nz
+ ld hl, wPlayerBattleStatus1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .clearConfusion
+ ld hl, wEnemyBattleStatus1
+.clearConfusion
+ res CONFUSED, [hl]
+ ret
 .immune
  ld hl, wPlayerBattleStatus1
  ld a, [H_WHOSETURN]
@@ -3672,6 +3711,8 @@ AbilitySteadfastCheck:
  cp AB_STEADFAST
  jr z, .immune
  cp AB_OBLIVIOUS
+ jr z, .immune
+ cp AB_HEADSTRONG
  ret nz
 .immune
  ld a, 1
@@ -3938,6 +3979,18 @@ AbilityMultiHitEffect:
 .gotNumHits
 	inc a
 	inc a
+	ld [wAbilityTemp], a
+	push bc
+	push de
+	call AbilityActor
+	cp AB_TRIPLE_THREAT
+	pop de
+	pop bc
+	ld a, [wAbilityTemp]
+	jr nz, .saveNumberOfHits
+	cp 3
+	jr nc, .saveNumberOfHits
+	ld a, 3
 .saveNumberOfHits
 	ld [de], a
 	ld [bc], a
@@ -4065,7 +4118,10 @@ AbilityFourArmsCheck:
  ld [wAbilityCheckResult], a
  call AbilityActor
  cp AB_FOUR_ARMS
+ jr z, .guaranteed
+ cp AB_TRIPLE_THREAT
  ret nz
+.guaranteed
  ld a, 1
  ld [wAbilityCheckResult], a
  ret
@@ -4441,6 +4497,8 @@ AbilityRolloutAfterAction:
  call AbilityActor
  cp AB_CHAIN_REACTION
  jp z, AbilityChainAfterAction
+ cp AB_BIRD_RELENTLESS
+ jp z, AbilityBirdRelentlessAfterAction
  cp AB_ROLLOUT
  ret nz
  ld a, [wAbilityHit]
@@ -4543,6 +4601,7 @@ AbilityBlazingTrailCheck:
  and a
  ret
 .fire
+AbilityCompareFaster:
  call AbilityPrepareSpeeds
  ld hl, wAbilityPlayerSpeed
  ld de, wAbilityEnemySpeed
@@ -5204,3 +5263,74 @@ AbilityTastyLeek:
  ret z
  ld a, 10
  jp AbilityHealDivided
+
+; Doduo's Relentless tracks successful attacks rather than individual hits.
+; The active-side Rollout byte is free because a battler has only one ability.
+AbilityDoduoOffense:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityDoduoFixedOffense:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_STAMPEDE
+ jr z, .stampede
+ cp AB_BIRD_RELENTLESS
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ ld a, [hl]
+ and a
+ ret z
+ ld b, a
+ add a
+ add a
+ add b
+ add a
+ add 100
+ ld c, a
+ jp AbilityScaleDamage
+.stampede
+ call AbilityActorMoveType
+ cp NORMAL
+ ret nz
+ call AbilityCompareFaster
+ ret nc
+ ld c, 120
+ jp AbilityScaleDamage
+
+AbilityBirdRelentlessAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ push hl
+ call AbilityMove
+ inc hl
+ inc hl
+ ld a, [hl]
+ and a
+ jr z, .reset
+ ld a, [wMoveMissed]
+ and a
+ jr nz, .reset
+ ld a, [wDamageMultipliers]
+ and $7f
+ jr z, .reset
+ pop hl
+ ld a, [hl]
+ cp 3
+ ret nc
+ inc [hl]
+ ret
+.reset
+ pop hl
+ ld [hl], 0
+ ret
