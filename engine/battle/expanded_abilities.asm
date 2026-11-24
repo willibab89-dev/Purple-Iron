@@ -312,8 +312,11 @@ AbilityPiercingBeakCheck:
 	ld a, 2
 	jr .store
 .horn
+	cp AB_BONE_BREAKER
+	jr z, .physicalHorn
 	cp AB_PIERCING_HORN
 	ret nz
+.physicalHorn
 	call AbilityActorMoveType
 	cp FIRE
 	ret nc
@@ -963,6 +966,8 @@ AbilityModifyDamage:
 	jr z, .half
 	ret
 .notThickFat
+	cp AB_THICK_SKULL
+	jr z, .physicalReduction
 	cp AB_THICK_TRUNK
 	jr z, .physicalReduction
 	cp AB_JELLY_BODY
@@ -1262,6 +1267,8 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 50
 	jr .scale
 .hide
+	cp AB_THICK_SKULL
+	jr z, .fixedPhysicalReduction
 	cp AB_THICK_TRUNK
 	jr z, .fixedPhysicalReduction
 	cp AB_JELLY_BODY
@@ -2960,13 +2967,19 @@ AbilityLowHP:
 	call AbilityGet
 	cp AB_SURVIVAL_INSTINCTS
 	jr z, .speed
+	cp AB_LONELY
+	jr z, .defense
 	cp AB_FORTIFY
 	jr nz, .cornered
+.defense
 	ld a, 1
 	jr .stat
 .cornered
+	cp AB_VENGEFUL
+	jr z, .attack
 	cp AB_CORNERED
 	jr nz, .protective
+.attack
 	xor a ; Attack
 	jr .stat
 .protective
@@ -3028,6 +3041,8 @@ AbilityFrenzy:
 	jr z, .directKO
 	cp AB_LOYALTY
 	jr z, .directKO
+	cp AB_BONE_COLLECTOR
+	jr z, .directKO
 	cp AB_CARNIVOROUS
 	ret nz
 .directKO
@@ -3048,6 +3063,12 @@ AbilityFrenzy:
 	call AbilityActor
 	cp AB_SCAVENGER
 	jr z, AbilityHealQuarter
+	cp AB_BONE_COLLECTOR
+	jr nz, .notBoneCollector
+	call AbilityHP
+	ld a, 3
+	jp AbilityHealFractionFromHL
+.notBoneCollector
 	cp AB_LOYALTY
 	jp z, AbilityHealFifth
 	cp AB_CARNIVOROUS
@@ -6491,3 +6512,16 @@ AbilityEggFixedDamage:
 .boost
  ld c, 125
  jp AbilityScaleDamage
+
+; Rock Head stops move recoil without granting Magic Guard's other protections.
+AbilityRecoilGuardActor:
+ call AbilityMagicGuardActor
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
+ call AbilityActor
+ cp AB_ROCK_HEAD
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret

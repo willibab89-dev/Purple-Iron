@@ -147,7 +147,9 @@ def validate(version):
                'KRABBY':['CRUSHING_CLAWS','SHELL_ARMOR','BRUTE_FORCE','WATER_PRESSURE','HYPER_CUTTER'],
                'VOLTORB':['HIGH_VOLTAGE','SHORT_CIRCUIT','VOLATILE','UNSTABLE','VOLTORB_CHAIN'],
                'EXEGGCUTE':['COLLECTIVE_MIND','EXECUTIONER','HARVEST','IMMUNITY','SOLAR_POWER'],
-               'EXEGGUTOR':['COLLECTIVE_MIND','THICK_TRUNK','HARVEST','IMMUNITY','SOLAR_POWER']}
+               'EXEGGUTOR':['COLLECTIVE_MIND','THICK_TRUNK','HARVEST','IMMUNITY','SOLAR_POWER'],
+               'CUBONE':['LONELY','THICK_SKULL','ROCK_HEAD','UNDERDOG','BONE_BREAKER'],
+               'MAROWAK':['VENGEFUL','THICK_SKULL','ROCK_HEAD','BONE_COLLECTOR','BONE_BREAKER']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1231,6 +1233,24 @@ def validate(version):
         for species in ('EXEGGCUTE','EXEGGUTOR'):
             for status,want in [(8,0),(72,64),(16,16)]:
                 init();metadata('wPartyMon1',species,1);put('wPartyMon1Status',status);word('wNatureMonPtr',addr('wPartyMon1'));rng(3);call('AbilityCapsuleApply');assert get('wPartyMon1Type1')>>5==4 and get('wPartyMon1Status')==want,(species,status,'immunity capsule',get('wPartyMon1Status'))
+        # Cubone / Marowak: HP triggers, recoil, defense bypass and KO healing.
+        for turn in (0,1):
+            side='w'+('Enemy' if turn else 'Player')
+            for ability_name,stat in [('LONELY','Defense'),('VENGEFUL','Attack')]:
+                for hp,want in [(54,7),(53,8),(0,7)]:
+                    ap,tp=init(turn);aid(turn,ability_name);word(ap+'HP',hp);put('wAbilitySide',turn);call('AbilityLowHP');assert get(side+'Mon'+stat+'Mod')==want,(turn,ability_name,hp);call('AbilityLowHP');assert get(side+'Mon'+stat+'Mod')==want
+            for attack,want in [('TACKLE',80),('EMBER',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'THICK_SKULL');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'thick skull')
+                put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==want,(turn,attack,'fixed thick skull')
+            for ability_name,want in [('ROCK_HEAD',1),('MAGIC_GUARD',1),(None,0)]:
+                init(turn);aid(turn,ability_name);call('AbilityRecoilGuardActor');assert get('wAbilityCheckResult')==want
+            init(turn);aid(turn,'ROCK_HEAD');put('wAbilitySide',turn);call('AbilityMagicGuardCheck');assert not get('wAbilityCheckResult'),(turn,'rock head is not magic guard')
+            for typ,defense,want in [('NORMAL',100,80),('FIRE',100,100),('NORMAL',1,1)]:
+                init(turn);aid(turn,'BONE_BREAKER');put(side+'MoveType',TYPES[typ]);call('AdjustPiercingBeakDefense',BC=defense);assert game.register_file.B*256+game.register_file.C==want,(turn,typ,defense,game.register_file.B,game.register_file.C)
+            for attack in ('TACKLE','EARTHQUAKE'):
+                init(turn);move(turn,attack);aid(turn,'BONE_BREAKER');call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack');assert game.memory[0xff98]==80,(turn,attack,'bone breaker')
+            for hp,targethp,hit,want in [(80,0,True,100),(155,0,True,160),(0,0,True,0),(80,1,True,80),(80,0,False,80)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'BONE_COLLECTOR');word(ap+'HP',hp);word(tp+'HP',targethp);put('wAbilityHit',1 if hit else 0);call('AbilityFrenzy');assert readword(ap+'HP')==want,(turn,hp,targethp,hit,readword(ap+'HP'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1306,7 +1326,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,219):
+        for n in range(1,225):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1383,6 +1403,9 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('DOUBLE_EDGE',turn,actor='ROCK_HEAD',actor_hp=160,random_value=100);assert readword(ap+'HP')==160,(turn,'live rock head',readword(ap+'HP'))
+            ap,tp=execute('DOUBLE_EDGE',turn,actor_hp=160,random_value=100);assert readword(ap+'HP')<160,(turn,'ordinary recoil',readword(ap+'HP'))
+            ap,tp=execute('TACKLE',turn,actor='BONE_COLLECTOR',actor_hp=80,hp=1,random_value=100);assert readword(ap+'HP')==100,(turn,'live bone collector',readword(ap+'HP'))
             ap,tp=execute('PSYCHIC_M',turn,actor='COLLECTIVE_MIND',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128,(turn,'live collective mind')
             ap,tp=execute('VINE_WHIP',turn,actor='HARVEST',actor_hp=80,random_value=100);assert readword(ap+'HP')==100,(turn,'live harvest',readword(ap+'HP'))
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -1624,7 +1647,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 104 species / 520 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 106 species / 530 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

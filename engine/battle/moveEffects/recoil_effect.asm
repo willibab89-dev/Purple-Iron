@@ -1,5 +1,5 @@
 RecoilEffect_:
-	abilitycall AbilityMagicGuardActor
+	abilitycall AbilityRecoilGuardActor
 	ld a, [wAbilityCheckResult]
 	and a
 	ret nz

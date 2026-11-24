@@ -83,6 +83,7 @@ AbilityTextPointers:
 	dw AbilityText207, AbilityText208, AbilityText209
 	dw AbilityText210, AbilityText211, AbilityText212, AbilityText213
 	dw AbilityText214, AbilityText215, AbilityText216, AbilityText217, AbilityText218
+	dw AbilityText219, AbilityText220, AbilityText221, AbilityText222, AbilityText223, AbilityText224
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -385,3 +386,10 @@ AbilityText215: db "EXECUTIONER",$4e,"Physical hits x1.25",$4e,"vs foe below hal
 AbilityText216: db "HARVEST",$4e,"Grass move: heal",$4e,"1/8 max HP.@"
 AbilityText217: db "SOLAR POWER",$4e,"Grass damage x1.25",$4e,"above half HP.@"
 AbilityText218: db "THICK TRUNK",$4e,"Physical hits x0.8;",$4e,"blocks criticals.@"
+
+AbilityText219: db "LONELY",$4e,"Below 1/3 HP:",$4e,"Defense +1 once.@"
+AbilityText220: db "THICK SKULL",$4e,"Physical damage",$4e,"received x0.8.@"
+AbilityText221: db "ROCK HEAD",$4e,"Prevents recoil",$4e,"damage.@"
+AbilityText222: db "BONE COLLECTOR",$4e,"Direct KO heals",$4e,"1/8 max HP.@"
+AbilityText223: db "BONE BREAKER",$4e,"Physical hits ignore",$4e,"20% of Defense.@"
+AbilityText224: db "VENGEFUL",$4e,"Below 1/3 HP:",$4e,"Attack +1 once.@"

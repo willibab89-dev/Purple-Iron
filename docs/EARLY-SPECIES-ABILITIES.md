@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 104 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 106 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -65,10 +65,14 @@ Implemented for 104 species, with five equally likely slots per species. The sav
 | Voltorb / Electrode | High Voltage | Short Circuit | Volatile | Unstable | Chain Reaction |
 | Exeggcute | Collective Mind | Executioner | Harvest | Immunity | Solar Power |
 | Exeggutor | Collective Mind | Thick Trunk | Harvest | Immunity | Solar Power |
+| Cubone | Lonely | Thick Skull | Rock Head | Underdog | Bone Breaker |
+| Marowak | Vengeful | Thick Skull | Rock Head | Bone Collector | Bone Breaker |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Cubone and Marowak effects: Lonely raises Defense below one-third HP once per battle; Vengeful raises Attack under the same conditions. Thick Skull reduces physical damage by 20%. Rock Head prevents move recoil. Underdog boosts damage by 20% against opponents with higher base stat totals. Bone Collector heals 1/8 maximum HP after a direct knockout. Bone Breaker makes physical attacks ignore 20% of the target’s Defense.
 
 Exeggcute and Exeggutor effects: Collective Mind gives Psychic attacks a 20% chance to confuse. Exeggcute’s Executioner boosts physical damage by 25% against opponents below half HP. Exeggutor’s Thick Trunk reduces physical damage by 20% and prevents critical hits. Harvest heals 1/8 maximum HP after using a Grass move. Immunity prevents poison. Solar Power boosts Grass damage by 25% above half HP.
 
@@ -204,4 +208,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 520 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 530 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
