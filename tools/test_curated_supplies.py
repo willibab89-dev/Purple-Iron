@@ -32,7 +32,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0;game.register_file.SP=0xdffe;game.register_file.PC=0x100
-        game.memory[0xdf50:0xdf70]=[0xa5]*32
+        game.memory[0xdf52:0xdf72]=[0xa5]*32
         for k,v in regs.items():
             if k in ('BC','DE'):
                 setattr(game.register_file,k[0],v>>8);setattr(game.register_file,k[1],v&255)
@@ -40,7 +40,7 @@ def validate(version):
         for _ in range(180):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf50:0xdf70])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf52:0xdf72])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -115,7 +115,7 @@ def validate(version):
                     assert state['index']==2
         for item in ('ABILITY_CAPSULE','NATURE_CAPSULE'):
             for cancel in (True,False):
-                initmon(0);label=initmon(1,'DROWZEE');before=raw(label);select.update(cancel=cancel,mon=1);bag(items[item]);rng(9)
+                initmon(0);label=initmon(1,'KRABBY');before=raw(label);select.update(cancel=cancel,mon=1);bag(items[item]);rng(9)
                 if not cancel and item=='NATURE_CAPSULE':continue
                 call('UseItem_');assert quantity()==2 and raw(label)==before and get('wActionResultOrTookBattleTurn')==0
         select.update(cancel=False,mon=1)

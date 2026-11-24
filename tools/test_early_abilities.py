@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf50:0xdf70]=[0xa5]*32
+        game.memory[0xdf52:0xdf72]=[0xa5]*32
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf50:0xdf70])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf52:0xdf72])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -142,8 +142,9 @@ def validate(version):
                'SHELLDER':['SHELL_ARMOR','SKILL_LINK','SPIKED_SHELL','DEEPSEA_PEARL','LIQUIDATE'],
                'GASTLY':['LEVITATE','GAS_BODY','PRANKSTER','NOCTURNAL','MIND_GAMES'],
                'HAUNTER':['LEVITATE','CURSED_TOUCH','PRANKSTER','CURSED_BODY','MIND_GAMES'],
-               'ONIX':['CRUSHING_WEIGHT','COLOSSAL_SIZE','ONIX_STURDY','EARTHSHAKER','EARTH_EATER']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER')]:
+               'ONIX':['CRUSHING_WEIGHT','COLOSSAL_SIZE','ONIX_STURDY','EARTHSHAKER','EARTH_EATER'],
+               'DROWZEE':['NIGHTMARE','SANDMAN','DEEP_SLEEP','DREAMCATCHER','MENTAL_SHIELD']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1153,6 +1154,35 @@ def validate(version):
             put('wEnemyMonSpecies2',ids['ONIX']);put('wCurEnemyLVL',20);put('wIsInBattle',1);put('wNatureMode',2);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=0;game.memory[addr('wNatureStatSources')+1]=0;rng(0);call('LoadEnemyMonData');maxima.append((readword('wEnemyMonMaxHP'),readword('wEnemyMonSpeed')))
         assert maxima[1]==(maxima[0][0]*125//100,max(1,maxima[0][1]*75//100)),('wild colossal',maxima)
         put('wPartyCount',0);put('wMonDataLocation',0x80);put('wcf91',ids['ONIX']);put('wCurEnemyLVL',20);call('AddPartyMon');assert get('wPartyMon1Type1')>>5==2 and (readword('wPartyMon1MaxHP'),readword('wPartyMon1Speed'))==maxima[1],('caught colossal',maxima)
+        # Drowzee / Hypno: both sides, sleep boundaries and round timing.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for status,targethp,holderhp,protect,want in [(2,80,160,None,70),(7,5,160,None,0),(0,80,160,None,80),(2,80,0,None,80),(2,0,160,None,0),(2,80,160,'MAGIC_GUARD',80)]:
+                ap,tp=init(turn);aid(turn,'NIGHTMARE');aid(1-turn,protect);put(tp+'Status',status);word(tp+'HP',targethp);word(ap+'HP',holderhp);put('wResidualRoundDone',0);call('AbilityEndRound');assert readword(tp+'HP')==want,(turn,status,targethp,holderhp,protect,readword(tp+'HP'))
+            ap,tp=init(turn);call('ResidualClearAll');aid(turn,'NIGHTMARE');put(tp+'Status',2);word(tp+'HP',80);put('wResidualRoundDone',0);call('AbilityEndRound');call('ResidualEndRound');call('AbilityEndRound');assert readword(tp+'HP')==70,(turn,'nightmare once per round',readword(tp+'HP'))
+            for attack,roll,sub,protection,status,want in [('EARTHQUAKE',0,0,None,0,2),('EARTHQUAKE',39,0,None,0,2),('EARTHQUAKE',40,0,None,0,0),('TACKLE',0,0,None,0,0),('EARTHQUAKE',0,1,None,0,0),('EARTHQUAKE',0,0,'SHIELD_DUST',0,0),('EARTHQUAKE',0,0,None,8,8)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'SANDMAN');aid(1-turn,protection);put('wCustomTargetHadSub',sub);put(tp+'Status',status);rng(roll,2);call('AbilityAfterHit');assert get(tp+'Status')==want,(turn,attack,roll,sub,protection,status,get(tp+'Status'))
+            ap,tp=init(turn);move(turn,'BONEMERANG');aid(turn,'SANDMAN');rng(40,0,2);call('AbilityAfterHit');call('AbilityAfterHit');assert get(tp+'Status')==0 and state['index']==1,(turn,'sandman rolls once per attack')
+            # A successful sleep gets one extra count; a maxed counter is pending.
+            for before,after,want,pending in [(0,2,3,False),(0,6,7,False),(0,7,7,True),(3,3,3,False)]:
+                ap,tp=init(turn);move(turn,'HYPNOSIS');aid(turn,'DEEP_SLEEP');put(tp+'Status',before);call('AbilityBeforeAction');call('AbilityAttempt');put(tp+'Status',after);call('AbilityAfterAction')
+                assert get(tp+'Status')==want and bool(game.memory[addr('wDeepSleepPending')+1-turn]&1)==pending,(turn,before,after,get(tp+'Status'))
+                if pending:
+                    call('SequenceNewRound');assert get(tp+'Status')==7 and game.memory[addr('wDeepSleepPending')+1-turn]&1
+                    put(tp+'Status',6);call('SequenceNewRound');assert get(tp+'Status')==7 and not(game.memory[addr('wDeepSleepPending')+1-turn]&1)
+                    put(tp+'Status',6);call('SequenceNewRound');assert get(tp+'Status')==6
+            # Pending maximum sleep stays with the correct party member on switch.
+            ap,tp=init(turn);move(turn,'HYPNOSIS');aid(turn,'DEEP_SLEEP');call('AbilityBeforeAction');call('AbilityAttempt');put(tp+'Status',7);call('AbilityAfterAction')
+            idx='wPlayerMonNumber' if turn else 'wEnemyMonPartyPos';put(idx,1);put(tp+'Status',0);call('SequenceNewRound');assert game.memory[addr('wDeepSleepPending')+1-turn]&1
+            put(idx,0);put(tp+'Status',6);call('SequenceNewRound');assert get(tp+'Status')==7 and not(game.memory[addr('wDeepSleepPending')+1-turn]&1)
+            ap,tp=init(turn);game.memory[addr('wDeepSleepPending')+1-turn]=1;put(tp+'Status',6);word(tp+'HP',0);call('SequenceNewRound');assert get(tp+'Status')==6 and not(game.memory[addr('wDeepSleepPending')+1-turn]&1),(turn,'fainted sleep pending')
+            # A cure clears a pending extension before any later sleep.
+            ap,tp=init(turn);move(turn,'HYPNOSIS');aid(turn,'DEEP_SLEEP');call('AbilityBeforeAction');call('AbilityAttempt');put(tp+'Status',7);call('AbilityAfterAction');assert game.memory[addr('wDeepSleepPending')+1-turn]&1
+            put(tp+'Status',0);call('AbilityBeforeAction');assert not(game.memory[addr('wDeepSleepPending')+1-turn]&1)
+            for before,after,actorhp,used,want in [(0,2,80,True,100),(0,2,155,True,160),(0,2,0,True,0),(2,2,80,True,80),(0,0,80,True,80),(0,2,80,False,80)]:
+                ap,tp=init(turn);move(turn,'HYPNOSIS');aid(turn,'DREAMCATCHER');word(ap+'HP',actorhp);put(tp+'Status',before);call('AbilityBeforeAction')
+                if used:call('AbilityAttempt')
+                put(tp+'Status',after);call('AbilityAfterAction');assert readword(ap+'HP')==want,(turn,before,after,actorhp,used,readword(ap+'HP'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1228,7 +1258,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,203):
+        for n in range(1,207):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1305,6 +1335,15 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('HYPNOSIS',turn,actor='DEEP_SLEEP',random_value=7);assert get(tp+'Status')==7
+            for sleep_turn in range(7):
+                call('ExecutePlayerMove' if turn else 'ExecuteEnemyMove');assert get(tp+'Status')&7,(turn,'max deep sleep',sleep_turn,get(tp+'Status'));call('SequenceNewRound')
+            call('ExecutePlayerMove' if turn else 'ExecuteEnemyMove');assert not(get(tp+'Status')&7),(turn,'max deep sleep wake')
+            ap,tp=execute('HYPNOSIS',turn,actor='DEEP_SLEEP',random_value=2);assert get(tp+'Status')==3,(turn,'live deep sleep',get(tp+'Status'))
+            ap,tp=execute('METRONOME',turn,actor='DEEP_SLEEP',random_value=MOVES['HYPNOSIS']);assert get(tp+'Status')==7 and game.memory[addr('wDeepSleepPending')+1-turn]&1,(turn,'called sleep extended')
+            ap,tp=execute('METRONOME',turn,actor='DREAMCATCHER',actor_hp=80,random_value=MOVES['HYPNOSIS']);assert readword(ap+'HP')==100 and get(tp+'Status')&7,(turn,'called sleep healed')
+            ap,tp=execute('HYPNOSIS',turn,actor='DREAMCATCHER',actor_hp=80,random_value=2);assert readword(ap+'HP')==100 and get(tp+'Status')==2,(turn,'live dreamcatcher',readword(ap+'HP'),get(tp+'Status'))
+            ap,tp=execute('EARTHQUAKE',turn,actor='SANDMAN',random_value=2);assert get(tp+'Status')==2,(turn,'live sandman',get(tp+'Status'))
             ap,tp=execute('EARTHQUAKE',turn,actor='EARTHSHAKER',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==6,(turn,'live earthshaker')
             ap,tp=execute('EARTHQUAKE',turn,target='EARTH_EATER',hp=80,random_value=0);assert readword(tp+'HP')==120,(turn,'live earth eater',readword(tp+'HP'))
             ap,tp=execute('EARTHQUAKE',turn,target='EARTH_EATER',hp=80,random_value=0,target_types=('FLYING','FLYING'));assert readword(tp+'HP')==120,(turn,'earth eater despite type immunity',readword(tp+'HP'))
@@ -1521,7 +1560,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 96 species / 480 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 98 species / 490 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

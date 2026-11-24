@@ -111,6 +111,8 @@ AbilitySpeciesPools:
 	db HAUNTER, 55
 	db GENGAR, 55
 	db ONIX, 56
+	db DROWZEE, 57
+	db HYPNO, 57
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -169,6 +171,7 @@ AbilityPoolIds:
 	db AB_LEVITATE, AB_GAS_BODY, AB_PRANKSTER, AB_NOCTURNAL, AB_MIND_GAMES
 	db AB_LEVITATE, AB_CURSED_TOUCH, AB_PRANKSTER, AB_CURSED_BODY, AB_MIND_GAMES
 	db AB_CRUSHING_WEIGHT, AB_COLOSSAL_SIZE, AB_ONIX_STURDY, AB_EARTHSHAKER, AB_EARTH_EATER
+	db AB_NIGHTMARE, AB_SANDMAN, AB_DEEP_SLEEP, AB_DREAMCATCHER, AB_MENTAL_SHIELD
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -212,6 +215,8 @@ AbilityResetBattle:
 	ld [wRolloutStacks], a
 	ld [wRolloutStacks + 1], a
 	ld [wPatientActed], a
+	ld [wDeepSleepPending], a
+	ld [wDeepSleepPending + 1], a
 	ld [wAbilityHit], a
 	ld [wAbilityPPLeft], a
 	ld [wAbilityCheckResult], a
@@ -467,6 +472,7 @@ AbilityBeforeAction:
 	call AbilityInfiltratorStart
 	call AbilitySteadfastActor
 	call AbilityMindGamesBefore
+	call AbilityDeepSleepClearAwake
 	call AbilityCachePP
 	pop hl
 	pop de
@@ -530,6 +536,7 @@ AbilityRaiseStage:
 	jpab CustomChangeStage
 
 AbilityAfterAction:
+	abilitycall AbilitySleepAfterAction
 	abilitycall AbilityMindGamesAfter
 	abilitycall AbilityPatientMarkAction
 	abilitycall AbilityInfiltratorRestore
@@ -603,6 +610,7 @@ AbilityEndRound:
 	ld a, [wResidualRoundDone]
 	and a
 	ret nz
+	call AbilityNightmareBoth
 	xor a
 	ld [wAbilitySide], a
 	call AbilityPhotosynthesis

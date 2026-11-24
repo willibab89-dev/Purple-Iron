@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 96 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 98 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -60,10 +60,13 @@ Implemented for 96 species, with five equally likely slots per species. The save
 | Gastly | Levitate | Gas Body | Prankster | Nocturnal | Mind Games |
 | Haunter / Gengar | Levitate | Cursed Touch | Prankster | Cursed Body | Mind Games |
 | Onix | Crushing Weight | Colossal Size | Sturdy | Earthshaker | Earth Eater |
+| Drowzee / Hypno | Nightmare | Sandman | Deep Sleep | Dreamcatcher | Mental Shield |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Drowzee and Hypno effects: Nightmare damages a sleeping opponent for 1/16 maximum HP at round end while the holder is active. Sandman gives successful Ground attacks a 20% chance to put the target to sleep. Deep Sleep extends newly inflicted sleep by one turn, including at the maximum sleep counter. Dreamcatcher heals 1/8 maximum HP after newly putting an opponent to sleep. Mental Shield reduces incoming special damage by 20%.
 
 Onix effects: Crushing Weight boosts Rock damage by 20% when the user’s Defense is higher than the target’s. Colossal Size multiplies maximum HP by 1.25 and Speed by 0.75, including stored stats and capsule changes. Onix’s Sturdy survives a lethal hit from full HP once per battle; Geodude’s existing Sturdy remains unchanged. Earthshaker gives successful Ground attacks a 20% chance to lower the target’s Speed. Earth Eater absorbs a successful Ground attack and heals 1/4 maximum HP, subject to the usual healing cap.
 
@@ -187,8 +190,8 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Storage
 
-Ability descriptions and Resourceful PP routines are in the expanded ability bank, leaving room for additional battle mechanics and ability descriptions. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged. Rollout and Slowpoke-family mechanics reserve transient bytes at the bottom of the stack allocation, leaving 175 stack bytes with the same stack top.
+Ability descriptions and Resourceful PP routines are in the expanded ability bank, leaving room for additional battle mechanics and ability descriptions. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged. Rollout, Slowpoke and Deep Sleep mechanics reserve transient bytes at the bottom of the stack allocation, leaving 173 stack bytes with the same stack top.
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 480 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 490 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

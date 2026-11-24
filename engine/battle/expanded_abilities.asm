@@ -1536,6 +1536,16 @@ AbilityHitEvents:
 	set FLINCHED, [hl]
 	ret
 .leaf
+	cp AB_SANDMAN
+	jr nz, .contamination
+	ld a, [wAbilityMoveType]
+	cp GROUND
+	ret nz
+	ld b, 20
+	call AbilityRoll
+	ret nc
+	jp AbilitySandmanSleep
+.contamination
 	cp AB_CONTAMINATION
 	jr nz, .poisonLeaf
 	ld a, [wAbilityMoveType]
@@ -5945,3 +5955,262 @@ AbilityEarthEaterText:
  text "EARTH EATER"
  line "absorbed the hit!"
  prompt
+
+; Apply one sleep roll after a successful unshielded Ground attack.
+AbilitySandmanSleep:
+ call AbilityTargetStatus
+ ld a, [hl]
+ and a
+ ret nz
+ push hl
+.roll
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ and 7
+ cp 2
+ jr c, .roll
+ pop hl
+ ld [hl], a
+ ld hl, wEnemyBattleStatus2
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wCustomSide], a
+ and a
+ jr nz, .status2
+ ld hl, wPlayerBattleStatus2
+.status2
+ res NEEDS_TO_RECHARGE, [hl]
+ callab UtilitySyncParty
+ ld hl, AbilitySandmanText
+ jp PrintText
+AbilitySandmanText:
+ text "SANDMAN put the"
+ line "foe to sleep!"
+ prompt
+
+; Both holders are checked once, before the standard end-of-round residuals.
+AbilityNightmareBoth:
+ xor a
+ ld [wAbilitySide], a
+ call AbilityNightmareOne
+ ld a, 1
+ ld [wAbilitySide], a
+ jp AbilityNightmareOne
+AbilityNightmareOne:
+ ld a, [wAbilitySide]
+ call AbilityGet
+ cp AB_NIGHTMARE
+ ret nz
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ inc hl
+ inc hl
+ ld a, [hl]
+ and SLP
+ ret z
+ ld a, [wAbilitySide]
+ call AbilityGet
+ cp AB_MAGIC_GUARD
+ ret z
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ ld a, 4
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChance], a
+ callab ResidualFraction
+ ld hl, AbilityNightmareText
+ jp PrintText
+AbilityNightmareText:
+ text "NIGHTMARE hurt"
+ line "the sleeping foe!"
+ prompt
+
+; Trigger only when this action newly put a living target to sleep.
+AbilitySleepAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ call AbilityActor
+ cp AB_DEEP_SLEEP
+ jr z, .eligible
+ cp AB_DREAMCATCHER
+ ret nz
+.eligible
+ ld a, [wAbilityOldStatus]
+ and a
+ ret nz
+ call AbilityTargetStatus
+ ld a, [hl]
+ and SLP
+ ret z
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ call AbilityActor
+ cp AB_DEEP_SLEEP
+ jr z, .extend
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, 3
+ jp AbilityHealFractionFromHL
+.extend
+ call AbilityTargetStatus
+ ld a, [hl]
+ and SLP
+ cp 7
+ jr z, .pending
+ inc [hl]
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wCustomSide], a
+ jpab UtilitySyncParty
+.pending
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityDeepSleepPointer
+ ld a, [hl]
+ or c
+ ld [hl], a
+ ret
+
+; HL = side's bitset; C = current party member's bit.
+AbilityDeepSleepPointer:
+ ld hl, wDeepSleepPending
+ ld a, [wAbilitySide]
+ and a
+ ld a, [wPlayerMonNumber]
+ jr z, .index
+ inc hl
+ ld a, [wIsInBattle]
+ cp 2
+ ld a, 0
+ jr nz, .index
+ ld a, [wEnemyMonPartyPos]
+ cp 6
+ jr c, .index
+ xor a
+.index
+ cp 6
+ jr c, .valid
+ xor a
+.valid
+ ld b, a
+ ld c, 1
+.loop
+ ld a, b
+ and a
+ ret z
+ sla c
+ dec b
+ jr .loop
+
+; A maxed sleep counter cannot hold eight. After it ticks below seven,
+; spend its pending extension; keep the bit with that party member on switch.
+AbilityDeepSleepRound:
+ ld a, [wCustomSide]
+ push af
+ xor a
+ ld [wAbilitySide], a
+ call AbilityDeepSleepRoundOne
+ ld a, 1
+ ld [wAbilitySide], a
+ call AbilityDeepSleepRoundOne
+ pop af
+ ld [wCustomSide], a
+ ret
+AbilityDeepSleepRoundOne:
+ call AbilityDeepSleepPointer
+ ld a, [hl]
+ and c
+ ret z
+ push hl
+ push bc
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .clear
+ inc hl
+ inc hl
+ ld a, [hl]
+ and SLP
+ jr z, .clear
+ cp 7
+ jr z, .keep
+ inc [hl]
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ callab UtilitySyncParty
+.clear
+ pop bc
+ pop hl
+ ld a, c
+ cpl
+ and [hl]
+ ld [hl], a
+ ret
+.keep
+ pop bc
+ pop hl
+ ret
+
+; If a pending max-duration sleeper was cured, drop its extension before
+; another action can put that party member to sleep again.
+AbilityDeepSleepClearAwake:
+ ld a, [wAbilitySide]
+ push af
+ xor a
+ ld [wAbilitySide], a
+ call .one
+ ld a, 1
+ ld [wAbilitySide], a
+ call .one
+ pop af
+ ld [wAbilitySide], a
+ ret
+.one
+ call AbilityDeepSleepPointer
+ ld a, [hl]
+ and c
+ ret z
+ push hl
+ push bc
+ call AbilityHP
+ inc hl
+ inc hl
+ inc hl
+ ld a, [hl]
+ and SLP
+ jr nz, .done
+ pop bc
+ pop hl
+ ld a, c
+ cpl
+ and [hl]
+ ld [hl], a
+ ret
+.done
+ pop bc
+ pop hl
+ ret

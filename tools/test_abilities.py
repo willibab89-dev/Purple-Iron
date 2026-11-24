@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf50:0xdf70]=[0xa5]*32
+        game.memory[0xdf52:0xdf72]=[0xa5]*32
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf50:0xdf70])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf52:0xdf72])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -72,7 +72,7 @@ def validate(version):
                 put('wPartyMon1Species',ids[species]);put('wPartyMon1Type1',0);put('wPartyMon1Type2',0);put('wPartyMon1CatchRate',249+slot)
                 call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==base+slot
                 assert get('wPartyMon1Type1')>>5==slot+1 and get('wPartyMon1CatchRate')<196
-        put('wPartyMon1Species',ids['DROWZEE']);put('wPartyMon1CatchRate',45)
+        put('wPartyMon1Species',ids['KRABBY']);put('wPartyMon1CatchRate',45)
         call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==0 and get('wPartyMon1CatchRate')==45
         put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1Type1',0);put('wPartyMon1Type2',0);rng(3)
         call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert get('wPartyMon1Type1')>>5==4

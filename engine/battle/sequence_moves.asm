@@ -102,6 +102,7 @@ SequenceAirborneHit:
 ; Keep the Rage flag through the opponent's remaining action on the final
 ; turn. Expire before the next round's command selection, not mid-round.
 SequenceNewRound:
+	abilitycall AbilityDeepSleepRound
 	xor a
 	ld [wResidualRoundDone], a
 	ld [wPatientActed], a

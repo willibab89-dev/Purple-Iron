@@ -3416,8 +3416,9 @@ wRolloutStacks:: ds 2
 wPatientActed:: ds 1
 wUnawareActive:: ds 1
 wUnawareSaved:: ds 10
-SECTION "Stack", WRAM0[$df50]
-	ds $af
+wDeepSleepPending:: ds 2 ; per-party-member pending max-counter extensions
+SECTION "Stack", WRAM0[$df52]
+	ds $ad
 wStack:: ; dfff
 
 
