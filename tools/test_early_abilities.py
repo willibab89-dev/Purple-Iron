@@ -145,7 +145,9 @@ def validate(version):
                'ONIX':['CRUSHING_WEIGHT','COLOSSAL_SIZE','ONIX_STURDY','EARTHSHAKER','EARTH_EATER'],
                'DROWZEE':['NIGHTMARE','SANDMAN','DEEP_SLEEP','DREAMCATCHER','MENTAL_SHIELD'],
                'KRABBY':['CRUSHING_CLAWS','SHELL_ARMOR','BRUTE_FORCE','WATER_PRESSURE','HYPER_CUTTER'],
-               'VOLTORB':['HIGH_VOLTAGE','SHORT_CIRCUIT','VOLATILE','UNSTABLE','VOLTORB_CHAIN']}
+               'VOLTORB':['HIGH_VOLTAGE','SHORT_CIRCUIT','VOLATILE','UNSTABLE','VOLTORB_CHAIN'],
+               'EXEGGCUTE':['COLLECTIVE_MIND','EXECUTIONER','HARVEST','IMMUNITY','SOLAR_POWER'],
+               'EXEGGUTOR':['COLLECTIVE_MIND','THICK_TRUNK','HARVEST','IMMUNITY','SOLAR_POWER']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1212,6 +1214,23 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Exeggcute / Exeggutor: thresholds, confusion, healing and protection.
+        for turn in (0,1):
+            for attack,roll,sub,protection,want in [('PSYCHIC_M',0,0,None,True),('PSYCHIC_M',39,0,None,True),('PSYCHIC_M',40,0,None,False),('TACKLE',0,0,None,False),('PSYCHIC_M',0,1,None,False),('PSYCHIC_M',0,0,'SHIELD_DUST',False)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'COLLECTIVE_MIND');aid(1-turn,protection);put('wCustomTargetHadSub',sub);rng(roll,0);call('AbilityAfterHit');assert bool(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128)==want,(turn,attack,roll,sub,protection)
+            for attack,hp,want in [('TACKLE',79,125),('TACKLE',80,100),('TACKLE',81,100),('TACKLE',0,100),('EMBER',79,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'EXECUTIONER');word(tp+'HP',hp);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'executioner',attack,hp,readword('wDamage'))
+            for attack,hp,want in [('VINE_WHIP',81,125),('VINE_WHIP',80,100),('VINE_WHIP',79,100),('TACKLE',160,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'SOLAR_POWER');word(ap+'HP',hp);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'solar power',attack,hp,readword('wDamage'))
+            for attack,hp,used,want in [('VINE_WHIP',80,True,100),('VINE_WHIP',155,True,160),('VINE_WHIP',0,True,0),('TACKLE',80,True,80),('VINE_WHIP',80,False,80)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'HARVEST');word(ap+'HP',hp);put('wAbilityHit',8 if used else 0);call('AbilitySandAfterAction');assert readword(ap+'HP')==want,(turn,'harvest',attack,hp,used,readword(ap+'HP'))
+            for attack,want in [('TACKLE',80),('EMBER',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'THICK_TRUNK');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'thick trunk',attack,readword('wDamage'))
+                word('wDamage',100);put('wUnusedC000',16);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==want,(turn,'fixed thick trunk',attack,readword('wDamage'))
+            init(turn);aid(1-turn,'THICK_TRUNK');call('AbilityCriticalGuard');assert get('wAbilityCheckResult')==1
+        for species in ('EXEGGCUTE','EXEGGUTOR'):
+            for status,want in [(8,0),(72,64),(16,16)]:
+                init();metadata('wPartyMon1',species,1);put('wPartyMon1Status',status);word('wNatureMonPtr',addr('wPartyMon1'));rng(3);call('AbilityCapsuleApply');assert get('wPartyMon1Type1')>>5==4 and get('wPartyMon1Status')==want,(species,status,'immunity capsule',get('wPartyMon1Status'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1287,7 +1306,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,214):
+        for n in range(1,219):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1364,6 +1383,10 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('PSYCHIC_M',turn,actor='COLLECTIVE_MIND',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128,(turn,'live collective mind')
+            ap,tp=execute('VINE_WHIP',turn,actor='HARVEST',actor_hp=80,random_value=100);assert readword(ap+'HP')==100,(turn,'live harvest',readword(ap+'HP'))
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,target='THICK_TRUNK',random_value=100);assert 160-readword(tp+'HP')==normal*80//100,(turn,'live thick trunk',normal,readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,target='VOLATILE',hp=1,actor_hp=160,random_value=0);assert readword(ap+'HP')==128,(turn,'live volatile',readword(ap+'HP'))
             ap,tp=execute('THUNDERBOLT',turn,actor='SHORT_CIRCUIT',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128,(turn,'live short circuit')
             ap,tp=execute('TACKLE',turn,actor='CRUSHING_CLAWS',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==6,(turn,'live crushing claws')
@@ -1601,7 +1624,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 102 species / 510 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 104 species / 520 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

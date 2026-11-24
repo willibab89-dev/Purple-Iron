@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 102 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 104 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -63,10 +63,14 @@ Implemented for 102 species, with five equally likely slots per species. The sav
 | Drowzee / Hypno | Nightmare | Sandman | Deep Sleep | Dreamcatcher | Mental Shield |
 | Krabby / Kingler | Crushing Claws | Shell Armor | Brute Force | Water Pressure | Hyper Cutter |
 | Voltorb / Electrode | High Voltage | Short Circuit | Volatile | Unstable | Chain Reaction |
+| Exeggcute | Collective Mind | Executioner | Harvest | Immunity | Solar Power |
+| Exeggutor | Collective Mind | Thick Trunk | Harvest | Immunity | Solar Power |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Exeggcute and Exeggutor effects: Collective Mind gives Psychic attacks a 20% chance to confuse. Exeggcute’s Executioner boosts physical damage by 25% against opponents below half HP. Exeggutor’s Thick Trunk reduces physical damage by 20% and prevents critical hits. Harvest heals 1/8 maximum HP after using a Grass move. Immunity prevents poison. Solar Power boosts Grass damage by 25% above half HP.
 
 Voltorb and Electrode effects: High Voltage boosts Electric damage by 20% against slower opponents. Short Circuit gives Electric attacks a 15% chance to confuse. Volatile damages the attacker for 1/5 of its maximum HP when a direct attack knocks out the holder. Unstable raises a random stat when first below half HP. Their Chain Reaction boosts consecutive Electric attacks by 20% per prior hit, up to 40%; misses and other moves reset the streak. Magnemite’s existing Chain Reaction is unchanged.
 
@@ -200,4 +204,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 510 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 520 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

@@ -82,6 +82,7 @@ AbilityTextPointers:
 	dw AbilityText203, AbilityText204, AbilityText205, AbilityText206
 	dw AbilityText207, AbilityText208, AbilityText209
 	dw AbilityText210, AbilityText211, AbilityText212, AbilityText213
+	dw AbilityText214, AbilityText215, AbilityText216, AbilityText217, AbilityText218
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -378,3 +379,9 @@ AbilityText210: db "HIGH VOLTAGE",$4e,"Electric damage x1.2",$4e,"vs slower foes
 AbilityText211: db "SHORT CIRCUIT",$4e,"Electric hits: 15%",$4e,"confuse foe.@"
 AbilityText212: db "VOLATILE",$4e,"Direct KO: foe loses",$4e,"1/5 max HP.@"
 AbilityText213: db "CHAIN REACTION",$4e,"Electric streak:",$4e,"+20%, max +40%.@"
+
+AbilityText214: db "COLLECTIVE MIND",$4e,"Psychic hits: 20%",$4e,"confuse foe.@"
+AbilityText215: db "EXECUTIONER",$4e,"Physical hits x1.25",$4e,"vs foe below half.@"
+AbilityText216: db "HARVEST",$4e,"Grass move: heal",$4e,"1/8 max HP.@"
+AbilityText217: db "SOLAR POWER",$4e,"Grass damage x1.25",$4e,"above half HP.@"
+AbilityText218: db "THICK TRUNK",$4e,"Physical hits x0.8;",$4e,"blocks criticals.@"

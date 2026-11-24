@@ -470,6 +470,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityEggDamage
 	call AbilityVoltorbDamage
 	call AbilityKrabbyDamage
 	call AbilityNocturnalDamage
@@ -962,8 +963,11 @@ AbilityModifyDamage:
 	jr z, .half
 	ret
 .notThickFat
+	cp AB_THICK_TRUNK
+	jr z, .physicalReduction
 	cp AB_JELLY_BODY
 	jr nz, .physicalHide
+.physicalReduction
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	ret nc
@@ -1036,6 +1040,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityEggFixedDamage
 	call AbilityNocturnalFixedDamage
 	call AbilityRefrigerateFixedDamage
 	call AbilityDoduoFixedOffense
@@ -1257,8 +1262,11 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 50
 	jr .scale
 .hide
+	cp AB_THICK_TRUNK
+	jr z, .fixedPhysicalReduction
 	cp AB_JELLY_BODY
 	jr nz, .fixedHide
+.fixedPhysicalReduction
 	call AbilityActorMoveType
 	cp FIRE
 	ret nc
@@ -1349,6 +1357,13 @@ AbilitySandAfterAction:
 	jp z, .evasion
 	cp AB_SNOW_VEIL
 	jp z, .snowVeil
+	cp AB_HARVEST
+	jr nz, .notHarvest
+	call AbilityActorMoveType
+	cp GRASS
+	ret nz
+	jr .healWaterOrGround
+.notHarvest
 	cp AB_HYDRATION
 	jr nz, .burrower
 	call AbilityActorMoveType
@@ -1616,7 +1631,10 @@ AbilityConfounding:
  cp AB_SHORT_CIRCUIT
  jr z, .electric
  cp AB_CONFOUNDING
+ jr z, .psychic
+ cp AB_COLLECTIVE_MIND
  ret nz
+.psychic
  ld a, [wAbilityMoveType]
  cp PSYCHIC
  ret nz
@@ -3202,6 +3220,8 @@ AbilityCriticalGuard:
 	ld [wAbilityCheckResult], a
 	call AbilityTarget
 	cp AB_SHELL_ARMOR
+	jr z, .block
+	cp AB_THICK_TRUNK
 	jr z, .block
 	cp AB_BATTLE_ARMOR
 	jr z, .block
@@ -4821,14 +4841,25 @@ AbilityImmunityCapsule:
  cp GRAVELER
  jr z, .family
  cp GOLEM
+ jr z, .family
+ cp EXEGGCUTE
+ jr z, .egg
+ cp EXEGGUTOR
  ret nz
+.egg
+ ld c, 4 << 5
+ jr .slot
 .family
+ ld c, 2 << 5
+.slot
  push hl
+ push bc
  ld bc, wPartyMon1Type1 - wPartyMon1
  add hl, bc
+ pop bc
  ld a, [hl]
  and $e0
- cp 2 << 5
+ cp c
  pop hl
  ret nz
  ld bc, wPartyMon1Status - wPartyMon1
@@ -6417,3 +6448,46 @@ AbilityVolatile:
 .amount
  ld [wAbilityTemp + 1], a
  jp AbilityLiquidOozeHurt
+
+AbilityEggDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityEggFixedDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_EXECUTIONER
+ jr z, .executioner
+ cp AB_SOLAR_POWER
+ ret nz
+ call AbilityActorMoveType
+ cp GRASS
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ call AbilityHalfHP
+ ret c
+ ret z
+ jr .boost
+.executioner
+ call AbilityActorMoveType
+ cp FIRE
+ ret nc
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ dec hl
+ call AbilityHalfHP
+ ret nc
+.boost
+ ld c, 125
+ jp AbilityScaleDamage
