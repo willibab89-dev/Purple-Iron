@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 98 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 100 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -61,10 +61,13 @@ Implemented for 98 species, with five equally likely slots per species. The save
 | Haunter / Gengar | Levitate | Cursed Touch | Prankster | Cursed Body | Mind Games |
 | Onix | Crushing Weight | Colossal Size | Sturdy | Earthshaker | Earth Eater |
 | Drowzee / Hypno | Nightmare | Sandman | Deep Sleep | Dreamcatcher | Mental Shield |
+| Krabby / Kingler | Crushing Claws | Shell Armor | Brute Force | Water Pressure | Hyper Cutter |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Krabby and Kingler effects: Crushing Claws gives physical attacks a 20% chance to lower the target’s Defense. Shell Armor prevents critical hits. Brute Force boosts physical moves with base power at most 60 by 30%. Water Pressure boosts Water damage by 2% per remaining PP, up to 50%. Hyper Cutter prevents Attack drops and boosts critical-hit damage by 25%.
 
 Drowzee and Hypno effects: Nightmare damages a sleeping opponent for 1/16 maximum HP at round end while the holder is active. Sandman gives successful Ground attacks a 20% chance to put the target to sleep. Deep Sleep extends newly inflicted sleep by one turn, including at the maximum sleep counter. Dreamcatcher heals 1/8 maximum HP after newly putting an opponent to sleep. Mental Shield reduces incoming special damage by 20%.
 
@@ -194,4 +197,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 490 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 500 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

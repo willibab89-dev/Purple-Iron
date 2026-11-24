@@ -211,6 +211,13 @@ AbilityKeenEyeCustom:
  ret z
  ld a, [wCustomSide]
  call AbilityGet
+ cp AB_HYPER_CUTTER
+ jr nz, .otherAbility
+ ld a, [wCustomStat]
+ and a
+ jr z, .block
+ ret
+.otherAbility
  cp AB_CLOUD_NINE
  jr z, .opponent
  cp AB_CLEAR_BODY
@@ -245,6 +252,13 @@ AbilityKeenEyeTarget::
  xor a
  ld [wAbilityCheckResult], a
  call AbilityTarget
+ cp AB_HYPER_CUTTER
+ jr nz, .otherAbility
+ ld a, [wCustomStat]
+ and a
+ jr z, .block
+ ret
+.otherAbility
  cp AB_CLOUD_NINE
  jr z, .block
  cp AB_CLEAR_BODY
@@ -456,6 +470,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityKrabbyDamage
 	call AbilityNocturnalDamage
 	call AbilityRefrigerateDamage
 	call AbilityDoduoOffense
@@ -4240,8 +4255,16 @@ AbilityIronGripCheck:
 
 AbilityGrappler:
  call AbilityActor
+ cp AB_CRUSHING_CLAWS
+ jr nz, .grappler
+ ld a, [wAbilityHit]
+ bit 1, a ; a move gets one additional-effect roll
+ ret nz
+ jr .physical
+.grappler
  cp AB_GRAPPLER
  ret nz
+.physical
  ld a, [wAbilityMoveType]
  cp FIRE
  ret nc
@@ -4258,7 +4281,12 @@ AbilityGrappler:
  ret z
  callab CustomTargetProtected
  ret nz
+ call AbilityActor
+ cp AB_CRUSHING_CLAWS
  ld b, 10
+ jr nz, .roll
+ ld b, 20
+.roll
  call AbilityRoll
  ret nc
  ld a, 1 ; Defense
@@ -6214,3 +6242,41 @@ AbilityDeepSleepClearAwake:
  pop bc
  pop hl
  ret
+
+; Ordinary damage only: fixed-damage attacks and OHKOs have no base power.
+AbilityKrabbyDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_HYPER_CUTTER
+ jr z, .critical
+ cp AB_BRUTE_FORCE
+ ret nz
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ ret z
+ call AbilityMove
+ inc hl
+ inc hl
+ ld a, [hli]
+ and a
+ ret z
+ cp 61
+ ret nc
+ ld a, [hl]
+ cp FIRE ; physical types precede FIRE
+ ret nc
+ ld c, 130
+ jp AbilityScaleDamage
+.critical
+ ld a, [wCriticalHitOrOHKO]
+ cp 1
+ ret nz
+ ld c, 125
+ jp AbilityScaleDamage

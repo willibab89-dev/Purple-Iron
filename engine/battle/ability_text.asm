@@ -80,6 +80,7 @@ AbilityTextPointers:
 	dw AbilityText192, AbilityText193, AbilityText194, AbilityText195, AbilityText196, AbilityText197
 	dw AbilityText198, AbilityText199, AbilityText200, AbilityText201, AbilityText202
 	dw AbilityText203, AbilityText204, AbilityText205, AbilityText206
+	dw AbilityText207, AbilityText208, AbilityText209
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -367,3 +368,7 @@ AbilityText203: db "NIGHTMARE",$4e,"Sleeping foe loses",$4e,"1/16 HP per turn.@"
 AbilityText204: db "SANDMAN",$4e,"Ground hit: 20%",$4e,"puts foe to sleep.@"
 AbilityText205: db "DEEP SLEEP",$4e,"Sleep inflicted",$4e,"lasts +1 turn.@"
 AbilityText206: db "DREAMCATCHER",$4e,"Put foe to sleep:",$4e,"heal 1/8 max HP.@"
+
+AbilityText207: db "CRUSHING CLAWS",$4e,"Physical hit: 20%",$4e,"foe Defense -1.@"
+AbilityText208: db "BRUTE FORCE",$4e,"Physical moves at",$4e,"60 or less: x1.3.@"
+AbilityText209: db "HYPER CUTTER",$4e,"Attack cannot fall;",$4e,"crit damage x1.25.@"
