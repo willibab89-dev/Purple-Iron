@@ -124,6 +124,8 @@ AbilitySpeciesPools:
 	db HITMONLEE, 64
 	db HITMONCHAN, 65
 	db LICKITUNG, 66
+	db KOFFING, 67
+	db WEEZING, 67
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -192,6 +194,7 @@ AbilityPoolIds:
 	db AB_RECKLESS, AB_RESILIENCE, AB_FOOTWORK, AB_LONG_LEGS, AB_LIMBER
 	db AB_IRON_FIST, AB_SECOND_WIND, AB_COMBOS, AB_COUNTERPUNCH, AB_GUARD_UP
 	db AB_GLUTTONY, AB_POISON_HEAL, AB_THICK_TONGUE, AB_SLOBBER, AB_BOTTOMLESS_STOMACH
+	db AB_LEVITATE, AB_TOXIC_FUMES, AB_GAS_LEAK, AB_CHEMICAL_REACTION, AB_NEUTRALIZING_GAS
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -308,14 +311,48 @@ AbilityLoadEnemy:
 	ld [wAbilityTemp], a
 	ret
 
+; Neutralizing Gas suppresses the opposing active ability while its holder lives.
+; Preserve the returned pointer and BC/DE, as callers rely on them.
 AbilityGet:
-	ld hl, wActiveAbilities
-	and a
-	jr z, .read
-	inc hl
+ push bc
+ push de
+ and a
+ ld b, a
+ ld hl, wActiveAbilities
+ jr z, .read
+ inc hl
 .read
-	ld a, [hl]
-	ret
+ ld a, [hl]
+ cp AB_NEUTRALIZING_GAS
+ jr z, .done
+ ld c, a
+ push hl
+ ld a, b
+ xor 1
+ ld hl, wActiveAbilities
+ ld de, wBattleMonHP
+ and a
+ jr z, .check
+ inc hl
+ ld de, wEnemyMonHP
+.check
+ ld a, [hl]
+ cp AB_NEUTRALIZING_GAS
+ jr nz, .unsuppressed
+ ld a, [de]
+ ld b, a
+ inc de
+ ld a, [de]
+ or b
+ jr z, .unsuppressed
+ ld c, 0
+.unsuppressed
+ pop hl
+ ld a, c
+.done
+ pop de
+ pop bc
+ ret
 
 AbilityActor:
 	ld a, [H_WHOSETURN]
@@ -397,6 +434,9 @@ AbilityPrepareSpeeds:
 	ld [wAbilityEnemySpeed], a
 	ld a, l
 	ld [wAbilityEnemySpeed + 1], a
+	xor a
+	call AbilityGet
+	ld [wAbilityCheckResult], a
 	pop hl
 	pop de
 	pop bc
@@ -654,6 +694,7 @@ AbilityEndRound:
 	and a
 	ret nz
 	call AbilityNightmareBoth
+	call AbilityGasLeakBoth
 	xor a
 	ld [wAbilitySide], a
 	call AbilityPhotosynthesis

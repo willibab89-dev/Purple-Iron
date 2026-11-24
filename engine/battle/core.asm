@@ -1696,7 +1696,7 @@ TryRunningFromBattle:
 	ld a, [wIsInBattle]
 	dec a
 	jr nz, .trainerBattle ; jump if it's a trainer battle
-	ld a, [wActiveAbilities]
+	ld a, [wAbilityCheckResult]
 	cp AB_RUN_AWAY
 	jp z, .canEscape
 	ld a, [wNumRunAttempts]

@@ -1614,6 +1614,25 @@ AbilityHitEvents:
 	ret nc
 	jp AbilitySandmanSleep
 .contamination
+	cp AB_TOXIC_FUMES
+	jr nz, .notToxicFumes
+	ld a, [wAbilityMoveType]
+	cp POISON
+	ret nz
+	call AbilityTargetStatus
+	ld a, [hl]
+	and a
+	ret nz
+	ld b, 20
+	call AbilityRoll
+	ret nc
+	ld a, [H_WHOSETURN]
+	xor 1
+	ld [wCustomSide], a
+	ld a, 1 << PSN
+	ld [wCustomDelta], a
+	jpab UtilityInflictStatus
+.notToxicFumes
 	cp AB_CONTAMINATION
 	jr nz, .poisonLeaf
 	ld a, [wAbilityMoveType]
@@ -2847,7 +2866,7 @@ AbilityGetTargetReactions:
 	set 2, [hl]
 	ld a, 5 ; Evasion
 	call AbilityRaiseStage
-	jr .contact
+	jp .contact
 .inflatable
 	cp AB_INFLATABLE
 	jr nz, .hotTemper
@@ -2856,8 +2875,21 @@ AbilityGetTargetReactions:
 	jp nc, .contact
 	ld a, 1 ; Defense
 	call AbilityRaiseStage
-	jr .contact
+	jp .contact
 .hotTemper
+	cp AB_CHEMICAL_REACTION
+	jr nz, .notChemicalReaction
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jp nz, .contact
+	call AbilityFlagsPointer
+	bit 2, [hl]
+	jp nz, .contact
+	set 2, [hl]
+	ld a, 3
+	call AbilityRaiseStage
+	jp .contact
+.notChemicalReaction
 	cp AB_OVERLOAD
 	jr z, .overload
 	cp AB_HEADACHE
@@ -6856,3 +6888,54 @@ AbilityLickitungFixedDamage:
  ret nz
  ld c, 130
  jp AbilityScaleDamage
+
+AbilityGasLeakBoth:
+ xor a
+ ld [wAbilitySide], a
+ call AbilityGasLeakOne
+ ld a, 1
+ ld [wAbilitySide], a
+ jp AbilityGasLeakOne
+AbilityGasLeakOne:
+ ld a, [wAbilitySide]
+ call AbilityGet
+ cp AB_GAS_LEAK
+ ret nz
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [wAbilitySide]
+ call AbilityGet
+ cp AB_MAGIC_GUARD
+ ret z
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ ld a, 4
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChance], a
+ callab ResidualFraction
+ ret
+
+AbilityActorResult:
+ call AbilityActor
+ ld [wAbilityCheckResult], a
+ ret
+AbilityTargetResult:
+ call AbilityTarget
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityPlayerResult:
+ xor a
+ call AbilityGet
+ ld [wAbilityCheckResult], a
+ ret

@@ -87,6 +87,7 @@ AbilityTextPointers:
 	dw AbilityText225, AbilityText226, AbilityText227, AbilityText228, AbilityText229
 	dw AbilityText230, AbilityText231, AbilityText232, AbilityText233
 	dw AbilityText234, AbilityText235, AbilityText236, AbilityText237
+	dw AbilityText238, AbilityText239, AbilityText240, AbilityText241
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -412,3 +413,8 @@ AbilityText234: db "GLUTTONY",$4e,"Normal attack: heal",$4e,"1/8 max HP.@"
 AbilityText235: db "THICK TONGUE",$4e,"Normal moves deal",$4e,"x1.3 damage.@"
 AbilityText236: db "SLOBBER",$4e,"Physical hits: 15%",$4e,"confuse foe.@"
 AbilityText237: db "BOTTOMLESS STOMACH",$4e,"Maximum HP x1.2.@"
+
+AbilityText238: db "TOXIC FUMES",$4e,"Poison hits: 20%",$4e,"badly poison foe.@"
+AbilityText239: db "GAS LEAK",$4e,"Foe loses 1/16 HP",$4e,"at turn end.@"
+AbilityText240: db "CHEMICAL REACTION",$4e,"Fire hit: Special",$4e,"+1 once.@"
+AbilityText241: db "NEUTRALIZING GAS",$4e,"Suppresses foe",$4e,"ability while active.@"

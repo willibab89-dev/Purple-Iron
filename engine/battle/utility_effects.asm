@@ -602,7 +602,8 @@ UtilityAIStatusScore:
 	ld a, [wEnemyMoveNum]
 	cp WILL_O_WISP
 	jr nz, .iceType
-	ld a, [wActiveAbilities]
+	abilitycall AbilityPlayerResult
+	ld a, [wAbilityCheckResult]
 	cp AB_WATER_VEIL
 	jp z, .useless
 	ld b, FIRE

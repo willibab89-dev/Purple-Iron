@@ -3,13 +3,8 @@ SECTION "Liquid Ooze seed transfer", ROMX, BANK[$3f]
 ; adds bc to enemy HP
 ; bc isn't updated if HP subtracted was capped to prevent overkill
 AbilityLeechSeedTransfer:
-	ld hl, wActiveAbilities
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .checkOoze
-	inc hl
-.checkOoze
-	ld a, [hl]
+	abilitycall AbilityActorResult
+	ld a, [wAbilityCheckResult]
 	cp AB_LIQUID_OOZE
 	jp z, .liquidOoze
 	ld a, [wNatureInputBC]

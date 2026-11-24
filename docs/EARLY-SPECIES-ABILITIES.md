@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 109 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 111 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -70,10 +70,13 @@ Implemented for 109 species, with five equally likely slots per species. The sav
 | Hitmonlee | Reckless | Resilience | Footwork | Long Legs | Limber |
 | Hitmonchan | Iron Fist | Second Wind | Combos | Counterpunch | Guard Up |
 | Lickitung | Gluttony | Poison Heal | Thick Tongue | Slobber | Bottomless Stomach |
+| Koffing / Weezing | Levitate | Toxic Fumes | Gas Leak | Chemical Reaction | Neutralizing Gas |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Koffing and Weezing effects: Levitate prevents Ground attacks. Toxic Fumes gives Poison attacks a 20% chance to badly poison. Gas Leak damages the opponent for 1/16 maximum HP at round end. Chemical Reaction raises Special after a Fire attack once per battle. Neutralizing Gas suppresses the opposing active ability while its holder is alive. Limitation: it does not undo HP or Speed bonuses already included in stored stats by abilities such as Ancient, Bottomless Stomach, Blubber, Colossal Size, or Limber.
 
 Lickitung effects: Gluttony heals 1/8 maximum HP after using a damaging Normal move. Poison Heal heals 1/8 maximum HP each turn while poisoned instead of taking poison damage. Thick Tongue boosts Normal damage by 30%. Slobber gives physical attacks a 15% chance to confuse. Bottomless Stomach boosts maximum HP by 20%, including stored stats and Ability Capsule changes.
 
@@ -217,4 +220,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 545 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 555 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
