@@ -144,8 +144,9 @@ def validate(version):
                'HAUNTER':['LEVITATE','CURSED_TOUCH','PRANKSTER','CURSED_BODY','MIND_GAMES'],
                'ONIX':['CRUSHING_WEIGHT','COLOSSAL_SIZE','ONIX_STURDY','EARTHSHAKER','EARTH_EATER'],
                'DROWZEE':['NIGHTMARE','SANDMAN','DEEP_SLEEP','DREAMCATCHER','MENTAL_SHIELD'],
-               'KRABBY':['CRUSHING_CLAWS','SHELL_ARMOR','BRUTE_FORCE','WATER_PRESSURE','HYPER_CUTTER']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY')]:
+               'KRABBY':['CRUSHING_CLAWS','SHELL_ARMOR','BRUTE_FORCE','WATER_PRESSURE','HYPER_CUTTER'],
+               'VOLTORB':['HIGH_VOLTAGE','SHORT_CIRCUIT','VOLATILE','UNSTABLE','VOLTORB_CHAIN']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1198,6 +1199,19 @@ def validate(version):
                 for stat in range(6):
                     init(turn);aid(side,'HYPER_CUTTER');put('wCustomSide',side);put('wCustomStat',stat);put('wCustomDelta',255);call('AbilityKeenEyeCustom');assert get('wAbilityCheckResult')==(stat==0),(turn,side,stat)
                 init(turn);aid(side,'HYPER_CUTTER');put('wCustomSide',side);put('wCustomStat',0);put('wCustomDelta',1);call('AbilityKeenEyeCustom');assert not get('wAbilityCheckResult')
+        # Voltorb / Electrode: speed, confusion, knockout damage and streaks.
+        for turn in (0,1):
+            for attack,actor_speed,target_speed,want in [('THUNDERBOLT',101,100,120),('THUNDERBOLT',100,100,100),('THUNDERBOLT',99,100,100),('TACKLE',101,100,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'HIGH_VOLTAGE');word(ap+'Speed',actor_speed);word(tp+'Speed',target_speed);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,actor_speed,target_speed,readword('wDamage'))
+            for attack,roll,protection,sub,want in [('THUNDERBOLT',0,None,0,True),('THUNDERBOLT',29,None,0,True),('THUNDERBOLT',30,None,0,False),('TACKLE',0,None,0,False),('THUNDERBOLT',0,'SHIELD_DUST',0,False),('THUNDERBOLT',0,None,1,False)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'SHORT_CIRCUIT');aid(1-turn,protection);put('wCustomTargetHadSub',sub);rng(roll,0);call('AbilityAfterHit');assert bool(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128)==want,(turn,attack,roll,protection,sub)
+            for hp,actorhp,sub,protect,want in [(0,160,0,None,128),(1,160,0,None,160),(0,160,1,None,160),(0,20,0,None,0),(0,160,0,'MAGIC_GUARD',160),(0,0,0,None,0)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'VOLATILE');aid(turn,protect);word(tp+'HP',hp);word(ap+'HP',actorhp);put('wCustomTargetHadSub',sub);call('AbilityAfterHit');assert readword(ap+'HP')==want,(turn,hp,actorhp,sub,protect,readword(ap+'HP'))
+            ap,tp=init(turn);aid(turn,'VOLTORB_CHAIN');move(turn,'THUNDERBOLT');put('wAbilityHit',8)
+            for want in (100,120,140,140):
+                word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
+            move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+            call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1273,7 +1287,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,210):
+        for n in range(1,214):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1350,6 +1364,8 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,target='VOLATILE',hp=1,actor_hp=160,random_value=0);assert readword(ap+'HP')==128,(turn,'live volatile',readword(ap+'HP'))
+            ap,tp=execute('THUNDERBOLT',turn,actor='SHORT_CIRCUIT',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128,(turn,'live short circuit')
             ap,tp=execute('TACKLE',turn,actor='CRUSHING_CLAWS',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==6,(turn,'live crushing claws')
             ap,tp=execute('GROWL',turn,target='HYPER_CUTTER');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7,(turn,'live hyper cutter')
             ap,tp=execute('LEER',turn,target='HYPER_CUTTER');assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==6,(turn,'hyper cutter permits defense drop')
@@ -1585,7 +1601,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 100 species / 500 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 102 species / 510 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

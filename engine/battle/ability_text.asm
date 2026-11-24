@@ -81,6 +81,7 @@ AbilityTextPointers:
 	dw AbilityText198, AbilityText199, AbilityText200, AbilityText201, AbilityText202
 	dw AbilityText203, AbilityText204, AbilityText205, AbilityText206
 	dw AbilityText207, AbilityText208, AbilityText209
+	dw AbilityText210, AbilityText211, AbilityText212, AbilityText213
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -372,3 +373,8 @@ AbilityText206: db "DREAMCATCHER",$4e,"Put foe to sleep:",$4e,"heal 1/8 max HP.@
 AbilityText207: db "CRUSHING CLAWS",$4e,"Physical hit: 20%",$4e,"foe Defense -1.@"
 AbilityText208: db "BRUTE FORCE",$4e,"Physical moves at",$4e,"60 or less: x1.3.@"
 AbilityText209: db "HYPER CUTTER",$4e,"Attack cannot fall;",$4e,"crit damage x1.25.@"
+
+AbilityText210: db "HIGH VOLTAGE",$4e,"Electric damage x1.2",$4e,"vs slower foes.@"
+AbilityText211: db "SHORT CIRCUIT",$4e,"Electric hits: 15%",$4e,"confuse foe.@"
+AbilityText212: db "VOLATILE",$4e,"Direct KO: foe loses",$4e,"1/5 max HP.@"
+AbilityText213: db "CHAIN REACTION",$4e,"Electric streak:",$4e,"+20%, max +40%.@"

@@ -470,6 +470,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityVoltorbDamage
 	call AbilityKrabbyDamage
 	call AbilityNocturnalDamage
 	call AbilityRefrigerateDamage
@@ -1490,6 +1491,7 @@ AbilityHitEvents:
 	ret z
 	call AbilityLeeching
 	call AbilityAftermath
+	call AbilityVolatile
 	call AbilityDeathSpore
 	call AbilityRelentlessHit
 	call AbilityOvercharge
@@ -1611,11 +1613,19 @@ AbilityConfounding:
  or [hl]
  ret z
  call AbilityActor
+ cp AB_SHORT_CIRCUIT
+ jr z, .electric
  cp AB_CONFOUNDING
  ret nz
  ld a, [wAbilityMoveType]
  cp PSYCHIC
  ret nz
+ jr .checkTarget
+.electric
+ ld a, [wAbilityMoveType]
+ cp ELECTRIC
+ ret nz
+.checkTarget
  call AbilityTarget
  cp AB_SHIELD_DUST
  ret z
@@ -1637,7 +1647,12 @@ AbilityConfounding:
  ret nz
  push hl
  push de
+ call AbilityActor
+ cp AB_SHORT_CIRCUIT
  ld b, 20
+ jr nz, .confusionRoll
+ ld b, 15
+.confusionRoll
  call AbilityRoll
  pop de
  pop hl
@@ -4721,6 +4736,8 @@ AbilityRolloutScale:
 ; One stack per completed Ground/Rock attack. Misses and other moves reset it.
 AbilityRolloutAfterAction:
  call AbilityActor
+ cp AB_VOLTORB_CHAIN
+ jp z, AbilityVoltorbChainAfterAction
  cp AB_CHAIN_REACTION
  jp z, AbilityChainAfterAction
  cp AB_BIRD_RELENTLESS
@@ -6280,3 +6297,123 @@ AbilityKrabbyDamage:
  ret nz
  ld c, 125
  jp AbilityScaleDamage
+
+; Voltorb has a consecutive-attack version of Chain Reaction.
+AbilityVoltorbDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_HIGH_VOLTAGE
+ jr z, .speed
+ cp AB_VOLTORB_CHAIN
+ ret nz
+ call AbilityActorMoveType
+ cp ELECTRIC
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ ld a, [hl]
+ and a
+ ret z
+ cp 2
+ ld c, 120
+ jr c, .scale
+ ld c, 140
+ jr .scale
+.speed
+ call AbilityActorMoveType
+ cp ELECTRIC
+ ret nz
+ call AbilityCompareFaster
+ ret nc
+ ld c, 120
+.scale
+ jp AbilityScaleDamage
+
+AbilityVoltorbChainAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ push hl
+ call AbilityMove
+ inc hl
+ inc hl
+ ld a, [hli]
+ and a
+ jr z, .reset
+ ld a, [hl]
+ cp ELECTRIC
+ jr nz, .reset
+ ld a, [wMoveMissed]
+ and a
+ jr nz, .reset
+ ld a, [wDamageMultipliers]
+ and $7f
+ jr z, .reset
+ pop hl
+ ld a, [hl]
+ cp 2
+ ret nc
+ inc [hl]
+ ret
+.reset
+ pop hl
+ ld [hl], 0
+ ret
+
+; Only a direct knockout of the holder triggers Volatile, never a Substitute.
+AbilityVolatile:
+ ld a, [wCustomTargetHadSub]
+ and a
+ ret nz
+ call AbilityTarget
+ cp AB_VOLATILE
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityGet
+ cp AB_MAGIC_GUARD
+ ret z
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ xor a
+ ld [H_DIVIDEND], a
+ ld [H_DIVIDEND + 1], a
+ ld a, [de]
+ ld [H_DIVIDEND + 2], a
+ inc de
+ ld a, [de]
+ ld [H_DIVIDEND + 3], a
+ ld a, 5
+ ld [H_DIVISOR], a
+ ld b, 4
+ call Divide
+ ld a, [H_QUOTIENT + 2]
+ ld [wAbilityTemp], a
+ ld b, a
+ ld a, [H_QUOTIENT + 3]
+ or b
+ jr nz, .amount
+ inc a
+.amount
+ ld [wAbilityTemp + 1], a
+ jp AbilityLiquidOozeHurt
