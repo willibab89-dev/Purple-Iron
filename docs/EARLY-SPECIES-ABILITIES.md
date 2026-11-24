@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 108 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 109 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -69,10 +69,13 @@ Implemented for 108 species, with five equally likely slots per species. The sav
 | Marowak | Vengeful | Thick Skull | Rock Head | Bone Collector | Bone Breaker |
 | Hitmonlee | Reckless | Resilience | Footwork | Long Legs | Limber |
 | Hitmonchan | Iron Fist | Second Wind | Combos | Counterpunch | Guard Up |
+| Lickitung | Gluttony | Poison Heal | Thick Tongue | Slobber | Bottomless Stomach |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Lickitung effects: Gluttony heals 1/8 maximum HP after using a damaging Normal move. Poison Heal heals 1/8 maximum HP each turn while poisoned instead of taking poison damage. Thick Tongue boosts Normal damage by 30%. Slobber gives physical attacks a 15% chance to confuse. Bottomless Stomach boosts maximum HP by 20%, including stored stats and Ability Capsule changes.
 
 Hitmonchan effects: Iron Fist boosts punching moves by 25%. Second Wind heals 1/4 maximum HP the first time HP falls below one-third. Combos adds 10% damage per consecutive successful punch, up to 30%, resetting on a miss or non-punching move. Counterpunch raises Attack after a physical hit once per battle. Guard Up reduces physical damage by 20%.
 
@@ -214,4 +217,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 540 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 545 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

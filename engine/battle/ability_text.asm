@@ -86,6 +86,7 @@ AbilityTextPointers:
 	dw AbilityText219, AbilityText220, AbilityText221, AbilityText222, AbilityText223, AbilityText224
 	dw AbilityText225, AbilityText226, AbilityText227, AbilityText228, AbilityText229
 	dw AbilityText230, AbilityText231, AbilityText232, AbilityText233
+	dw AbilityText234, AbilityText235, AbilityText236, AbilityText237
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -406,3 +407,8 @@ AbilityText230: db "SECOND WIND",$4e,"Below 1/3 HP: heal",$4e,"1/4 max HP once.@
 AbilityText231: db "COMBOS",$4e,"Punch streak +10%",$4e,"each, max +30%.@"
 AbilityText232: db "COUNTERPUNCH",$4e,"Physical hit:",$4e,"Attack +1 once.@"
 AbilityText233: db "GUARD UP",$4e,"Physical damage",$4e,"received x0.8.@"
+
+AbilityText234: db "GLUTTONY",$4e,"Normal attack: heal",$4e,"1/8 max HP.@"
+AbilityText235: db "THICK TONGUE",$4e,"Normal moves deal",$4e,"x1.3 damage.@"
+AbilityText236: db "SLOBBER",$4e,"Physical hits: 15%",$4e,"confuse foe.@"
+AbilityText237: db "BOTTOMLESS STOMACH",$4e,"Maximum HP x1.2.@"

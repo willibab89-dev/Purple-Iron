@@ -473,6 +473,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityLickitungDamage
 	call AbilityHitmonchanDamage
 	call AbilityHitmonleeDamage
 	call AbilityEggDamage
@@ -1049,6 +1050,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityLickitungFixedDamage
 	call AbilityEggFixedDamage
 	call AbilityNocturnalFixedDamage
 	call AbilityRefrigerateFixedDamage
@@ -1378,6 +1380,19 @@ AbilitySandAfterAction:
 	jp z, .evasion
 	cp AB_SNOW_VEIL
 	jp z, .snowVeil
+	cp AB_GLUTTONY
+	jr nz, .notGluttony
+	call AbilityMove
+	inc hl
+	inc hl
+	ld a, [hli]
+	and a
+	ret z
+	ld a, [hl]
+	cp NORMAL
+	ret nz
+	jr .healWaterOrGround
+.notGluttony
 	cp AB_HARVEST
 	jr nz, .notHarvest
 	call AbilityActorMoveType
@@ -1651,6 +1666,8 @@ AbilityConfounding:
  call AbilityActor
  cp AB_SHORT_CIRCUIT
  jr z, .electric
+ cp AB_SLOBBER
+ jr z, .physical
  cp AB_CONFOUNDING
  jr z, .psychic
  cp AB_COLLECTIVE_MIND
@@ -1664,6 +1681,11 @@ AbilityConfounding:
  ld a, [wAbilityMoveType]
  cp ELECTRIC
  ret nz
+ jr .checkTarget
+.physical
+ ld a, [wAbilityMoveType]
+ cp FIRE
+ ret nc
 .checkTarget
  call AbilityTarget
  cp AB_SHIELD_DUST
@@ -1688,8 +1710,11 @@ AbilityConfounding:
  push de
  call AbilityActor
  cp AB_SHORT_CIRCUIT
+ jr z, .fifteen
+ cp AB_SLOBBER
  ld b, 20
  jr nz, .confusionRoll
+.fifteen
  ld b, 15
 .confusionRoll
  call AbilityRoll
@@ -3715,6 +3740,8 @@ AbilityAncientHP:
 	cp e
 	jr nz, .stored
 	ld a, [wActiveAbilities]
+	cp AB_BOTTOMLESS_STOMACH
+	jr z, .boost
 	cp AB_ANCIENT
 	jr z, .boost
 	cp AB_BLUBBER
@@ -3760,6 +3787,8 @@ AbilityAncientHP:
 	ret
 ; A = species; Z and B = its HP-boosting slot, or NZ if unsupported.
 AbilityHPScalingFamily:
+ cp LICKITUNG
+ jr z, .bottomless
  cp ONIX
  jr z, .colossal
  cp SEEL
@@ -3773,6 +3802,10 @@ AbilityHPScalingFamily:
  ret
 .blubber
  ld b, 1
+ xor a
+ ret
+.bottomless
+ ld b, 5
  xor a
  ret
 .colossal
@@ -6804,3 +6837,22 @@ AbilitySecondWind:
  ret nz
  set 2, [hl]
  jp AbilityHealQuarter
+
+AbilityLickitungDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityLickitungFixedDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_THICK_TONGUE
+ ret nz
+ call AbilityActorMoveType
+ cp NORMAL
+ ret nz
+ ld c, 130
+ jp AbilityScaleDamage

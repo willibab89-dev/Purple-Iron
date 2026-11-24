@@ -980,6 +980,8 @@ AbilityCapsuleApply::
 	jr z, .colossal
 	cp HITMONLEE
 	jr z, .limber
+	cp LICKITUNG
+	jr z, .limber
 	cp SEEL
 	jr z, .blubber
 	cp DEWGONG
