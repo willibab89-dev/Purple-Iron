@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 107 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 108 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -68,10 +68,13 @@ Implemented for 107 species, with five equally likely slots per species. The sav
 | Cubone | Lonely | Thick Skull | Rock Head | Underdog | Bone Breaker |
 | Marowak | Vengeful | Thick Skull | Rock Head | Bone Collector | Bone Breaker |
 | Hitmonlee | Reckless | Resilience | Footwork | Long Legs | Limber |
+| Hitmonchan | Iron Fist | Second Wind | Combos | Counterpunch | Guard Up |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Hitmonchan effects: Iron Fist boosts punching moves by 25%. Second Wind heals 1/4 maximum HP the first time HP falls below one-third. Combos adds 10% damage per consecutive successful punch, up to 30%, resetting on a miss or non-punching move. Counterpunch raises Attack after a physical hit once per battle. Guard Up reduces physical damage by 20%.
 
 Hitmonlee effects: Reckless boosts recoil and crash moves by 25%. Resilience reduces the first super-effective attack by 75% once per battle. Footwork raises Evasion after using a Fighting move once per battle. Long Legs boosts kicking moves by 25%. Limber prevents paralysis and boosts Speed by 20%.
 
@@ -211,4 +214,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 535 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 540 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

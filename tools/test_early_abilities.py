@@ -150,7 +150,8 @@ def validate(version):
                'EXEGGUTOR':['COLLECTIVE_MIND','THICK_TRUNK','HARVEST','IMMUNITY','SOLAR_POWER'],
                'CUBONE':['LONELY','THICK_SKULL','ROCK_HEAD','UNDERDOG','BONE_BREAKER'],
                'MAROWAK':['VENGEFUL','THICK_SKULL','ROCK_HEAD','BONE_COLLECTOR','BONE_BREAKER'],
-               'HITMONLEE':['RECKLESS','RESILIENCE','FOOTWORK','LONG_LEGS','LIMBER']}
+               'HITMONLEE':['RECKLESS','RESILIENCE','FOOTWORK','LONG_LEGS','LIMBER'],
+               'HITMONCHAN':['IRON_FIST','SECOND_WIND','COMBOS','COUNTERPUNCH','GUARD_UP']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1272,6 +1273,20 @@ def validate(version):
         for nature in (0,33,195):
             root='wPartyMon1';game.memory[addr(root):addr(root)+44]=[0]*44;metadata(root,'HITMONLEE',1,nature);put(root+'Level',50);word(root+'HP',100);word(root+'MaxHP',100);word('wNatureMonPtr',addr(root));call('NatureMigrateOne');base=readword(root+'Speed');metadata(root,'HITMONLEE',5,nature);call('NatureMigrateOne');assert readword(root+'Speed')==base*120//100,(nature,base,readword(root+'Speed'))
         init();metadata('wPartyMon1','HITMONLEE',1);put('wPartyMon1Status',64);word('wNatureMonPtr',addr('wPartyMon1'));rng(4);call('AbilityCapsuleApply');assert get('wPartyMon1Type1')>>5==5 and not get('wPartyMon1Status'),('limber capsule',get('wPartyMon1Status'))
+        # Hitmonchan: threshold healing, punch streak and physical reactions.
+        for turn in (0,1):
+            for hp,want in [(54,54),(53,93),(1,41),(0,0)]:
+                ap,tp=init(turn);aid(turn,'SECOND_WIND');word(ap+'HP',hp);put('wAbilitySide',turn);call('AbilityLowHP');assert readword(ap+'HP')==want,(turn,'second wind',hp,readword(ap+'HP'));word(ap+'HP',hp);call('AbilityLowHP');assert readword(ap+'HP')==hp,(turn,'second wind once',hp,readword(ap+'HP'))
+            for attack,sub,hp,want in [('TACKLE',0,160,8),('EMBER',0,160,7),('TACKLE',1,160,7),('TACKLE',0,0,7)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'COUNTERPUNCH');put('wCustomTargetHadSub',sub);word(tp+'HP',hp);call('AbilityAfterHit');stat='w'+('Player' if turn else 'Enemy')+'MonAttackMod';assert get(stat)==want,(turn,attack,sub,hp,get(stat));put('wAbilityHit',0);call('AbilityAfterHit');assert get(stat)==want
+            for attack,want in [('TACKLE',80),('EMBER',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'GUARD_UP');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'guard up');put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==want
+            ap,tp=init(turn);aid(turn,'COMBOS');move(turn,'MEGA_PUNCH');put('wAbilityHit',8)
+            for want in (100,110,120,130,130):
+                word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'combos',want,readword('wDamage'));call('AbilityRolloutAfterAction')
+            move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'MEGA_PUNCH');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+            call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+            call('AbilityRolloutAfterAction');put('wAbilitySide',turn);call('AbilityEntry');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1347,7 +1362,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,230):
+        for n in range(1,234):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1424,6 +1439,9 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,target='COUNTERPUNCH',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'live counterpunch')
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,target='GUARD_UP',random_value=100);assert 160-readword(tp+'HP')==normal*80//100,(turn,'live guard up',normal,readword(tp+'HP'))
             ap,tp=execute('THUNDER_WAVE',turn,target='LIMBER',random_value=0);assert not get(tp+'Status'),(turn,'live limber status')
             ap,tp=execute('THUNDERBOLT',turn,target='LIMBER',random_value=0);assert not get(tp+'Status'),(turn,'live limber secondary')
             ap,tp=execute('DOUBLE_EDGE',turn,actor='ROCK_HEAD',actor_hp=160,random_value=100);assert readword(ap+'HP')==160,(turn,'live rock head',readword(ap+'HP'))
@@ -1670,7 +1688,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 107 species / 535 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 108 species / 540 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

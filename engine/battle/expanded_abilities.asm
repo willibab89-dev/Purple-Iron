@@ -473,6 +473,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityHitmonchanDamage
 	call AbilityHitmonleeDamage
 	call AbilityEggDamage
 	call AbilityVoltorbDamage
@@ -967,6 +968,8 @@ AbilityModifyDamage:
 	jr z, .half
 	ret
 .notThickFat
+	cp AB_GUARD_UP
+	jr z, .physicalReduction
 	cp AB_THICK_SKULL
 	jr z, .physicalReduction
 	cp AB_THICK_TRUNK
@@ -1268,6 +1271,8 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 50
 	jr .scale
 .hide
+	cp AB_GUARD_UP
+	jr z, .fixedPhysicalReduction
 	cp AB_THICK_SKULL
 	jr z, .fixedPhysicalReduction
 	cp AB_THICK_TRUNK
@@ -2787,6 +2792,19 @@ AbilityGetTargetReactions:
 	or [hl]
 	jp z, .contact
 	call AbilityTarget
+	cp AB_COUNTERPUNCH
+	jr nz, .notCounterpunch
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jp nc, .contact
+	call AbilityFlagsPointer
+	bit 2, [hl]
+	jp nz, .contact
+	set 2, [hl]
+	xor a
+	call AbilityRaiseStage
+	jp .contact
+.notCounterpunch
 	cp AB_STAMINA
 	jr nz, .slippery
 	ld a, 1 ; Defense
@@ -2976,6 +2994,8 @@ AbilityLowHPBoth:
 AbilityLowHP:
 	ld a, [wAbilitySide]
 	call AbilityGet
+	cp AB_SECOND_WIND
+	jp z, AbilitySecondWind
 	cp AB_SURVIVAL_INSTINCTS
 	jr z, .speed
 	cp AB_LONELY
@@ -4805,6 +4825,8 @@ AbilityRolloutScale:
 ; One stack per completed Ground/Rock attack. Misses and other moves reset it.
 AbilityRolloutAfterAction:
  call AbilityActor
+ cp AB_COMBOS
+ jp z, AbilityCombosAfterAction
  cp AB_VOLTORB_CHAIN
  jp z, AbilityVoltorbChainAfterAction
  cp AB_CHAIN_REACTION
@@ -6710,3 +6732,75 @@ AbilityLimberSecondary:
  xor a
  ld [wAbilityCheckResult], a
  ret
+
+; Stacks count completed punches, not hits within a multi-hit move.
+AbilityHitmonchanDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_COMBOS
+ ret nz
+ call AbilityMove
+ ld a, [hl]
+ call AbilityMoveFlags
+ bit 7, a
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ ld a, [hl]
+ and a
+ ret z
+ ld b, a
+ add a
+ add a
+ add b
+ add a
+ add 100
+ ld c, a
+ jp AbilityScaleDamage
+
+AbilityCombosAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityRolloutSidePointer
+ push hl
+ call AbilityMove
+ ld a, [hl]
+ call AbilityMoveFlags
+ bit 7, a
+ jr z, .reset
+ ld a, [wMoveMissed]
+ and a
+ jr nz, .reset
+ ld a, [wDamageMultipliers]
+ and $7f
+ jr z, .reset
+ pop hl
+ ld a, [hl]
+ cp 3
+ ret nc
+ inc [hl]
+ ret
+.reset
+ pop hl
+ ld [hl], 0
+ ret
+
+AbilitySecondWind:
+ call AbilityBelowThird
+ ret nc
+ call AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ jp AbilityHealQuarter
