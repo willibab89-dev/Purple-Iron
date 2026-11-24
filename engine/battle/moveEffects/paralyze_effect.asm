@@ -1,4 +1,8 @@
 ParalyzeEffect_:
+	abilitycall AbilityLimberTarget
+	ld a, [wAbilityCheckResult]
+	and a
+	jp nz, .didntAffect
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;joenote - there should be no effect if PARALYZE is used against a substitute
 	push hl	;save hl register on the stack

@@ -84,6 +84,7 @@ AbilityTextPointers:
 	dw AbilityText210, AbilityText211, AbilityText212, AbilityText213
 	dw AbilityText214, AbilityText215, AbilityText216, AbilityText217, AbilityText218
 	dw AbilityText219, AbilityText220, AbilityText221, AbilityText222, AbilityText223, AbilityText224
+	dw AbilityText225, AbilityText226, AbilityText227, AbilityText228, AbilityText229
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -393,3 +394,9 @@ AbilityText221: db "ROCK HEAD",$4e,"Prevents recoil",$4e,"damage.@"
 AbilityText222: db "BONE COLLECTOR",$4e,"Direct KO heals",$4e,"1/8 max HP.@"
 AbilityText223: db "BONE BREAKER",$4e,"Physical hits ignore",$4e,"20% of Defense.@"
 AbilityText224: db "VENGEFUL",$4e,"Below 1/3 HP:",$4e,"Attack +1 once.@"
+
+AbilityText225: db "RECKLESS",$4e,"Recoil and crash",$4e,"moves deal x1.25.@"
+AbilityText226: db "RESILIENCE",$4e,"First super effect.",$4e,"attack damage x0.25.@"
+AbilityText227: db "FOOTWORK",$4e,"Fighting move:",$4e,"Evasion +1 once.@"
+AbilityText228: db "LONG LEGS",$4e,"Kicking moves",$4e,"deal x1.25 damage.@"
+AbilityText229: db "LIMBER",$4e,"No paralysis;",$4e,"Speed x1.2.@"

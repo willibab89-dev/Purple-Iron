@@ -473,6 +473,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityHitmonleeDamage
 	call AbilityEggDamage
 	call AbilityVoltorbDamage
 	call AbilityKrabbyDamage
@@ -1360,6 +1361,14 @@ AbilitySandAfterAction:
 	call AbilityActor
 	cp AB_ROLLING_DEFENSE
 	jp z, .normal
+	cp AB_FOOTWORK
+	jr nz, .notFootwork
+	call AbilityActorMoveType
+	cp FIGHTING
+	ret nz
+	ld a, 5
+	jp .once
+.notFootwork
 	cp AB_SAND_VEIL
 	jp z, .evasion
 	cp AB_SNOW_VEIL
@@ -1751,6 +1760,8 @@ AbilityIncomingDamage:
 	jp z, AbilitySturdyIncoming
 	cp AB_ONIX_STURDY
 	jp z, AbilitySturdyIncoming
+	cp AB_RESILIENCE
+	jp z, AbilityResilienceIncoming
 	cp AB_ILLUSION
 	jr z, .illusion
 	cp AB_NINE_LIVES
@@ -3326,6 +3337,15 @@ AbilityEffectGate:
 	cp AB_SHEER_FORCE
 	jr z, .checkThaw
 	call AbilityTarget
+	cp AB_LIMBER
+	jr nz, .notLimber
+	ld a, b
+	cp PARALYZE_SIDE_EFFECT1
+	jr z, .block
+	cp PARALYZE_SIDE_EFFECT2
+	jr z, .block
+	ret
+.notLimber
 	cp AB_SHIELD_DUST
 	jr z, .checkThaw
 	cp AB_STEADFAST
@@ -3369,6 +3389,14 @@ AbilitySecondaryEffects:
 	db ATTACK_AND_STAT_EFFECT, $ff
 
 AbilityBurnGate:
+	ld a, [wCustomDelta]
+	cp 1 << PAR
+	jr nz, .ordinary
+	ld a, [wCustomSide]
+	call AbilityGet
+	cp AB_LIMBER
+	jr z, .block
+.ordinary
 	xor a
 	ld [wAbilityCheckResult], a
 	ld a, [wCustomDelta]
@@ -4825,6 +4853,20 @@ AbilityRolloutAfterAction:
 AbilityImmunityOnEntry:
  ld a, [wAbilitySide]
  call AbilityGet
+ cp AB_LIMBER
+ jr nz, .poison
+ call AbilityHP
+ inc hl
+ inc hl
+ inc hl
+ bit PAR, [hl]
+ ret z
+ res PAR, [hl]
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ callab CustomRecalculate
+ jpab UtilitySyncParty
+.poison
  cp AB_IMMUNITY
  ret nz
  call AbilityHP
@@ -4857,6 +4899,23 @@ AbilityImmunityCapsule:
  ld a, [wNatureMonPtr + 1]
  ld l, a
  ld a, [hl]
+ cp HITMONLEE
+ jr nz, .notLimber
+ push hl
+ ld bc, wPartyMon1Type1 - wPartyMon1
+ add hl, bc
+ ld a, [hl]
+ and $e0
+ pop hl
+ cp 5 << 5
+ ret nz
+ push hl
+ ld bc, wPartyMon1Status - wPartyMon1
+ add hl, bc
+ res PAR, [hl]
+ pop hl
+ ret
+.notLimber
  cp GEODUDE
  jr z, .family
  cp GRAVELER
@@ -4883,9 +4942,11 @@ AbilityImmunityCapsule:
  cp c
  pop hl
  ret nz
+ push hl
  ld bc, wPartyMon1Status - wPartyMon1
  add hl, bc
  res PSN, [hl]
+ pop hl
  ret
 
 ; Carry iff a Fire move's user is strictly faster using current battle speeds.
@@ -5966,10 +6027,17 @@ AbilityColossalSpeed:
  cp e
  jr nz, .player
  ld a, [wMonHIndex]
+ cp HITMONLEE
+ jr z, .enemyLimber
  cp ONIX
  ret nz
  ld a, [wNatureEnemySlot]
  jr .slot
+.enemyLimber
+ ld a, [wNatureEnemySlot]
+ cp 5
+ jp z, .limberScale
+ ret
 .player
  ld de, wBattleMonHP
  ld a, h
@@ -5979,6 +6047,8 @@ AbilityColossalSpeed:
  cp e
  jr nz, .stored
  ld a, [wActiveAbilities]
+ cp AB_LIMBER
+ jp z, .limberScale
  cp AB_COLOSSAL_SIZE
  jr nz, .no
  jr .scale
@@ -5986,6 +6056,8 @@ AbilityColossalSpeed:
  ld de, -16
  add hl, de
  ld a, [hl]
+ cp HITMONLEE
+ jr z, .storedLimber
  cp ONIX
  ret nz
  ld de, 5
@@ -6000,6 +6072,17 @@ AbilityColossalSpeed:
  ret nz
 .scale
  ld c, 75
+ jr .scaleCommon
+.storedLimber
+ ld de, 5
+ add hl, de
+ ld a, [hl]
+ and $e0
+ cp 5 << 5
+ ret nz
+.limberScale
+ ld c, 120
+.scaleCommon
  call AbilityScaleAccuracy
  ld a, [H_QUOTIENT + 2]
  ld b, a
@@ -6523,5 +6606,107 @@ AbilityRecoilGuardActor:
  cp AB_ROCK_HEAD
  ret nz
  ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityHitmonleeDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_RECKLESS
+ jr z, .reckless
+ cp AB_LONG_LEGS
+ ret nz
+ call AbilityMove
+ ld a, [hl]
+ cp DOUBLE_KICK
+ jr z, .boost
+ cp MEGA_KICK
+ jr z, .boost
+ cp JUMP_KICK
+ jr z, .boost
+ cp ROLLING_KICK
+ jr z, .boost
+ cp LOW_KICK
+ jr z, .boost
+ cp HI_JUMP_KICK
+ jr z, .boost
+ cp TRIPLE_KICK
+ ret nz
+ jr .boost
+.reckless
+ call AbilityMove
+ inc hl
+ ld a, [hl]
+ cp RECOIL_EFFECT
+ jr z, .boost
+ cp JUMP_KICK_EFFECT
+ ret nz
+.boost
+ ld c, 125
+ jp AbilityScaleDamage
+
+AbilityResilienceIncoming:
+ ld a, [wDamageMultipliers]
+ and $7f
+ cp 11
+ ret c
+ ld hl, wAbilityHit
+ bit 6, [hl]
+ jr nz, .reduce
+ call AbilityFlagsPointer
+ bit 0, [hl]
+ ret nz
+ set 0, [hl]
+ ld hl, wAbilityHit
+ set 6, [hl]
+.reduce
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ jr nz, .scale
+ xor a
+ ld [wCriticalHitOrOHKO], a
+ call AbilityHP
+ ld a, [hli]
+ ld [wDamage], a
+ ld a, [hl]
+ ld [wDamage + 1], a
+.scale
+ ld c, 25
+ call AbilityScaleDamage
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret nz
+ inc a
+ ld [wDamage + 1], a
+ ret
+
+AbilityLimberTarget:
+ xor a
+ ld [wAbilityCheckResult], a
+ call AbilityTarget
+ cp AB_LIMBER
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityLimberSecondary:
+ call AbilityMove
+ inc hl
+ ld a, [hl]
+ cp PARALYZE_SIDE_EFFECT1
+ jr z, AbilityLimberTarget
+ cp PARALYZE_SIDE_EFFECT2
+ jr z, AbilityLimberTarget
+ xor a
  ld [wAbilityCheckResult], a
  ret

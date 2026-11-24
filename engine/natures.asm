@@ -978,6 +978,8 @@ AbilityCapsuleApply::
 	ld a, [hl]
 	cp ONIX
 	jr z, .colossal
+	cp HITMONLEE
+	jr z, .limber
 	cp SEEL
 	jr z, .blubber
 	cp DEWGONG
@@ -996,6 +998,9 @@ AbilityCapsuleApply::
 	jr .hp
 .colossal
 	ld b, 2
+	jr .hp
+.limber
+	ld b, 5
 .hp
 	ld a, [wNatureResult]
 	cp b

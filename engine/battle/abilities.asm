@@ -121,6 +121,7 @@ AbilitySpeciesPools:
 	db EXEGGUTOR, 61
 	db CUBONE, 62
 	db MAROWAK, 63
+	db HITMONLEE, 64
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -186,6 +187,7 @@ AbilityPoolIds:
 	db AB_COLLECTIVE_MIND, AB_THICK_TRUNK, AB_HARVEST, AB_IMMUNITY, AB_SOLAR_POWER
 	db AB_LONELY, AB_THICK_SKULL, AB_ROCK_HEAD, AB_UNDERDOG, AB_BONE_BREAKER
 	db AB_VENGEFUL, AB_THICK_SKULL, AB_ROCK_HEAD, AB_BONE_COLLECTOR, AB_BONE_BREAKER
+	db AB_RECKLESS, AB_RESILIENCE, AB_FOOTWORK, AB_LONG_LEGS, AB_LIMBER
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -410,6 +412,8 @@ AbilityOneSpeed:
 	push hl
 	ld a, [wAbilitySide]
 	call AbilityGet
+	cp AB_LIMBER
+	jr z, .limber
 	cp AB_COLOSSAL_SIZE
 	jr nz, .chlorophyll
 	; Transform replaces saved, already-scaled stats with copied stats.
@@ -445,6 +449,27 @@ AbilityOneSpeed:
 	or l
 	ret nz
 	inc l
+	ret
+.limber
+	ld hl, wPlayerBattleStatus3
+	ld a, [wAbilitySide]
+	and a
+	jr z, .limberTransform
+	ld hl, wEnemyBattleStatus3
+.limberTransform
+	bit TRANSFORMED, [hl]
+	jr z, .plain
+	pop hl
+	ld a, h
+	ld [H_QUOTIENT + 2], a
+	ld a, l
+	ld [H_QUOTIENT + 3], a
+	ld c, 120
+	call AbilityScaleAccuracy
+	ld a, [H_QUOTIENT + 2]
+	ld h, a
+	ld a, [H_QUOTIENT + 3]
+	ld l, a
 	ret
 .chlorophyll
 	cp 2

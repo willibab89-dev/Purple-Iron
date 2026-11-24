@@ -149,7 +149,8 @@ def validate(version):
                'EXEGGCUTE':['COLLECTIVE_MIND','EXECUTIONER','HARVEST','IMMUNITY','SOLAR_POWER'],
                'EXEGGUTOR':['COLLECTIVE_MIND','THICK_TRUNK','HARVEST','IMMUNITY','SOLAR_POWER'],
                'CUBONE':['LONELY','THICK_SKULL','ROCK_HEAD','UNDERDOG','BONE_BREAKER'],
-               'MAROWAK':['VENGEFUL','THICK_SKULL','ROCK_HEAD','BONE_COLLECTOR','BONE_BREAKER']}
+               'MAROWAK':['VENGEFUL','THICK_SKULL','ROCK_HEAD','BONE_COLLECTOR','BONE_BREAKER'],
+               'HITMONLEE':['RECKLESS','RESILIENCE','FOOTWORK','LONG_LEGS','LIMBER']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1251,6 +1252,26 @@ def validate(version):
                 init(turn);move(turn,attack);aid(turn,'BONE_BREAKER');call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack');assert game.memory[0xff98]==80,(turn,attack,'bone breaker')
             for hp,targethp,hit,want in [(80,0,True,100),(155,0,True,160),(0,0,True,0),(80,1,True,80),(80,0,False,80)]:
                 ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'BONE_COLLECTOR');word(ap+'HP',hp);word(tp+'HP',targethp);put('wAbilityHit',1 if hit else 0);call('AbilityFrenzy');assert readword(ap+'HP')==want,(turn,hp,targethp,hit,readword(ap+'HP'))
+        # Hitmonlee: recoil moves, first super-effective hit, kicks and Limber.
+        for turn in (0,1):
+            for ability_name,attack,want in [('RECKLESS','TAKE_DOWN',125),('RECKLESS','JUMP_KICK',125),('RECKLESS','TACKLE',100),('LONG_LEGS','MEGA_KICK',125),('LONG_LEGS','TRIPLE_KICK',125),('LONG_LEGS','TACKLE',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,ability_name);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,ability_name,attack,readword('wDamage'))
+            for mult,sub,want in [(20,0,25),(10,0,100),(0,0,100),(20,1,100)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'RESILIENCE');put('wDamageMultipliers',mult);put('wCustomTargetHadSub',sub);put('wAbilityHit',32);word('wDamage',100);call('AbilityIncomingDamage');assert readword('wDamage')==want,(turn,mult,sub,readword('wDamage'))
+                if mult==20 and not sub:
+                    put('wAbilityHit',32);word('wDamage',100);call('AbilityIncomingDamage');assert readword('wDamage')==100,(turn,'resilience spent')
+            for attack,want in [('DOUBLE_KICK',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(turn,'FOOTWORK');put('wAbilityHit',8);call('AbilitySandAfterAction');name='w'+('Enemy' if turn else 'Player')+'MonEvasionMod';assert get(name)==want;call('AbilitySandAfterAction');assert get(name)==want
+            ap,tp=init(turn);aid(turn,'LIMBER');word(ap+'Speed',101);put('w'+('Enemy' if turn else 'Player')+'BattleStatus3',8);put('wAbilitySide',turn);call('AbilityOneSpeed');assert game.register_file.HL==121,(turn,'transformed limber speed',game.register_file.HL)
+            for status,want in [(64,0),(8,8)]:
+                ap,tp=init(turn);aid(turn,'LIMBER');put(ap+'Status',status);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get(ap+'Status')==want,(turn,status,'limber entry')
+            for status,want in [(64,0),(8,8)]:
+                ap,tp=init(turn);aid(1-turn,'LIMBER');put('wCustomSide',1-turn);put('wCustomDelta',status);call('UtilityInflictStatus');assert get(tp+'Status')==want,(turn,status,'limber status')
+            for attack,blocked in [('THUNDERBOLT',True),('BODY_SLAM',True),('FLAMETHROWER',False)]:
+                init(turn);move(turn,attack);aid(1-turn,'LIMBER');call('AbilityEffectGate');assert bool(get('wAbilityCheckResult'))==blocked,(turn,attack,'limber secondary')
+        for nature in (0,33,195):
+            root='wPartyMon1';game.memory[addr(root):addr(root)+44]=[0]*44;metadata(root,'HITMONLEE',1,nature);put(root+'Level',50);word(root+'HP',100);word(root+'MaxHP',100);word('wNatureMonPtr',addr(root));call('NatureMigrateOne');base=readword(root+'Speed');metadata(root,'HITMONLEE',5,nature);call('NatureMigrateOne');assert readword(root+'Speed')==base*120//100,(nature,base,readword(root+'Speed'))
+        init();metadata('wPartyMon1','HITMONLEE',1);put('wPartyMon1Status',64);word('wNatureMonPtr',addr('wPartyMon1'));rng(4);call('AbilityCapsuleApply');assert get('wPartyMon1Type1')>>5==5 and not get('wPartyMon1Status'),('limber capsule',get('wPartyMon1Status'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1326,7 +1347,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,225):
+        for n in range(1,230):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1403,6 +1424,8 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('THUNDER_WAVE',turn,target='LIMBER',random_value=0);assert not get(tp+'Status'),(turn,'live limber status')
+            ap,tp=execute('THUNDERBOLT',turn,target='LIMBER',random_value=0);assert not get(tp+'Status'),(turn,'live limber secondary')
             ap,tp=execute('DOUBLE_EDGE',turn,actor='ROCK_HEAD',actor_hp=160,random_value=100);assert readword(ap+'HP')==160,(turn,'live rock head',readword(ap+'HP'))
             ap,tp=execute('DOUBLE_EDGE',turn,actor_hp=160,random_value=100);assert readword(ap+'HP')<160,(turn,'ordinary recoil',readword(ap+'HP'))
             ap,tp=execute('TACKLE',turn,actor='BONE_COLLECTOR',actor_hp=80,hp=1,random_value=100);assert readword(ap+'HP')==100,(turn,'live bone collector',readword(ap+'HP'))
@@ -1647,7 +1670,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 106 species / 530 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 107 species / 535 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
