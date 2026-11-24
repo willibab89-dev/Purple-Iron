@@ -110,6 +110,7 @@ AbilitySpeciesPools:
 	db GASTLY, 54
 	db HAUNTER, 55
 	db GENGAR, 55
+	db ONIX, 56
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -167,6 +168,7 @@ AbilityPoolIds:
 	db AB_SHELL_ARMOR, AB_SKILL_LINK, AB_SPIKED_SHELL, AB_DEEPSEA_PEARL, AB_LIQUIDATE
 	db AB_LEVITATE, AB_GAS_BODY, AB_PRANKSTER, AB_NOCTURNAL, AB_MIND_GAMES
 	db AB_LEVITATE, AB_CURSED_TOUCH, AB_PRANKSTER, AB_CURSED_BODY, AB_MIND_GAMES
+	db AB_CRUSHING_WEIGHT, AB_COLOSSAL_SIZE, AB_ONIX_STURDY, AB_EARTHSHAKER, AB_EARTH_EATER
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -389,6 +391,43 @@ AbilityOneSpeed:
 	push hl
 	ld a, [wAbilitySide]
 	call AbilityGet
+	cp AB_COLOSSAL_SIZE
+	jr nz, .chlorophyll
+	; Transform replaces saved, already-scaled stats with copied stats.
+	ld hl, wPlayerBattleStatus3
+	ld a, [wAbilitySide]
+	and a
+	jr z, .transformCheck
+	ld hl, wEnemyBattleStatus3
+.transformCheck
+	bit TRANSFORMED, [hl]
+	jr z, .plain
+	pop hl
+	ld b, h
+	ld c, l
+	srl h
+	rr l
+	srl h
+	rr l
+	push hl
+	add hl, hl
+	pop de
+	add hl, de
+	ld a, c
+	and 3
+	cp 2
+	jr c, .minimum
+	dec a
+	ld e, a
+	ld d, 0
+	add hl, de
+.minimum
+	ld a, h
+	or l
+	ret nz
+	inc l
+	ret
+.chlorophyll
 	cp 2
 	jr nz, .plain
 	call AbilityBelowThird

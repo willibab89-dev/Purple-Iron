@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 95 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 96 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -59,10 +59,13 @@ Implemented for 95 species, with five equally likely slots per species. The save
 | Shellder / Cloyster | Shell Armor | Skill Link | Spiked Shell | Deepsea Pearl | Liquidate |
 | Gastly | Levitate | Gas Body | Prankster | Nocturnal | Mind Games |
 | Haunter / Gengar | Levitate | Cursed Touch | Prankster | Cursed Body | Mind Games |
+| Onix | Crushing Weight | Colossal Size | Sturdy | Earthshaker | Earth Eater |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Onix effects: Crushing Weight boosts Rock damage by 20% when the user’s Defense is higher than the target’s. Colossal Size multiplies maximum HP by 1.25 and Speed by 0.75, including stored stats and capsule changes. Onix’s Sturdy survives a lethal hit from full HP once per battle; Geodude’s existing Sturdy remains unchanged. Earthshaker gives successful Ground attacks a 20% chance to lower the target’s Speed. Earth Eater absorbs a successful Ground attack and heals 1/4 maximum HP, subject to the usual healing cap.
 
 Gastly-family effects: Levitate blocks Ground moves. Gas Body gives incoming physical attacks a 30% chance to lower the attacker’s Accuracy. Prankster gives status moves +1 priority. Nocturnal boosts damage by 20% against sleeping opponents. Mind Games raises Special one stage after newly confusing the opponent, once per battle. Cursed Touch gives incoming physical attacks a 20% chance to curse the attacker. Cursed Body gives damaging hits a 30% chance to disable the attack used for 1–8 turns; copied attacks absent from the attacker’s moveset cannot be disabled.
 
@@ -188,4 +191,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 475 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 480 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

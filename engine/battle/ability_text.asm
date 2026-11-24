@@ -78,6 +78,7 @@ AbilityTextPointers:
 	dw AbilityText184, AbilityText185, AbilityText186, AbilityText187
 	dw AbilityText188, AbilityText189, AbilityText190, AbilityText191
 	dw AbilityText192, AbilityText193, AbilityText194, AbilityText195, AbilityText196, AbilityText197
+	dw AbilityText198, AbilityText199, AbilityText200, AbilityText201, AbilityText202
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -354,3 +355,9 @@ AbilityText194: db "NOCTURNAL",$4e,"Damage x1.2 vs",$4e,"sleeping foes.@"
 AbilityText195: db "MIND GAMES",$4e,"Confuse foe:",$4e,"Special +1 once.@"
 AbilityText196: db "CURSED TOUCH",$4e,"Physical hit: 20%",$4e,"curses attacker.@"
 AbilityText197: db "CURSED BODY",$4e,"When hit: 30% to",$4e,"disable foe move.@"
+
+AbilityText198: db "CRUSHING WEIGHT",$4e,"Rock damage x1.2",$4e,"if Defense higher.@"
+AbilityText199: db "COLOSSAL SIZE",$4e,"Max HP x1.25;",$4e,"Speed x0.75.@"
+AbilityText200: db "STURDY",$4e,"Survive full-HP KO",$4e,"at 1 HP, once.@"
+AbilityText201: db "EARTHSHAKER",$4e,"Ground hit: 20%",$4e,"foe Speed -1.@"
+AbilityText202: db "EARTH EATER",$4e,"Ground attacks heal",$4e,"1/4 maximum HP.@"

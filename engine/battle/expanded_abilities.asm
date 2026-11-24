@@ -614,8 +614,11 @@ AbilityModifyDamage:
 	call AbilityScaleDamage
 	jp .defender
 .heavyweight
+	cp AB_CRUSHING_WEIGHT
+	jr z, .heavyweightBoost
 	cp AB_HEAVYWEIGHT
 	jr nz, .rollout
+.heavyweightBoost
 	call AbilityHeavyweightCheck
 	jp nc, .defender
 	ld c, 120
@@ -1050,8 +1053,11 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityScaleDamage
 	jp .defender
 .fixedHeavyweight
+	cp AB_CRUSHING_WEIGHT
+	jr z, .fixedHeavyweightBoost
 	cp AB_HEAVYWEIGHT
 	jr nz, .fixedRollout
+.fixedHeavyweightBoost
 	call AbilityHeavyweightCheck
 	jp nc, .defender
 	ld c, 120
@@ -1677,6 +1683,8 @@ AbilityIncomingDamage:
 	ld [wAbilitySide], a
 	call AbilityTarget
 	cp AB_STURDY
+	jp z, AbilitySturdyIncoming
+	cp AB_ONIX_STURDY
 	jp z, AbilitySturdyIncoming
 	cp AB_ILLUSION
 	jr z, .illusion
@@ -3547,8 +3555,12 @@ AbilityPriorityOne:
 ; HP calculation hook: after nature scaling, before the result is stored.
 AbilityAncientHP:
 	ld a, [wNatureInputBC + 1]
+	cp 4 ; Speed
+	jp z, AbilityColossalSpeed
 	cp 1
 	ret nz
+	ld a, 120
+	ld [wAbilityTemp + 1], a
 	ld a, [wNatureInputHL]
 	ld h, a
 	ld a, [wNatureInputHL + 1]
@@ -3577,7 +3589,11 @@ AbilityAncientHP:
 	cp AB_ANCIENT
 	jr z, .boost
 	cp AB_BLUBBER
+	jr z, .boost
+	cp AB_COLOSSAL_SIZE
 	ret nz
+	ld a, 125
+	ld [wAbilityTemp + 1], a
 	jr .boost
 .stored
 	ld de, -16
@@ -3596,7 +3612,8 @@ AbilityAncientHP:
 	cp b
 	ret nz
 .boost
-	ld c, 120
+	ld a, [wAbilityTemp + 1]
+	ld c, a
 	call AbilityScaleAccuracy ; same 16-bit quotient scaling, no accuracy cap
 	ld a, [H_QUOTIENT + 2]
 	cp 3
@@ -3614,6 +3631,8 @@ AbilityAncientHP:
 	ret
 ; A = species; Z and B = its HP-boosting slot, or NZ if unsupported.
 AbilityHPScalingFamily:
+ cp ONIX
+ jr z, .colossal
  cp SEEL
  jr z, .blubber
  cp DEWGONG
@@ -3625,6 +3644,12 @@ AbilityHPScalingFamily:
  ret
 .blubber
  ld b, 1
+ xor a
+ ret
+.colossal
+ ld a, 125
+ ld [wAbilityTemp + 1], a
+ ld b, 2
  xor a
  ret
 
@@ -4301,11 +4326,22 @@ AbilityDigestiveAcidCheck:
 
 AbilityAcidic:
  call AbilityActor
+ cp AB_EARTHSHAKER
+ jr z, .earthshaker
  cp AB_ACIDIC
  ret nz
  ld a, [wAbilityMoveType]
  cp POISON
  ret nz
+ jr .target
+.earthshaker
+ ld a, [wAbilityHit]
+ bit 1, a ; one chance per attack, not once per hit
+ ret nz
+ ld a, [wAbilityMoveType]
+ cp GROUND
+ ret nz
+.target
  call AbilityTarget
  cp AB_SHIELD_DUST
  ret z
@@ -4319,10 +4355,20 @@ AbilityAcidic:
  ret z
  callab CustomTargetProtected
  ret nz
+ call AbilityActor
+ cp AB_EARTHSHAKER
+ jr z, .earthRoll
  ld b, 25
  call AbilityRoll
  ret nc
  ld a, 1 ; Defense
+ jr .stat
+.earthRoll
+ ld b, 20
+ call AbilityRoll
+ ret nc
+ ld a, 2 ; Speed
+.stat
  ld [wCustomStat], a
  xor a
  ld [wCustomChanged], a
@@ -4468,7 +4514,10 @@ AbilityLevitateAICheck:
 .side
  call AbilityGet
  cp AB_LEVITATE
+ jr z, .immune
+ cp AB_EARTH_EATER
  ret nz
+.immune
  ld a, 1
  ld [wAbilityCheckResult], a
  ret
@@ -4499,6 +4548,16 @@ AbilitySturdyIncoming:
  cp c
  ret c
 .survive
+ push bc
+ call AbilityTarget
+ cp AB_ONIX_STURDY
+ jr nz, .unused
+ call AbilityFlagsPointer
+ bit 0, [hl]
+ jr nz, .alreadyUsed
+ set 0, [hl]
+.unused
+ pop bc
  ld a, [wCriticalHitOrOHKO]
  cp 2
  jr nz, .notOHKO
@@ -4511,6 +4570,9 @@ AbilitySturdyIncoming:
  ld a, b
  sbc 0
  ld [wDamage], a
+ ret
+.alreadyUsed
+ pop bc
  ret
 
 AbilityDiggerCheck:
@@ -5781,4 +5843,105 @@ AbilityCursedBody:
 AbilityCursedBodyText:
  text "CURSED BODY"
  line "disabled its foe!"
+ prompt
+
+; Speed is scaled with permanent stats, after natures and before storage.
+AbilityColossalSpeed:
+ ld a, [wNatureInputHL]
+ ld h, a
+ ld a, [wNatureInputHL + 1]
+ ld l, a
+ ld de, wEnemyMonHP
+ ld a, h
+ cp d
+ jr nz, .player
+ ld a, l
+ cp e
+ jr nz, .player
+ ld a, [wMonHIndex]
+ cp ONIX
+ ret nz
+ ld a, [wNatureEnemySlot]
+ jr .slot
+.player
+ ld de, wBattleMonHP
+ ld a, h
+ cp d
+ jr nz, .stored
+ ld a, l
+ cp e
+ jr nz, .stored
+ ld a, [wActiveAbilities]
+ cp AB_COLOSSAL_SIZE
+ jr nz, .no
+ jr .scale
+.stored
+ ld de, -16
+ add hl, de
+ ld a, [hl]
+ cp ONIX
+ ret nz
+ ld de, 5
+ add hl, de
+ ld a, [hl]
+ rlca
+ rlca
+ rlca
+ and 7
+.slot
+ cp 2
+ ret nz
+.scale
+ ld c, 75
+ call AbilityScaleAccuracy
+ ld a, [H_QUOTIENT + 2]
+ ld b, a
+ ld a, [H_QUOTIENT + 3]
+ or b
+ ret nz
+ inc a
+ ld [H_QUOTIENT + 3], a
+ ret
+.no
+ ret
+
+; Invoked after accuracy and reachability succeed, before damage is applied.
+AbilityEarthEaterOnHit:
+ call AbilityTarget
+ cp AB_EARTH_EATER
+ ret nz
+ call AbilityActorMoveType
+ cp GROUND
+ ret nz
+ call AbilityMove
+ inc hl
+ inc hl
+ ld a, [hl]
+ and a
+ ret z
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ dec hl
+ ld a, 2
+ call AbilityHealFractionFromHL
+ xor a
+ ld [wDamage], a
+ ld [wDamage + 1], a
+ ld a, [wDamageMultipliers]
+ and $80
+ ld [wDamageMultipliers], a
+ xor a
+ ld [wCriticalHitOrOHKO], a
+ ld a, 2 ; absorbed: skip damage and the generic failure message
+ ld [wMoveMissed], a
+ ld hl, AbilityEarthEaterText
+ jp PrintText
+AbilityEarthEaterText:
+ text "EARTH EATER"
+ line "absorbed the hit!"
  prompt

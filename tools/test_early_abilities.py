@@ -141,7 +141,8 @@ def validate(version):
                'GRIMER':['CONTAMINATION','GRIMER_TOXIC_WASTE','STICKY_BODY','LIQUID_OOZE','SOFT_BODY'],
                'SHELLDER':['SHELL_ARMOR','SKILL_LINK','SPIKED_SHELL','DEEPSEA_PEARL','LIQUIDATE'],
                'GASTLY':['LEVITATE','GAS_BODY','PRANKSTER','NOCTURNAL','MIND_GAMES'],
-               'HAUNTER':['LEVITATE','CURSED_TOUCH','PRANKSTER','CURSED_BODY','MIND_GAMES']}
+               'HAUNTER':['LEVITATE','CURSED_TOUCH','PRANKSTER','CURSED_BODY','MIND_GAMES'],
+               'ONIX':['CRUSHING_WEIGHT','COLOSSAL_SIZE','ONIX_STURDY','EARTHSHAKER','EARTH_EATER']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1116,6 +1117,42 @@ def validate(version):
             for previously,want in [(0,8),(128,7)]:
                 init(turn);move(turn,'CONFUSE_RAY');aid(turn,'MIND_GAMES');put(target+'BattleStatus1',previously);call('AbilityBeforeAction');call('AbilityAttempt');put(target+'BattleStatus1',128);call('AbilityAfterAction');assert get(actor+'MonSpecialMod')==want,(turn,previously,get(actor+'MonSpecialMod'))
                 put(target+'BattleStatus1',0);call('AbilityBeforeAction');call('AbilityAttempt');put(target+'BattleStatus1',128);call('AbilityAfterAction');assert get(actor+'MonSpecialMod')==8,(turn,'mind games once')
+        # Onix: separate once-per-battle Sturdy and permanent stat scaling.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,own,foe,want in [('ROCK_THROW',101,100,120),('ROCK_THROW',100,100,100),('ROCK_THROW',255,256,100),('ROCK_THROW',256,255,120),('TACKLE',200,100,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'CRUSHING_WEIGHT');word(ap+'Defense',own);word(tp+'Defense',foe);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,own,foe,readword('wDamage'))
+            ap,tp=init(turn);aid(turn,'COLOSSAL_SIZE');word(ap+'Speed',101);put(actor+'BattleStatus3',8);put('wAbilitySide',turn);call('AbilityOneSpeed');assert game.register_file.HL==75,(turn,'transformed colossal speed',game.register_file.HL)
+            for hp,maximum,damage,sub,want in [(160,160,160,0,159),(159,160,160,0,160),(160,160,159,0,159),(160,160,160,1,160)]:
+                ap,tp=init(turn);aid(1-turn,'ONIX_STURDY');word(tp+'HP',hp);word(tp+'MaxHP',maximum);word('wDamage',damage);put('wCustomTargetHadSub',sub);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==want,(turn,hp,damage,sub,readword('wDamage'))
+            ap,tp=init(turn);aid(1-turn,'ONIX_STURDY');word('wDamage',65535);put('wCriticalHitOrOHKO',2);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==159 and get('wCriticalHitOrOHKO')==0,(turn,'sturdy OHKO')
+            word('wDamage',65535);put('wCriticalHitOrOHKO',2);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==65535 and get('wCriticalHitOrOHKO')==2,(turn,'spent sturdy OHKO')
+            ap,tp=init(turn);aid(1-turn,'ONIX_STURDY');word('wDamage',200);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==159
+            word('wDamage',200);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==200,(turn,'sturdy once')
+            put('wAbilitySide',1-turn);call('AbilityEntry');word('wDamage',200);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==200,(turn,'sturdy survives switch')
+            party_index='wPlayerMonNumber' if turn else 'wEnemyMonPartyPos';put(party_index,1);call('AbilityEntry');word('wDamage',200);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==159,(turn,'sturdy per pokemon')
+            put(party_index,0);word('wDamage',200);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==200,(turn,'first holder remains spent')
+            for attack,roll,sub,holder,want in [('EARTHQUAKE',0,0,None,6),('EARTHQUAKE',39,0,None,6),('EARTHQUAKE',40,0,None,7),('TACKLE',0,0,None,7),('EARTHQUAKE',0,1,None,7),('EARTHQUAKE',0,0,'SHIELD_DUST',7),('EARTHQUAKE',0,0,'CLEAR_BODY',7)]:
+                init(turn);move(turn,attack);aid(turn,'EARTHSHAKER');aid(1-turn,holder);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(target+'MonSpeedMod')==want,(turn,attack,roll,sub,holder,get(target+'MonSpeedMod'))
+            init(turn);move(turn,'BONEMERANG');aid(turn,'EARTHSHAKER');rng(40,0);call('AbilityAfterHit');call('AbilityAfterHit');assert get(target+'MonSpeedMod')==7 and state['index']==1,(turn,'earthshaker once per attack')
+            for attack,hp,roll,foe_type,offense_ability,want,missed in [('EARTHQUAKE',80,0,'NORMAL',None,120,2),('EARTHQUAKE',150,0,'NORMAL',None,160,2),('TACKLE',80,0,'NORMAL',None,80,0),('FISSURE',80,255,'NORMAL',None,80,1),('FISSURE',80,255,'NORMAL','NO_GUARD',120,2)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,offense_ability);aid(1-turn,'EARTH_EATER');word(tp+'HP',hp);put(tp+'Type1',TYPES[foe_type]);put(tp+'Type2',TYPES[foe_type]);rng(roll);call('MoveHitTest')
+                assert readword(tp+'HP')==want and get('wMoveMissed')==missed,(turn,attack,hp,roll,offense_ability,readword(tp+'HP'),get('wMoveMissed'))
+            ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(1-turn,'EARTH_EATER');word(tp+'HP',80);put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==0
+        # Colossal Size is reflected in saved max HP and Speed, including capsules.
+        for nature in (0,33,195):
+            root='wPartyMon1';game.memory[addr(root):addr(root)+44]=[0]*44;metadata(root,'ONIX',1,nature);put(root+'Level',50);word(root+'HP',100);word(root+'MaxHP',100);word('wNatureMonPtr',addr(root));call('NatureMigrateOne');basehp=readword(root+'MaxHP');basespeed=readword(root+'Speed')
+            metadata(root,'ONIX',2,nature);call('NatureMigrateOne');assert readword(root+'MaxHP')==basehp*125//100 and readword(root+'Speed')==max(1,basespeed*75//100),(nature,basehp,basespeed,readword(root+'MaxHP'),readword(root+'Speed'))
+            boosted=readword(root+'MaxHP');word(root+'HP',boosted-20);rng(0);call('AbilityCapsuleApply');assert readword(root+'MaxHP')==basehp and readword(root+'Speed')==basespeed and readword(root+'HP')==max(1,basehp-20),(nature,'leave colossal')
+            rng(1);call('AbilityCapsuleApply');assert readword(root+'MaxHP')==boosted and readword(root+'Speed')==max(1,basespeed*75//100),(nature,'gain colossal')
+        metadata('wPartyMon1','ONIX',2);word('wNatureInputHL',addr('wPartyMon1')+16)
+        for stat,value,want in [(1,900,999),(1,100,125),(4,1,1),(4,101,75),(4,999,749)]:
+            game.memory[addr('wNatureInputBC')+1]=stat;game.memory[0xff97:0xff99]=[value>>8,value&255];call('AbilityAncientHP');got=game.memory[0xff97]*256+game.memory[0xff98];assert got==want,(stat,value,got)
+        maxima=[]
+        for slot in (1,2):
+            put('wEnemyMonSpecies2',ids['ONIX']);put('wCurEnemyLVL',20);put('wIsInBattle',1);put('wNatureMode',2);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=0;game.memory[addr('wNatureStatSources')+1]=0;rng(0);call('LoadEnemyMonData');maxima.append((readword('wEnemyMonMaxHP'),readword('wEnemyMonSpeed')))
+        assert maxima[1]==(maxima[0][0]*125//100,max(1,maxima[0][1]*75//100)),('wild colossal',maxima)
+        put('wPartyCount',0);put('wMonDataLocation',0x80);put('wcf91',ids['ONIX']);put('wCurEnemyLVL',20);call('AddPartyMon');assert get('wPartyMon1Type1')>>5==2 and (readword('wPartyMon1MaxHP'),readword('wPartyMon1Speed'))==maxima[1],('caught colossal',maxima)
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1191,7 +1228,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,198):
+        for n in range(1,203):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1268,6 +1305,10 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('EARTHQUAKE',turn,actor='EARTHSHAKER',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==6,(turn,'live earthshaker')
+            ap,tp=execute('EARTHQUAKE',turn,target='EARTH_EATER',hp=80,random_value=0);assert readword(tp+'HP')==120,(turn,'live earth eater',readword(tp+'HP'))
+            ap,tp=execute('EARTHQUAKE',turn,target='EARTH_EATER',hp=80,random_value=0,target_types=('FLYING','FLYING'));assert readword(tp+'HP')==120,(turn,'earth eater despite type immunity',readword(tp+'HP'))
+            ap,tp=execute('FISSURE',turn,target='EARTH_EATER',hp=80,random_value=255);assert readword(tp+'HP')==80,(turn,'earth eater miss',readword(tp+'HP'))
             ap,tp=execute('SONICBOOM',turn,actor='NOCTURNAL',status=1);assert readword(tp+'HP')==136,(turn,'live fixed nocturnal',readword(tp+'HP'))
             ap,tp=execute('COUNTER',turn,actor='NOCTURNAL',status=1,counter_damage=20);assert readword(tp+'HP')==112,(turn,'counter nocturnal',readword(tp+'HP'))
             ap,tp=execute('BIDE',turn,actor='NOCTURNAL',status=1,bide_damage=20);assert readword(tp+'HP')==112,(turn,'bide nocturnal',readword(tp+'HP'))
@@ -1480,7 +1521,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 95 species / 475 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 96 species / 480 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

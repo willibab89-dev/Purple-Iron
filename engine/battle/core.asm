@@ -4229,6 +4229,9 @@ ExclamationPoint1Text:
 ;	db $FF ; terminator
 
 PrintMoveFailureText:
+	ld a, [wMoveMissed]
+	dec a ; Earth Eater already displayed its absorption message
+	ret nz
 	ld de, wPlayerMoveEffect
 	ld a, [H_WHOSETURN]
 	and a
@@ -5475,7 +5478,7 @@ MoveHitTest:
 	ld a, [wPlayerMoveEffect]	;load the move effect 
 	cp OHKO_EFFECT	;check if it's an ohko move
 	jr z, .calcHitChance	;if so, do normal accuracy checks
-	ret	;else the x accuracy skips hit chance
+	jr .move_hit	;else the x accuracy skips hit chance
 .enemyTurn
 	ld a, [wEnemyMoveEffect]
 	cp ATTACK_DOWN1_EFFECT
@@ -5502,12 +5505,12 @@ MoveHitTest:
 	ld a, [wEnemyMoveEffect]	;load the move effect 
 	cp OHKO_EFFECT	;check if it's an ohko move
 	jr z, .calcHitChance	;if so, do normal accuracy checks
-	ret	;else the x accuracy skips hit chance
+	jr .move_hit	;else the x accuracy skips hit chance
 .calcHitChance
 	abilitycall AbilityNoGuardCheck
 	ld a, [wAbilityCheckResult]
 	and a
-	ret nz
+	jr nz, .move_hit
 	call CalcHitChance ; scale the move accuracy according to attacker's accuracy and target's evasion
 	ld a, [wPlayerMoveAccuracy]
 	ld b, a
@@ -5524,7 +5527,7 @@ MoveHitTest:
 	jr z, .move_hit ;joenote - fixed move accuracy so a move hits if acc = randnum
 	jr nc, .accuracyMiss
 .move_hit
-	ret
+	jp EarthEaterHitHook
 .accuracyMiss
 	callab SequenceFuryAccuracyMiss
 .moveMissed

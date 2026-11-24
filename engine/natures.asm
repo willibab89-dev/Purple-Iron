@@ -976,6 +976,8 @@ AbilityCapsuleApply::
 	abilitycall AbilityResourcefulCapsuleAdjust
 	abilitycall AbilityImmunityCapsule
 	ld a, [hl]
+	cp ONIX
+	jr z, .colossal
 	cp SEEL
 	jr z, .blubber
 	cp DEWGONG
@@ -991,6 +993,9 @@ AbilityCapsuleApply::
 	jr .hp
 .blubber
 	ld b, 1
+	jr .hp
+.colossal
+	ld b, 2
 .hp
 	ld a, [wNatureResult]
 	cp b
