@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 113 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 114 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -72,10 +72,13 @@ Implemented for 113 species, with five equally likely slots per species. The sav
 | Lickitung | Gluttony | Poison Heal | Thick Tongue | Slobber | Bottomless Stomach |
 | Koffing / Weezing | Levitate | Toxic Fumes | Gas Leak | Chemical Reaction | Neutralizing Gas |
 | Rhyhorn / Rhydon | Charge | Armored | Solid Rock | Rock Head | Horn Breaker |
+| Chansey | Natural Cure | Serene Grace | Triage | Healer | Lucky |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Chansey effects: Natural Cure removes major status when switching out. Serene Grace doubles damaging-move secondary effect chances. Triage gives HP-healing and draining moves +3 priority. Healer heals the next Pokémon sent out for 10% of its maximum HP when the holder switches out. Lucky halves critical-hit damage.
 
 Rhyhorn and Rhydon effects: Charge boosts the first physical attack after entering by 30%. Armored reduces physical damage by 20%. Solid Rock reduces super-effective damage by 25%. Rock Head prevents recoil damage. Horn Breaker boosts Horn Attack, Fury Attack, Horn Drill and Megahorn by 25%.
 
@@ -223,4 +226,4 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 565 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 570 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.

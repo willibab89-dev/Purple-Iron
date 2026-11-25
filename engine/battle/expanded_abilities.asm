@@ -38,6 +38,7 @@ AbilityClearRelentless:
 
 ; Called after the newly loaded combatant's stat stages are initialized.
 AbilityEntrySpeed:
+	call AbilityHealerOnEntry
 	call AbilityImmunityOnEntry
 	ld a, [wAbilitySide]
 	call AbilityGet
@@ -440,6 +441,8 @@ AbilityMeasuredEffectRoll:
 	call AbilityActor
 	cp AB_MEASURED
 	jr z, .double
+	cp AB_SERENE_GRACE
+	jr z, .double
 	cp AB_TWIN_BEAKS
 	ret nz
 .double
@@ -473,6 +476,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityLuckyDamage
 	call AbilityRhyhornDamage
 	call AbilityLickitungDamage
 	call AbilityHitmonchanDamage
@@ -3710,6 +3714,18 @@ AbilityPriorityOne:
 	push bc
 	ld a, [wAbilitySide]
 	call AbilityGet
+	cp AB_TRIAGE
+	jr nz, .notTriage
+	ld a, [wAbilityTemp + 1]
+	call AbilityTriageMove
+	jr nc, .plain
+	pop bc
+	inc b
+	inc b
+	inc b
+	ld a, b
+	ret
+.notTriage
 	cp AB_QUICK_REFLEXES
 	jr nz, .gale
 	call AbilityFlagsPointer
@@ -7022,4 +7038,126 @@ AbilityRhyhornFixedDamage:
  cp FIRE
  ret nc
  ld c, 130
+ jp AbilityScaleDamage
+
+; The top bit is spare in each six-member Deep Sleep party bitset.
+AbilityPlayerWithdraw:
+ xor a
+ jr AbilityWithdraw
+AbilityEnemyWithdraw:
+ ld a, 1
+AbilityWithdraw:
+ ld [wAbilitySide], a
+ call AbilityGet
+ cp AB_HEALER
+ jr z, .healer
+ cp AB_NATURAL_CURE
+ ret nz
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ inc hl
+ inc hl
+ xor a
+ ld [hl], a
+ ld hl, wPlayerBattleStatus3
+ ld de, wPlayerToxicCounter
+ ld a, [wAbilitySide]
+ and a
+ jr z, .cure
+ ld hl, wEnemyBattleStatus3
+ ld de, wEnemyToxicCounter
+.cure
+ res BADLY_POISONED, [hl]
+ xor a
+ ld [de], a
+ call AbilityDeepSleepClearAwake
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ jpab UtilitySyncParty
+.healer
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld hl, wDeepSleepPending
+ ld a, [wAbilitySide]
+ and a
+ jr z, .pending
+ inc hl
+.pending
+ set 7, [hl]
+ ret
+
+AbilityHealerOnEntry:
+ ld hl, wDeepSleepPending
+ ld a, [wAbilitySide]
+ and a
+ jr z, .check
+ inc hl
+.check
+ bit 7, [hl]
+ ret z
+ res 7, [hl]
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, 10
+ jp AbilityHealDivided
+
+AbilityTriageMove:
+ cp RECOVER
+ jr z, .yes
+ cp SOFTBOILED
+ jr z, .yes
+ cp REST
+ jr z, .yes
+ cp SYNTHESIS
+ jr z, .yes
+ cp ROOST
+ jr z, .yes
+ cp MOONLIGHT
+ jr z, .yes
+ cp MILK_DRINK
+ jr z, .yes
+ cp ABSORB
+ jr z, .yes
+ cp MEGA_DRAIN
+ jr z, .yes
+ cp GIGA_DRAIN
+ jr z, .yes
+ cp LEECH_LIFE
+ jr z, .yes
+ cp DREAM_EATER
+ jr z, .yes
+ cp DRAIN_PUNCH
+ jr z, .yes
+ cp SHADOW_LEECH
+ jr z, .yes
+ cp CLAMP
+ jr z, .yes
+ and a
+ ret
+.yes
+ scf
+ ret
+
+AbilityLuckyDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ ld a, [wCriticalHitOrOHKO]
+ cp 1
+ ret nz
+ call AbilityTarget
+ cp AB_LUCKY
+ ret nz
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 50
  jp AbilityScaleDamage

@@ -1495,6 +1495,7 @@ AISwitchIfEnoughMons:
 	ret
 
 SwitchEnemyMon:
+	abilitycall AbilityEnemyWithdraw
 	callba DoEnemyShinybit ;joenote - reset shiny checker bits
 ;joenote - if player using trapping move, then end their move
 	ld a, [wPlayerBattleStatus1]

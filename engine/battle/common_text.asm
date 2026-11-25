@@ -165,6 +165,7 @@ PlayerMon1Text:
 	db "@"
 
 RetreatMon:
+	abilitycall AbilityPlayerWithdraw
 	ld hl, PlayerMon2Text
 	jp PrintText
 

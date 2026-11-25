@@ -154,7 +154,8 @@ def validate(version):
                'HITMONCHAN':['IRON_FIST','SECOND_WIND','COMBOS','COUNTERPUNCH','GUARD_UP'],
                'LICKITUNG':['GLUTTONY','POISON_HEAL','THICK_TONGUE','SLOBBER','BOTTOMLESS_STOMACH'],
                'KOFFING':['LEVITATE','TOXIC_FUMES','GAS_LEAK','CHEMICAL_REACTION','NEUTRALIZING_GAS'],
-               'RHYHORN':['CHARGE','ARMORED','SOLID_ROCK','ROCK_HEAD','HORN_BREAKER']}
+               'RHYHORN':['CHARGE','ARMORED','SOLID_ROCK','ROCK_HEAD','HORN_BREAKER'],
+               'CHANSEY':['NATURAL_CURE','SERENE_GRACE','TRIAGE','HEALER','LUCKY']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1341,6 +1342,21 @@ def validate(version):
                 ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'SOLID_ROCK');put('wDamageMultipliers',multiplier);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,multiplier,'solid rock',readword('wDamage'));put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==want,(turn,multiplier,'fixed solid rock')
             for attack,want in [('HORN_ATTACK',125),('FURY_ATTACK',125),('HORN_DRILL',125),('MEGAHORN',125),('TACKLE',100),('PECK',100)]:
                 init(turn);move(turn,attack);aid(turn,'HORN_BREAKER');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'horn breaker',readword('wDamage'))
+        # Chansey: cure and heal at switch, priority, secondary odds and crit defense.
+        for turn in (0,1):
+            party='wEnemyMon1' if turn else 'wPartyMon1';side='w'+('Enemy' if turn else 'Player');withdraw='AbilityEnemyWithdraw' if turn else 'AbilityPlayerWithdraw'
+            for status in (1,7,8,16,32,64):
+                ap,tp=init(turn);aid(turn,'NATURAL_CURE');put(ap+'Status',status);put(party+'Status',status);put(side+'BattleStatus3',1);put(side+'ToxicCounter',4);game.memory[addr('wDeepSleepPending')+turn]=1;call(withdraw);assert not get(ap+'Status') and not get(party+'Status') and not(get(side+'BattleStatus3')&1) and not get(side+'ToxicCounter') and not(game.memory[addr('wDeepSleepPending')+turn]&1),(turn,status,'natural cure')
+            ap,tp=init(turn);aid(turn,'NATURAL_CURE');aid(1-turn,'NEUTRALIZING_GAS');put(ap+'Status',8);put(party+'Status',8);call(withdraw);assert get(ap+'Status')==8 and get(party+'Status')==8,(turn,'suppressed natural cure')
+            for hp,want in [(80,96),(155,160),(0,0)]:
+                ap,tp=init(turn);aid(turn,'HEALER');game.memory[addr('wDeepSleepPending')+turn]=1;call(withdraw);assert game.memory[addr('wDeepSleepPending')+turn]==129
+                aid(turn,None);word(ap+'HP',hp);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert readword(ap+'HP')==want and game.memory[addr('wDeepSleepPending')+turn]==1,(turn,'healer',hp,readword(ap+'HP'));call('AbilityEntrySpeed');assert readword(ap+'HP')==want
+            for attack,want in [('RECOVER',3),('REST',3),('DRAIN_PUNCH',3),('CLAMP',3),('TACKLE',0),('SWORDS_DANCE',0)]:
+                init(turn);move(turn,attack);aid(turn,'TRIAGE');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==want,(turn,attack,'triage',game.register_file.A)
+            for value in (0,51,52,127,128,254,255):
+                init(turn);move(turn,'TACKLE');aid(turn,'SERENE_GRACE');rng(value);call('MeasuredEffectRandom');assert game.register_file.A==value//2 and state['index']==1,(turn,value,'serene')
+            for crit,want in [(0,100),(1,50),(2,100)]:
+                init(turn);move(turn,'TACKLE');aid(1-turn,'LUCKY');put('wCriticalHitOrOHKO',crit);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,crit,'lucky',readword('wDamage'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1416,7 +1432,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,246):
+        for n in range(1,251):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1493,6 +1509,8 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,random_value=0);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,target='LUCKY',random_value=0);assert 160-readword(tp+'HP')==max(1,normal//2),(turn,'live lucky',normal,readword(tp+'HP'))
             ap,tp=execute('BIDE',turn,actor='CHARGE',bide_damage=20);assert readword(tp+'HP')==108,(turn,'bide charge',readword(tp+'HP'))
             ap,tp=execute('COUNTER',turn,actor='CHARGE',counter_damage=20);assert readword(tp+'HP')==108,(turn,'counter charge',readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -1756,7 +1774,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 113 species / 565 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 114 species / 570 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

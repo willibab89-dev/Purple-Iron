@@ -89,6 +89,7 @@ AbilityTextPointers:
 	dw AbilityText234, AbilityText235, AbilityText236, AbilityText237
 	dw AbilityText238, AbilityText239, AbilityText240, AbilityText241
 	dw AbilityText242, AbilityText243, AbilityText244, AbilityText245
+	dw AbilityText246, AbilityText247, AbilityText248, AbilityText249, AbilityText250
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -424,3 +425,9 @@ AbilityText242: db "CHARGE",$4e,"First physical move",$4e,"each entry: x1.3.@"
 AbilityText243: db "ARMORED",$4e,"Physical damage",$4e,"received x0.8.@"
 AbilityText244: db "SOLID ROCK",$4e,"Super-effective",$4e,"damage x0.75.@"
 AbilityText245: db "HORN BREAKER",$4e,"Horn attacks deal",$4e,"x1.25 damage.@"
+
+AbilityText246: db "NATURAL CURE",$4e,"Switch out: cure",$4e,"major status.@"
+AbilityText247: db "SERENE GRACE",$4e,"Move extra effect",$4e,"chance x2.@"
+AbilityText248: db "TRIAGE",$4e,"Healing moves:",$4e,"priority +3.@"
+AbilityText249: db "HEALER",$4e,"Switch out: heal",$4e,"next ally 10%.@"
+AbilityText250: db "LUCKY",$4e,"Critical damage",$4e,"received x0.5.@"
