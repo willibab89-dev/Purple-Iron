@@ -3,8 +3,21 @@ SECTION "Ability descriptions", ROMX, BANK[$3f]
 ; The banked renderer reads its ID from scratch; the pointer is 16-bit.
 AbilityDrawDescriptionBanked:
 	ld a, [wAbilityTemp]
+	cp ABILITY_EXTENDED
+	jr nz, .ordinary
+	ld a, [wAbilityResolvedExtended]
+	and a
+	jr z, .none
+	dec a
+	ld c, a
+	ld b, 1
+	jr .index
+.none
+	xor a
+.ordinary
 	ld c, a
 	ld b, 0
+.index
 	sla c
 	rl b
 	ld hl, AbilityTextPointers
@@ -90,7 +103,9 @@ AbilityTextPointers:
 	dw AbilityText238, AbilityText239, AbilityText240, AbilityText241
 	dw AbilityText242, AbilityText243, AbilityText244, AbilityText245
 	dw AbilityText246, AbilityText247, AbilityText248, AbilityText249, AbilityText250
-	dw AbilityText251, AbilityText252
+	dw AbilityText251
+	dw AbilityNone, AbilityNone, AbilityNone, AbilityNone ; 252..255 reserved
+	dw AbilityText252 ; extended ID 256
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:

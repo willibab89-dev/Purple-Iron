@@ -7193,7 +7193,10 @@ AbilityTangelaFixedDamage:
  or b
  ret z
  call AbilityActor
- cp AB_THICK_VINES
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_THICK_VINES - ABILITY_EXTENDED
  ret nz
  call AbilityActorMoveType
  cp FIRE

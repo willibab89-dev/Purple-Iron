@@ -3417,8 +3417,12 @@ wPatientActed:: ds 1
 wUnawareActive:: ds 1
 wUnawareSaved:: ds 10
 wDeepSleepPending:: ds 2 ; per-party-member pending max-counter extensions
-SECTION "Stack", WRAM0[$df52]
-	ds $ad
+; Three bytes of transient extended-ability state; saved records are unchanged.
+SECTION "Extended ability scratch", WRAM0[$df52]
+wActiveAbilityExtended:: ds 2
+wAbilityResolvedExtended:: ds 1
+SECTION "Stack", WRAM0[$df55]
+	ds $aa
 wStack:: ; dfff
 
 

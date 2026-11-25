@@ -201,29 +201,63 @@ AbilityPoolIds:
 	db AB_LEVITATE, AB_TOXIC_FUMES, AB_GAS_LEAK, AB_CHEMICAL_REACTION, AB_NEUTRALIZING_GAS
 	db AB_CHARGE, AB_ARMORED, AB_SOLID_ROCK, AB_ROCK_HEAD, AB_HORN_BREAKER
 	db AB_NATURAL_CURE, AB_SERENE_GRACE, AB_TRIAGE, AB_HEALER, AB_LUCKY
-	db AB_ENTANGLE, AB_REGROWTH, AB_VINE_GUARD, AB_THICK_VINES, AB_DAMP
+	db AB_ENTANGLE, AB_REGROWTH, AB_VINE_GUARD, ABILITY_EXTENDED, AB_DAMP
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
 AbilityResolvePoolId:
-	ld a, c
-	dec a
-	ld l, a
-	ld h, 0
-	ld d, h
-	ld e, l
-	add hl, hl
-	add hl, hl
-	add hl, de ; five entries per pool
-	ld a, b
-	dec a
-	ld e, a
-	ld d, 0
-	add hl, de
-	ld de, AbilityPoolIds
-	add hl, de
-	ld a, [hl]
-	ret
+ push bc
+ xor a
+ ld [wAbilityResolvedExtended], a
+ ld a, c
+ dec a
+ ld l, a
+ ld h, 0
+ ld d, h
+ ld e, l
+ add hl, hl
+ add hl, hl
+ add hl, de
+ ld a, b
+ dec a
+ ld e, a
+ ld d, 0
+ add hl, de
+ ld de, AbilityPoolIds
+ add hl, de
+ ld a, [hl]
+ pop bc
+ cp ABILITY_EXTENDED
+ ret nz
+ ; Each entry is pool, one-based slot, extended index (ID minus 255).
+ ld hl, AbilityExtendedPoolIds
+.find
+ ld a, [hli]
+ and a
+ jr z, .missing
+ cp c
+ jr nz, .next
+ ld a, [hli]
+ cp b
+ jr z, .found
+ inc hl
+ jr .find
+.next
+ inc hl
+ inc hl
+ jr .find
+.found
+ ld a, [hl]
+ ld [wAbilityResolvedExtended], a
+ ld a, ABILITY_EXTENDED
+ ret
+.missing
+ xor a
+ ret
+
+AbilityExtendedPoolIds:
+ db 70, 4, AB_THICK_VINES - ABILITY_EXTENDED
+ db 0
 
 ; Nature format keeps the persistent ability slot in stored Type1 high bits.
 AbilityEnsureMon:
@@ -242,6 +276,9 @@ AbilityEnsureMon:
 
 AbilityResetBattle:
 	xor a
+	ld [wActiveAbilityExtended], a
+	ld [wActiveAbilityExtended + 1], a
+	ld [wAbilityResolvedExtended], a
 	ld [wRolloutStacks], a
 	ld [wRolloutStacks + 1], a
 	ld [wPatientActed], a
@@ -288,8 +325,15 @@ AbilityLoadPlayer:
 	jr .store
 .disabled
 	xor a
+	ld [wAbilityResolvedExtended], a
 .store
 	ld [wActiveAbilities], a
+	cp ABILITY_EXTENDED
+	ld a, 0
+	jr nz, .storeExtended
+	ld a, [wAbilityResolvedExtended]
+.storeExtended
+	ld [wActiveAbilityExtended], a
 	xor a
 	ld [wAbilitySide], a
 	call AbilityPlayerEntry
@@ -301,6 +345,8 @@ AbilityLoadPlayer:
 
 ; Nature initialization has already cached the stable enemy slot.
 AbilityLoadEnemy:
+	xor a
+	ld [wAbilityResolvedExtended], a
 	ld a, [wEnemyMonSpecies2]
 	call AbilityFamily
 	and a
@@ -311,6 +357,12 @@ AbilityLoadEnemy:
 	call AbilityResolvePoolId
 .store
 	ld [wActiveAbilities + 1], a
+	cp ABILITY_EXTENDED
+	ld a, 0
+	jr nz, .storeExtended
+	ld a, [wAbilityResolvedExtended]
+.storeExtended
+	ld [wActiveAbilityExtended + 1], a
 	ld a, 1
 	ld [wAbilitySide], a
 	call AbilityEntry
@@ -347,16 +399,39 @@ AbilityGet:
  cp AB_NEUTRALIZING_GAS
  jr nz, .unsuppressed
  ld a, [de]
- ld b, a
+ and a
+ jr nz, .suppress
  inc de
  ld a, [de]
- or b
+ and a
  jr z, .unsuppressed
+.suppress
  ld c, 0
 .unsuppressed
  pop hl
  ld a, c
 .done
+ cp ABILITY_EXTENDED
+ jr nz, .clearExtended
+ push hl
+ ld hl, wActiveAbilityExtended
+ push af
+ ld a, b
+ and a
+ jr z, .readExtended
+ inc hl
+.readExtended
+ ld a, [hl]
+ ld [wAbilityResolvedExtended], a
+ pop af
+ pop hl
+ jr .return
+.clearExtended
+ push af
+ xor a
+ ld [wAbilityResolvedExtended], a
+ pop af
+.return
  pop de
  pop bc
  ret

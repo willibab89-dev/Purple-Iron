@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf52:0xdf72]=[0xa5]*32
+        game.memory[0xdf55:0xdf75]=[0xa5]*32
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf52:0xdf72])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf55:0xdf75])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -59,7 +59,9 @@ def validate(version):
         put('wBattleMonType1',0);put('wBattleMonType2',0);put('wEnemyMonType1',0);put('wEnemyMonType2',0)
         word('wDamage',40);put('wDamageMultipliers',10);put('wMoveMissed',0);rng(0)
         return ('wEnemyMon','wBattleMon') if turn else ('wBattleMon','wEnemyMon')
-    def ability(side,id):game.memory[addr('wActiveAbilities')+side]=id
+    def ability(side,id):
+        game.memory[addr('wActiveAbilities')+side]=255 if id>=256 else id
+        game.memory[addr('wActiveAbilityExtended')+side]=id-255 if id>=256 else 0
     import re
     from generate_ability_moves import render,CONTACT,SOUND,POWDER,PUNCH
     ab={n:int(v) for n,v in re.findall(r'^AB_(\w+) EQU (\d+)',(ROOT/'constants/ability_constants.asm').read_text(),re.M)}
@@ -162,10 +164,34 @@ def validate(version):
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
                 metadata('wPartyMon1',species,slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'))
-                assert game.register_file.A==ab[name],(species,slot,name,game.register_file.A)
+                expected=ab[name];assert game.register_file.A==(255 if expected>=256 else expected),(species,slot,name,game.register_file.A);assert get('wAbilityResolvedExtended')==(expected-255 if expected>=256 else 0)
                 assert get('wPartyMon1CatchRate')==17
                 put('wEnemyMonSpecies2',ids[species]);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=17
-                call('AbilityLoadEnemy');assert game.memory[addr('wActiveAbilities')+1]==ab[name]
+                call('AbilityLoadEnemy');assert game.memory[addr('wActiveAbilities')+1]==(255 if expected>=256 else expected);assert game.memory[addr('wActiveAbilityExtended')+1]==(expected-255 if expected>=256 else 0)
+        # Extended IDs retain the saved slot and resolve independently for both sides.
+        metadata('wPartyMon1','TANGELA',4,17);put('wWhichPokemon',0);put('wBattleMonSpecies2',ids['TANGELA']);call('AbilityLoadPlayer')
+        assert get('wActiveAbilities')==255 and get('wActiveAbilityExtended')==1 and get('wPartyMon1Type1')>>5==4
+        call('AbilityGet',A=0);assert game.register_file.A==255 and get('wAbilityResolvedExtended')==1
+        game.memory[addr('wActiveAbilities')+1]=255;game.memory[addr('wActiveAbilityExtended')+1]=255
+        call('AbilityGet',A=1);assert game.register_file.A==255 and get('wAbilityResolvedExtended')==255
+        call('AbilityGet',A=0);assert game.register_file.A==255 and get('wAbilityResolvedExtended')==1
+        aid(1,'NEUTRALIZING_GAS');word('wEnemyMonHP',160);call('AbilityGet',A=0);assert game.register_file.A==0 and get('wAbilityResolvedExtended')==0 and get('wActiveAbilityExtended')==1
+        word('wEnemyMonHP',0);call('AbilityGet',A=0);assert game.register_file.A==255 and get('wAbilityResolvedExtended')==1
+        init();aid(0,'THICK_VINES');aid(1,'PARASITE');move(0,'TACKLE');call('AbilityAfterHit');assert get('wActiveAbilities')==ab['PARASITE'];call('AbilityGet',A=0);assert game.register_file.A==ab['PARASITE'] and get('wAbilityResolvedExtended')==0
+        # An extended ID keeps its distinct description in both UI paths.
+        metadata('wPartyMon1','TANGELA',4,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255 and get('wAbilityResolvedExtended')==1
+        game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);name='THICK VINES';expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected
+        init();metadata('wPartyMon1','TANGELA',4,17);put('wWhichPokemon',0);put('wBattleMonSpecies2',ids['TANGELA']);call('LoadBattleMonFromParty');call('AbilityGet',A=0);assert game.register_file.A==255 and get('wAbilityResolvedExtended')==1
+        call('AbilityDrawDescription',A=255);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected
+        # Ability Capsule and reload use the same saved slot; no save-format migration.
+        init();metadata('wPartyMon1','TANGELA',1,17);word('wNatureMonPtr',addr('wPartyMon1'));rng(3);call('AbilityCapsuleApply');assert get('wPartyMon1Type1')>>5==4
+        call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255 and get('wAbilityResolvedExtended')==1
+        put('wWhichPokemon',0);put('wBattleMonSpecies2',ids['TANGELA']);call('AbilityLoadPlayer');assert get('wActiveAbilities')==255 and get('wActiveAbilityExtended')==1
+        # The extension byte spans its full intended range without colliding with legacy IDs.
+        bank,table=syms['AbilityExtendedPoolIds'];original=game.memory[bank,table+2];game.memory[bank,table+2]=255
+        call('AbilityResolvePoolId',BC=(4<<8)|70);assert game.register_file.A==255 and get('wAbilityResolvedExtended')==255
+        game.memory[bank,table+2]=original
+        assert addr('wActiveAbilityExtended')==0xdf52 and addr('wAbilityResolvedExtended')==0xdf54 and addr('wStack')==0xdfff
         # Existing pool 55 and its final slot are beyond byte 255.
         call('AbilityResolvePoolId',BC=(5<<8)|55);assert game.register_file.A==ab['MIND_GAMES'],(version,'extended pool')
         # Load a real party member and ensure entry occurs after stage reset.
@@ -1445,7 +1471,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,253):
+        for n in range(1,252):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
