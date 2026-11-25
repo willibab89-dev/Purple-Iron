@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 120 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 122 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -77,10 +77,13 @@ Implemented for 120 species, with five equally likely slots per species. The sav
 | Kangaskhan | Parental Bond | Scrappy | Heavy Hitter | Early Bird | Maternal Rage |
 | Horsea / Seadra | Sniper | Ink Cloud | Water Jet | Focused | Toxic Spines |
 | Goldeen / Seaking | Royal Horn | Swift Swim | Water Veil | Horn Breaker | Lightning Rod |
+| Staryu / Starmie | Regenerator | Cosmic Core | Illuminate | Natural Cure | Equalizer |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
 ## Effects
+
+Staryu and Starmie effects: Regenerator heals 1/4 maximum HP when switching out. Cosmic Core reduces special damage received by 20%. Illuminate adds 15 accuracy points. Natural Cure removes major status when switching out. Equalizer makes damaging moves that are resisted overall deal neutral damage while preserving immunities; AI type evaluation uses the same rule.
 
 Goldeen and Seaking effects: Royal Horn adds 25 percentage points to horn-move critical chance. Swift Swim raises Speed by two stages after a Water hit. Water Veil prevents burns and halves Fire damage. Horn Breaker boosts horn moves by 25%. Lightning Rod grants immunity to Electric moves.
 
@@ -238,11 +241,11 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 600 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 610 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
 
 ## Extended ability IDs
 
-Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 244 extended IDs remain available. Legacy IDs 252–254 are also available.
+Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 240 extended IDs remain available. Legacy IDs 252–254 are also available.
 
 At battle entry, each side receives an extension byte in transient WRAM. `AbilityGet` returns the escape marker and sets `wAbilityResolvedExtended` for the selected side; it clears that scratch value for ordinary or suppressed abilities. An extended ability’s battle hook must check both the marker and the extension byte immediately after the lookup. `AbilityDrawDescriptionBanked` maps the extension to the matching pointer beginning at index 256; add description pointers in ID order when adding future extended abilities. Switching and Neutralizing Gas retain the side-local identity, while active-ability replacement takes precedence.
 

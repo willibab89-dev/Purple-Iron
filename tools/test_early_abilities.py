@@ -161,8 +161,9 @@ def validate(version):
                'TANGELA':['ENTANGLE','REGROWTH','VINE_GUARD','THICK_VINES','DAMP'],
                'KANGASKHAN':['PARENTAL_BOND','SCRAPPY','HEAVY_HITTER','EARLY_BIRD','MATERNAL_RAGE'],
                'HORSEA':['SNIPER','INK_CLOUD','WATER_JET','FOCUSED','TOXIC_SPINES'],
-               'GOLDEEN':['ROYAL_HORN','SWIFT_SWIM','WATER_VEIL','HORN_BREAKER','LIGHTNING_ROD']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN')]:
+               'GOLDEEN':['ROYAL_HORN','SWIFT_SWIM','WATER_VEIL','HORN_BREAKER','LIGHTNING_ROD'],
+               'STARYU':['REGENERATOR','COSMIC_CORE','ILLUMINATE','NATURAL_CURE','EQUALIZER']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1453,6 +1454,26 @@ def validate(version):
         for slot,name in [(1,'ROYAL HORN'),(5,'LIGHTNING ROD')]:
             metadata('wPartyMon1','GOLDEEN',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
             game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
+        # Staryu / Starmie: withdrawal, special defense, accuracy, combined types.
+        for turn in (0,1):
+            withdraw='AbilityEnemyWithdraw' if turn else 'AbilityPlayerWithdraw';party='wEnemyMon1' if turn else 'wPartyMon1'
+            for hp,want in [(80,120),(150,160),(1,41),(0,0)]:
+                ap,tp=init(turn);aid(turn,'REGENERATOR');word(ap+'HP',hp);call(withdraw);assert readword(ap+'HP')==want,(turn,hp,'regenerator',readword(ap+'HP'))
+                if hp:assert readword(party+'HP')==want,(turn,hp,'party heal')
+            ap,tp=init(turn);aid(turn,'REGENERATOR');aid(1-turn,'NEUTRALIZING_GAS');word(ap+'HP',80);call(withdraw);assert readword(ap+'HP')==80,(turn,'suppressed regenerator')
+            for attack,want in [('EMBER',80),('TACKLE',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'COSMIC_CORE');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'cosmic core');put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==want,(turn,attack,'fixed cosmic core')
+            for attack in ('TACKLE','GROWL','THUNDER'):
+                init(turn);move(turn,attack);aid(turn,'ILLUMINATE');game.memory[0xff97:0xff99]=[0,100];call('AbilityAccuracy');assert bytes(game.memory[0xff97:0xff99])==bytes([0,138]),(turn,attack,'illuminate')
+            for attack,t1,t2,damage,want,mult in [('EMBER','WATER','WATER',100,100,10),('EMBER','WATER','DRAGON',100,100,10),('EMBER','GRASS','ICE',100,400,40),('EMBER','GRASS','WATER',100,100,10),('TACKLE','GHOST','GHOST',100,0,0),('EMBER','WATER','DRAGON',3,3,10)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'EQUALIZER');put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2]);word('wDamage',damage);call('AdjustDamageForMoveType');call('AbilityDamageBoost');assert readword('wDamage')==want and get('wDamageMultipliers')&127==mult,(turn,attack,t1,t2,damage,'equalizer',readword('wDamage'),get('wDamageMultipliers'))
+                if damage==3:assert not get('wMoveMissed'),(turn,'equalizer restores rounded zero')
+                put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==mult,(turn,attack,t1,t2,'equalizer AI',get('wTypeEffectiveness'))
+            ap,tp=init(turn);move(turn,'GROWL');aid(turn,'EQUALIZER');put(tp+'Type1',TYPES['ROCK']);put(tp+'Type2',TYPES['ROCK']);word('wDamage',100);call('AdjustDamageForMoveType');call('AbilityDamageBoost');assert get('wDamageMultipliers')&127==5,(turn,'equalizer leaves status moves alone')
+            ap,tp=init(turn);move(turn,'EMBER');aid(turn,'EQUALIZER');put(tp+'Type1',TYPES['WATER']);put(tp+'Type2',TYPES['DRAGON']);put('wMoveMissed',1);word('wDamage',3);call('AdjustDamageForMoveType');call('AbilityDamageBoost');assert get('wMoveMissed')==1,(turn,'equalizer preserves previous miss')
+        for slot,name in [(1,'REGENERATOR'),(2,'COSMIC CORE'),(3,'ILLUMINATE'),(5,'EQUALIZER')]:
+            metadata('wPartyMon1','STARYU',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1605,6 +1626,9 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('EMBER',turn,target_types=('NORMAL','NORMAL'),random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('EMBER',turn,actor='EQUALIZER',target_types=('WATER','DRAGON'),random_value=100);assert 160-readword(tp+'HP')==normal,(turn,'live equalizer',normal,readword(tp+'HP'))
+            ap,tp=execute('TACKLE',turn,actor='EQUALIZER',target_types=('GHOST','GHOST'),random_value=100);assert readword(tp+'HP')==160,(turn,'equalizer preserves immunity')
             ap,tp=execute('THUNDERBOLT',turn,target='LIGHTNING_ROD',random_value=100);assert readword(tp+'HP')==160,(turn,'live lightning rod',readword(tp+'HP'))
             ap,tp=execute('THUNDER_WAVE',turn,target='LIGHTNING_ROD',random_value=0);assert not get(tp+'Status'),(turn,'lightning rod blocks status')
             ap,tp=execute('THUNDERBOLT',turn,actor='NEUTRALIZING_GAS',target='LIGHTNING_ROD',random_value=100);assert readword(tp+'HP')<160,(turn,'live suppressed lightning rod',readword(tp+'HP'))
@@ -1897,7 +1921,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 120 species / 600 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 122 species / 610 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

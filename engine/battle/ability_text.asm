@@ -109,6 +109,7 @@ AbilityTextPointers:
 	dw AbilityText257, AbilityText258, AbilityText259, AbilityText260
 	dw AbilityText261, AbilityText262, AbilityText263, AbilityText264
 	dw AbilityText265, AbilityText266
+	dw AbilityText267, AbilityText268, AbilityText269, AbilityText270
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -466,3 +467,8 @@ AbilityText264: db "TOXIC SPINES",$4e,"Physical hit: 25%",$4e,"poisons attacker.
 
 AbilityText265: db "ROYAL HORN",$4e,"Horn moves: crit",$4e,"chance +25 points.@"
 AbilityText266: db "LIGHTNING ROD",$4e,"Immune to Electric",$4e,"moves.@"
+
+AbilityText267: db "REGENERATOR",$4e,"Switch out: heal",$4e,"1/4 max HP.@"
+AbilityText268: db "COSMIC CORE",$4e,"Special damage",$4e,"received x0.8.@"
+AbilityText269: db "ILLUMINATE",$4e,"Move accuracy",$4e,"+15 points.@"
+AbilityText270: db "EQUALIZER",$4e,"Resisted attacks",$4e,"deal neutral damage.@"

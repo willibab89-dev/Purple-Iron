@@ -335,6 +335,7 @@ AbilityPiercingBeakCheck:
 ; The chart supplies the matched defending type in wAbilityTemp. The result
 ; is the replacement multiplier (0 means no override).
 AbilityCorrosiveCheck:
+ call AbilityEqualizerSnapshot
  xor a
  ld [wAbilityCheckResult], a
  ld a, [wMoveType]
@@ -476,6 +477,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityEqualizerDamage
 	call AbilityFocusedDamage
 	call AbilityHeavyHitterDamage
 	call AbilityTangelaDamage
@@ -957,6 +959,14 @@ AbilityModifyDamage:
 	ld c, 75
 	jr .reduce
 .thickHide
+	cp ABILITY_EXTENDED
+	jr nz, .legacySpecialDefense
+	ld a, [wAbilityResolvedExtended]
+	cp AB_COSMIC_CORE - ABILITY_EXTENDED
+	jr z, .mentalShield
+	call AbilityTarget
+	jp .checkThickFat
+.legacySpecialDefense
 	cp AB_ELEGANT_MANE
 	jr z, .mentalShield
 	cp AB_MENTAL_SHIELD
@@ -1268,6 +1278,14 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 75
 	jr .scale
 .thickFat
+	cp ABILITY_EXTENDED
+	jr nz, .fixedLegacySpecial
+	ld a, [wAbilityResolvedExtended]
+	cp AB_COSMIC_CORE - ABILITY_EXTENDED
+	jr z, .fixedMentalShield
+	call AbilityTarget
+	jp .fixedThickFat
+.fixedLegacySpecial
 	cp AB_ELEGANT_MANE
 	jr z, .fixedMentalShield
 	cp AB_MENTAL_SHIELD
@@ -3575,6 +3593,13 @@ AbilityBurnGate:
 ; Accuracy is scaled after nature and stage factors, before final byte cap.
 AbilityAccuracy:
 	call AbilityActor
+	cp ABILITY_EXTENDED
+	jr nz, .legacyAccuracy
+	ld a, [wAbilityResolvedExtended]
+	cp AB_ILLUMINATE - ABILITY_EXTENDED
+	jp z, .flat15
+	jp .target
+.legacyAccuracy
 	cp AB_GENIUS
 	jr nz, .hypnotic
 	call AbilityMove
@@ -7135,6 +7160,17 @@ AbilityEnemyWithdraw:
 AbilityWithdraw:
  ld [wAbilitySide], a
  call AbilityGet
+ cp ABILITY_EXTENDED
+ jr nz, .legacy
+ ld a, [wAbilityResolvedExtended]
+ cp AB_REGENERATOR - ABILITY_EXTENDED
+ ret nz
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ jp AbilityHealQuarter
+.legacy
  cp AB_HEALER
  jr z, .healer
  cp AB_NATURAL_CURE
@@ -7613,4 +7649,100 @@ AbilityRoyalHornMove:
  ret
 .yes
  scf
+ ret
+
+; wParentalState bit 7 and the adjacent word are free when the actor has
+; Equalizer rather than Parental Bond. Capture damage after STAB, before type.
+AbilityEqualizerSnapshot:
+ call AbilityMove
+ inc hl
+ inc hl
+ ld a, [hl]
+ and a
+ ret z ; status moves do not gain this effect
+ ld c, AB_EQUALIZER - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ ld a, [wParentalState]
+ bit 7, a
+ ret nz
+ set 7, a
+ res 6, a
+ ld [wParentalState], a
+ ld a, [wMoveMissed]
+ and a
+ jr z, .saveDamage
+ ld a, [wParentalState]
+ set 6, a
+ ld [wParentalState], a
+.saveDamage
+ ld a, [wDamage]
+ ld [wParentalFirstDamage], a
+ ld a, [wDamage + 1]
+ ld [wParentalFirstDamage + 1], a
+ ret
+
+AbilityEqualizerDamage:
+ ld a, [wParentalState]
+ bit 7, a
+ ret z
+ res 7, a
+ ld [wParentalState], a
+ ld c, AB_EQUALIZER - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ ld a, [wDamageMultipliers]
+ and $7f
+ ret z ; retain all type immunities
+ cp 10
+ ret nc ; neutral and super-effective damage stay as calculated
+ ld a, [wParentalFirstDamage]
+ ld [wDamage], a
+ ld a, [wParentalFirstDamage + 1]
+ ld [wDamage + 1], a
+ ld b, a
+ ld a, [wDamage]
+ or b
+ jr z, .preserveMiss
+ ld a, [wParentalState]
+ bit 6, a
+ jr nz, .preserveMiss
+ xor a
+ ld [wMoveMissed], a ; type rounding briefly produced zero damage
+.preserveMiss
+ ld a, [wDamageMultipliers]
+ and $80
+ or 10
+ ld [wDamageMultipliers], a
+ ret
+
+; AI type evaluation uses the simulated attacker's side, not H_WHOSETURN.
+AbilityEqualizerAIFinal:
+ ld a, [wTypeEffectiveness]
+ and a
+ ret z
+ cp 10
+ ret nc
+ ld a, [wUnusedC000]
+ bit 3, a
+ jr nz, .player
+ ld a, [wEnemyMovePower]
+ and a
+ ret z
+ ld a, 1
+ jr .check
+.player
+ ld a, [wPlayerMovePower]
+ and a
+ ret z
+ xor a
+.check
+ call AbilityGet
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_EQUALIZER - ABILITY_EXTENDED
+ ret nz
+ ld a, 10
+ ld [wTypeEffectiveness], a
  ret

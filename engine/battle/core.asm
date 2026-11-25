@@ -5307,6 +5307,8 @@ AIGetTypeEffectiveness:
 	ld [wTypeEffectiveness], a
 	ret
 .normalAbility
+	ld a, $0a
+	ld [wTypeEffectiveness], a
 ;joenote - if type-effectiveness bit is set, then do wPlayerMoveType and wEnemyMonType
 ;		-also changed neutral value from $10 to $0A since it makes more sense
 ;		-and modifying this to take into account both types
@@ -5319,8 +5321,6 @@ AIGetTypeEffectiveness:
 	ld b, [hl]                 ; b = type 1 of enemy's pokemon
 	inc hl
 	ld c, [hl]                 ; c = type 2 of enemy's pokemon
-	ld a, $0A
-	ld [wTypeEffectiveness], a ; initialize to neutral effectiveness
 	ld hl, TypeEffects
 	jr .loop
 .enemyMove
@@ -5330,13 +5330,11 @@ AIGetTypeEffectiveness:
 	ld b, [hl]                 ; b = type 1 of player's pokemon
 	inc hl
 	ld c, [hl]                 ; c = type 2 of player's pokemon
-	ld a, $0A
-	ld [wTypeEffectiveness], a ; initialize to neutral effectiveness
 	ld hl, TypeEffects
 .loop
 	ld a, [hli]
 	cp $ff
-	ret z
+	jr z, .final
 	cp d                      ; match the type of the move
 	jr nz, .nextTypePair1
 	ld a, [hli]
@@ -5374,7 +5372,6 @@ AIGetTypeEffectiveness:
 	ld [wTypeEffectiveness], a ; store damage multiplier
 	jr .nextTypePair2	;get next pair in list
 .AImustbezero
-	ld a, [wTypeEffectiveness]	;else get the effectiveness multiplier
 	xor a	;clear a to 00
 	jr .done
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -5386,7 +5383,8 @@ AIGetTypeEffectiveness:
 .done
 	;joenote - removed		ld a, [hl]
 	ld [wTypeEffectiveness], a ; store damage multiplier
-	ret
+.final
+	jpab AbilityEqualizerAIFinal
 
 INCLUDE "data/type_effects.asm"
 
