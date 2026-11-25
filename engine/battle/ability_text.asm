@@ -90,6 +90,7 @@ AbilityTextPointers:
 	dw AbilityText238, AbilityText239, AbilityText240, AbilityText241
 	dw AbilityText242, AbilityText243, AbilityText244, AbilityText245
 	dw AbilityText246, AbilityText247, AbilityText248, AbilityText249, AbilityText250
+	dw AbilityText251, AbilityText252
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -431,3 +432,6 @@ AbilityText247: db "SERENE GRACE",$4e,"Move extra effect",$4e,"chance x2.@"
 AbilityText248: db "TRIAGE",$4e,"Healing moves:",$4e,"priority +3.@"
 AbilityText249: db "HEALER",$4e,"Switch out: heal",$4e,"next ally 10%.@"
 AbilityText250: db "LUCKY",$4e,"Critical damage",$4e,"received x0.5.@"
+
+AbilityText251: db "ENTANGLE",$4e,"Grass hit: 30%",$4e,"foe Speed -1.@"
+AbilityText252: db "THICK VINES",$4e,"Physical damage",$4e,"dealt x1.2.@"

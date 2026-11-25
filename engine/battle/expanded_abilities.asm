@@ -476,6 +476,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityTangelaDamage
 	call AbilityLuckyDamage
 	call AbilityRhyhornDamage
 	call AbilityLickitungDamage
@@ -1059,6 +1060,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityTangelaFixedDamage
 	call AbilityRhyhornFixedDamage
 	call AbilityLickitungFixedDamage
 	call AbilityEggFixedDamage
@@ -4576,12 +4578,22 @@ AbilityDigestiveAcidCheck:
 
 AbilityAcidic:
  call AbilityActor
+ cp AB_ENTANGLE
+ jr z, .entangle
  cp AB_EARTHSHAKER
  jr z, .earthshaker
  cp AB_ACIDIC
  ret nz
  ld a, [wAbilityMoveType]
  cp POISON
+ ret nz
+ jr .target
+.entangle
+ ld a, [wAbilityHit]
+ bit 1, a
+ ret nz
+ ld a, [wAbilityMoveType]
+ cp GRASS
  ret nz
  jr .target
 .earthshaker
@@ -4606,12 +4618,20 @@ AbilityAcidic:
  callab CustomTargetProtected
  ret nz
  call AbilityActor
+ cp AB_ENTANGLE
+ jr z, .entangleRoll
  cp AB_EARTHSHAKER
  jr z, .earthRoll
  ld b, 25
  call AbilityRoll
  ret nc
  ld a, 1 ; Defense
+ jr .stat
+.entangleRoll
+ ld b, 30
+ call AbilityRoll
+ ret nc
+ ld a, 2
  jr .stat
 .earthRoll
  ld b, 20
@@ -7160,4 +7180,23 @@ AbilityLuckyDamage:
  or b
  ret z
  ld c, 50
+ jp AbilityScaleDamage
+
+AbilityTangelaDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityTangelaFixedDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_THICK_VINES
+ ret nz
+ call AbilityActorMoveType
+ cp FIRE
+ ret nc
+ ld c, 120
  jp AbilityScaleDamage
