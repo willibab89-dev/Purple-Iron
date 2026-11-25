@@ -107,6 +107,7 @@ AbilityTextPointers:
 	dw AbilityNone, AbilityNone, AbilityNone, AbilityNone ; 252..255 reserved
 	dw AbilityText252 ; extended ID 256
 	dw AbilityText257, AbilityText258, AbilityText259, AbilityText260
+	dw AbilityText261, AbilityText262, AbilityText263, AbilityText264
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -456,3 +457,8 @@ AbilityText257: db "PARENTAL BOND",$4e,"Second hit deals",$4e,"1/4 first damage.
 AbilityText258: db "HEAVY HITTER",$4e,"Physical hits x1.2",$4e,"when moving second.@"
 AbilityText259: db "EARLY BIRD",$4e,"Sleep duration",$4e,"is halved.@"
 AbilityText260: db "MATERNAL RAGE",$4e,"Below half HP:",$4e,"Attack +1 once.@"
+
+AbilityText261: db "INK CLOUD",$4e,"Physical hit:",$4e,"Evasion +1 once.@"
+AbilityText262: db "WATER JET",$4e,"Water hit: 20%",$4e,"foe Speed -1.@"
+AbilityText263: db "FOCUSED",$4e,"First move if attack:",$4e,"damage x1.2.@"
+AbilityText264: db "TOXIC SPINES",$4e,"Physical hit: 25%",$4e,"poisons attacker.@"

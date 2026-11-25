@@ -476,6 +476,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityFocusedDamage
 	call AbilityHeavyHitterDamage
 	call AbilityTangelaDamage
 	call AbilityLuckyDamage
@@ -1062,6 +1063,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityFocusedFixedDamage
 	call AbilityHeavyHitterFixedDamage
 	call AbilityTangelaFixedDamage
 	call AbilityRhyhornFixedDamage
@@ -1356,6 +1358,7 @@ AbilityAttempt:
 	call AbilityCachePP
 	ld hl, wAbilityHit
 	set 3, [hl] ; a move was actually executed this action
+	call AbilityFocusedAttempt
 	call AbilityMove
 	ld a, [hl]
 	cp METRONOME
@@ -1592,6 +1595,7 @@ AbilityHitEvents:
 	call AbilitySpinyArmor
 	call AbilityEffectSpore
 	call AbilityAftershock
+	call AbilityWaterJet
 	call AbilityGrappler
 	call AbilityAcidic
 	call AbilityToxicScales
@@ -2892,7 +2896,13 @@ AbilityGetTargetReactions:
 	jp .contact
 .slippery
 	cp AB_SLIPPERY
+	jr z, .slipperyPhysical
+	cp ABILITY_EXTENDED
 	jr nz, .inflatable
+	ld a, [wAbilityResolvedExtended]
+	cp AB_INK_CLOUD - ABILITY_EXTENDED
+	jr nz, .restoreInflatable
+.slipperyPhysical
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	jp nc, .contact
@@ -2903,6 +2913,8 @@ AbilityGetTargetReactions:
 	ld a, 5 ; Evasion
 	call AbilityRaiseStage
 	jp .contact
+.restoreInflatable
+	call AbilityTarget
 .inflatable
 	cp AB_INFLATABLE
 	jr nz, .hotTemper
@@ -2980,8 +2992,16 @@ AbilityGetTargetReactions:
 	set 2, [hl]
 	call AbilityFlameBody
 	call AbilityTarget
+	cp ABILITY_EXTENDED
+	jr nz, .ordinaryPoisonPoint
+	ld a, [wAbilityResolvedExtended]
+	cp AB_TOXIC_SPINES - ABILITY_EXTENDED
+	jr z, .physicalPoisonPoint
+	call AbilityTarget
+.ordinaryPoisonPoint
 	cp AB_PHYSICAL_POISON_POINT
 	jr nz, .staticCheck
+.physicalPoisonPoint
 	ld a, [wAbilityMoveType]
 	cp FIRE
 	ret nc
@@ -7429,3 +7449,114 @@ AbilityParentalOverride:
  ld a, c
  ld [wDamage + 1], a
  ret
+
+; Focused is spent on the holder's first executed move, even a status move.
+AbilityFocusedAttempt:
+ ld c, AB_FOCUSED - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityFlagsPointer
+ bit 0, [hl]
+ jr z, .first
+ bit 1, [hl]
+ ret z
+ push hl
+ call AbilityMove
+ ld a, [hl]
+ cp BIDE
+ pop hl
+ ret z
+ res 1, [hl] ; a different move cancels a pending Bide bonus
+ ret
+.first
+ set 0, [hl]
+ call AbilityMove
+ ld a, [hl]
+ cp BIDE
+ jr z, .bide
+ call AbilityMoveFlags
+ bit 0, a
+ ret z
+.mark
+ ld hl, wAbilityHit
+ set 4, [hl]
+ ret
+.bide
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityFlagsPointer
+ set 1, [hl] ; Bide releases outside its initial action
+ jr .mark
+
+AbilityFocusedDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityFocusedFixedDamage:
+ ld c, AB_FOCUSED - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ ret z
+ ld a, [wAbilityHit]
+ bit 4, a
+ jr nz, .boost
+ bit 5, a
+ ret z
+ call AbilityMove
+ ld a, [hl]
+ cp BIDE
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityFlagsPointer
+ bit 1, [hl]
+ ret z
+ res 1, [hl]
+ ld hl, wAbilityHit
+ set 4, [hl]
+.boost
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 120
+ jp AbilityScaleDamage
+
+AbilityWaterJet:
+ ld c, AB_WATER_JET - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ ld a, [wAbilityHit]
+ bit 1, a
+ ret nz
+ ld a, [wAbilityMoveType]
+ cp WATER
+ ret nz
+ call AbilityTarget
+ cp AB_SHIELD_DUST
+ ret z
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ ld [wCustomSide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab CustomTargetProtected
+ ret nz
+ ld b, 20
+ call AbilityRoll
+ ret nc
+ ld a, 2
+ ld [wCustomStat], a
+ xor a
+ ld [wCustomChanged], a
+ dec a
+ ld [wCustomDelta], a
+ jpab CustomChangeStage
