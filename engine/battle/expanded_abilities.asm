@@ -476,6 +476,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityHeavyHitterDamage
 	call AbilityTangelaDamage
 	call AbilityLuckyDamage
 	call AbilityRhyhornDamage
@@ -1015,6 +1016,7 @@ AbilityModifyDamage:
 ; Apply the explicitly requested damage reductions after that calculation.
 AbilityFixedDamageModifiers:
 	call AbilityExistingFixedDamageModifiers
+	call AbilityParentalOverride
 	jp AbilityIncomingDamage
 AbilityExistingFixedDamageModifiers:
 	; A missed Jump Kick causes crash damage to its user.
@@ -1060,6 +1062,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityHeavyHitterFixedDamage
 	call AbilityTangelaFixedDamage
 	call AbilityRhyhornFixedDamage
 	call AbilityLickitungFixedDamage
@@ -3084,6 +3087,13 @@ AbilityLowHPBoth:
 AbilityLowHP:
 	ld a, [wAbilitySide]
 	call AbilityGet
+	cp ABILITY_EXTENDED
+	jr nz, .legacy
+	ld a, [wAbilityResolvedExtended]
+	cp AB_MATERNAL_RAGE - ABILITY_EXTENDED
+	jp z, AbilityMaternalRage
+	ret
+.legacy
 	cp AB_SECOND_WIND
 	jp z, AbilitySecondWind
 	cp AB_SURVIVAL_INSTINCTS
@@ -7203,3 +7213,219 @@ AbilityTangelaFixedDamage:
  ret nc
  ld c, 120
  jp AbilityScaleDamage
+
+; Carry iff the active actor has the requested extended ability in C.
+AbilityExtendedActorIs:
+ push bc
+ call AbilityActor
+ cp ABILITY_EXTENDED
+ jr nz, .no
+ ld a, [wAbilityResolvedExtended]
+ cp c
+ jr nz, .no
+ pop bc
+ scf
+ ret
+.no
+ pop bc
+ and a
+ ret
+
+AbilityHeavyHitterDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityHeavyHitterFixedDamage:
+ ld c, AB_HEAVY_HITTER - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ call AbilityActorMoveType
+ cp FIRE
+ ret nc
+ ld a, [H_WHOSETURN]
+ and a
+ jr nz, .enemy
+ ld a, [wPatientActed]
+ bit 1, a
+ jr nz, .boost
+ ld a, [wUnusedC000]
+ bit 1, a
+ ret z
+ jr .boost
+.enemy
+ ld a, [wPatientActed]
+ bit 0, a
+ jr nz, .boost
+ ld a, [wActionResultOrTookBattleTurn]
+ and a
+ ret z
+.boost
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 120
+ jp AbilityScaleDamage
+
+AbilityMaternalRage:
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ dec hl
+ call AbilityHalfHP
+ ret nc
+ call AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ xor a
+ jp AbilityRaiseStage
+
+; Counting down twice per attempted action halves sleep duration, rounding up.
+AbilityEarlyBirdBeforeAction:
+ ld c, AB_EARLY_BIRD - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ ld hl, wBattleMonStatus
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .status
+ ld hl, wEnemyMonStatus
+.status
+ ld a, [hl]
+ and SLP
+ cp 2
+ ret c
+ dec [hl]
+ ret
+
+; Record the first hit and schedule one final strike after ordinary multi-hits.
+AbilityParentalAfterHit:
+ ld c, AB_PARENTAL_BOND - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ call AbilityMove
+ ld a, [hli]
+ cp BIDE
+ jr z, .damaging
+ inc hl
+ ld a, [hl]
+ and a
+ ret z
+.damaging
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld a, [wParentalState]
+ bit 1, a
+ ret nz
+ bit 0, a
+ jr nz, .recorded
+ ld a, [wDamage]
+ ld [wParentalFirstDamage], a
+ ld a, [wDamage + 1]
+ ld [wParentalFirstDamage + 1], a
+ ld a, 1
+ ld [wParentalState], a
+.recorded
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld hl, wPlayerBattleStatus1
+ ld de, wPlayerNumAttacksLeft
+ ld bc, wPlayerNumHits
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .side
+ ld hl, wEnemyBattleStatus1
+ ld de, wEnemyNumAttacksLeft
+ ld bc, wEnemyNumHits
+.side
+ bit ATTACKING_MULTIPLE_TIMES, [hl]
+ jr z, .start
+ ld a, [de]
+ cp 1
+ ret nz
+ ld a, 2
+ ld [de], a
+ ld a, [bc]
+ inc a
+ ld [bc], a
+ jr .scheduled
+.start
+ ; Native multi-hit moves set their own counter after their first hit.
+ push hl
+ push de
+ push bc
+ call AbilityMove
+ inc hl
+ ld a, [hl]
+ cp TWO_TO_FIVE_ATTACKS_EFFECT
+ jr z, .native
+ cp ATTACK_TWICE_EFFECT
+ jr z, .native
+ cp TWINEEDLE_EFFECT
+ jr z, .native
+ pop bc
+ pop de
+ pop hl
+ set ATTACKING_MULTIPLE_TIMES, [hl]
+ ld a, 2
+ ld [de], a
+ ld [bc], a
+.scheduled
+ ld a, 3
+ ld [wParentalState], a
+ ret
+.native
+ pop bc
+ pop de
+ pop hl
+ ret
+
+; Called after other modifiers, immediately before the actual HP/substitute hit.
+AbilityParentalOverride:
+ ld a, [wParentalState]
+ bit 1, a
+ ret z
+ ld hl, wPlayerNumAttacksLeft
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .remaining
+ ld hl, wEnemyNumAttacksLeft
+.remaining
+ ld a, [hl]
+ cp 1
+ ret nz
+ ld a, [wParentalFirstDamage]
+ ld b, a
+ ld a, [wParentalFirstDamage + 1]
+ ld c, a
+ srl b
+ rr c
+ srl b
+ rr c
+ ld a, b
+ or c
+ jr nz, .store
+ inc c
+.store
+ ld a, b
+ ld [wDamage], a
+ ld a, c
+ ld [wDamage + 1], a
+ ret

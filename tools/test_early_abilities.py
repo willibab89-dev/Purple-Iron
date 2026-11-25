@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf55:0xdf75]=[0xa5]*32
+        game.memory[0xdf58:0xdf78]=[0xa5]*32
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf55:0xdf75])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf58:0xdf78])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -158,7 +158,8 @@ def validate(version):
                'KOFFING':['LEVITATE','TOXIC_FUMES','GAS_LEAK','CHEMICAL_REACTION','NEUTRALIZING_GAS'],
                'RHYHORN':['CHARGE','ARMORED','SOLID_ROCK','ROCK_HEAD','HORN_BREAKER'],
                'CHANSEY':['NATURAL_CURE','SERENE_GRACE','TRIAGE','HEALER','LUCKY'],
-               'TANGELA':['ENTANGLE','REGROWTH','VINE_GUARD','THICK_VINES','DAMP']}
+               'TANGELA':['ENTANGLE','REGROWTH','VINE_GUARD','THICK_VINES','DAMP'],
+               'KANGASKHAN':['PARENTAL_BOND','SCRAPPY','HEAVY_HITTER','EARLY_BIRD','MATERNAL_RAGE']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1396,6 +1397,21 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Kangaskhan: extended IDs, turn order, sleep and HP threshold.
+        for turn in (0,1):
+            for attack,acted,want in [('TACKLE',True,120),('TACKLE',False,100),('EMBER',True,100)]:
+                init(turn);move(turn,attack);aid(turn,'HEAVY_HITTER');put('wPatientActed',(1<<(1-turn)) if acted else 0);put('wActionResultOrTookBattleTurn',0);put('wUnusedC000',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,acted,'heavy hitter',readword('wDamage'))
+            for hp,want in [(81,7),(80,7),(79,8),(0,7)]:
+                ap,tp=init(turn);aid(turn,'MATERNAL_RAGE');word(ap+'HP',hp);put('wAbilitySide',turn);call('AbilityLowHP');name='w'+('Enemy' if turn else 'Player')+'MonAttackMod';assert get(name)==want,(turn,hp,'maternal rage',get(name));call('AbilityLowHP');assert get(name)==want
+            for status,want in [(0,0),(1,1),(2,1),(3,2),(7,6),(8,8)]:
+                ap,tp=init(turn);aid(turn,'EARLY_BIRD');put(ap+'Status',status);call('AbilityBeforeAction');assert get(ap+'Status')==want,(turn,status,'early bird',get(ap+'Status'))
+            ap,tp=init(turn);move(turn,'DOUBLESLAP');aid(turn,'PARENTAL_BOND');call('AbilityAfterHit');call('AbilityMultiHitEffect');prefix='w'+('Enemy' if turn else 'Player');put(prefix+'NumAttacksLeft',1);call('AbilityAfterHit');assert get(prefix+'NumAttacksLeft')==2 and get(prefix+'NumHits')==3,(turn,'parental multihit count',get(prefix+'NumHits'))
+            ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'PARENTAL_BOND');word('wDamage',100);call('AbilityAfterHit');assert get('wParentalState')==3 and readword('wParentalFirstDamage')==100
+            put('w'+('Enemy' if turn else 'Player')+'NumAttacksLeft',1);word('wDamage',200);call('AbilityParentalOverride');assert readword('wDamage')==25,(turn,'parental damage')
+        # Each extended slot has its own correct in-game description.
+        for slot,name in [(1,'PARENTAL BOND'),(3,'HEAVY HITTER'),(4,'EARLY BIRD'),(5,'MATERNAL RAGE')]:
+            metadata('wPartyMon1','KANGASKHAN',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1548,6 +1564,24 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,actor='EARLY_BIRD',random_value=100);put(ap+'Status',7)
+            for expected in (5,3,1,0):
+                call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove');assert get(ap+'Status')==expected,(turn,'live early bird sleep',expected,get(ap+'Status'));call('SequenceNewRound')
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='PARENTAL_BOND',random_value=100);assert 160-readword(tp+'HP')==normal+max(1,normal//4),(turn,'live parental tackle',normal,readword(tp+'HP'))
+            ap,tp=execute('SONICBOOM',turn,actor='PARENTAL_BOND',random_value=0);assert readword(tp+'HP')==135,(turn,'live parental fixed',readword(tp+'HP'))
+            ap,tp=execute('COUNTER',turn,actor='PARENTAL_BOND',counter_damage=20,random_value=0);assert readword(tp+'HP')==110,(turn,'live parental counter',readword(tp+'HP'))
+            ap,tp=execute('BIDE',turn,actor='PARENTAL_BOND',bide_damage=20,random_value=0);assert readword(tp+'HP')==110,(turn,'live parental bide',readword(tp+'HP'))
+            ap,tp=execute('DOUBLESLAP',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('DOUBLESLAP',turn,actor='PARENTAL_BOND',random_value=100);assert 160-readword(tp+'HP')==normal+max(1,(normal//2)//4),(turn,'live parental multihit',normal,readword(tp+'HP'))
+            ap,tp=execute('GROWL',turn,actor='PARENTAL_BOND',random_value=100);assert get('wParentalState')==0,(turn,'parental status move',get('wParentalState'))
+            ap,tp=execute('TACKLE',turn,actor='PARENTAL_BOND',hp=1,random_value=100);assert not(get('wParentalState')&2),(turn,'parental no hit after knockout')
+            ap,tp=execute('TACKLE',turn,actor='PARENTAL_BOND',random_value=255);assert readword(tp+'HP')==160 and get('wParentalState')==0,(turn,'parental miss',readword(tp+'HP'),get('wParentalState'))
+            ap,tp=execute('TACKLE',turn,actor='PARENTAL_BOND',target_types=('GHOST','GHOST'),random_value=100);assert readword(tp+'HP')==160 and get('wParentalState')==0,(turn,'parental immunity')
+            ap,tp=execute('TACKLE',turn,random_value=100,subhp=120);normal=120-get('w'+('Player' if turn else 'Enemy')+'SubstituteHP')
+            ap,tp=execute('TACKLE',turn,actor='PARENTAL_BOND',random_value=100,subhp=120);assert 120-get('w'+('Player' if turn else 'Enemy')+'SubstituteHP')==normal+max(1,normal//4),(turn,'parental substitute',normal,get('w'+('Player' if turn else 'Enemy')+'SubstituteHP'))
+            ap,tp=execute('ABSORB',turn,random_value=100,actor_hp=80);normal=160-readword(tp+'HP')
+            ap,tp=execute('ABSORB',turn,actor='PARENTAL_BOND',random_value=100,actor_hp=80);assert 160-readword(tp+'HP')==normal+max(1,normal//4),(turn,'parental drain',normal,readword(tp+'HP'))
             ap,tp=execute('VINE_WHIP',turn,actor='ENTANGLE',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==6,(turn,'live entangle')
             ap,tp=execute('SONICBOOM',turn,actor='THICK_VINES');assert readword(tp+'HP')==136,(turn,'fixed thick vines',readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,random_value=0);normal=160-readword(tp+'HP')
@@ -1815,7 +1849,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 115 species / 575 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 116 species / 580 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

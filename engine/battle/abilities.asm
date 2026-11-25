@@ -130,6 +130,7 @@ AbilitySpeciesPools:
 	db RHYDON, 68
 	db CHANSEY, 69
 	db TANGELA, 70
+	db KANGASKHAN, 71
 	db 0
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -202,6 +203,7 @@ AbilityPoolIds:
 	db AB_CHARGE, AB_ARMORED, AB_SOLID_ROCK, AB_ROCK_HEAD, AB_HORN_BREAKER
 	db AB_NATURAL_CURE, AB_SERENE_GRACE, AB_TRIAGE, AB_HEALER, AB_LUCKY
 	db AB_ENTANGLE, AB_REGROWTH, AB_VINE_GUARD, ABILITY_EXTENDED, AB_DAMP
+	db ABILITY_EXTENDED, AB_SCRAPPY, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 
 ; C = one-based pool number, B = saved slot (1..5).
 ; A 16-bit offset allows more than 255 pool entries without changing saves.
@@ -257,6 +259,10 @@ AbilityResolvePoolId:
 
 AbilityExtendedPoolIds:
  db 70, 4, AB_THICK_VINES - ABILITY_EXTENDED
+ db 71, 1, AB_PARENTAL_BOND - ABILITY_EXTENDED
+ db 71, 3, AB_HEAVY_HITTER - ABILITY_EXTENDED
+ db 71, 4, AB_EARLY_BIRD - ABILITY_EXTENDED
+ db 71, 5, AB_MATERNAL_RAGE - ABILITY_EXTENDED
  db 0
 
 ; Nature format keeps the persistent ability slot in stored Type1 high bits.
@@ -279,6 +285,7 @@ AbilityResetBattle:
 	ld [wActiveAbilityExtended], a
 	ld [wActiveAbilityExtended + 1], a
 	ld [wAbilityResolvedExtended], a
+	ld [wParentalState], a
 	ld [wRolloutStacks], a
 	ld [wRolloutStacks + 1], a
 	ld [wPatientActed], a
@@ -630,7 +637,9 @@ AbilityBeforeAction:
 	push hl
 	xor a
 	ld [wAbilityHit], a
+	ld [wParentalState], a
 	ld [wMoveMissed], a
+	call AbilityEarlyBirdBeforeAction
 	call AbilityTargetStatus
 	ld a, [hl]
 	ld [wAbilityOldStatus], a
@@ -651,6 +660,7 @@ AbilityAfterHit:
 	push de
 	push hl
 	call AbilityHitEvents
+	call AbilityParentalAfterHit
 	pop hl
 	pop de
 	pop bc

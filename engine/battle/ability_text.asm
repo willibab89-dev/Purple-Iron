@@ -106,6 +106,7 @@ AbilityTextPointers:
 	dw AbilityText251
 	dw AbilityNone, AbilityNone, AbilityNone, AbilityNone ; 252..255 reserved
 	dw AbilityText252 ; extended ID 256
+	dw AbilityText257, AbilityText258, AbilityText259, AbilityText260
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -450,3 +451,8 @@ AbilityText250: db "LUCKY",$4e,"Critical damage",$4e,"received x0.5.@"
 
 AbilityText251: db "ENTANGLE",$4e,"Grass hit: 30%",$4e,"foe Speed -1.@"
 AbilityText252: db "THICK VINES",$4e,"Physical damage",$4e,"dealt x1.2.@"
+
+AbilityText257: db "PARENTAL BOND",$4e,"Second hit deals",$4e,"1/4 first damage.@"
+AbilityText258: db "HEAVY HITTER",$4e,"Physical hits x1.2",$4e,"when moving second.@"
+AbilityText259: db "EARLY BIRD",$4e,"Sleep duration",$4e,"is halved.@"
+AbilityText260: db "MATERNAL RAGE",$4e,"Below half HP:",$4e,"Attack +1 once.@"

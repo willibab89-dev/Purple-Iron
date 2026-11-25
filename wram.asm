@@ -3421,8 +3421,10 @@ wDeepSleepPending:: ds 2 ; per-party-member pending max-counter extensions
 SECTION "Extended ability scratch", WRAM0[$df52]
 wActiveAbilityExtended:: ds 2
 wAbilityResolvedExtended:: ds 1
-SECTION "Stack", WRAM0[$df55]
-	ds $aa
+wParentalState:: ds 1
+wParentalFirstDamage:: ds 2
+SECTION "Stack", WRAM0[$df58]
+	ds $a7
 wStack:: ; dfff
 
 
