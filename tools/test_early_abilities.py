@@ -160,8 +160,9 @@ def validate(version):
                'CHANSEY':['NATURAL_CURE','SERENE_GRACE','TRIAGE','HEALER','LUCKY'],
                'TANGELA':['ENTANGLE','REGROWTH','VINE_GUARD','THICK_VINES','DAMP'],
                'KANGASKHAN':['PARENTAL_BOND','SCRAPPY','HEAVY_HITTER','EARLY_BIRD','MATERNAL_RAGE'],
-               'HORSEA':['SNIPER','INK_CLOUD','WATER_JET','FOCUSED','TOXIC_SPINES']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA')]:
+               'HORSEA':['SNIPER','INK_CLOUD','WATER_JET','FOCUSED','TOXIC_SPINES'],
+               'GOLDEEN':['ROYAL_HORN','SWIFT_SWIM','WATER_VEIL','HORN_BREAKER','LIGHTNING_ROD']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1434,6 +1435,24 @@ def validate(version):
         for slot,name in [(2,'INK CLOUD'),(3,'WATER JET'),(4,'FOCUSED'),(5,'TOXIC SPINES')]:
             metadata('wPartyMon1','HORSEA',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
             game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
+        # Goldeen / Seaking: horn crit chance and Electric immunity.
+        for turn in (0,1):
+            for attack,base,want in [('HORN_ATTACK',0,64),('FURY_ATTACK',100,164),('HORN_DRILL',190,254),('MEGAHORN',200,255),('TACKLE',100,100),('PECK',100,100)]:
+                init(turn);move(turn,attack);aid(turn,'ROYAL_HORN');put('wNatureResult',base);call('AbilityRuthless');assert get('wNatureResult')==want,(turn,attack,base,'royal horn',get('wNatureResult'))
+            init(turn);move(turn,'HORN_ATTACK');rng(8);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==0,(turn,'ordinary horn critical boundary')
+            init(turn);move(turn,'HORN_ATTACK');aid(turn,'ROYAL_HORN');rng(8);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==1,(turn,'live royal horn critical boundary')
+            for attack,blocked in [('THUNDERBOLT',True),('THUNDER_WAVE',True),('THUNDERCLAP',True),('TACKLE',False),('EARTHQUAKE',False)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'LIGHTNING_ROD');call('AbilityLevitateCheck');assert bool(get('wAbilityCheckResult'))==blocked,(turn,attack,'lightning rod')
+                call('MoveHitTest');assert bool(get('wMoveMissed'))==blocked,(turn,attack,'live hit check',get('wMoveMissed'))
+            ap,tp=init(turn);move(turn,'THUNDERBOLT');aid(1-turn,'LIGHTNING_ROD');aid(turn,'NEUTRALIZING_GAS');call('AbilityLevitateCheck');assert not get('wAbilityCheckResult'),(turn,'suppressed rod');word(ap+'HP',0);call('AbilityLevitateCheck');assert get('wAbilityCheckResult')==1
+            ap,tp=init(turn);move(turn,'THUNDERBOLT');aid(1-turn,'LIGHTNING_ROD');put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==0,(turn,'AI lightning rod')
+            for attack,want in [('HORN_ATTACK',125),('FURY_ATTACK',125),('MEGAHORN',125),('TACKLE',100)]:
+                init(turn);move(turn,attack);aid(turn,'HORN_BREAKER');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'horn breaker')
+            ap,tp=init(turn);move(turn,'WATER_GUN');aid(1-turn,'SWIFT_SWIM');call('AbilityAfterHit');assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==9
+            ap,tp=init(turn);move(turn,'FLAMETHROWER');aid(1-turn,'WATER_VEIL');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==50
+        for slot,name in [(1,'ROYAL HORN'),(5,'LIGHTNING ROD')]:
+            metadata('wPartyMon1','GOLDEEN',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1586,6 +1605,9 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('THUNDERBOLT',turn,target='LIGHTNING_ROD',random_value=100);assert readword(tp+'HP')==160,(turn,'live lightning rod',readword(tp+'HP'))
+            ap,tp=execute('THUNDER_WAVE',turn,target='LIGHTNING_ROD',random_value=0);assert not get(tp+'Status'),(turn,'lightning rod blocks status')
+            ap,tp=execute('THUNDERBOLT',turn,actor='NEUTRALIZING_GAS',target='LIGHTNING_ROD',random_value=100);assert readword(tp+'HP')<160,(turn,'live suppressed lightning rod',readword(tp+'HP'))
             ap,tp=execute('WATER_GUN',turn,actor='WATER_JET',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==6,(turn,'live water jet')
             ap,tp=execute('TACKLE',turn,target='INK_CLOUD',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonEvasionMod')==8,(turn,'live ink cloud')
             ap,tp=execute('TACKLE',turn,target='TOXIC_SPINES',random_value=0);assert get(ap+'Status')==8,(turn,'live toxic spines')
@@ -1875,7 +1897,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 118 species / 590 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 120 species / 600 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

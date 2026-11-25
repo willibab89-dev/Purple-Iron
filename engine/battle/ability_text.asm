@@ -108,6 +108,7 @@ AbilityTextPointers:
 	dw AbilityText252 ; extended ID 256
 	dw AbilityText257, AbilityText258, AbilityText259, AbilityText260
 	dw AbilityText261, AbilityText262, AbilityText263, AbilityText264
+	dw AbilityText265, AbilityText266
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -462,3 +463,6 @@ AbilityText261: db "INK CLOUD",$4e,"Physical hit:",$4e,"Evasion +1 once.@"
 AbilityText262: db "WATER JET",$4e,"Water hit: 20%",$4e,"foe Speed -1.@"
 AbilityText263: db "FOCUSED",$4e,"First move if attack:",$4e,"damage x1.2.@"
 AbilityText264: db "TOXIC SPINES",$4e,"Physical hit: 25%",$4e,"poisons attacker.@"
+
+AbilityText265: db "ROYAL HORN",$4e,"Horn moves: crit",$4e,"chance +25 points.@"
+AbilityText266: db "LIGHTNING ROD",$4e,"Immune to Electric",$4e,"moves.@"

@@ -3405,6 +3405,19 @@ AbilityCriticalGuard:
 	ret
 AbilityRuthless:
 	call AbilityActor
+	cp ABILITY_EXTENDED
+	jr nz, .legacy
+	ld a, [wAbilityResolvedExtended]
+	cp AB_ROYAL_HORN - ABILITY_EXTENDED
+	ret nz
+	call AbilityRoyalHornMove
+	ret nc
+	ld a, [wNatureResult]
+	add 64 ; 25 percentage points in the 256-value threshold
+	jr nc, .store
+	ld a, 255
+	jr .store
+.legacy
 	cp AB_RUTHLESS
 	jr nz, .sharpClaws
 	call AbilityTargetStatus
@@ -4786,11 +4799,22 @@ AbilityLevitateCheck:
  xor a
  ld [wAbilityCheckResult], a
  call AbilityActorMoveType
+ cp ELECTRIC
+ jr z, .electric
  cp GROUND
  ret nz
  call AbilityTarget
  cp AB_LEVITATE
+ jr z, .immune
+ ret
+.electric
+ call AbilityTarget
+ cp ABILITY_EXTENDED
  ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_LIGHTNING_ROD - ABILITY_EXTENDED
+ ret nz
+.immune
  ld a, 1
  ld [wAbilityCheckResult], a
  ret
@@ -4804,23 +4828,35 @@ AbilityLevitateAICheck:
  jr z, .type
  ld a, [wPlayerMoveType]
 .type
+ cp ELECTRIC
+ jr z, .electric
  cp GROUND
  ret nz
+ call .targetAbility
+ cp AB_LEVITATE
+ jr z, .immune
+ cp AB_EARTH_EATER
+ ret nz
+ jr .immune
+.electric
+ call .targetAbility
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_LIGHTNING_ROD - ABILITY_EXTENDED
+ ret nz
+.immune
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+.targetAbility
  ld a, [wUnusedC000]
  bit 3, a
  ld a, 0
  jr z, .side
  inc a
 .side
- call AbilityGet
- cp AB_LEVITATE
- jr z, .immune
- cp AB_EARTH_EATER
- ret nz
-.immune
- ld a, 1
- ld [wAbilityCheckResult], a
- ret
+ jp AbilityGet
 
 ; A direct lethal hit at full HP leaves the defender at 1 HP.
 AbilitySturdyIncoming:
@@ -7560,3 +7596,21 @@ AbilityWaterJet:
  dec a
  ld [wCustomDelta], a
  jpab CustomChangeStage
+
+; Match the same horn-based moves as Horn Breaker.
+AbilityRoyalHornMove:
+ call AbilityMove
+ ld a, [hl]
+ cp HORN_ATTACK
+ jr z, .yes
+ cp FURY_ATTACK
+ jr z, .yes
+ cp HORN_DRILL
+ jr z, .yes
+ cp MEGAHORN
+ jr z, .yes
+ and a
+ ret
+.yes
+ scf
+ ret
