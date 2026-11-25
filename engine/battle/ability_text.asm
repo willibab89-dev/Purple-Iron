@@ -88,6 +88,7 @@ AbilityTextPointers:
 	dw AbilityText230, AbilityText231, AbilityText232, AbilityText233
 	dw AbilityText234, AbilityText235, AbilityText236, AbilityText237
 	dw AbilityText238, AbilityText239, AbilityText240, AbilityText241
+	dw AbilityText242, AbilityText243, AbilityText244, AbilityText245
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -418,3 +419,8 @@ AbilityText238: db "TOXIC FUMES",$4e,"Poison hits: 20%",$4e,"badly poison foe.@"
 AbilityText239: db "GAS LEAK",$4e,"Foe loses 1/16 HP",$4e,"at turn end.@"
 AbilityText240: db "CHEMICAL REACTION",$4e,"Fire hit: Special",$4e,"+1 once.@"
 AbilityText241: db "NEUTRALIZING GAS",$4e,"Suppresses foe",$4e,"ability while active.@"
+
+AbilityText242: db "CHARGE",$4e,"First physical move",$4e,"each entry: x1.3.@"
+AbilityText243: db "ARMORED",$4e,"Physical damage",$4e,"received x0.8.@"
+AbilityText244: db "SOLID ROCK",$4e,"Super-effective",$4e,"damage x0.75.@"
+AbilityText245: db "HORN BREAKER",$4e,"Horn attacks deal",$4e,"x1.25 damage.@"

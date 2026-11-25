@@ -473,6 +473,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityRhyhornDamage
 	call AbilityLickitungDamage
 	call AbilityHitmonchanDamage
 	call AbilityHitmonleeDamage
@@ -935,6 +936,8 @@ AbilityModifyDamage:
 	ld c, 75
 	jr .reduce
 .sandArmor
+	cp AB_SOLID_ROCK
+	jr z, .superEffective
 	cp AB_SAND_ARMOR
 	jr z, .superEffective
 	cp AB_SUBTERRANEAN
@@ -969,6 +972,8 @@ AbilityModifyDamage:
 	jr z, .half
 	ret
 .notThickFat
+	cp AB_ARMORED
+	jr z, .physicalReduction
 	cp AB_GUARD_UP
 	jr z, .physicalReduction
 	cp AB_THICK_SKULL
@@ -1050,6 +1055,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityRhyhornFixedDamage
 	call AbilityLickitungFixedDamage
 	call AbilityEggFixedDamage
 	call AbilityNocturnalFixedDamage
@@ -1216,6 +1222,15 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityScaleDamage
 .defender
 	call AbilityTarget
+	cp AB_SOLID_ROCK
+	jr nz, .notSolidRock
+	ld a, [wDamageMultipliers]
+	and $7f
+	cp 11
+	ret c
+	ld c, 75
+	jp .scale
+.notSolidRock
 	cp AB_SOFT_BODY
 	jr nz, .notSoftBody
 	call AbilityActorMoveType
@@ -1273,6 +1288,8 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 50
 	jr .scale
 .hide
+	cp AB_ARMORED
+	jr z, .fixedPhysicalReduction
 	cp AB_GUARD_UP
 	jr z, .fixedPhysicalReduction
 	cp AB_THICK_SKULL
@@ -1345,6 +1362,13 @@ AbilityAttempt:
 	call AbilityMoveFlags
 	bit 0, a
 	jp z, AbilityAttemptStatusMove
+	call AbilityActor
+	cp AB_CHARGE
+	jr nz, .claimAttempt
+	call AbilityActorMoveType
+	cp FIRE
+	ret nc
+.claimAttempt
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
 	call AbilityFlagsPointer
@@ -1352,8 +1376,11 @@ AbilityAttempt:
 	jr nz, .alreadySpent
 	set 3, [hl]
 	call AbilityActor
+	cp AB_CHARGE
+	jr z, .boostAttempt
 	cp AB_AMBUSH
 	ret nz
+.boostAttempt
 	ld hl, wAbilityHit
 	set 4, [hl] ; applies to all hits of this first damaging move
 	ret
@@ -6939,3 +6966,60 @@ AbilityPlayerResult:
  call AbilityGet
  ld [wAbilityCheckResult], a
  ret
+
+AbilityRhyhornDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityRhyhornFixedDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ call AbilityActor
+ cp AB_CHARGE
+ jr z, .charge
+ cp AB_HORN_BREAKER
+ ret nz
+ call AbilityMove
+ ld a, [hl]
+ cp HORN_ATTACK
+ jr z, .horn
+ cp FURY_ATTACK
+ jr z, .horn
+ cp HORN_DRILL
+ jr z, .horn
+ cp MEGAHORN
+ ret nz
+.horn
+ ld c, 125
+ jp AbilityScaleDamage
+.charge
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ ret z
+ ld a, [wAbilityHit]
+ bit 4, a
+ jr nz, .chargeBoost
+ ; Bide releases outside the ordinary move-attempt hook.
+ bit 5, a
+ ret z
+ call AbilityMove
+ ld a, [hl]
+ cp BIDE
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityFlagsPointer
+ bit 3, [hl]
+ ret nz
+ set 3, [hl]
+ ld hl, wAbilityHit
+ set 4, [hl]
+.chargeBoost
+ call AbilityActorMoveType
+ cp FIRE
+ ret nc
+ ld c, 130
+ jp AbilityScaleDamage

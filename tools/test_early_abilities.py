@@ -153,8 +153,9 @@ def validate(version):
                'HITMONLEE':['RECKLESS','RESILIENCE','FOOTWORK','LONG_LEGS','LIMBER'],
                'HITMONCHAN':['IRON_FIST','SECOND_WIND','COMBOS','COUNTERPUNCH','GUARD_UP'],
                'LICKITUNG':['GLUTTONY','POISON_HEAL','THICK_TONGUE','SLOBBER','BOTTOMLESS_STOMACH'],
-               'KOFFING':['LEVITATE','TOXIC_FUMES','GAS_LEAK','CHEMICAL_REACTION','NEUTRALIZING_GAS']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING')]:
+               'KOFFING':['LEVITATE','TOXIC_FUMES','GAS_LEAK','CHEMICAL_REACTION','NEUTRALIZING_GAS'],
+               'RHYHORN':['CHARGE','ARMORED','SOLID_ROCK','ROCK_HEAD','HORN_BREAKER']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1326,6 +1327,20 @@ def validate(version):
             ap,tp=init(turn);aid(turn,'NEUTRALIZING_GAS');aid(1-turn,'NEUTRALIZING_GAS');call('AbilityGet',A=turn);assert game.register_file.A==ab['NEUTRALIZING_GAS'];call('AbilityGet',A=1-turn);assert game.register_file.A==ab['NEUTRALIZING_GAS']
             ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'NEUTRALIZING_GAS');aid(1-turn,'LEVITATE');call('AbilityLevitateCheck');assert not get('wAbilityCheckResult');word(ap+'HP',0);call('AbilityLevitateCheck');assert get('wAbilityCheckResult')==1
             ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'NEUTRALIZING_GAS');aid(1-turn,'THICK_SKULL');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Rhyhorn / Rhydon: first physical attack, defenses and horns.
+        for turn in (0,1):
+            ap,tp=init(turn);aid(turn,'CHARGE')
+            for attack,want in [('GROWL',100),('EMBER',100),('TACKLE',130),('TACKLE',100)]:
+                call('AbilityBeforeAction');move(turn,attack);call('AbilityAttempt');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'charge sequence',attack,want,readword('wDamage'))
+                if attack=='TACKLE' and want==130:
+                    word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==130,(turn,'all hits boosted')
+            put('wAbilitySide',turn);call('AbilityEntry');call('AbilityBeforeAction');move(turn,'TACKLE');call('AbilityAttempt');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==130,(turn,'charge on re-entry')
+            for attack,want in [('TACKLE',80),('EMBER',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'ARMORED');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'armored');put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==want
+            for multiplier,want in [(0,100),(5,100),(10,100),(20,75),(40,75)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'SOLID_ROCK');put('wDamageMultipliers',multiplier);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,multiplier,'solid rock',readword('wDamage'));put('wUnusedC000',16);word('wDamage',100);call('AbilityExistingFixedDamageModifiers');assert readword('wDamage')==want,(turn,multiplier,'fixed solid rock')
+            for attack,want in [('HORN_ATTACK',125),('FURY_ATTACK',125),('HORN_DRILL',125),('MEGAHORN',125),('TACKLE',100),('PECK',100)]:
+                init(turn);move(turn,attack);aid(turn,'HORN_BREAKER');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'horn breaker',readword('wDamage'))
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1401,7 +1416,7 @@ def validate(version):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
-        for n in range(1,242):
+        for n in range(1,246):
             active=bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2]);game.memory[addr('wTileMap'):addr('wTileMap')+360]=[0x7f]*360;call('AbilityDrawDescription',A=n)
             assert bytes(game.memory[addr('wActiveAbilities'):addr('wActiveAbilities')+2])==active
             assert game.memory[addr('wTileMap')+4*20+2]!=0x7f,n
@@ -1478,6 +1493,14 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('BIDE',turn,actor='CHARGE',bide_damage=20);assert readword(tp+'HP')==108,(turn,'bide charge',readword(tp+'HP'))
+            ap,tp=execute('COUNTER',turn,actor='CHARGE',counter_damage=20);assert readword(tp+'HP')==108,(turn,'counter charge',readword(tp+'HP'))
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='CHARGE',random_value=100);assert 160-readword(tp+'HP')==normal*130//100,(turn,'live charge',normal,readword(tp+'HP'))
+            ap,tp=execute('HORN_ATTACK',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('HORN_ATTACK',turn,actor='HORN_BREAKER',random_value=100);assert 160-readword(tp+'HP')==normal*125//100,(turn,'live horn breaker',normal,readword(tp+'HP'))
+            ap,tp=execute('TACKLE',turn,target_types=('ROCK','ROCK'),random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,target='SOLID_ROCK',target_types=('ROCK','ROCK'),random_value=100);assert 160-readword(tp+'HP')==normal,(turn,'neutral or resisted solid rock')
             ap,tp=execute('SLUDGE',turn,actor='TOXIC_FUMES',random_value=0);assert get(tp+'Status')==8 and get('w'+('Player' if turn else 'Enemy')+'BattleStatus3')&1,(turn,'live toxic fumes')
             ap,tp=execute('EMBER',turn,target='CHEMICAL_REACTION',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonSpecialMod')==8,(turn,'live chemical reaction')
             ap,tp=execute('EARTHQUAKE',turn,actor='NEUTRALIZING_GAS',target='LEVITATE',random_value=100);assert readword(tp+'HP')<160,(turn,'live suppression levitate',readword(tp+'HP'))
@@ -1733,7 +1756,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 111 species / 555 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 113 species / 565 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
