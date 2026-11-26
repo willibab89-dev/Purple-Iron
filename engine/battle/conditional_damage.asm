@@ -2189,6 +2189,9 @@ AbilityExtendedPoolIds:
  db 90, 3, AB_ANTIVIRUS - ABILITY_EXTENDED
  db 90, 4, AB_OVERCLOCK - ABILITY_EXTENDED
  db 90, 5, AB_DOWNLOAD - ABILITY_EXTENDED
+ db 91, 1, AB_ANCIENT_POWER - ABILITY_EXTENDED
+ db 91, 2, AB_MINDS_EYE - ABILITY_EXTENDED
+ db 91, 4, AB_CRUSHING_GRIP - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2491,6 +2494,8 @@ AbilitySpeciesPools:
 	db JOLTEON, 88
 	db FLAREON, 89
 	db PORYGON, 90
+	db OMANYTE, 91
+	db OMASTAR, 91
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -2955,3 +2960,53 @@ AbilityBurnGateBanked:
 
 ; Shared battle move flags are read through a banked lookup.
 INCLUDE "data/ability_move_metadata.asm"
+
+; Roll once per damaging attack, including hits on a substitute.
+AbilityAncientPowerOnHit:
+ ld a, [wAbilityHit]
+ bit 1, a
+ ret nz
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ANCIENT_POWER - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ ; For substitute hits the ordinary hit pipeline does not set this bit.
+ ld a, [wCustomTargetHadSub]
+ and a
+ jr z, .roll
+ ld hl, wAbilityHit
+ set 1, [hl]
+.roll
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ cp 200
+ jr nc, .roll
+ cp 20
+ ret nc
+ callab AbilityFlagsPointer
+ set 2, [hl]
+ ld b, 0
+.loop
+ push bc
+ ld a, [H_WHOSETURN]
+ ld [wCustomSide], a
+ ld a, b
+ ld [wCustomStat], a
+ ld a, 1
+ ld [wCustomDelta], a
+ callab CustomChangeStage
+ pop bc
+ inc b
+ ld a, b
+ cp 4
+ jr c, .loop
+ ret

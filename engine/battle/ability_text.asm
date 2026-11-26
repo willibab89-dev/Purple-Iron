@@ -126,6 +126,7 @@ AbilityTextPointers:
 	dw AbilityText317, AbilityText318
 	dw AbilityText319, AbilityText320, AbilityText321
 	dw AbilityText322, AbilityText323, AbilityText324, AbilityText325, AbilityText326
+	dw AbilityText327, AbilityText328
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -545,6 +546,8 @@ AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
 AbilityText324: db "ANTIVIRUS",$4e,"Immune to major",$4e,"status conditions.@"
 AbilityText325: db "OVERCLOCK",$4e,"Normal move: Speed",$4e,"+1 once per battle.@"
 AbilityText326: db "DOWNLOAD",$4e,"Entry: Attack or",$4e,"Special +1.@"
+AbilityText327: db "ANCIENT POWER",$4e,"Hits: 10% all stats",$4e,"+1 once per battle.@"
+AbilityText328: db "MIND'S EYE",$4e,"Ignores foe evasion;",$4e,"hits Ghosts.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -638,3 +641,4 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, AB_QUICK_FEET, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_HIGH_VOLTAGE
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, AB_COMBUSTION, ABILITY_EXTENDED, AB_FLAME_BODY
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, AB_PATIENT, ABILITY_EXTENDED, AB_SHELL_ARMOR

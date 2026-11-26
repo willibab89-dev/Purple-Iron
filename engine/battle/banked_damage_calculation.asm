@@ -148,6 +148,16 @@ BankedCalcHitChance:
 	ld a, [wPlayerMonEvasionMod]
 	ld c, a
 .next
+	push hl
+	push bc
+	callab AbilityActor
+	ld a, [wAbilityResolvedExtended]
+	cp AB_MINDS_EYE - ABILITY_EXTENDED
+	pop bc
+	jr nz, .evasionReady
+	ld c, 7
+.evasionReady
+	pop hl
 	ld a, $0e
 	sub c
 	ld c, a ; c = 14 - EVASIONMOD (this "reflects" the value over 7, so that an increase in the target's evasion

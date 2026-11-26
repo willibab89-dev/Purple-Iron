@@ -437,7 +437,13 @@ AbilityTypeOverride:
  ret
 .scrappy
  cp AB_SCRAPPY
+ jr z, .scrappyMatch
+ cp ABILITY_EXTENDED
  ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_MINDS_EYE - ABILITY_EXTENDED
+ ret nz
+.scrappyMatch
  ld a, [wAbilityTemp]
  cp GHOST
  ret nz
@@ -1784,6 +1790,7 @@ AbilityHitEvents:
 	call AbilityOvercharge
 	call AbilityTastyLeek
 	call AbilityRampage
+	callab AbilityAncientPowerOnHit
 	ld a, [wCustomTargetHadSub]
 	and a
 	ret nz

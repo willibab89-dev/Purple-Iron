@@ -88,6 +88,19 @@ def validate(version):
             call('AbilityMoveFlags',A=MOVES[name]);assert game.register_file.A&128,name
         for name in ('TACKLE','KARATE_CHOP','BRICK_BREAK'):
             call('AbilityMoveFlags',A=MOVES[name]);assert not(game.register_file.A&128),name
+        # Omanyte: accuracy, Ghost immunity and one-time four-stat boost.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player'); target='w'+('Player' if turn else 'Enemy')
+            for evasion in (1,7,13):
+                init(turn);aid(turn,'MINDS_EYE');put(actor+'MonAccuracyMod',5);put(target+'MonEvasionMod',evasion);put(actor+'MoveAccuracy',180);call('CalcHitChance')
+                actual=get(actor+'MoveAccuracy');init(turn);put(actor+'MonAccuracyMod',5);put(target+'MonEvasionMod',7);put(actor+'MoveAccuracy',180);call('CalcHitChance');assert actual==get(actor+'MoveAccuracy'),(turn,evasion,actual,get(actor+'MoveAccuracy'))
+            for attack in ('NORMAL','FIGHTING'):
+                ap,tp=init(turn);aid(turn,'MINDS_EYE');put(ap+'Type1',TYPES['FIRE']);put(ap+'Type2',TYPES['FIRE']);put(tp+'Type1',TYPES['GHOST']);put(tp+'Type2',TYPES['GHOST']);put(actor+'MoveType',TYPES[attack]);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==100,(turn,attack,readword('wDamage'))
+            for value,sub,want in ((19,0,8),(20,0,7),(19,1,8)):
+                init(turn);aid(turn,'ANCIENT_POWER');put('wCustomTargetHadSub',sub);rng(value);call('AbilityAfterHit')
+                assert [get(actor+'Mon'+n+'Mod') for n in ('Attack','Defense','Speed','Special')]==[want]*4,(turn,value,sub)
+                put('wAbilityHit',0);rng(0);call('AbilityAfterHit');assert get(actor+'MonAttackMod')==(8 if want==7 else want),(turn,'once')
+            init(turn);aid(turn,'ANCIENT_POWER');aid(1-turn,'NEUTRALIZING_GAS');rng(0);call('AbilityAfterHit');assert get(actor+'MonAttackMod')==7
         # All five evolution slots, including noncontiguous ability IDs.
         pools={'BULBASAUR':['POISON_LEAF','CHLOROPHYLL','OVERGROWTH','PHOTOSYNTHESIS','VINE_GUARD'],
                'CHARMANDER':['BLAZE','COMBUSTION','WILDFIRE','HOT_TEMPER','CONFIDENT'],
@@ -178,8 +191,9 @@ def validate(version):
                'VAPOREON':['LIQUID_BODY','WATER_VEIL','REGENERATION','WATER_ABSORB','DEEP_SEA_PRESSURE'],
                'JOLTEON':['GALVANIZE','QUICK_FEET','SPIKY_FUR','VOLT_ABSORB','HIGH_VOLTAGE'],
                'FLAREON':['HEAT_WAVE','MAGMA_COAT','COMBUSTION','FLUFFY','FLAME_BODY'],
-               'PORYGON':['CONSERVATIVE','TRACE','ANTIVIRUS','OVERCLOCK','DOWNLOAD']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
+               'PORYGON':['CONSERVATIVE','TRACE','ANTIVIRUS','OVERCLOCK','DOWNLOAD'],
+               'OMANYTE':['ANCIENT_POWER','MINDS_EYE','PATIENT','CRUSHING_GRIP','SHELL_ARMOR']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -2336,7 +2350,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 138 species / 690 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 140 species / 700 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
