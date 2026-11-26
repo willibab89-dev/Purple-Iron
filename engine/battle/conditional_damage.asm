@@ -2197,6 +2197,8 @@ AbilityExtendedPoolIds:
  db 92, 5, AB_SHARP_BLADES - ABILITY_EXTENDED
  db 93, 4, AB_SAVAGE_JAWS - ABILITY_EXTENDED
  db 93, 5, AB_TERRIFYING - ABILITY_EXTENDED
+ db 94, 1, AB_HEAVY_SLEEPER - ABILITY_EXTENDED
+ db 94, 4, AB_SLEEPWALKER - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2504,6 +2506,7 @@ AbilitySpeciesPools:
 	db KABUTO, 92
 	db KABUTOPS, 92
 	db AERODACTYL, 93
+	db SNORLAX, 94
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3067,3 +3070,69 @@ AbilityTerrifying:
  pop af
  ld [wAbilitySide], a
  ret
+
+; Sleepwalker still ticks sleep normally, but does not lose its action.
+AbilitySleepwalkerCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SLEEPWALKER - ABILITY_EXTENDED
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; Fixed-damage attacks are calculated after the ordinary damage pipeline.
+AbilitySleepwalkerDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilitySleepwalkerFixedDamage:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SLEEPWALKER - ABILITY_EXTENDED
+ ret nz
+ ld hl, wBattleMonStatus
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .status
+ ld hl, wEnemyMonStatus
+.status
+ ld a, [hl]
+ and SLP
+ ret z
+ ld hl, wDamage
+ ld a, [hli]
+ or [hl]
+ ret z
+ dec hl
+ srl [hl]
+ inc hl
+ rr [hl]
+ ld a, [hld]
+ or [hl]
+ ret nz
+ inc hl
+ inc [hl] ; nonzero damaging moves retain minimum 1 damage
+ ret
+
+AbilityHeavySleeperBoth:
+ xor a
+ ld [wAbilitySide], a
+ call .one
+ ld a, 1
+ ld [wAbilitySide], a
+.one
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_HEAVY_SLEEPER - ABILITY_EXTENDED
+ ret nz
+ callab AbilityHP
+ inc hl
+ inc hl
+ inc hl
+ ld a, [hl]
+ and SLP
+ ret z
+ jpab AbilityRegeneration

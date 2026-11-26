@@ -194,7 +194,8 @@ def validate(version):
                'PORYGON':['CONSERVATIVE','TRACE','ANTIVIRUS','OVERCLOCK','DOWNLOAD'],
                'OMANYTE':['ANCIENT_POWER','MINDS_EYE','PATIENT','CRUSHING_GRIP','SHELL_ARMOR'],
                'KABUTO':['KABUTO_EXECUTIONER','ANCIENT_POWER','BATTLE_ARMOR','LEECHING','SHARP_BLADES'],
-               'AERODACTYL':['PREDATOR','ROCK_HEAD','RELENTLESS','SAVAGE_JAWS','TERRIFYING']}
+               'AERODACTYL':['PREDATOR','ROCK_HEAD','RELENTLESS','SAVAGE_JAWS','TERRIFYING'],
+               'SNORLAX':['HEAVY_SLEEPER','THICK_FAT','GLUTTONY','SLEEPWALKER','IMMUNITY']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1285,6 +1286,14 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Heavy Sleeper heals only living sleeping holders, once per round.
+        for turn in (0,1):
+            for status,hp,want in [(2,80,90),(0,80,80),(2,0,0),(2,159,160)]:
+                ap,tp=init(turn);aid(turn,'HEAVY_SLEEPER');put(ap+'Status',status);word(ap+'HP',hp);call('AbilityEndRound');assert readword(ap+'HP')==want,(turn,status,hp,readword(ap+'HP'))
+            ap,tp=init(turn);aid(turn,'HEAVY_SLEEPER');aid(1-turn,'NEUTRALIZING_GAS');put(ap+'Status',2);word(ap+'HP',80);call('AbilityEndRound');assert readword(ap+'HP')==80
+            for status,damage,want in [(2,100,50),(0,100,100),(2,1,1),(2,0,0)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'SLEEPWALKER');put(ap+'Status',status);word('wDamage',damage);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,status,damage,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'SONICBOOM');aid(turn,'SLEEPWALKER');put(ap+'Status',2);put('wUnusedC000',16);word('wDamage',20);call('AbilityFixedDamageModifiers');assert readword('wDamage')==10,(turn,'fixed damage')
         # Terrifying triggers once per holder, and is blocked by Clear Body.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -1980,7 +1989,7 @@ def validate(version):
                   'DrawPlayerHUDAndHPBar','DrawEnemyHUDAndHPBar','UpdateHPBar2','MoveAnimation',
                   'HideSubstituteShowMonAnim','ReshowSubstituteAnim','DrawHUDsAndHPBars'):
             patch(n,[0xc9])
-        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None,random_value=0,subhp=None,screens=0,target_types=None,target_entry=False,bide_damage=None):
+        def execute(attack,turn,actor=None,target=None,pp=20,status=0,hp=160,actor_hp=160,counter_damage=None,random_value=0,subhp=None,screens=0,target_types=None,target_entry=False,bide_damage=None,actor_status=0):
             ap,tp=init(turn)
             put('wActionResultOrTookBattleTurn',0);put('wMonIsDisobedient',0)
             for side in (0,1):
@@ -1989,7 +1998,7 @@ def validate(version):
             for pref in ('wBattleMon','wPartyMon1','wEnemyMon','wEnemyMon1'):
                 put(pref+'Species',ids['BULBASAUR'] if pref in ('wBattleMon','wPartyMon1') else ids['CHARMANDER'])
                 put(pref+'Level',50);put(pref+'PP',pp);put(pref+'Moves',MOVES[attack])
-            aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);word(tp+'HP',hp);word(ap+'HP',actor_hp);rng(random_value)
+            aid(turn,actor);aid(1-turn,target);put(tp+'Status',status);put(ap+'Status',actor_status);word(tp+'HP',hp);word(ap+'HP',actor_hp);rng(random_value)
             if target_types:
                 put(tp+'Type1',TYPES[target_types[0]]);put(tp+'Type2',TYPES[target_types[1]])
             target_name='Player' if turn else 'Enemy'
@@ -2005,6 +2014,13 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='SLEEPWALKER',actor_status=2,random_value=100);assert 160-readword(tp+'HP')==normal//2 and get(ap+'Status')==1,(turn,'sleepwalking tackle',normal,readword(tp+'HP'),get(ap+'Status'))
+            ap,tp=execute('TACKLE',turn,actor_status=2,random_value=100);assert readword(tp+'HP')==160 and get(ap+'Status')==1,(turn,'ordinary sleep')
+            ap,tp=execute('TACKLE',turn,actor='SLEEPWALKER',actor_status=1,random_value=100);assert 160-readword(tp+'HP')==normal and get(ap+'Status')==0,(turn,'wake')
+            ap,tp=execute('SONICBOOM',turn,actor='SLEEPWALKER',actor_status=2,random_value=100);assert 160-readword(tp+'HP')==10,(turn,'sleepwalking fixed damage',readword(tp+'HP'))
+            ap,tp=execute('GROWL',turn,actor='SLEEPWALKER',actor_status=2,random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==6,(turn,'sleepwalking status move')
+            ap,tp=execute('TACKLE',turn,actor='SLEEPWALKER',target='NEUTRALIZING_GAS',actor_status=2,random_value=100);assert readword(tp+'HP')==160,(turn,'sleepwalker suppressed')
             if turn==0:
                 ap,tp=execute('TACKLE',turn,actor='CONSERVATIVE',pp=20,random_value=0);assert get('wBattleMonPP')==20 and get('wPartyMon1PP')==20,('live conservative',get('wBattleMonPP'),get('wPartyMon1PP'))
                 ap,tp=execute('METRONOME',turn,actor='CONSERVATIVE',pp=20,random_value=MOVES['TACKLE']);assert get('wBattleMonPP')==20 and get('wPartyMon1PP')==20,('conservative metronome',get('wBattleMonPP'),get('wPartyMon1PP'))
@@ -2371,7 +2387,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 143 species / 715 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 144 species / 720 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

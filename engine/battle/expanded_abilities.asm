@@ -558,6 +558,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	callab AbilitySleepwalkerDamage
 	callab AbilityFluffyDamage
 	callab AbilityEeveeDamage
 	callab AbilityGyaradosDamage
@@ -1182,6 +1183,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	callab AbilitySleepwalkerFixedDamage
 	callab AbilityFluffyFixedDamage
 	callab AbilityEeveeFixedDamage
 	callab AbilityGyaradosFixedDamage

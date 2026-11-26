@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 143 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 144 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -97,6 +97,7 @@ Implemented for 143 species, with five equally likely slots per species. The sav
 | Omanyte / Omastar | Ancient Power | Mind's Eye | Patient | Crushing Grip | Shell Armor |
 | Kabuto / Kabutops | Executioner | Ancient Power | Battle Armor | Leeching | Sharp Blades |
 | Aerodactyl | Predator | Rock Head | Relentless | Savage Jaws | Terrifying |
+| Snorlax | Heavy Sleeper | Thick Fat | Gluttony | Sleepwalker | Immunity |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
@@ -266,7 +267,7 @@ Both ROMs are built and checked with `tools/test_early_abilities.py` and the exi
 
 ## Extended ability IDs
 
-Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 180 extended IDs remain available. Legacy IDs 252–254 are also available.
+Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 178 extended IDs remain available. Legacy IDs 252–254 are also available.
 
 At battle entry, each side receives an extension byte in transient WRAM. `AbilityGet` returns the escape marker and sets `wAbilityResolvedExtended` for the selected side; it clears that scratch value for ordinary or suppressed abilities. An extended ability’s battle hook must check both the marker and the extension byte immediately after the lookup. `AbilityDrawDescriptionBanked` maps the extension to the matching pointer beginning at index 256; add description pointers in ID order when adding future extended abilities. Switching and Neutralizing Gas retain the side-local identity, while active-ability replacement takes precedence.
 
@@ -307,3 +308,5 @@ Omanyte and Omastar: Ancient Power gives a damaging attack a 10% chance to raise
 Kabuto and Kabutops: Executioner boosts physical damage by 20% against foes below half HP; Ancient Power gives damaging attacks a 10% chance to raise Attack, Defense, Speed and Special once per battle; Battle Armor prevents critical hits; Leeching heals 10% of physical damage dealt; Sharp Blades boosts cutting moves by 25%.
 
 Aerodactyl: Predator boosts physical damage by 20% against slower opponents; Rock Head prevents recoil; Relentless adds 10% damage per consecutive successful damaging hit, up to 30%; Savage Jaws boosts biting moves by 30%; Terrifying lowers the opponent’s Defense by one stage on entry, once per battle.
+
+Snorlax: Heavy Sleeper heals 1/16 maximum HP at the end of each turn while asleep; Thick Fat halves Fire and Ice damage; Gluttony heals 1/8 maximum HP after a damaging Normal move; Sleepwalker allows actions while asleep but halves damage dealt; Immunity prevents poison.
