@@ -165,7 +165,8 @@ def validate(version):
                'STARYU':['REGENERATOR','COSMIC_CORE','ILLUMINATE','NATURAL_CURE','EQUALIZER'],
                'MR_MIME':['COPYCAT','PRANKSTER','MAGIC_BOUNCE','STRONGMAN','MIRROR_ARMOR'],
                'SCYTHER':['TECHNICIAN','SHARP_BLADES','VANGUARD','EXECUTIONER','DOUBLE_SCYTHES'],
-               'JYNX':['DANCER','COLD_TOUCH','ENCHANTRESS','ICE_QUEEN','SNOW_VEIL']}
+               'JYNX':['DANCER','COLD_TOUCH','ENCHANTRESS','ICE_QUEEN','SNOW_VEIL'],
+               'ELECTABUZZ':['POWER_SURGE','ENERGY_DRAIN','THUNDERSTRUCK','LIVE_WIRE','GALVANIZE']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1403,6 +1404,23 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Electabuzz: HP threshold, Electric move hooks, and type conversion.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,hp,want in [('THUNDERBOLT',81,115),('THUNDERBOLT',80,100),('THUNDERBOLT',79,100),('THUNDERBOLT',0,100),('TACKLE',160,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'POWER_SURGE');word(ap+'HP',hp);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,hp,'power surge',readword('wDamage'))
+            for attack,hp,want in [('THUNDERBOLT',80,100),('THUNDER_WAVE',80,100),('TACKLE',80,80),('THUNDERBOLT',155,160),('THUNDERBOLT',0,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'ENERGY_DRAIN');word(ap+'HP',hp);call('AbilityAttempt');call('AbilityAfterAction');assert readword(ap+'HP')==want,(turn,attack,hp,'energy drain',readword(ap+'HP'))
+            for attack,roll,sub,protection,want in [('THUNDERBOLT',0,0,None,True),('THUNDERBOLT',39,0,None,True),('THUNDERBOLT',40,0,None,False),('TACKLE',0,0,None,False),('THUNDERBOLT',0,1,None,False),('THUNDERBOLT',0,0,'SHIELD_DUST',False),('THUNDERBOLT',0,0,'OBLIVIOUS',False)]:
+                init(turn);move(turn,attack);aid(turn,'THUNDERSTRUCK');aid(1-turn,protection);put('wCustomTargetHadSub',sub);rng(roll,0);call('AbilityAfterHit');assert bool(get(target+'BattleStatus1')&128)==want,(turn,attack,roll,sub,protection,'thunderstruck')
+            for attack,want in [('THUNDERBOLT',8),('THUNDER_WAVE',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(turn,'LIVE_WIRE');call('AbilityAttempt');call('AbilityAfterAction');assert get(actor+'MonAttackMod')==want,(turn,attack,'live wire',get(actor+'MonAttackMod'));call('AbilityAfterAction');assert get(actor+'MonAttackMod')==want,(turn,'live wire once')
+            for attack,want in [('TACKLE','ELECTRIC'),('GROWL','ELECTRIC'),('SONICBOOM','ELECTRIC'),('EMBER','FIRE'),('THUNDERBOLT','ELECTRIC')]:
+                init(turn);move(turn,attack);aid(turn,'GALVANIZE');call('AbilityAttempt');assert get(actor+'MoveType')==TYPES[want],(turn,attack,'galvanize',get(actor+'MoveType'))
+            init(turn);move(turn,'TACKLE');aid(turn,'GALVANIZE');aid(1-turn,'NEUTRALIZING_GAS');call('AbilityAttempt');assert get(actor+'MoveType')==TYPES['NORMAL'],(turn,'suppressed galvanize')
+        for slot,name in [(1,'POWER SURGE'),(2,'ENERGY DRAIN'),(3,'THUNDERSTRUCK'),(4,'LIVE WIRE'),(5,'GALVANIZE')]:
+            metadata('wPartyMon1','ELECTABUZZ',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Jynx: once-per-battle boosts, hit effects, and Ice damage threshold.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -1683,6 +1701,12 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('THUNDERBOLT',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('THUNDERBOLT',turn,actor='POWER_SURGE',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live power surge',normal,readword(tp+'HP'))
+            ap,tp=execute('THUNDERBOLT',turn,actor='ENERGY_DRAIN',actor_hp=80,random_value=100);assert readword(ap+'HP')==100,(turn,'live energy drain',readword(ap+'HP'))
+            ap,tp=execute('THUNDERBOLT',turn,actor='THUNDERSTRUCK',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128,(turn,'live thunderstruck')
+            ap,tp=execute('THUNDERBOLT',turn,actor='LIVE_WIRE',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==8,(turn,'live wire')
+            ap,tp=execute('TACKLE',turn,actor='GALVANIZE',target_types=('WATER','WATER'),random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MoveType')==TYPES['ELECTRIC'] and readword(tp+'HP')<160,(turn,'live galvanize')
             ap,tp=execute('GROWL',turn,actor='DANCER',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8,(turn,'live dancer')
             ap,tp=execute('TACKLE',turn,actor='COLD_TOUCH',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==6,(turn,'live cold touch')
             ap,tp=execute('PSYCHIC_M',turn,actor='ENCHANTRESS',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128,(turn,'live enchantress')
@@ -1991,7 +2015,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 125 species / 625 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 126 species / 630 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

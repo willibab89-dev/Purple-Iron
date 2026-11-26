@@ -1430,6 +1430,15 @@ AbilitySandAfterAction:
 	bit 3, a
 	ret z
 	call AbilityActor
+	cp ABILITY_EXTENDED
+	jr nz, .ordinaryAbility
+	ld a, [wAbilityResolvedExtended]
+	cp AB_ENERGY_DRAIN - ABILITY_EXTENDED
+	jp z, .energyDrain
+	cp AB_LIVE_WIRE - ABILITY_EXTENDED
+	jp z, .liveWire
+	ld a, ABILITY_EXTENDED
+.ordinaryAbility
 	cp AB_ROLLING_DEFENSE
 	jp z, .normal
 	cp AB_FOOTWORK
@@ -1549,6 +1558,17 @@ AbilitySandAfterAction:
 	cp GHOST
 	ret nz
 	ld a, 5
+	jr .once
+.energyDrain
+	call AbilityActorMoveType
+	cp ELECTRIC
+	ret nz
+	jp .healWaterOrGround
+.liveWire
+	call AbilityActorMoveType
+	cp ELECTRIC
+	ret nz
+	xor a ; Attack
 	jr .once
 .normal
 	call AbilityActorMoveType
@@ -1758,7 +1778,11 @@ AbilityConfounding:
  jr z, .psychic
  ld c, AB_ENCHANTRESS - ABILITY_EXTENDED
  call AbilityExtendedActorIs
- ret nc
+ jr c, .psychic
+ ld c, AB_THUNDERSTRUCK - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ jr c, .electric
+ ret
 .psychic
  ld a, [wAbilityMoveType]
  cp PSYCHIC
@@ -5975,7 +5999,17 @@ AbilityRefrigerateConvert:
  cp AB_REFRIGERATE
  jr z, .ice
  cp AB_LIQUIDATE
- ret nz
+ jr z, .water
+ ld c, AB_GALVANIZE - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ ld b, ELECTRIC
+ call AbilityMove
+ inc hl
+ inc hl
+ inc hl ; Galvanize also converts status and fixed-damage moves.
+ jr .checkNormal
+.water
  ld b, WATER
  jr .move
 .ice
@@ -5987,6 +6021,7 @@ AbilityRefrigerateConvert:
  ld a, [hli]
  and a
  ret z
+.checkNormal
  ld a, [hl]
  cp NORMAL
  ret nz
@@ -7392,10 +7427,19 @@ AbilityIceQueenDamage:
  ret nz
  ld c, AB_ICE_QUEEN - ABILITY_EXTENDED
  call AbilityExtendedActorIs
+ jr c, .ice
+ ld c, AB_POWER_SURGE - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
  ret nc
+ call AbilityActorMoveType
+ cp ELECTRIC
+ ret nz
+ jr .checkHP
+.ice
  call AbilityActorMoveType
  cp ICE
  ret nz
+.checkHP
  ld a, [H_WHOSETURN]
  ld [wAbilitySide], a
  call AbilityHP
@@ -7412,6 +7456,12 @@ AbilityIceQueenDamage:
  or b
  ret z
  ld c, 125
+ call AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_POWER_SURGE - ABILITY_EXTENDED
+ jr nz, .scale
+ ld c, 115
+.scale
  jp AbilityScaleDamage
 
 AbilitySharpBladesDamage:
