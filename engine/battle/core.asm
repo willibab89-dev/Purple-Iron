@@ -8922,12 +8922,9 @@ SetEnemyActedBit:
 ;meant for fixing counter glitches
 ZeroLastDamage:
 	push af
-	push hl
-	ld a, $00
-	ld hl, wDamage
-	ld [hli], a
-	ld [hl], a
-	pop hl
+	xor a
+	ld [wDamage], a
+	ld [wDamage + 1], a
 	pop af
 	ret
 

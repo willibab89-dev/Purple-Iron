@@ -115,6 +115,7 @@ AbilityTextPointers:
 	dw AbilityText277, AbilityText278, AbilityText279, AbilityText280
 	dw AbilityText281, AbilityText282, AbilityText283, AbilityText284, AbilityText285
 	dw AbilityText286, AbilityText287, AbilityText288, AbilityText289
+	dw AbilityText290, AbilityText291, AbilityText292
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -497,6 +498,9 @@ AbilityText286: db "FLAME BODY",$4e,"Physical hit: 25%",$4e,"burns attacker.@"
 AbilityText287: db "MAGMA ARMOR",$4e,"Prevents freeze;",$4e,"Ice damage x0.5.@"
 AbilityText288: db "VITAL HEAT",$4e,"Fire move: heal",$4e,"1/8 max HP.@"
 AbilityText289: db "BURNING RAGE",$4e,"Damage x1.25 vs",$4e,"burned foe.@"
+AbilityText290: db "MOXIE",$4e,"Knock out a foe:",$4e,"Attack +1.@"
+AbilityText291: db "ARMOR CRUSHER",$4e,"Bug moves are strong",$4e,"against Rock.@"
+AbilityText292: db "CRUSHING GRIP",$4e,"Physical hit: 20%",$4e,"foe Defense -1.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -579,6 +583,7 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SNOW_VEIL
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_HOT_TEMPER, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, AB_HYPER_CUTTER, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_HARD_SHELL
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -725,6 +730,7 @@ AbilitySpeciesPools:
 	db JYNX, 77
 	db ELECTABUZZ, 78
 	db MAGMAR, 79
+	db PINSIR, 80
 	db 0
 
 ; Shared battle move flags live with the banked ability data.
@@ -794,6 +800,9 @@ AbilityExtendedPoolIds:
  db 79, 3, AB_MAGMA_ARMOR - ABILITY_EXTENDED
  db 79, 4, AB_VITAL_HEAT - ABILITY_EXTENDED
  db 79, 5, AB_BURNING_RAGE - ABILITY_EXTENDED
+ db 80, 1, AB_MOXIE - ABILITY_EXTENDED
+ db 80, 3, AB_ARMOR_CRUSHER - ABILITY_EXTENDED
+ db 80, 4, AB_CRUSHING_GRIP - ABILITY_EXTENDED
  db 0
 
 

@@ -167,7 +167,8 @@ def validate(version):
                'SCYTHER':['TECHNICIAN','SHARP_BLADES','VANGUARD','EXECUTIONER','DOUBLE_SCYTHES'],
                'JYNX':['DANCER','COLD_TOUCH','ENCHANTRESS','ICE_QUEEN','SNOW_VEIL'],
                'ELECTABUZZ':['POWER_SURGE','ENERGY_DRAIN','THUNDERSTRUCK','LIVE_WIRE','GALVANIZE'],
-               'MAGMAR':['MAGMAR_FLAME_BODY','HOT_TEMPER','MAGMA_ARMOR','VITAL_HEAT','BURNING_RAGE']}
+               'MAGMAR':['MAGMAR_FLAME_BODY','HOT_TEMPER','MAGMA_ARMOR','VITAL_HEAT','BURNING_RAGE'],
+               'PINSIR':['MOXIE','HYPER_CUTTER','ARMOR_CRUSHER','CRUSHING_GRIP','HARD_SHELL']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1405,6 +1406,24 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Pinsir: knockout boost, crit protection, type override and physical effects.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'MOXIE');word(tp+'HP',0);call('AbilityAfterHit');call('AbilityAfterAction');assert get(actor+'MonAttackMod')==8,(turn,'moxie direct KO')
+            ap,tp=init(turn);aid(turn,'MOXIE');word(tp+'HP',0);call('AbilityAfterAction');assert get(actor+'MonAttackMod')==7,(turn,'moxie no direct KO')
+            for stat in range(6):
+                init(turn);aid(1-turn,'HYPER_CUTTER');put('wCustomSide',1-turn);put('wCustomStat',stat);put('wCustomDelta',255);call('AbilityKeenEyeCustom');assert get('wAbilityCheckResult')==(stat==0),(turn,stat,'hyper cutter')
+            for crit,want in [(0,100),(1,125),(2,100)]:
+                init(turn);move(turn,'TACKLE');aid(turn,'HYPER_CUTTER');put('wCriticalHitOrOHKO',crit);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,crit,'hyper cutter critical')
+            for attack,t1,t2,enabled,want in [('BUG','ROCK','ROCK',True,20),('BUG','ROCK','FIRE',True,10),('BUG','ROCK','GRASS',True,40),('BUG','GHOST','ROCK',True,10),('BUG','ROCK','ROCK',False,10),('BUG','ROCK','FIRE',False,5),('FIRE','ROCK','ROCK',True,5)]:
+                ap,tp=init(turn);aid(turn,'ARMOR_CRUSHER' if enabled else None);put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2]);put(actor+'MoveType',TYPES[attack]);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==want*10 and get('wDamageMultipliers')==want,(turn,attack,t1,t2,enabled,'armor crusher',readword('wDamage'),get('wDamageMultipliers'));put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==want,(turn,attack,t1,t2,enabled,'armor crusher AI',get('wTypeEffectiveness'))
+            for attack,roll,sub,protection,want in [('TACKLE',0,0,None,6),('TACKLE',39,0,None,6),('TACKLE',40,0,None,7),('EMBER',0,0,None,7),('TACKLE',0,1,None,7),('TACKLE',0,0,'SHIELD_DUST',7),('TACKLE',0,0,'CLEAR_BODY',7)]:
+                init(turn);move(turn,attack);aid(turn,'CRUSHING_GRIP');aid(1-turn,protection);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(target+'MonDefenseMod')==want,(turn,attack,roll,sub,protection,'crushing grip',get(target+'MonDefenseMod'))
+            for attack,want in [('TACKLE',75),('EMBER',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'HARD_SHELL');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'hard shell')
+        for slot,name in [(1,'MOXIE'),(3,'ARMOR CRUSHER'),(4,'CRUSHING GRIP')]:
+            metadata('wPartyMon1','PINSIR',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Magmar: physical reactions, both freeze paths, healing and burn damage.
         anim_bank,anim_addr=syms['PlayBattleAnimation'];anim_original=game.memory[anim_bank,anim_addr];patch('PlayBattleAnimation',[0xc9])
         for turn in (0,1):
@@ -1724,6 +1743,10 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,actor='MOXIE',hp=1,random_value=100);assert readword(tp+'HP')==0 and get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==8,(turn,'live moxie')
+            ap,tp=execute('TACKLE',turn,actor='CRUSHING_GRIP',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==6,(turn,'live crushing grip')
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,target='HARD_SHELL',random_value=100);assert 160-readword(tp+'HP')<normal,(turn,'live hard shell',normal,readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,target='MAGMAR_FLAME_BODY',random_value=0);assert get(ap+'Status')==16,(turn,'live magmar flame body')
             ap,tp=execute('TACKLE',turn,target='HOT_TEMPER',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonSpecialMod')==8,(turn,'live hot temper')
             ap,tp=execute('ICE_BEAM',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -2045,7 +2068,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 127 species / 635 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 128 species / 640 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

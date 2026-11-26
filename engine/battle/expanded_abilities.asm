@@ -365,6 +365,29 @@ AbilityCorrosiveAICheck:
 .side
  call AbilityGet
 AbilityTypeOverride:
+ ; The neutral chart entry makes Bug/Rock available to the shared hooks.
+ push af
+ ld a, [wAbilityTemp]
+ cp ROCK
+ jr nz, .otherMatchup
+ ld a, [wAbilityTemp + 1]
+ cp BUG
+ jr nz, .otherMatchup
+ pop af
+ cp ABILITY_EXTENDED
+ jr nz, .bugRockNeutral
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ARMOR_CRUSHER - ABILITY_EXTENDED
+ jr nz, .bugRockNeutral
+ ld a, 20
+ jr .bugRockStore
+.bugRockNeutral
+ ld a, 10
+.bugRockStore
+ ld [wAbilityCheckResult], a
+ ret
+.otherMatchup
+ pop af
  cp AB_ICEBREAKER
  jr nz, .notIcebreaker
  ld a, [wAbilityTemp]
@@ -3283,6 +3306,13 @@ AbilityLowHP:
 
 AbilityFrenzy:
 	call AbilityActor
+	cp ABILITY_EXTENDED
+	jr nz, .ordinary
+	ld a, [wAbilityResolvedExtended]
+	cp AB_MOXIE - ABILITY_EXTENDED
+	jr z, .directKO
+	ret
+.ordinary
 	cp AB_FRENZY
 	jr z, .directKO
 	cp AB_SCAVENGER
@@ -4642,8 +4672,16 @@ AbilityIronGripCheck:
 
 AbilityGrappler:
  call AbilityActor
+ cp ABILITY_EXTENDED
+ jr nz, .ordinary
+ ld a, [wAbilityResolvedExtended]
+ cp AB_CRUSHING_GRIP - ABILITY_EXTENDED
+ ret nz
+ jr .crushing
+.ordinary
  cp AB_CRUSHING_CLAWS
  jr nz, .grappler
+.crushing
  ld a, [wAbilityHit]
  bit 1, a ; a move gets one additional-effect roll
  ret nz
@@ -4670,8 +4708,16 @@ AbilityGrappler:
  ret nz
  call AbilityActor
  cp AB_CRUSHING_CLAWS
+ jr z, .twenty
+ cp ABILITY_EXTENDED
+ jr nz, .ten
+ ld a, [wAbilityResolvedExtended]
+ cp AB_CRUSHING_GRIP - ABILITY_EXTENDED
+ jr z, .twenty
+.ten
  ld b, 10
- jr nz, .roll
+ jr .roll
+.twenty
  ld b, 20
 .roll
  call AbilityRoll

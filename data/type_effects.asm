@@ -71,6 +71,7 @@ TypeEffects:
 	db BUG,FLYING,05
 	db BUG,PSYCHIC,20
 	db BUG,GHOST,05
+	db BUG,ROCK,10 ; neutral unless Armor Crusher changes this matchup
 	db BUG,POISON,20
 	db ROCK,FIRE,20
 	db ROCK,FIGHTING,05

@@ -40,6 +40,8 @@ def validate(version):
         ('POISON', 'GHOST', 'BUG', 5),
         ('FLYING', 'ICE', 'ICE', 10),
         ('BUG', 'POISON', 'POISON', 20),
+        ('BUG', 'ROCK', 'ROCK', 10),
+        ('BUG', 'ROCK', 'FIRE', 5),
         ('GROUND', 'FIRE', 'POISON', 40),
         ('ROCK', 'ICE', 'FLYING', 40),
     ]
