@@ -1784,6 +1784,7 @@ AbilityHitEvents:
 	call AbilityTarget
 	cp AB_SHIELD_DUST
 	ret z
+	callab AbilityIntenseFlamesOnHit
 	call AbilityActor
 	cp AB_REPULSIVE
 	jr nz, .leaf

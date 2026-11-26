@@ -2209,6 +2209,11 @@ AbilityExtendedPoolIds:
  db 96, 3, AB_LIGHTNING_SPEED - ABILITY_EXTENDED
  db 96, 4, AB_LIGHTNING_SPEED - ABILITY_EXTENDED
  db 96, 5, AB_LIGHTNING_SPEED - ABILITY_EXTENDED
+ db 97, 1, AB_INTENSE_FLAMES - ABILITY_EXTENDED
+ db 97, 2, AB_INTENSE_FLAMES - ABILITY_EXTENDED
+ db 97, 3, AB_INTENSE_FLAMES - ABILITY_EXTENDED
+ db 97, 4, AB_INTENSE_FLAMES - ABILITY_EXTENDED
+ db 97, 5, AB_INTENSE_FLAMES - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2519,6 +2524,7 @@ AbilitySpeciesPools:
 	db SNORLAX, 94
 	db ARTICUNO, 95
 	db ZAPDOS, 96
+	db MOLTRES, 97
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3265,3 +3271,17 @@ AbilityLightningSpeedMove:
 .store
  ld [wAbilityCheckResult], a
  ret
+
+; The shared after-hit path already checked damage, Substitute, target HP,
+; and Shield Dust before this guaranteed burn.
+AbilityIntenseFlamesOnHit:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_INTENSE_FLAMES - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wCustomSide], a
+ ld a, 1 << BRN
+ ld [wCustomDelta], a
+ jpab UtilityInflictStatus

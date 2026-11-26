@@ -197,7 +197,8 @@ def validate(version):
                'AERODACTYL':['PREDATOR','ROCK_HEAD','RELENTLESS','SAVAGE_JAWS','TERRIFYING'],
                'SNORLAX':['HEAVY_SLEEPER','THICK_FAT','GLUTTONY','SLEEPWALKER','IMMUNITY'],
                'ARTICUNO':['ABSOLUTE_ZERO']*5,
-               'ZAPDOS':['LIGHTNING_SPEED']*5}
+               'ZAPDOS':['LIGHTNING_SPEED']*5,
+               'MOLTRES':['INTENSE_FLAMES']*5}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1288,6 +1289,11 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Intense Flames burns after any damaging hit, subject to protections.
+        for turn in (0,1):
+            for attack,sub,protection,typ,hp,status,want in [('TACKLE',0,None,'NORMAL',160,0,16),('EMBER',0,None,'NORMAL',160,0,16),('SONICBOOM',0,None,'NORMAL',160,0,16),('GROWL',0,None,'NORMAL',160,0,0),('TACKLE',1,None,'NORMAL',160,0,0),('TACKLE',0,'SHIELD_DUST','NORMAL',160,0,0),('TACKLE',0,'WATER_VEIL','NORMAL',160,0,0),('TACKLE',0,'ANTIVIRUS','NORMAL',160,0,0),('TACKLE',0,'NEUTRALIZING_GAS','NORMAL',160,0,0),('TACKLE',0,None,'FIRE',160,0,0),('TACKLE',0,None,'NORMAL',0,0,0),('TACKLE',0,None,'NORMAL',160,8,8)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'INTENSE_FLAMES');aid(1-turn,protection);put('wCustomTargetHadSub',sub);put(tp+'Type1',TYPES[typ]);put(tp+'Type2',TYPES[typ]);word(tp+'HP',hp);put(tp+'Status',status);rng(199);call('AbilityAfterHit');assert get(tp+'Status')==want,(turn,attack,sub,protection,typ,hp,status,get(tp+'Status'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'INTENSE_FLAMES');word('wDamage',0);call('AbilityAfterHit');assert get(tp+'Status')==0,(turn,'no damage')
         # Lightning Speed boosts Electric attacks and status moves for both sides.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player')
@@ -2032,6 +2038,13 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            for attack in ('TACKLE','EMBER','SONICBOOM'):
+                ap,tp=execute(attack,turn,actor='INTENSE_FLAMES',random_value=100);assert get(tp+'Status')==16 and readword(tp+'HP')<160,(turn,attack,'live intense flames',get(tp+'Status'))
+            ap,tp=execute('BIDE',turn,actor='INTENSE_FLAMES',bide_damage=20,random_value=100);assert get(tp+'Status')==16 and readword(tp+'HP')<160,(turn,'bide intense flames',get(tp+'Status'),readword(tp+'HP'))
+            ap,tp=execute('COUNTER',turn,actor='INTENSE_FLAMES',counter_damage=20,random_value=100);assert get(tp+'Status')==16 and readword(tp+'HP')<160,(turn,'counter intense flames',get(tp+'Status'),readword(tp+'HP'))
+            ap,tp=execute('FIRE_BLAST',turn,actor='INTENSE_FLAMES',random_value=254);assert get(tp+'Status')==0 and readword(tp+'HP')==160,(turn,'miss')
+            ap,tp=execute('TACKLE',turn,actor='INTENSE_FLAMES',target='WATER_VEIL',random_value=100);assert get(tp+'Status')==0,(turn,'water veil')
+            ap,tp=execute('TACKLE',turn,actor='INTENSE_FLAMES',subhp=40,random_value=100);assert get(tp+'Status')==0,(turn,'substitute')
             ap,tp=execute('ICE_BEAM',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('ICE_BEAM',turn,actor='ABSOLUTE_ZERO',target_types=('WATER','WATER'),random_value=100);assert 160-readword(tp+'HP')==normal,(turn,'live absolute zero',normal,readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -2407,7 +2420,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 146 species / 730 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 147 species / 735 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

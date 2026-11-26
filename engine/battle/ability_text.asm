@@ -127,7 +127,7 @@ AbilityTextPointers:
 	dw AbilityText319, AbilityText320, AbilityText321
 	dw AbilityText322, AbilityText323, AbilityText324, AbilityText325, AbilityText326
 	dw AbilityText327, AbilityText328, AbilityText329, AbilityText330
-	dw AbilityText331, AbilityText332, AbilityText333, AbilityText334
+	dw AbilityText331, AbilityText332, AbilityText333, AbilityText334, AbilityText335
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -555,6 +555,7 @@ AbilityText331: db "HEAVY SLEEPER",$4e,"Asleep: heal 1/16",$4e,"HP each turn.@"
 AbilityText332: db "SLEEPWALKER",$4e,"Acts asleep; deals",$4e,"half damage.@"
 AbilityText333: db "ABSOLUTE ZERO",$4e,"Ice attacks ignore",$4e,"Ice resistance.@"
 AbilityText334: db "LIGHTNING SPEED",$4e,"Electric moves",$4e,"gain priority +1.@"
+AbilityText335: db "INTENSE FLAMES",$4e,"Damaging hits burn",$4e,"the target.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -652,5 +653,6 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, AB_BATTLE_ARMOR, AB_LEECHING, ABILITY_EXTENDED
 	db AB_PREDATOR, AB_ROCK_HEAD, AB_RELENTLESS, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_THICK_FAT, AB_GLUTTONY, ABILITY_EXTENDED, AB_IMMUNITY
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
