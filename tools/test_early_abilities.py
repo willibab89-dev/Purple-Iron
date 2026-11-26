@@ -170,7 +170,8 @@ def validate(version):
                'MAGMAR':['MAGMAR_FLAME_BODY','HOT_TEMPER','MAGMA_ARMOR','VITAL_HEAT','BURNING_RAGE'],
                'PINSIR':['MOXIE','HYPER_CUTTER','ARMOR_CRUSHER','CRUSHING_GRIP','HARD_SHELL'],
                'TAUROS':['STAMPEDE','RAMPAGE','UNSTOPPABLE','ANGER_POINT','SAP_SIPPER'],
-               'MAGIKARP':['PATHETIC','SPLASHING','DETERMINATION','SWIFT_SWIM','DESPERATION']}
+               'MAGIKARP':['PATHETIC','SPLASHING','DETERMINATION','SWIFT_SWIM','DESPERATION'],
+               'GYARADOS':['OVERWHELMING','GROWL_INTIMIDATE','WRATH','MOXIE','SAVAGE_JAWS']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1408,6 +1409,25 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Gyarados: independent multipliers, battle-long Wrath and biting moves.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for crit,mult,want in [(0,10,100),(1,10,125),(0,20,125),(1,20,156),(0,5,100),(2,20,100)]:
+                init(turn);move(turn,'TACKLE');aid(turn,'OVERWHELMING');put('wCriticalHitOrOHKO',crit);put('wDamageMultipliers',mult);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,crit,mult,'overwhelming',readword('wDamage'))
+            for attack,want in [('BITE',130),('CRUNCH',130),('HYPER_FANG',130),('POISON_FANG',130),('TACKLE',100),('EMBER',100)]:
+                init(turn);move(turn,attack);aid(turn,'SAVAGE_JAWS');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'savage jaws',readword('wDamage'))
+            init(turn);move(turn,'SUPER_FANG');aid(turn,'SAVAGE_JAWS');put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==130,(turn,'savage jaws fixed')
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'WRATH');call('AbilityAfterHit');put('turn',1-turn);move(1-turn,'GROWL');call('AbilityBeforeAction');call('AbilityAttempt');call('AbilityAfterAction');move(1-turn,'TACKLE');call('AbilityBeforeAction');call('AbilityAttempt');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==120,(turn,'wrath after status',readword('wDamage'));word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==120,(turn,'wrath all hits');call('AbilityBeforeAction');call('AbilityAttempt');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100,(turn,'wrath spent')
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'WRATH');put('wCustomTargetHadSub',1);call('AbilityAfterHit');put('turn',1-turn);move(1-turn,'TACKLE');call('AbilityBeforeAction');call('AbilityAttempt');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100,(turn,'wrath substitute')
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'WRATH');call('AbilityAfterHit');put('turn',1-turn);move(1-turn,'TACKLE');call('AbilityBeforeAction');call('AbilityAttempt');put('wMoveMissed',1);call('AbilityAfterAction');call('AbilityBeforeAction');call('AbilityAttempt');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100,(turn,'wrath miss consumes')
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'WRATH');call('AbilityAfterHit');put('turn',1-turn);move(1-turn,'BIDE');call('AbilityBeforeAction');call('AbilityAttempt');put('wAbilityHit',32);put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==120,(turn,'wrath bide release',readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'MOXIE');word(tp+'HP',0);call('AbilityAfterHit');call('AbilityAfterAction');assert get(actor+'MonAttackMod')==8,(turn,'gyarados moxie')
+            ap,tp=init(turn);aid(turn,'GROWL_INTIMIDATE');put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get(target+'MonSpeedMod')==6,(turn,'gyarados intimidate');call('AbilityEntrySpeed');assert get(target+'MonSpeedMod')==6,(turn,'intimidate once')
+        for slot,name in [(1,'OVERWHELMING'),(3,'WRATH'),(4,'MOXIE'),(5,'SAVAGE JAWS')]:
+            metadata('wPartyMon1','GYARADOS',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
+        for slot in range(1,6):
+            metadata('wPartyMon1','MAGIKARP',slot,17);before=get('wPartyMon1Type1')>>5;put('wPartyMon1Species',ids['GYARADOS']);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert get('wPartyMon1Type1')>>5==before==slot,(slot,'evolution slot')
         # Magikarp: experience, Splash, full-HP survival and low-HP offense.
         for slot,species in [(1,'MAGIKARP'),(2,'MAGIKARP'),(1,'GYARADOS'),(1,'PIDGEY')]:
             for award in (0,1,2,3,4,5,100,101,256,1000,65535):
@@ -1797,6 +1817,12 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',1-turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,target='WRATH',random_value=100);move(1-turn,'TACKLE');put('wActionResultOrTookBattleTurn',0);call('ExecutePlayerMove' if turn else 'ExecuteEnemyMove');assert 160-readword(ap+'HP')>normal,(turn,'live wrath',normal,readword(ap+'HP'))
+            ap,tp=execute('BITE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('BITE',turn,actor='SAVAGE_JAWS',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live savage jaws',normal,readword(tp+'HP'))
+            ap,tp=execute('TACKLE',turn,random_value=0);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='OVERWHELMING',random_value=0);assert 160-readword(tp+'HP')>normal,(turn,'live overwhelming critical',normal,readword(tp+'HP'))
             ap,tp=execute('SPLASH',turn,actor='SPLASHING',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8,(turn,'live splashing')
             ap,tp=execute('TACKLE',turn,target='DETERMINATION',hp=160,random_value=100);assert readword(tp+'HP')>0,(turn,'live determination nonfatal')
             ap,tp=execute('WATER_GUN',turn,target='SWIFT_SWIM',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==9,(turn,'live swift swim')
@@ -2131,7 +2157,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 130 species / 650 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 131 species / 655 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

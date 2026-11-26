@@ -1614,3 +1614,111 @@ AbilitySturdyIncomingBanked:
 .alreadyUsed
  pop bc
  ret
+
+; Consume Wrath on an executed damaging move; a miss still spends it.
+AbilityWrathAttempt:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_WRATH - ABILITY_EXTENDED
+ ret nz
+ callab AbilityWrathMoveCheck
+ ret nc
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityFlagsPointer
+ bit 0, [hl]
+ ret z
+ res 0, [hl]
+ ld hl, wAbilityHit
+ set 4, [hl]
+ ret
+
+AbilityGyaradosDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_OVERWHELMING - ABILITY_EXTENDED
+ jr z, .overwhelming
+ cp AB_WRATH - ABILITY_EXTENDED
+ jp z, AbilityGyaradosFixedDamage.wrath
+ cp AB_SAVAGE_JAWS - ABILITY_EXTENDED
+ jp z, AbilityGyaradosFixedDamage.jaws
+ ret
+.overwhelming
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ ret z
+ cp 1
+ jr nz, .effectiveness
+ callab AbilityScaleDamage125
+.effectiveness
+ ld a, [wDamageMultipliers]
+ and $7f
+ cp 11
+ ret c
+ jpab AbilityScaleDamage125
+
+AbilityGyaradosFixedDamage:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_WRATH - ABILITY_EXTENDED
+ jr z, .wrath
+ cp AB_SAVAGE_JAWS - ABILITY_EXTENDED
+ jr z, .jaws
+ ret
+.wrath
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ ret z
+ ld a, [wAbilityHit]
+ bit 4, a
+ jr nz, .wrathBoost
+ ; Bide releases outside the ordinary move-attempt hook.
+ bit 5, a
+ ret z
+ callab AbilityMove
+ ld a, [hl]
+ cp BIDE
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityFlagsPointer
+ bit 0, [hl]
+ ret z
+ res 0, [hl]
+ ld hl, wAbilityHit
+ set 4, [hl]
+.wrathBoost
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ jpab AbilityScaleDamage120
+.jaws
+ callab AbilityMove
+ ld a, [hl]
+ cp BITE
+ jr z, .jawsBoost
+ cp CRUNCH
+ jr z, .jawsBoost
+ cp HYPER_FANG
+ jr z, .jawsBoost
+ cp SUPER_FANG
+ jr z, .jawsBoost
+ cp POISON_FANG
+ ret nz
+.jawsBoost
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ jpab AbilityScaleDamage130

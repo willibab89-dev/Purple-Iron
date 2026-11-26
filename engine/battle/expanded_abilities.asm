@@ -539,6 +539,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	callab AbilityGyaradosDamage
 	call AbilityDesperationDamage
 	call AbilityBurningRageDamage
 	call AbilityIceQueenDamage
@@ -1152,6 +1153,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	callab AbilityGyaradosFixedDamage
 	call AbilityDesperationFixedDamage
 	call AbilityBurningRageFixedDamage
 	call AbilityFocusedFixedDamage
@@ -1466,6 +1468,7 @@ AbilityAttempt:
 	ld hl, wAbilityHit
 	set 3, [hl] ; a move was actually executed this action
 	call AbilityFocusedAttempt
+	callab AbilityWrathAttempt
 	call AbilityMove
 	ld a, [hl]
 	cp METRONOME
@@ -3042,6 +3045,8 @@ AbilityGetTargetReactions:
 	jp z, .angerPoint
 	cp AB_SAP_SIPPER - ABILITY_EXTENDED
 	jp z, .sapSipper
+	cp AB_WRATH - ABILITY_EXTENDED
+	jp z, .wrath
 	call AbilityTarget
 .normalReaction
 	cp AB_COUNTERPUNCH
@@ -3068,6 +3073,10 @@ AbilityGetTargetReactions:
 	call AbilityRaiseStage
 	xor a
 	call AbilityRaiseStage
+	jp .contact
+.wrath
+	call AbilityFlagsPointer
+	set 0, [hl]
 	jp .contact
 .sapSipper
 	ld a, [wAbilityMoveType]
@@ -7630,6 +7639,29 @@ AbilityDesperationFixedDamage:
 AbilityScaleDamage125:
  ld c, 125
  jp AbilityScaleDamage
+
+AbilityScaleDamage120:
+ ld c, 120
+ jp AbilityScaleDamage
+
+AbilityScaleDamage130:
+ ld c, 130
+ jp AbilityScaleDamage
+
+; Carry for damaging moves other than Bide, whose release is handled later.
+AbilityWrathMoveCheck:
+ call AbilityMove
+ ld a, [hl]
+ cp BIDE
+ jr z, .no
+ call AbilityMoveFlags
+ bit 0, a
+ jr z, .no
+ scf
+ ret
+.no
+ and a
+ ret
 
 AbilityBurningRageDamage:
  ld a, [wUnusedC000]
