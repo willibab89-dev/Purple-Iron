@@ -2959,6 +2959,11 @@ AbilitySpinyArmor:
 	cp AB_SPINY_ARMOR
 	jr z, .physical
 	cp AB_SPIKED_SHELL
+	jr z, .physical
+	cp ABILITY_EXTENDED
+	ret nz
+	ld a, [wAbilityResolvedExtended]
+	cp AB_SPIKY_FUR - ABILITY_EXTENDED
 	ret nz
 .physical
 	ld a, [wAbilityMoveType]
@@ -3006,12 +3011,22 @@ AbilitySpinyArmor:
 	callab UtilitySyncParty
 	callab DrawHUDsAndHPBars
 	call AbilityTarget
+	cp ABILITY_EXTENDED
+	jr nz, .standardText
+	ld a, [wAbilityResolvedExtended]
+	cp AB_SPIKY_FUR - ABILITY_EXTENDED
+	jp z, AbilitySpikyFurMessage
+	call AbilityTarget
+.standardText
 	cp AB_SPIKED_SHELL
 	ld hl, AbilitySpinyArmorText
 	jr nz, .print
 	ld hl, AbilitySpikedShellText
 .print
 	jp PrintText
+
+AbilitySpikyFurMessage:
+ jpab AbilitySpikyFurMessageBanked
 
 AbilitySpikedShellText:
 	text "Hurt by"
@@ -5166,6 +5181,8 @@ AbilityLevitateAICheck:
  ret nz
  ld a, [wAbilityResolvedExtended]
  cp AB_LIGHTNING_ROD - ABILITY_EXTENDED
+ jr z, .immune
+ cp AB_VOLT_ABSORB - ABILITY_EXTENDED
  ret nz
 .immune
  ld a, 1

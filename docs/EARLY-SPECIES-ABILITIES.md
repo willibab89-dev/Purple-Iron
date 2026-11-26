@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 135 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 136 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -91,6 +91,7 @@ Implemented for 135 species, with five equally likely slots per species. The sav
 | Ditto | Perfect Copy | Unstable DNA | Shapeshifter | Copy Master | Soft Body |
 | Eevee | Versatility | Adaptable | Flexible | Quick Learner | Protean |
 | Vaporeon | Liquid Body | Water Veil | Regeneration | Water Absorb | Deep Sea Pressure |
+| Jolteon | Galvanize | Quick Feet | Spiky Fur | Volt Absorb | High Voltage |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
@@ -256,11 +257,11 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 675 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 680 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
 
 ## Extended ability IDs
 
-Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 194 extended IDs remain available. Legacy IDs 252–254 are also available.
+Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 192 extended IDs remain available. Legacy IDs 252–254 are also available.
 
 At battle entry, each side receives an extension byte in transient WRAM. `AbilityGet` returns the escape marker and sets `wAbilityResolvedExtended` for the selected side; it clears that scratch value for ordinary or suppressed abilities. An extended ability’s battle hook must check both the marker and the extension byte immediately after the lookup. `AbilityDrawDescriptionBanked` maps the extension to the matching pointer beginning at index 256; add description pointers in ID order when adding future extended abilities. Switching and Neutralizing Gas retain the side-local identity, while active-ability replacement takes precedence.
 
@@ -289,3 +290,5 @@ Ditto: Perfect Copy restores 1/4 maximum HP after successfully transforming once
 Eevee: Versatility boosts off-type damage by 20%; Adaptable boosts resisted damage by 20%; Flexible reduces super-effective damage by 25%; Quick Learner raises Speed once per battle after an off-type move; Protean changes the user’s battle type to the move used.
 
 Vaporeon: Liquid Body reduces physical damage by 20%; Water Veil prevents burns and halves Fire damage; Regeneration restores 1/16 maximum HP each turn; Water Absorb turns a successful Water attack into 1/4 maximum HP healing; Deep Sea Pressure gives Water hits a 20% chance to lower Speed.
+
+Jolteon: Galvanize converts Normal moves to Electric; Quick Feet raises Speed when affected by a major status condition; Spiky Fur damages physical attackers by 1/16 of their maximum HP; Volt Absorb turns a successful Electric attack into 1/4 maximum HP healing; High Voltage boosts Electric damage by 20% against slower foes.

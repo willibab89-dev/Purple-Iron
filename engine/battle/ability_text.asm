@@ -123,6 +123,7 @@ AbilityTextPointers:
 	dw AbilityText305, AbilityText306, AbilityText307, AbilityText308
 	dw AbilityText309, AbilityText310, AbilityText311, AbilityText312, AbilityText313
 	dw AbilityText314, AbilityText315, AbilityText316
+	dw AbilityText317, AbilityText318
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -532,6 +533,8 @@ AbilityText313: db "PROTEAN",$4e,"Changes type to",$4e,"the move used.@"
 AbilityText314: db "LIQUID BODY",$4e,"Physical damage",$4e,"received x0.8.@"
 AbilityText315: db "WATER ABSORB",$4e,"Water hits heal",$4e,"1/4 maximum HP.@"
 AbilityText316: db "DEEP SEA PRESSURE",$4e,"Water hit: 20%",$4e,"foe Speed -1.@"
+AbilityText317: db "SPIKY FUR",$4e,"Physical attacker",$4e,"loses 1/16 HP.@"
+AbilityText318: db "VOLT ABSORB",$4e,"Electric hits heal",$4e,"1/4 maximum HP.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -622,6 +625,7 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SOFT_BODY
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_WATER_VEIL, AB_REGENERATION, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, AB_QUICK_FEET, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_HIGH_VOLTAGE
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -776,6 +780,7 @@ AbilitySpeciesPools:
 	db DITTO, 85
 	db EEVEE, 86
 	db VAPOREON, 87
+	db JOLTEON, 88
 	db 0
 
 ; Shared battle move flags live with the banked ability data.

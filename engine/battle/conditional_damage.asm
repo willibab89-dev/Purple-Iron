@@ -2005,7 +2005,12 @@ AbilityElementAbsorbOnHit:
  ret nz
  ld a, [wAbilityResolvedExtended]
  cp AB_WATER_ABSORB - ABILITY_EXTENDED
+ jr z, .water
+ cp AB_VOLT_ABSORB - ABILITY_EXTENDED
  ret nz
+ ld b, ELECTRIC
+ jr .attack
+.water
  ld b, WATER
  jr .attack
 .ground
@@ -2155,4 +2160,15 @@ AbilityExtendedPoolIds:
  db 87, 1, AB_LIQUID_BODY - ABILITY_EXTENDED
  db 87, 4, AB_WATER_ABSORB - ABILITY_EXTENDED
  db 87, 5, AB_DEEP_SEA_PRESSURE - ABILITY_EXTENDED
+ db 88, 1, AB_GALVANIZE - ABILITY_EXTENDED
+ db 88, 3, AB_SPIKY_FUR - ABILITY_EXTENDED
+ db 88, 4, AB_VOLT_ABSORB - ABILITY_EXTENDED
  db 0
+
+AbilitySpikyFurMessageBanked:
+ ld hl, AbilitySpikyFurText
+ jp PrintText
+AbilitySpikyFurText:
+ text "Hurt by"
+ line "SPIKY FUR!"
+ prompt
