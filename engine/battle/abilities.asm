@@ -594,6 +594,7 @@ AbilityEndRound:
 	and a
 	ret nz
 	call AbilityNightmareBoth
+	callab AbilityHeatWaveBoth
 	call AbilityGasLeakBoth
 	xor a
 	ld [wAbilitySide], a

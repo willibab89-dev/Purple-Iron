@@ -539,6 +539,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	callab AbilityFluffyDamage
 	callab AbilityEeveeDamage
 	callab AbilityGyaradosDamage
 	call AbilityDesperationDamage
@@ -963,6 +964,8 @@ AbilityModifyDamage:
 	ld a, [wAbilityResolvedExtended]
 	cp AB_LIQUID_BODY - ABILITY_EXTENDED
 	jp z, .physicalReduction
+	cp AB_MAGMA_COAT - ABILITY_EXTENDED
+	jp z, .superEffective
 	cp AB_FLEXIBLE - ABILITY_EXTENDED
 	jp z, .superEffective
 	cp AB_ANCIENT_SHELL - ABILITY_EXTENDED
@@ -1160,6 +1163,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	callab AbilityFluffyFixedDamage
 	callab AbilityEeveeFixedDamage
 	callab AbilityGyaradosFixedDamage
 	call AbilityDesperationFixedDamage
@@ -1341,6 +1345,8 @@ AbilityExistingFixedDamageModifiers:
 	ld a, [wAbilityResolvedExtended]
 	cp AB_LIQUID_BODY - ABILITY_EXTENDED
 	jp z, .fixedPhysicalReduction
+	cp AB_MAGMA_COAT - ABILITY_EXTENDED
+	jr z, .fixedSuperEffective
 	cp AB_FLEXIBLE - ABILITY_EXTENDED
 	jr z, .fixedSuperEffective
 	cp AB_ANCIENT_SHELL - ABILITY_EXTENDED
@@ -1487,7 +1493,7 @@ AbilityAttempt:
 	call AbilityCachePP
 	ld hl, wAbilityHit
 	set 3, [hl] ; a move was actually executed this action
-	call AbilityFocusedAttempt
+	callab AbilityFocusedAttemptBanked
 	callab AbilityWrathAttempt
 	call AbilityMove
 	ld a, [hl]
@@ -7885,45 +7891,6 @@ AbilityParentalOverride:
  ret
 
 ; Focused is spent on the holder's first executed move, even a status move.
-AbilityFocusedAttempt:
- ld c, AB_FOCUSED - ABILITY_EXTENDED
- call AbilityExtendedActorIs
- ret nc
- ld a, [H_WHOSETURN]
- ld [wAbilitySide], a
- call AbilityFlagsPointer
- bit 0, [hl]
- jr z, .first
- bit 1, [hl]
- ret z
- push hl
- call AbilityMove
- ld a, [hl]
- cp BIDE
- pop hl
- ret z
- res 1, [hl] ; a different move cancels a pending Bide bonus
- ret
-.first
- set 0, [hl]
- call AbilityMove
- ld a, [hl]
- cp BIDE
- jr z, .bide
- call AbilityMoveFlags
- bit 0, a
- ret z
-.mark
- ld hl, wAbilityHit
- set 4, [hl]
- ret
-.bide
- ld a, [H_WHOSETURN]
- ld [wAbilitySide], a
- call AbilityFlagsPointer
- set 1, [hl] ; Bide releases outside its initial action
- jr .mark
-
 AbilityFocusedDamage:
  ld a, [wUnusedC000]
  bit 4, a

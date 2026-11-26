@@ -2163,6 +2163,9 @@ AbilityExtendedPoolIds:
  db 88, 1, AB_GALVANIZE - ABILITY_EXTENDED
  db 88, 3, AB_SPIKY_FUR - ABILITY_EXTENDED
  db 88, 4, AB_VOLT_ABSORB - ABILITY_EXTENDED
+ db 89, 1, AB_HEAT_WAVE - ABILITY_EXTENDED
+ db 89, 2, AB_MAGMA_COAT - ABILITY_EXTENDED
+ db 89, 4, AB_FLUFFY - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2172,3 +2175,296 @@ AbilitySpikyFurText:
  text "Hurt by"
  line "SPIKY FUR!"
  prompt
+
+; Process each living Heat Wave holder once per residual round.
+AbilityHeatWaveBoth:
+ xor a
+ ld [wAbilitySide], a
+ call .one
+ ld a, 1
+ ld [wAbilitySide], a
+.one
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_HEAT_WAVE - ABILITY_EXTENDED
+ ret nz
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ ld [wCustomSide], a
+ ld hl, wBattleMonType1
+ and a
+ jr z, .type
+ ld hl, wEnemyMonType1
+.type
+ ld a, [hli]
+ and $1f
+ cp FIRE
+ ret z
+ ld a, [hl]
+ and $1f
+ cp FIRE
+ ret z
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, 4
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChance], a
+ jpab ResidualFraction
+
+AbilityFluffyDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityFluffyFixedDamage:
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_FLUFFY - ABILITY_EXTENDED
+ ret nz
+ ld hl, wPlayerMoveType
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .type
+ ld hl, wEnemyMoveType
+.type
+ ld a, [hl]
+ cp FIRE
+ jr z, .fire
+ ret nc
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 70
+ jr .scale
+.fire
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 200
+.scale
+ ld a, [wDamage]
+ ld [H_MULTIPLICAND + 1], a
+ ld a, [wDamage + 1]
+ ld [H_MULTIPLICAND + 2], a
+ xor a
+ ld [H_MULTIPLICAND], a
+ ld a, c
+ ld [H_MULTIPLIER], a
+ call Multiply
+ ld a, 100
+ ld [H_DIVISOR], a
+ ld b, 4
+ call Divide
+ ld a, [H_QUOTIENT + 2]
+ ld [wDamage], a
+ ld b, a
+ ld a, [H_QUOTIENT + 3]
+ ld [wDamage + 1], a
+ or b
+ ret nz
+ inc a
+ ld [wDamage + 1], a
+ ret
+
+AbilityFocusedAttemptBanked:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_FOCUSED - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityFlagsPointer
+ bit 0, [hl]
+ jr z, .first
+ bit 1, [hl]
+ ret z
+ callab AbilityMove
+ ld a, [hl]
+ cp BIDE
+ ret z
+ callab AbilityFlagsPointer
+ res 1, [hl]
+ ret
+.first
+ set 0, [hl]
+ callab AbilityMove
+ ld a, [hl]
+ cp BIDE
+ jr z, .bide
+ callab AbilityDancerStatusCheck
+ ret z
+.mark
+ ld hl, wAbilityHit
+ set 4, [hl]
+ ret
+.bide
+ callab AbilityFlagsPointer
+ set 1, [hl]
+ jr .mark
+
+; Species-to-pool lookup is banked separately from descriptions.
+AbilityFamilyBanked:
+ ld a, [wAbilityResolvedExtended]
+ ld b, a
+ ld hl, AbilitySpeciesPools
+.loop
+ ld a, [hli]
+ and a
+ jr z, .store
+ cp b
+ ld a, [hli]
+ jr nz, .loop
+.store
+ ld [wAbilityResolvedExtended], a
+ ret
+
+AbilitySpeciesPools:
+	db BULBASAUR, 1
+	db IVYSAUR, 1
+	db VENUSAUR, 1
+	db CHARMANDER, 2
+	db CHARMELEON, 2
+	db CHARIZARD, 2
+	db SQUIRTLE, 3
+	db WARTORTLE, 3
+	db BLASTOISE, 3
+	db CATERPIE, 4
+	db METAPOD, 5
+	db BUTTERFREE, 6
+	db WEEDLE, 7
+	db KAKUNA, 8
+	db BEEDRILL, 9
+	db PIDGEY, 10
+	db PIDGEOTTO, 10
+	db PIDGEOT, 10
+	db RATTATA, 11
+	db RATICATE, 11
+	db SPEAROW, 12
+	db FEAROW, 12
+	db EKANS, 13
+	db ARBOK, 13
+	db PIKACHU, 14
+	db RAICHU, 14
+	db SANDSHREW, 15
+	db SANDSLASH, 16
+	db NIDORAN_F, 17
+	db NIDORINA, 17
+	db NIDOQUEEN, 17
+	db NIDORAN_M, 18
+	db NIDORINO, 18
+	db NIDOKING, 18
+	db CLEFAIRY, 19
+	db CLEFABLE, 19
+	db VULPIX, 20
+	db NINETALES, 20
+	db JIGGLYPUFF, 21
+	db WIGGLYTUFF, 21
+	db ZUBAT, 22
+	db GOLBAT, 22
+	db CROBAT, 22
+	db ODDISH, 23
+	db GLOOM, 24
+	db VILEPLUME, 23
+	db PARAS, 25
+	db PARASECT, 26
+	db VENONAT, 27
+	db VENOMOTH, 27
+	db DIGLETT, 28
+	db DUGTRIO, 28
+	db MEOWTH, 29
+	db PERSIAN, 29
+	db PSYDUCK, 30
+	db GOLDUCK, 31
+	db MANKEY, 32
+	db PRIMEAPE, 32
+	db GROWLITHE, 33
+	db ARCANINE, 34
+	db POLIWAG, 35
+	db POLIWHIRL, 35
+	db POLIWRATH, 36
+	db ABRA, 37
+	db KADABRA, 38
+	db ALAKAZAM, 38
+	db MACHOP, 39
+	db MACHOKE, 39
+	db MACHAMP, 40
+	db BELLSPROUT, 41
+	db WEEPINBELL, 41
+	db VICTREEBEL, 41
+	db TENTACOOL, 42
+	db TENTACRUEL, 42
+	db GEODUDE, 43
+	db GRAVELER, 44
+	db GOLEM, 44
+	db PONYTA, 45
+	db RAPIDASH, 45
+	db SLOWPOKE, 46
+	db SLOWBRO, 46
+	db MAGNEMITE, 47
+	db MAGNETON, 47
+	db FARFETCHD, 48
+	db DODUO, 49
+	db DODRIO, 50
+	db SEEL, 51
+	db DEWGONG, 51
+	db GRIMER, 52
+	db MUK, 52
+	db SHELLDER, 53
+	db CLOYSTER, 53
+	db GASTLY, 54
+	db HAUNTER, 55
+	db GENGAR, 55
+	db ONIX, 56
+	db DROWZEE, 57
+	db HYPNO, 57
+	db KRABBY, 58
+	db KINGLER, 58
+	db VOLTORB, 59
+	db ELECTRODE, 59
+	db EXEGGCUTE, 60
+	db EXEGGUTOR, 61
+	db CUBONE, 62
+	db MAROWAK, 63
+	db HITMONLEE, 64
+	db HITMONCHAN, 65
+	db LICKITUNG, 66
+	db KOFFING, 67
+	db WEEZING, 67
+	db RHYHORN, 68
+	db RHYDON, 68
+	db CHANSEY, 69
+	db TANGELA, 70
+	db KANGASKHAN, 71
+	db HORSEA, 72
+	db SEADRA, 72
+	db GOLDEEN, 73
+	db SEAKING, 73
+	db STARYU, 74
+	db STARMIE, 74
+	db MR_MIME, 75
+	db SCYTHER, 76
+	db JYNX, 77
+	db ELECTABUZZ, 78
+	db MAGMAR, 79
+	db PINSIR, 80
+	db TAUROS, 81
+	db MAGIKARP, 82
+	db GYARADOS, 83
+	db LAPRAS, 84
+	db DITTO, 85
+	db EEVEE, 86
+	db VAPOREON, 87
+	db JOLTEON, 88
+	db FLAREON, 89
+	db 0
