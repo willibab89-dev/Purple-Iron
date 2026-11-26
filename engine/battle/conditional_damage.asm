@@ -2214,6 +2214,13 @@ AbilityExtendedPoolIds:
  db 97, 3, AB_INTENSE_FLAMES - ABILITY_EXTENDED
  db 97, 4, AB_INTENSE_FLAMES - ABILITY_EXTENDED
  db 97, 5, AB_INTENSE_FLAMES - ABILITY_EXTENDED
+ db 98, 2, AB_MYSTIC_SCALES - ABILITY_EXTENDED
+ db 98, 3, AB_SERPENT_GRACE - ABILITY_EXTENDED
+ db 98, 4, AB_MARVEL_SCALE - ABILITY_EXTENDED
+ db 99, 1, AB_MULTISCALE - ABILITY_EXTENDED
+ db 99, 2, AB_MYSTIC_SCALES - ABILITY_EXTENDED
+ db 99, 3, AB_INNER_FOCUS - ABILITY_EXTENDED
+ db 99, 4, AB_MARVEL_SCALE - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2525,6 +2532,9 @@ AbilitySpeciesPools:
 	db ARTICUNO, 95
 	db ZAPDOS, 96
 	db MOLTRES, 97
+	db DRATINI, 98
+	db DRAGONAIR, 98
+	db DRAGONITE, 99
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3285,3 +3295,232 @@ AbilityIntenseFlamesOnHit:
  ld a, 1 << BRN
  ld [wCustomDelta], a
  jpab UtilityInflictStatus
+
+; Mystic Scales and Multiscale apply to actual and fixed damage.
+AbilityDragonScalesDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityDragonScalesFixedDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_MYSTIC_SCALES - ABILITY_EXTENDED
+ jr z, .special
+ cp AB_MULTISCALE - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ dec hl
+ ld a, [de]
+ cp [hl]
+ ret nz
+ inc de
+ inc hl
+ ld a, [de]
+ cp [hl]
+ ret nz
+ ld c, 50
+ jp AbilityFluffyFixedDamage.scale
+.special
+ ld hl, wPlayerMoveType
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .type
+ ld hl, wEnemyMoveType
+.type
+ ld a, [hl]
+ cp FIRE
+ ret c
+ ld c, 80
+ jp AbilityFluffyFixedDamage.scale
+
+; A Dragon move can grant one Evasion stage once per battle.
+AbilitySerpentGraceAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SERPENT_GRACE - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ and a
+ ld hl, wPlayerMoveType
+ jr z, .move
+ ld hl, wEnemyMoveType
+.move
+ ld a, [hl]
+ cp DRAGON
+ ret nz
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ ld a, 5
+ ld [wCustomStat], a
+ ld a, 1
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChanged], a
+ jpab CustomChangeStage
+
+; A status condition grants one reversible Defense stage.
+AbilityMarvelScaleEntry:
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_MARVEL_SCALE - ABILITY_EXTENDED
+ ret nz
+ callab AbilityFlagsPointer
+ res 0, [hl]
+ jr AbilityMarvelScale.apply
+AbilityMarvelScale:
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_MARVEL_SCALE - ABILITY_EXTENDED
+ jr z, .apply
+ ; A suppressed holder must lose its existing temporary stage.
+ ld a, [wAbilitySide]
+ and a
+ ld hl, wActiveAbilities
+ jr z, .rawAbility
+ inc hl
+.rawAbility
+ ld a, [hl]
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilitySide]
+ and a
+ ld hl, wActiveAbilityExtended
+ jr z, .rawExtended
+ inc hl
+.rawExtended
+ ld a, [hl]
+ cp AB_MARVEL_SCALE - ABILITY_EXTENDED
+ ret nz
+ jr .healthy
+.apply
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ inc hl
+ inc hl
+ ld a, [hl]
+ and a
+ jr z, .healthy
+ callab AbilityFlagsPointer
+ bit 0, [hl]
+ ret nz
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ ld a, 1
+ ld [wCustomStat], a
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChanged], a
+ callab CustomChangeStage
+ ld a, [wCustomChanged]
+ and a
+ ret z
+ callab AbilityFlagsPointer
+ set 0, [hl]
+ ret
+.healthy
+ callab AbilityFlagsPointer
+ bit 0, [hl]
+ ret z
+ res 0, [hl]
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ ld a, 1
+ ld [wCustomStat], a
+ xor a
+ ld [wCustomChanged], a
+ dec a
+ ld [wCustomDelta], a
+ jpab CustomChangeStage
+
+AbilityMarvelScaleHazeReset:
+ ; Haze resets stages even if Neutralizing Gas suppresses this ability.
+ ld a, [wAbilitySide]
+ and a
+ ld hl, wActiveAbilities
+ jr z, .rawAbility
+ inc hl
+.rawAbility
+ ld a, [hl]
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilitySide]
+ and a
+ ld hl, wActiveAbilityExtended
+ jr z, .rawExtended
+ inc hl
+.rawExtended
+ ld a, [hl]
+ cp AB_MARVEL_SCALE - ABILITY_EXTENDED
+ ret nz
+ callab AbilityFlagsPointer
+ res 0, [hl]
+ ret
+
+AbilitySteadfastActorBanked:
+ callab AbilityActorResult
+ ld a, [wAbilityCheckResult]
+ cp ABILITY_EXTENDED
+ jr nz, .ordinary
+ ld a, [wAbilityResolvedExtended]
+ cp AB_INNER_FOCUS - ABILITY_EXTENDED
+ jr z, .immune
+ cp AB_UNSTOPPABLE - ABILITY_EXTENDED
+ ret nz
+ ld hl, wPlayerBattleStatus1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .clearFlinch
+ ld hl, wEnemyBattleStatus1
+.clearFlinch
+ res FLINCHED, [hl]
+ ret
+.ordinary
+ cp AB_STEADFAST
+ jr z, .immune
+ cp AB_OBLIVIOUS
+ jr z, .immune
+ cp AB_HEADSTRONG
+ ret nz
+ ld hl, wPlayerBattleStatus1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .clearConfusion
+ ld hl, wEnemyBattleStatus1
+.clearConfusion
+ res CONFUSED, [hl]
+ ret
+.immune
+ ld hl, wPlayerBattleStatus1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .clear
+ ld hl, wEnemyBattleStatus1
+.clear
+ res CONFUSED, [hl]
+ res FLINCHED, [hl]
+ ret

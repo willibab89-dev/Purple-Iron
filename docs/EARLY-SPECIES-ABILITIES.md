@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 147 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 150 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -101,6 +101,8 @@ Implemented for 147 species, with five equally likely slots per species. The sav
 | Articuno | Absolute Zero | Absolute Zero | Absolute Zero | Absolute Zero | Absolute Zero |
 | Zapdos | Lightning Speed | Lightning Speed | Lightning Speed | Lightning Speed | Lightning Speed |
 | Moltres | Intense Flames | Intense Flames | Intense Flames | Intense Flames | Intense Flames |
+| Dratini / Dragonair | Shed Skin | Mystic Scales | Serpent Grace | Marvel Scale | Water Veil |
+| Dragonite | Multiscale | Mystic Scales | Inner Focus | Marvel Scale | Water Veil |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
@@ -270,7 +272,7 @@ Both ROMs are built and checked with `tools/test_early_abilities.py` and the exi
 
 ## Extended ability IDs
 
-Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 175 extended IDs remain available. Legacy IDs 252–254 are also available.
+Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 170 extended IDs remain available. Legacy IDs 252–254 are also available.
 
 At battle entry, each side receives an extension byte in transient WRAM. `AbilityGet` returns the escape marker and sets `wAbilityResolvedExtended` for the selected side; it clears that scratch value for ordinary or suppressed abilities. An extended ability’s battle hook must check both the marker and the extension byte immediately after the lookup. `AbilityDrawDescriptionBanked` maps the extension to the matching pointer beginning at index 256; add description pointers in ID order when adding future extended abilities. Switching and Neutralizing Gas retain the side-local identity, while active-ability replacement takes precedence.
 
@@ -319,3 +321,5 @@ Articuno: Absolute Zero makes each Ice resistance neutral while retaining other 
 Zapdos: Lightning Speed gives Electric-type moves +1 priority, including status moves. All five ability slots use Lightning Speed, the sole ability specified for Zapdos.
 
 Moltres: Intense Flames burns the target after a successful damaging attack, subject to normal burn immunity, Substitute and Shield Dust. All five slots use Intense Flames, the sole ability specified for Moltres.
+
+Dratini and Dragonair: Shed Skin has a 30% chance to cure a major status at the end of each turn; Mystic Scales reduces special damage by 20%; Serpent Grace raises Evasion once per battle after a Dragon move; Marvel Scale raises Defense by one stage while affected by a major status; Water Veil prevents burns and halves Fire damage. Dragonite replaces Shed Skin with Multiscale (halves damage at full HP) and Serpent Grace with Inner Focus (prevents flinching and confusion).

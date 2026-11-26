@@ -128,6 +128,7 @@ AbilityTextPointers:
 	dw AbilityText322, AbilityText323, AbilityText324, AbilityText325, AbilityText326
 	dw AbilityText327, AbilityText328, AbilityText329, AbilityText330
 	dw AbilityText331, AbilityText332, AbilityText333, AbilityText334, AbilityText335
+	dw AbilityText336, AbilityText337, AbilityText338, AbilityText339, AbilityText340
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -556,6 +557,11 @@ AbilityText332: db "SLEEPWALKER",$4e,"Acts asleep; deals",$4e,"half damage.@"
 AbilityText333: db "ABSOLUTE ZERO",$4e,"Ice attacks ignore",$4e,"Ice resistance.@"
 AbilityText334: db "LIGHTNING SPEED",$4e,"Electric moves",$4e,"gain priority +1.@"
 AbilityText335: db "INTENSE FLAMES",$4e,"Damaging hits burn",$4e,"the target.@"
+AbilityText336: db "MYSTIC SCALES",$4e,"Special damage",$4e,"received x0.8.@"
+AbilityText337: db "SERPENT GRACE",$4e,"Dragon move: Evasion",$4e,"+1 once per battle.@"
+AbilityText338: db "MARVEL SCALE",$4e,"Status: Defense +1",$4e,"until cured.@"
+AbilityText339: db "MULTISCALE",$4e,"At full HP:",$4e,"damage x0.5.@"
+AbilityText340: db "INNER FOCUS",$4e,"Prevents flinching",$4e,"and confusion.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -656,3 +662,5 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db AB_SHED_SKIN, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_WATER_VEIL
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_WATER_VEIL

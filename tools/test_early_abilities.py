@@ -198,8 +198,10 @@ def validate(version):
                'SNORLAX':['HEAVY_SLEEPER','THICK_FAT','GLUTTONY','SLEEPWALKER','IMMUNITY'],
                'ARTICUNO':['ABSOLUTE_ZERO']*5,
                'ZAPDOS':['LIGHTNING_SPEED']*5,
-               'MOLTRES':['INTENSE_FLAMES']*5}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO')]:
+               'MOLTRES':['INTENSE_FLAMES']*5,
+               'DRATINI':['SHED_SKIN','MYSTIC_SCALES','SERPENT_GRACE','MARVEL_SCALE','WATER_VEIL'],
+               'DRAGONITE':['MULTISCALE','MYSTIC_SCALES','INNER_FOCUS','MARVEL_SCALE','WATER_VEIL']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO'),(('DRAGONAIR',),'DRATINI')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -860,6 +862,7 @@ def validate(version):
             ap,tp=init(turn);aid(turn,'GUTS');put(ap+'Status',16);put('wAbilitySide',turn);call('AbilityGuts')
             animation_bank,animation_address=syms['PlayCurrentMoveAnimation'];animation_original=game.memory[animation_bank,animation_address];patch('PlayCurrentMoveAnimation',[0xc9])
             call('HazeEffect_');call('AbilityQuickFeetBoth');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==7,(turn,'guts haze')
+            ap,tp=init(turn);aid(turn,'MARVEL_SCALE');put(ap+'Status',8);put('wAbilitySide',turn);call('AbilityGuts');aid(1-turn,'NEUTRALIZING_GAS');call('HazeEffect_');aid(1-turn,None);call('AbilityQuickFeetBoth');assert get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==7,(turn,'marvel haze while suppressed')
             game.memory[animation_bank,animation_address]=animation_original
             for attack,offense,defense,want in [('TACKLE',100,101,120),('TACKLE',101,101,100),('TACKLE',256,255,100),('FLAMETHROWER',100,200,100)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'IRON_GRIP');word(ap+'Attack',offense);word(tp+'Defense',defense);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,offense,defense,readword('wDamage'))
@@ -1289,6 +1292,28 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Dratini line: reductions, temporary status Defense, and move trigger.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for ability_name,attack,hp,damage,want in [('MYSTIC_SCALES','EMBER',160,100,80),('MYSTIC_SCALES','TACKLE',160,100,100),('MYSTIC_SCALES','EMBER',160,1,1),('MULTISCALE','EMBER',160,100,50),('MULTISCALE','TACKLE',160,100,50),('MULTISCALE','TACKLE',159,100,100),('MULTISCALE','TACKLE',0,100,100),('MULTISCALE','TACKLE',160,1,1)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,ability_name);word(tp+'HP',hp);word('wDamage',damage);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,ability_name,attack,hp,damage,readword('wDamage'))
+            for ability_name,attack,want in [('MYSTIC_SCALES','EMBER',80),('MYSTIC_SCALES','TACKLE',100),('MULTISCALE','TACKLE',50),('WATER_VEIL','EMBER',50)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,ability_name);put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,ability_name,'fixed',readword('wDamage'))
+            ap,tp=init(turn);move(turn,'EMBER');aid(1-turn,'MYSTIC_SCALES');aid(turn,'NEUTRALIZING_GAS');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100,(turn,'scales suppressed')
+            for attack,used,want in [('DRAGON_RAGE',1,8),('DRAGON_DANCE',1,8),('TACKLE',1,7),('DRAGON_RAGE',0,7)]:
+                init(turn);move(turn,attack);aid(turn,'SERPENT_GRACE');put('wAbilityHit',8 if used else 0);call('AbilitySandAfterAction');assert get(actor+'MonEvasionMod')==want,(turn,attack,used);call('AbilitySandAfterAction');assert get(actor+'MonEvasionMod')==want
+            for status in (1,8,16,32,64):
+                ap,tp=init(turn);aid(turn,'MARVEL_SCALE');put(ap+'Status',status);put('wAbilitySide',turn);call('AbilityGuts');assert get(actor+'MonDefenseMod')==8,(turn,status,'marvel gain');call('AbilityGuts');assert get(actor+'MonDefenseMod')==8;put(ap+'Status',0);call('AbilityGuts');assert get(actor+'MonDefenseMod')==7,(turn,status,'marvel cure')
+            ap,tp=init(turn);aid(turn,'MARVEL_SCALE');put(ap+'Status',8);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get(actor+'MonDefenseMod')==8,(turn,'marvel entry')
+            aid(1-turn,'NEUTRALIZING_GAS');put('wAbilitySide',turn);call('AbilityGuts');assert get(actor+'MonDefenseMod')==7,(turn,'marvel suppressed')
+            aid(1-turn,None);put('wAbilitySide',turn);call('AbilityGuts');assert get(actor+'MonDefenseMod')==8,(turn,'marvel restored')
+            call('AbilityGutsHazeReset');put(actor+'MonDefenseMod',7);put(ap+'Status',0);call('AbilityQuickFeetBoth');assert get(actor+'MonDefenseMod')==7,(turn,'marvel haze')
+            ap,tp=init(turn);aid(turn,'INNER_FOCUS');put(actor+'BattleStatus1',0x88);call('AbilitySteadfastActor');assert get(actor+'BattleStatus1')&0x88==0,(turn,'inner focus')
+            init(turn);move(turn,'CONFUSE_RAY');aid(1-turn,'INNER_FOCUS');call('AbilitySteadfastDirectCheck');assert get('wAbilityCheckResult')==1,(turn,'confusion')
+            for attack in ('HEADBUTT','PSYBEAM'):
+                init(turn);move(turn,attack);aid(1-turn,'INNER_FOCUS');call('AbilityEffectGate');assert get('wAbilityCheckResult')==1,(turn,attack,'inner focus secondary')
+            init(turn);move(turn,'HEADBUTT');aid(1-turn,'INNER_FOCUS');aid(turn,'NEUTRALIZING_GAS');call('AbilityEffectGate');assert get('wAbilityCheckResult')==0,(turn,'inner focus suppressed')
+            init(turn);move(turn,'PSYCHIC_M');aid(turn,'CONFOUNDING');aid(1-turn,'INNER_FOCUS');rng(0);call('AbilityAfterHit');assert not(get(target+'BattleStatus1')&128),(turn,'ability confusion')
         # Intense Flames burns after any damaging hit, subject to protections.
         for turn in (0,1):
             for attack,sub,protection,typ,hp,status,want in [('TACKLE',0,None,'NORMAL',160,0,16),('EMBER',0,None,'NORMAL',160,0,16),('SONICBOOM',0,None,'NORMAL',160,0,16),('GROWL',0,None,'NORMAL',160,0,0),('TACKLE',1,None,'NORMAL',160,0,0),('TACKLE',0,'SHIELD_DUST','NORMAL',160,0,0),('TACKLE',0,'WATER_VEIL','NORMAL',160,0,0),('TACKLE',0,'ANTIVIRUS','NORMAL',160,0,0),('TACKLE',0,'NEUTRALIZING_GAS','NORMAL',160,0,0),('TACKLE',0,None,'FIRE',160,0,0),('TACKLE',0,None,'NORMAL',0,0,0),('TACKLE',0,None,'NORMAL',160,8,8)]:
@@ -2038,6 +2063,12 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('EMBER',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('EMBER',turn,target='MYSTIC_SCALES',random_value=100);assert 160-readword(tp+'HP')<normal,(turn,'live mystic scales')
+            ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,target='MULTISCALE',random_value=100);assert 160-readword(tp+'HP')<normal,(turn,'live multiscale')
+            ap,tp=execute('DRAGON_RAGE',turn,actor='SERPENT_GRACE',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8,(turn,'live serpent grace')
+            ap,tp=execute('CONFUSE_RAY',turn,target='INNER_FOCUS',random_value=100);assert not(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128),(turn,'live inner focus')
             for attack in ('TACKLE','EMBER','SONICBOOM'):
                 ap,tp=execute(attack,turn,actor='INTENSE_FLAMES',random_value=100);assert get(tp+'Status')==16 and readword(tp+'HP')<160,(turn,attack,'live intense flames',get(tp+'Status'))
             ap,tp=execute('BIDE',turn,actor='INTENSE_FLAMES',bide_damage=20,random_value=100);assert get(tp+'Status')==16 and readword(tp+'HP')<160,(turn,'bide intense flames',get(tp+'Status'),readword(tp+'HP'))
@@ -2420,7 +2451,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 147 species / 735 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 150 species / 750 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

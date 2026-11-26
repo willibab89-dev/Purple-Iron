@@ -58,6 +58,7 @@ AbilityEntrySpeed:
 
 
 AbilityEntryOwnEffects:
+	callab AbilityMarvelScaleEntry
 	call AbilityHealerOnEntry
 	call AbilityImmunityOnEntry
 	ld a, [wAbilitySide]
@@ -506,6 +507,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	callab AbilityDragonScalesDamage
 	callab AbilitySleepwalkerDamage
 	callab AbilityFluffyDamage
 	callab AbilityEeveeDamage
@@ -1131,6 +1133,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	callab AbilityDragonScalesFixedDamage
 	callab AbilitySleepwalkerFixedDamage
 	callab AbilityFluffyFixedDamage
 	callab AbilityEeveeFixedDamage
@@ -1354,7 +1357,7 @@ AbilityExistingFixedDamageModifiers:
 	call AbilityActorPoisoned
 	ret z
 	ld c, 75
-	jr .scale
+	jp .scale
 .thickFat
 	cp ABILITY_EXTENDED
 	jr nz, .fixedLegacySpecial
@@ -1385,8 +1388,11 @@ AbilityExistingFixedDamageModifiers:
 	ld c, 80
 	jr .scale
 .fixedThickFat
+	cp AB_WATER_VEIL
+	jr z, .fixedFireHalf
 	cp AB_BLUBBER
 	jr nz, .notBlubber
+.fixedFireHalf
 	call AbilityActorMoveType
 	cp FIRE
 	jr z, .half
@@ -1506,6 +1512,7 @@ AbilityAttempt:
 
 ; Ground/Normal abilities trigger only when a move was actually executed.
 AbilitySandAfterAction:
+	callab AbilitySerpentGraceAfterAction
 	callab AbilityQuickLearnerAfterAction
 	call AbilitySapSipperStatus
 	call AbilityDancerAfterAction
@@ -1916,8 +1923,16 @@ AbilityConfounding:
  ret z
  cp AB_OBLIVIOUS
  ret z
+ cp ABILITY_EXTENDED
+ jr nz, .confusionLegacy
+ ld a, [wAbilityResolvedExtended]
+ cp AB_INNER_FOCUS - ABILITY_EXTENDED
+ ret z
+ jr .confusionTargetReady
+.confusionLegacy
  cp AB_HEADSTRONG
  ret z
+.confusionTargetReady
  ld hl, wEnemyBattleStatus1
  ld de, wEnemyConfusedCounter
  ld a, [H_WHOSETURN]
@@ -3736,6 +3751,8 @@ AbilityEffectGate:
 	cp ABILITY_EXTENDED
 	jr nz, .ordinaryTarget
 	ld a, [wAbilityResolvedExtended]
+	cp AB_INNER_FOCUS - ABILITY_EXTENDED
+	jp z, .steadfast
 	cp AB_UNSTOPPABLE - ABILITY_EXTENDED
 	jr nz, .ordinaryTargetRestore
 	ld a, b
@@ -4334,45 +4351,7 @@ AbilityExplodeEffect:
 
 ; Clear both volatile conditions from the actor, including self-confusion.
 AbilitySteadfastActor:
- call AbilityActor
- cp ABILITY_EXTENDED
- jr nz, .ordinary
- ld a, [wAbilityResolvedExtended]
- cp AB_UNSTOPPABLE - ABILITY_EXTENDED
- ret nz
- ld hl, wPlayerBattleStatus1
- ld a, [H_WHOSETURN]
- and a
- jr z, .clearFlinch
- ld hl, wEnemyBattleStatus1
-.clearFlinch
- res FLINCHED, [hl]
- ret
-.ordinary
- cp AB_STEADFAST
- jr z, .immune
- cp AB_OBLIVIOUS
- jr z, .immune
- cp AB_HEADSTRONG
- ret nz
- ld hl, wPlayerBattleStatus1
- ld a, [H_WHOSETURN]
- and a
- jr z, .clearConfusion
- ld hl, wEnemyBattleStatus1
-.clearConfusion
- res CONFUSED, [hl]
- ret
-.immune
- ld hl, wPlayerBattleStatus1
- ld a, [H_WHOSETURN]
- and a
- jr z, .clear
- ld hl, wEnemyBattleStatus1
-.clear
- res CONFUSED, [hl]
- res FLINCHED, [hl]
- ret
+ jpab AbilitySteadfastActorBanked
 
 AbilitySteadfastDirectCheck:
  xor a
@@ -4391,6 +4370,13 @@ AbilitySteadfastCustomCheck:
  ld a, [wCustomSide]
  call AbilityGet
 AbilitySteadfastCheck:
+ cp ABILITY_EXTENDED
+ jr nz, .ordinary
+ ld a, [wAbilityResolvedExtended]
+ cp AB_INNER_FOCUS - ABILITY_EXTENDED
+ jr z, .immune
+ ret
+.ordinary
  cp AB_STEADFAST
  jr z, .immune
  cp AB_OBLIVIOUS
@@ -4698,6 +4684,7 @@ AbilityNoGuardCheck:
 
 ; Guts grants one Attack stage only while a major condition is present.
 AbilityGuts:
+ callab AbilityMarvelScale
  ld a, [wAbilitySide]
  call AbilityGet
  cp AB_GUTS
@@ -4850,6 +4837,7 @@ AbilityGutsHazeReset:
  ld [wAbilitySide], a
  ret
 .one
+ callab AbilityMarvelScaleHazeReset
  ld a, [wAbilitySide]
  call AbilityGet
  cp AB_GUTS
