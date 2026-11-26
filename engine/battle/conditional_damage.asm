@@ -1758,3 +1758,74 @@ AbilityBurningRageFixedBanked:
  or b
  ret z
  jpab AbilityScaleDamage125
+
+; Transform copies nonempty moves at 5 PP, or 10 for Copy Master.
+AbilityCopyMasterTransformPP:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_COPY_MASTER - ABILITY_EXTENDED
+ ld a, 5
+ jr nz, .store
+ ld a, 10
+.store
+ ld [wAbilityCheckResult], a
+ ret
+
+; Called only after successful Transform and copied stats are in place.
+AbilityDittoAfterTransform:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_PERFECT_COPY - ABILITY_EXTENDED
+ jr z, .eligible
+ cp AB_SHAPESHIFTER - ABILITY_EXTENDED
+ ret nz
+.eligible
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_PERFECT_COPY - ABILITY_EXTENDED
+ jp z, .heal
+ jpab AbilityRaiseSpeed
+.heal
+ jpab AbilityHealQuarter
+
+; The end-of-round caller supplies an absolute side in wAbilitySide.
+AbilityUnstableDNAResidual:
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_UNSTABLE_DNA - ABILITY_EXTENDED
+ ret nz
+ ld hl, wPlayerBattleStatus3
+ ld a, [wAbilitySide]
+ and a
+ jr z, .status
+ ld hl, wEnemyBattleStatus3
+.status
+ bit TRANSFORMED, [hl]
+ ret z
+ jpab AbilityRegeneration
+
+; The battle move menu uses this maximum for a transformed Copy Master.
+AbilityCopyMasterMaxPP:
+ ld a, [wMonDataLocation]
+ cp 4
+ ret nz
+ ld a, [wPlayerBattleStatus3]
+ bit TRANSFORMED, a
+ ret z
+ callab AbilityPlayerResult
+ ld a, [wAbilityResolvedExtended]
+ cp AB_COPY_MASTER - ABILITY_EXTENDED
+ ret nz
+ ld a, 10
+ ld [wMaxPP], a
+ ret

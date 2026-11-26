@@ -120,6 +120,7 @@ AbilityTextPointers:
 	dw AbilityText296, AbilityText297, AbilityText298, AbilityText299
 	dw AbilityText300, AbilityText301, AbilityText302
 	dw AbilityText303, AbilityText304
+	dw AbilityText305, AbilityText306, AbilityText307, AbilityText308
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -517,6 +518,10 @@ AbilityText301: db "WRATH",$4e,"Hit: next attack",$4e,"deals x1.2 damage.@"
 AbilityText302: db "SAVAGE JAWS",$4e,"Biting moves deal",$4e,"x1.3 damage.@"
 AbilityText303: db "ANCIENT SHELL",$4e,"Super-effective",$4e,"damage x0.75.@"
 AbilityText304: db "GENTLE GIANT",$4e,"Status move: heal",$4e,"1/8 max HP.@"
+AbilityText305: db "PERFECT COPY",$4e,"Transform: heal",$4e,"1/4 max HP once.@"
+AbilityText306: db "UNSTABLE DNA",$4e,"Transformed: heal",$4e,"1/16 HP per turn.@"
+AbilityText307: db "SHAPESHIFTER",$4e,"Transform: Speed",$4e,"+1 once per battle.@"
+AbilityText308: db "COPY MASTER",$4e,"Transformed moves",$4e,"have 10 PP.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -604,6 +609,7 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SWIFT_SWIM, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_GROWL_INTIMIDATE, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_ICEBREAKER, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SHELL_ARMOR
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SOFT_BODY
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -755,6 +761,7 @@ AbilitySpeciesPools:
 	db MAGIKARP, 82
 	db GYARADOS, 83
 	db LAPRAS, 84
+	db DITTO, 85
 	db 0
 
 ; Shared battle move flags live with the banked ability data.
@@ -841,6 +848,10 @@ AbilityExtendedPoolIds:
  db 84, 1, AB_ANCIENT_SHELL - ABILITY_EXTENDED
  db 84, 3, AB_SAP_SIPPER - ABILITY_EXTENDED
  db 84, 4, AB_GENTLE_GIANT - ABILITY_EXTENDED
+ db 85, 1, AB_PERFECT_COPY - ABILITY_EXTENDED
+ db 85, 2, AB_UNSTABLE_DNA - ABILITY_EXTENDED
+ db 85, 3, AB_SHAPESHIFTER - ABILITY_EXTENDED
+ db 85, 4, AB_COPY_MASTER - ABILITY_EXTENDED
  db 0
 
 

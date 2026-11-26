@@ -98,13 +98,14 @@ TransformEffect_:
 	call CopyData
 	ld bc, wBattleMonMoves - wBattleMonPP
 	add hl, bc ; ld hl, wBattleMonMoves
+	abilitycall AbilityCopyMasterTransformPP
 	ld b, NUM_MOVES
 .copyPPLoop
 ; 5 PP for all moves
 	ld a, [hli]
 	and a
 	jr z, .lessThanFourMoves
-	ld a, $5
+	ld a, [wAbilityCheckResult]
 	ld [de], a
 	inc de
 	dec b
@@ -135,6 +136,7 @@ TransformEffect_:
 	abilitycall AbilityCopycatTransformApply
 	callab CustomSetActor
 	callab CustomRecalculate
+	abilitycall AbilityDittoAfterTransform
 	ld hl, TransformedText
 	jp PrintText
 

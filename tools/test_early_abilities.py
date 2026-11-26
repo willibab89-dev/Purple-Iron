@@ -172,7 +172,8 @@ def validate(version):
                'TAUROS':['STAMPEDE','RAMPAGE','UNSTOPPABLE','ANGER_POINT','SAP_SIPPER'],
                'MAGIKARP':['PATHETIC','SPLASHING','DETERMINATION','SWIFT_SWIM','DESPERATION'],
                'GYARADOS':['OVERWHELMING','GROWL_INTIMIDATE','WRATH','MOXIE','SAVAGE_JAWS'],
-               'LAPRAS':['ANCIENT_SHELL','ICEBREAKER','SAP_SIPPER','GENTLE_GIANT','SHELL_ARMOR']}
+               'LAPRAS':['ANCIENT_SHELL','ICEBREAKER','SAP_SIPPER','GENTLE_GIANT','SHELL_ARMOR'],
+               'DITTO':['PERFECT_COPY','UNSTABLE_DNA','SHAPESHIFTER','COPY_MASTER','SOFT_BODY']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1410,6 +1411,26 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Ditto: real transformations, copied PP, per-battle and residual effects.
+        transform_bank,transform_addr=syms['PlayCurrentMoveAnimation'];transform_old=game.memory[transform_bank,transform_addr];patch('PlayCurrentMoveAnimation',[0xc9])
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for ability_name,pp in [('COPY_MASTER',10),(None,5),('PERFECT_COPY',5)]:
+                ap,tp=init(turn);move(turn,'TRANSFORM');aid(turn,ability_name);game.memory[addr(tp+'Moves'):addr(tp+'Moves')+4]=[MOVES['TACKLE'],MOVES['BITE'],0,0];call('TransformEffect_');assert get(actor+'BattleStatus3')&8,(turn,ability_name,'transformed');assert list(game.memory[addr(ap+'PP'):addr(ap+'PP')+4])==[pp,pp,0,0],(turn,ability_name,'copied PP',list(game.memory[addr(ap+'PP'):addr(ap+'PP')+4]))
+            ap,tp=init(turn);move(turn,'TRANSFORM');aid(turn,'COPY_MASTER');aid(1-turn,'NEUTRALIZING_GAS');game.memory[addr(tp+'Moves'):addr(tp+'Moves')+4]=[MOVES['TACKLE'],0,0,0];call('TransformEffect_');assert get(ap+'PP')==5,(turn,'suppressed copy master')
+            for ability_name,hp,want in [('PERFECT_COPY',80,120),('PERFECT_COPY',150,160),('SHAPESHIFTER',80,80)]:
+                ap,tp=init(turn);move(turn,'TRANSFORM');aid(turn,ability_name);word(ap+'HP',hp);call('TransformEffect_');assert readword(ap+'HP')==want,(turn,ability_name,'transform heal',readword(ap+'HP'));assert get(actor+'MonSpeedMod')==(8 if ability_name=='SHAPESHIFTER' else 7),(turn,ability_name,'transform speed',get(actor+'MonSpeedMod'));word(ap+'HP',80);call('TransformEffect_');assert readword(ap+'HP')==80 and get(actor+'MonSpeedMod')==7,(turn,ability_name,'transform once',readword(ap+'HP'),get(actor+'MonSpeedMod'))
+            for ability_name in ('PERFECT_COPY','SHAPESHIFTER'):
+                ap,tp=init(turn);move(turn,'TRANSFORM');aid(turn,ability_name);word(ap+'HP',80);put(target+'BattleStatus1',64);call('TransformEffect_');assert readword(ap+'HP')==80 and get(actor+'MonSpeedMod')==7 and not(get(actor+'BattleStatus3')&8),(turn,ability_name,'failed transform')
+            for transformed,hp,blocked,want in [(0,80,False,80),(8,80,False,90),(8,155,False,160),(8,0,False,0),(8,80,True,80)]:
+                ap,tp=init(turn);aid(turn,'UNSTABLE_DNA');put(actor+'BattleStatus3',transformed);word(ap+'HP',hp);put('wResidualRoundDone',int(blocked));call('AbilityEndRound');assert readword(ap+'HP')==want,(turn,transformed,hp,blocked,'unstable dna',readword(ap+'HP'))
+            for attack,want in [('TACKLE',75),('KARATE_CHOP',75),('EMBER',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'SOFT_BODY');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'soft body',readword('wDamage'))
+        game.memory[transform_bank,transform_addr]=transform_old
+        init();aid(0,'COPY_MASTER');put('wMonDataLocation',4);put('wPlayerMonNumber',0);put('wCurrentMenuItem',0);put('wBattleMonMoves',MOVES['TACKLE']);put('wBattleMonPP',3);put('wPlayerBattleStatus3',8);call('GetMaxPP');assert get('wMaxPP')==10,('copy master max PP',get('wMaxPP'));put('wMonDataLocation',0);put('wPartyMon1Moves',MOVES['TACKLE']);put('wPartyMon1PP',3);call('GetMaxPP');assert get('wMaxPP')==35,('original move max PP',get('wMaxPP'))
+        for slot,name in [(1,'PERFECT COPY'),(2,'UNSTABLE DNA'),(3,'SHAPESHIFTER'),(4,'COPY MASTER')]:
+            metadata('wPartyMon1','DITTO',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Lapras: damage reduction, status-move healing and shared abilities.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -2179,7 +2200,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 132 species / 660 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 133 species / 665 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

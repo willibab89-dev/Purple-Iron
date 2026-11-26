@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 132 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 133 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -88,6 +88,7 @@ Implemented for 132 species, with five equally likely slots per species. The sav
 | Magikarp | Pathetic | Splashing | Determination | Swift Swim | Desperation |
 | Gyarados | Overwhelming | Intimidate | Wrath | Moxie | Savage Jaws |
 | Lapras | Ancient Shell | Icebreaker | Sap Sipper | Gentle Giant | Shell Armor |
+| Ditto | Perfect Copy | Unstable DNA | Shapeshifter | Copy Master | Soft Body |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
@@ -253,11 +254,11 @@ Ability descriptions and Resourceful PP routines are in the expanded ability ban
 
 ## Validation
 
-Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 660 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
+Both ROMs are built and checked with `tools/test_early_abilities.py` and the existing prototype ability tests. Coverage includes all 665 species/slot combinations, both sides of battle, Pidgey-family entry, priority, accuracy and damage paths, Rattata-family damage, accuracy, knockouts, poison and low-HP triggers, exact chance boundaries, contact/Substitute rules and Ancient's native wild/capture/capsule/PC/daycare/save paths. Saved struct lengths, absolute nature scratch addresses and the stack top remain unchanged. A complete manual playthrough has not been performed.
 
 ## Extended ability IDs
 
-Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 206 extended IDs remain available. Legacy IDs 252–254 are also available.
+Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 202 extended IDs remain available. Legacy IDs 252–254 are also available.
 
 At battle entry, each side receives an extension byte in transient WRAM. `AbilityGet` returns the escape marker and sets `wAbilityResolvedExtended` for the selected side; it clears that scratch value for ordinary or suppressed abilities. An extended ability’s battle hook must check both the marker and the extension byte immediately after the lookup. `AbilityDrawDescriptionBanked` maps the extension to the matching pointer beginning at index 256; add description pointers in ID order when adding future extended abilities. Switching and Neutralizing Gas retain the side-local identity, while active-ability replacement takes precedence.
 
@@ -280,3 +281,5 @@ Magikarp: Pathetic reduces the final experience award by 25%; Splashing raises E
 Gyarados: Overwhelming boosts critical damage and super-effective damage by 25% each, stacking when both apply; Intimidate lowers the opposing Speed on entry once per holder per battle; Wrath boosts the next damaging move by 20% after a direct hit; Moxie raises Attack after a direct knockout; Savage Jaws boosts biting moves by 30%.
 
 Lapras: Ancient Shell reduces super-effective damage by 25%; Icebreaker makes Ice attacks super effective against Water; Sap Sipper raises Attack when hit by a Grass move without granting immunity; Gentle Giant restores 1/8 maximum HP after using a status move; Shell Armor prevents critical hits.
+
+Ditto: Perfect Copy restores 1/4 maximum HP after successfully transforming once per battle; Unstable DNA restores 1/16 maximum HP each turn while transformed; Shapeshifter raises Speed after successfully transforming once per battle; Copy Master gives copied moves 10 PP; Soft Body reduces Normal and Fighting damage by 25%.

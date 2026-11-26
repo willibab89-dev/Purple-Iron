@@ -2771,6 +2771,7 @@ GetMaxPP:
 	and %00111111 ; mask out the PP Up count
 	ld [wMaxPP], a ; store max PP
 	abilitycall AbilityResourcefulMaxPP
+	abilitycall AbilityCopyMasterMaxPP
 	ret
 
 GetSelectedMoveOffset:

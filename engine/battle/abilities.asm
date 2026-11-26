@@ -608,7 +608,12 @@ AbilityEndRound:
 	ld [wAbilitySide], a
 	call AbilityShedSkin
 	jp AbilityQuickFeetBoth
+AbilityGetSideForDitto:
+ ld a, [wAbilitySide]
+ jp AbilityGet
+
 AbilityPhotosynthesis:
+	callab AbilityUnstableDNAResidual
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_REGENERATION
