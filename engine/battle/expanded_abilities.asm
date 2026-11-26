@@ -7056,6 +7056,13 @@ AbilityEggFixedDamage:
  call AbilityActor
  cp AB_EXECUTIONER
  jr z, .executioner
+ cp ABILITY_EXTENDED
+ jr nz, .ordinary
+ ld a, [wAbilityResolvedExtended]
+ cp AB_KABUTO_EXECUTIONER - ABILITY_EXTENDED
+ jr z, .executioner
+ ret
+.ordinary
  cp AB_SOLAR_POWER
  ret nz
  call AbilityActorMoveType
@@ -7082,6 +7089,11 @@ AbilityEggFixedDamage:
  dec hl
  call AbilityHalfHP
  ret nc
+ call AbilityActor
+ cp ABILITY_EXTENDED
+ jr nz, .boost
+ ld c, 120
+ jp AbilityScaleDamage
 .boost
  ld c, 125
  jp AbilityScaleDamage

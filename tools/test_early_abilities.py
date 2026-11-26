@@ -192,8 +192,9 @@ def validate(version):
                'JOLTEON':['GALVANIZE','QUICK_FEET','SPIKY_FUR','VOLT_ABSORB','HIGH_VOLTAGE'],
                'FLAREON':['HEAT_WAVE','MAGMA_COAT','COMBUSTION','FLUFFY','FLAME_BODY'],
                'PORYGON':['CONSERVATIVE','TRACE','ANTIVIRUS','OVERCLOCK','DOWNLOAD'],
-               'OMANYTE':['ANCIENT_POWER','MINDS_EYE','PATIENT','CRUSHING_GRIP','SHELL_ARMOR']}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE')]:
+               'OMANYTE':['ANCIENT_POWER','MINDS_EYE','PATIENT','CRUSHING_GRIP','SHELL_ARMOR'],
+               'KABUTO':['KABUTO_EXECUTIONER','ANCIENT_POWER','BATTLE_ARMOR','LEECHING','SHARP_BLADES']}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1283,6 +1284,11 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Kabuto's Executioner is 20%, distinct from Exeggcute's 25%.
+        for turn in (0,1):
+            for attack,hp,want in [('TACKLE',79,120),('TACKLE',80,100),('TACKLE',0,100),('EMBER',79,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'KABUTO_EXECUTIONER');word(tp+'HP',hp);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,hp,readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'KABUTO_EXECUTIONER');aid(1-turn,'NEUTRALIZING_GAS');word(tp+'HP',79);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
         # Exeggcute / Exeggutor: thresholds, confusion, healing and protection.
         for turn in (0,1):
             for attack,roll,sub,protection,want in [('PSYCHIC_M',0,0,None,True),('PSYCHIC_M',39,0,None,True),('PSYCHIC_M',40,0,None,False),('TACKLE',0,0,None,False),('PSYCHIC_M',0,1,None,False),('PSYCHIC_M',0,0,'SHIELD_DUST',False)]:
@@ -2350,7 +2356,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 140 species / 700 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 142 species / 710 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

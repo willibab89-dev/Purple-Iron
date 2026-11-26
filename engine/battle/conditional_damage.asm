@@ -2192,6 +2192,9 @@ AbilityExtendedPoolIds:
  db 91, 1, AB_ANCIENT_POWER - ABILITY_EXTENDED
  db 91, 2, AB_MINDS_EYE - ABILITY_EXTENDED
  db 91, 4, AB_CRUSHING_GRIP - ABILITY_EXTENDED
+ db 92, 1, AB_KABUTO_EXECUTIONER - ABILITY_EXTENDED
+ db 92, 2, AB_ANCIENT_POWER - ABILITY_EXTENDED
+ db 92, 5, AB_SHARP_BLADES - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2496,6 +2499,8 @@ AbilitySpeciesPools:
 	db PORYGON, 90
 	db OMANYTE, 91
 	db OMASTAR, 91
+	db KABUTO, 92
+	db KABUTOPS, 92
 	db 0
 
 ; The first pair is processed together once both battlers are present.

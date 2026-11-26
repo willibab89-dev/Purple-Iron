@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 140 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 142 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -95,6 +95,7 @@ Implemented for 140 species, with five equally likely slots per species. The sav
 | Flareon | Heat Wave | Magma Coat | Combustion | Fluffy | Flame Body |
 | Porygon | Conservative | Trace | Antivirus | Overclock | Download |
 | Omanyte / Omastar | Ancient Power | Mind's Eye | Patient | Crushing Grip | Shell Armor |
+| Kabuto / Kabutops | Executioner | Ancient Power | Battle Armor | Leeching | Sharp Blades |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
@@ -264,7 +265,7 @@ Both ROMs are built and checked with `tools/test_early_abilities.py` and the exi
 
 ## Extended ability IDs
 
-Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 182 extended IDs remain available. Legacy IDs 252–254 are also available.
+Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 181 extended IDs remain available. Legacy IDs 252–254 are also available.
 
 At battle entry, each side receives an extension byte in transient WRAM. `AbilityGet` returns the escape marker and sets `wAbilityResolvedExtended` for the selected side; it clears that scratch value for ordinary or suppressed abilities. An extended ability’s battle hook must check both the marker and the extension byte immediately after the lookup. `AbilityDrawDescriptionBanked` maps the extension to the matching pointer beginning at index 256; add description pointers in ID order when adding future extended abilities. Switching and Neutralizing Gas retain the side-local identity, while active-ability replacement takes precedence.
 
@@ -301,3 +302,5 @@ Flareon: Heat Wave damages a non-Fire opponent for 1/16 maximum HP each turn; Ma
 Porygon: Conservative has a 25% chance to save PP; Trace copies the opponent’s active ability on entry until switching; copied effects baked into stored HP, Speed or PP are not dynamically applied; Antivirus prevents major status conditions; Overclock raises Speed after a Normal move once per battle; Download compares the opponent’s Defense and Special, raising Attack if Defense is lower and Special otherwise.
 
 Omanyte and Omastar: Ancient Power gives a damaging attack a 10% chance to raise Attack, Defense, Speed and Special once per battle; Mind's Eye ignores the target’s evasion stage and lets Normal and Fighting moves hit Ghosts; Patient boosts damage by 20% when moving after the opponent; Crushing Grip gives physical attacks a 20% chance to lower Defense; Shell Armor prevents critical hits.
+
+Kabuto and Kabutops: Executioner boosts physical damage by 20% against foes below half HP; Ancient Power gives damaging attacks a 10% chance to raise Attack, Defense, Speed and Special once per battle; Battle Armor prevents critical hits; Leeching heals 10% of physical damage dealt; Sharp Blades boosts cutting moves by 25%.
