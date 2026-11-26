@@ -168,7 +168,8 @@ def validate(version):
                'JYNX':['DANCER','COLD_TOUCH','ENCHANTRESS','ICE_QUEEN','SNOW_VEIL'],
                'ELECTABUZZ':['POWER_SURGE','ENERGY_DRAIN','THUNDERSTRUCK','LIVE_WIRE','GALVANIZE'],
                'MAGMAR':['MAGMAR_FLAME_BODY','HOT_TEMPER','MAGMA_ARMOR','VITAL_HEAT','BURNING_RAGE'],
-               'PINSIR':['MOXIE','HYPER_CUTTER','ARMOR_CRUSHER','CRUSHING_GRIP','HARD_SHELL']}
+               'PINSIR':['MOXIE','HYPER_CUTTER','ARMOR_CRUSHER','CRUSHING_GRIP','HARD_SHELL'],
+               'TAUROS':['STAMPEDE','RAMPAGE','UNSTOPPABLE','ANGER_POINT','SAP_SIPPER']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1406,6 +1407,27 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Tauros: speed scaling, recoil, flinch protection and Grass reactions.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,own,foe,want in [('TACKLE',101,100,120),('TACKLE',100,100,100),('EMBER',150,100,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'STAMPEDE');word(ap+'Speed',own);word(tp+'Speed',foe);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,own,foe,'stampede',readword('wDamage'))
+            for attack,want in [('TACKLE',125),('EMBER',100)]:
+                init(turn);move(turn,attack);aid(turn,'RAMPAGE');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'rampage damage')
+            for stat in range(6):
+                init(turn);aid(1-turn,'UNSTOPPABLE');put('wCustomSide',1-turn);put('wCustomStat',stat);put('wCustomDelta',255);call('AbilityKeenEyeCustom');assert get('wAbilityCheckResult')==(stat==0),(turn,stat,'unstoppable custom');call('AbilityKeenEyeTarget');assert get('wAbilityCheckResult')==(stat==0),(turn,stat,'unstoppable legacy')
+            for attack,blocked in [('BITE',True),('VINE_WHIP',True),('SLUDGE',False),('CONFUSION',False)]:
+                init(turn);move(turn,attack);aid(1-turn,'UNSTOPPABLE');call('AbilityEffectGate');assert bool(get('wAbilityCheckResult'))==blocked,(turn,attack,'unstoppable flinch gate')
+            ap,tp=init(turn);aid(turn,'UNSTOPPABLE');put(actor+'BattleStatus1',136);call('AbilityBeforeAction');assert get(actor+'BattleStatus1')==128,(turn,'unstoppable clears flinch only',get(actor+'BattleStatus1'))
+            for crit,sub,hp,want in [(0,0,160,7),(1,0,160,9),(2,0,160,7),(1,1,160,7),(1,0,0,7)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'ANGER_POINT');put('wCriticalHitOrOHKO',crit);put('wCustomTargetHadSub',sub);word(tp+'HP',hp);call('AbilityAfterHit');assert get(target+'MonAttackMod')==want,(turn,crit,sub,hp,'anger point',get(target+'MonAttackMod'));put('wAbilityHit',0);call('AbilityAfterHit');assert get(target+'MonAttackMod')==want,(turn,'anger point once')
+            for attack,sub,hp,want in [('VINE_WHIP',0,160,8),('TACKLE',0,160,7),('VINE_WHIP',1,160,7),('VINE_WHIP',0,0,7)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'SAP_SIPPER');put('wCustomTargetHadSub',sub);word(tp+'HP',hp);rng(100);call('AbilityAfterHit');assert get(target+'MonAttackMod')==want,(turn,attack,sub,hp,'sap sipper hit',get(target+'MonAttackMod'))
+            for attack,miss,sub,want in [('SLEEP_POWDER',0,0,8),('STUN_SPORE',0,0,8),('LEECH_SEED',0,0,8),('GROWTH',0,0,7),('SLEEP_POWDER',1,0,7),('SLEEP_POWDER',0,1,7)]:
+                init(turn);move(turn,attack);aid(1-turn,'SAP_SIPPER');call('AbilityAttempt');put('wMoveMissed',miss);put(target+'BattleStatus2',16 if sub else 0);call('AbilityAfterAction');assert get(target+'MonAttackMod')==want,(turn,attack,miss,sub,'sap sipper status',get(target+'MonAttackMod'))
+        for slot,name in [(3,'UNSTOPPABLE'),(4,'ANGER POINT'),(5,'SAP SIPPER')]:
+            metadata('wPartyMon1','TAUROS',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Pinsir: knockout boost, crit protection, type override and physical effects.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -1743,6 +1765,10 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,target='ANGER_POINT',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==9,(turn,'live anger point')
+            ap,tp=execute('VINE_WHIP',turn,target='SAP_SIPPER',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8 and readword(tp+'HP')<160,(turn,'live sap sipper damage')
+            ap,tp=execute('SLEEP_POWDER',turn,target='SAP_SIPPER',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'live sap sipper status')
+            ap,tp=execute('GROWTH',turn,target='SAP_SIPPER',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7,(turn,'live sap sipper self move')
             ap,tp=execute('TACKLE',turn,actor='MOXIE',hp=1,random_value=100);assert readword(tp+'HP')==0 and get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==8,(turn,'live moxie')
             ap,tp=execute('TACKLE',turn,actor='CRUSHING_GRIP',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==6,(turn,'live crushing grip')
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -2068,7 +2094,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 128 species / 640 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 129 species / 645 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

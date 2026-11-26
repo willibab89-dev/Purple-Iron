@@ -1333,3 +1333,127 @@ AbilityCopycatFromSideBanked:
  pop af
  ld [wAbilitySide], a
  ret
+
+AbilitySapSipperStatusBanked:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ ld a, [wMoveMissed]
+ and a
+ ret nz
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SAP_SIPPER - ABILITY_EXTENDED
+ ret nz
+ callab AbilityMove
+ ld a, [hl]
+ cp LEECH_SEED
+ jr z, .targeted
+ cp STUN_SPORE
+ jr z, .targeted
+ cp SLEEP_POWDER
+ jr z, .targeted
+ cp SPORE
+ ret nz
+.targeted
+ ld hl, wEnemyBattleStatus2
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .checkSub
+ ld hl, wPlayerBattleStatus2
+.checkSub
+ bit HAS_SUBSTITUTE_UP, [hl]
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ jpab AbilityRaiseAttack
+
+; Reflections retain their shared scratch while crossing battle banks.
+AbilityMirrorArmorCustomBanked:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wStatAbilityGuard]
+ bit 0, a
+ ret nz
+ ld a, [wCustomDelta]
+ bit 7, a
+ ret z
+ callab AbilityGetCustomSide
+ ld a, [wAbilityResolvedExtended]
+ cp AB_MIRROR_ARMOR - ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilitySide]
+ push af
+ ld a, [wCustomSide]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .dead
+ ld a, [wCustomSide]
+ push af
+ ld a, [wCustomStat]
+ push af
+ ld a, [wCustomDelta]
+ push af
+ ld a, [wCustomChanged]
+ push af
+ ld a, [wCustomSavedTurn]
+ push af
+ ld a, [wCustomMove]
+ push af
+ ld a, [wCustomChance]
+ push af
+ ld a, [wCustomRandomValue]
+ push af
+ ld a, [wAbilityTemp]
+ push af
+ ld a, [wAbilityTemp + 1]
+ push af
+ ld hl, wStatAbilityGuard
+ set 0, [hl]
+ ld a, [H_WHOSETURN]
+ push af
+ ld a, [wCustomSide]
+ ld [H_WHOSETURN], a ; the reflection originates from the armor holder
+ xor 1
+ ld [wCustomSide], a
+ callab CustomChangeStage
+ pop af
+ ld [H_WHOSETURN], a
+ ld hl, wStatAbilityGuard
+ res 0, [hl]
+ pop af
+ ld [wAbilityTemp + 1], a
+ pop af
+ ld [wAbilityTemp], a
+ pop af
+ ld [wCustomRandomValue], a
+ pop af
+ ld [wCustomChance], a
+ pop af
+ ld [wCustomMove], a
+ pop af
+ ld [wCustomSavedTurn], a
+ pop af
+ ld [wCustomChanged], a
+ pop af
+ ld [wCustomDelta], a
+ pop af
+ ld [wCustomStat], a
+ pop af
+ ld [wCustomSide], a
+ pop af
+ ld [wAbilitySide], a
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+.dead
+ pop af
+ ld [wAbilitySide], a
+ ret

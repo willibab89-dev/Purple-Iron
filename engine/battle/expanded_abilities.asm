@@ -213,7 +213,15 @@ AbilityKeenEyeCustom:
  ld a, [wCustomSide]
  call AbilityGet
  cp AB_HYPER_CUTTER
+ jr z, .attackGuard
+ cp ABILITY_EXTENDED
  jr nz, .otherAbility
+ ld a, [wAbilityResolvedExtended]
+ cp AB_UNSTOPPABLE - ABILITY_EXTENDED
+ jr z, .attackGuard
+ call AbilityGetCustomSide
+ jr .otherAbility
+.attackGuard
  ld a, [wCustomStat]
  and a
  jr z, .block
@@ -249,6 +257,10 @@ AbilityKeenEyeCustom:
  ld [wAbilityCheckResult], a
  ret
 
+AbilityGetCustomSide:
+ ld a, [wCustomSide]
+ jp AbilityGet
+
 AbilityKeenEyeTarget::
  call AbilityMirrorArmorLegacy
  ld a, [wAbilityCheckResult]
@@ -258,7 +270,15 @@ AbilityKeenEyeTarget::
  ld [wAbilityCheckResult], a
  call AbilityTarget
  cp AB_HYPER_CUTTER
+ jr z, .attackGuard
+ cp ABILITY_EXTENDED
  jr nz, .otherAbility
+ ld a, [wAbilityResolvedExtended]
+ cp AB_UNSTOPPABLE - ABILITY_EXTENDED
+ jr z, .attackGuard
+ call AbilityTarget
+ jr .otherAbility
+.attackGuard
  ld a, [wCustomStat]
  and a
  jr z, .block
@@ -1486,6 +1506,7 @@ AbilityAttempt:
 
 ; Ground/Normal abilities trigger only when a move was actually executed.
 AbilitySandAfterAction:
+	call AbilitySapSipperStatus
 	call AbilityDancerAfterAction
 	ld a, [wAbilityHit]
 	bit 3, a
@@ -2996,6 +3017,15 @@ AbilityGetTargetReactions:
 	or [hl]
 	jp z, .contact
 	call AbilityTarget
+	cp ABILITY_EXTENDED
+	jr nz, .normalReaction
+	ld a, [wAbilityResolvedExtended]
+	cp AB_ANGER_POINT - ABILITY_EXTENDED
+	jp z, .angerPoint
+	cp AB_SAP_SIPPER - ABILITY_EXTENDED
+	jp z, .sapSipper
+	call AbilityTarget
+.normalReaction
 	cp AB_COUNTERPUNCH
 	jr nz, .notCounterpunch
 	ld a, [wAbilityMoveType]
@@ -3005,6 +3035,26 @@ AbilityGetTargetReactions:
 	bit 2, [hl]
 	jp nz, .contact
 	set 2, [hl]
+	xor a
+	call AbilityRaiseStage
+	jp .contact
+.angerPoint
+	ld a, [wCriticalHitOrOHKO]
+	cp 1
+	jp nz, .contact
+	call AbilityFlagsPointer
+	bit 2, [hl]
+	jp nz, .contact
+	set 2, [hl]
+	xor a
+	call AbilityRaiseStage
+	xor a
+	call AbilityRaiseStage
+	jp .contact
+.sapSipper
+	ld a, [wAbilityMoveType]
+	cp GRASS
+	jp nz, .contact
 	xor a
 	call AbilityRaiseStage
 	jp .contact
@@ -3628,6 +3678,20 @@ AbilityEffectGate:
 .notLimber
 	cp AB_SHIELD_DUST
 	jr z, .checkThaw
+	cp ABILITY_EXTENDED
+	jr nz, .ordinaryTarget
+	ld a, [wAbilityResolvedExtended]
+	cp AB_UNSTOPPABLE - ABILITY_EXTENDED
+	jr nz, .ordinaryTargetRestore
+	ld a, b
+	cp FLINCH_SIDE_EFFECT1
+	jr z, .block
+	cp FLINCH_SIDE_EFFECT2
+	jr z, .block
+	ret
+.ordinaryTargetRestore
+	call AbilityTarget
+.ordinaryTarget
 	cp AB_STEADFAST
 	jr z, .steadfast
 	cp AB_OBLIVIOUS
@@ -4258,6 +4322,20 @@ AbilityExplodeEffect:
 ; Clear both volatile conditions from the actor, including self-confusion.
 AbilitySteadfastActor:
  call AbilityActor
+ cp ABILITY_EXTENDED
+ jr nz, .ordinary
+ ld a, [wAbilityResolvedExtended]
+ cp AB_UNSTOPPABLE - ABILITY_EXTENDED
+ ret nz
+ ld hl, wPlayerBattleStatus1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .clearFlinch
+ ld hl, wEnemyBattleStatus1
+.clearFlinch
+ res FLINCHED, [hl]
+ ret
+.ordinary
  cp AB_STEADFAST
  jr z, .immune
  cp AB_OBLIVIOUS
@@ -7507,6 +7585,14 @@ AbilityExtendedActorIs:
  and a
  ret
 
+; Targeted Grass status moves can hit Sap Sipper without dealing damage.
+AbilitySapSipperStatus:
+ jpab AbilitySapSipperStatusBanked
+
+AbilityRaiseAttack:
+ xor a
+ jp AbilityRaiseStage
+
 ; Jynx status boost happens once per battle, only on an executed status move.
 AbilityDancerAfterAction:
  ld a, [wAbilityHit]
@@ -8090,91 +8176,7 @@ AbilityStrongmanCheck:
 
 ; Reflect stage reductions via the same protected, capped stat-change path.
 AbilityMirrorArmorCustom:
- xor a
- ld [wAbilityCheckResult], a
- ld a, [wStatAbilityGuard]
- bit 0, a
- ret nz
- ld a, [wCustomDelta]
- bit 7, a
- ret z
- ld a, [wCustomSide]
- call AbilityGet
- cp ABILITY_EXTENDED
- ret nz
- ld a, [wAbilityResolvedExtended]
- cp AB_MIRROR_ARMOR - ABILITY_EXTENDED
- ret nz
- ld a, [wAbilitySide]
- push af
- ld a, [wCustomSide]
- ld [wAbilitySide], a
- call AbilityHP
- ld a, [hli]
- or [hl]
- jr z, .dead
- ld a, [wCustomSide]
- push af
- ld a, [wCustomStat]
- push af
- ld a, [wCustomDelta]
- push af
- ld a, [wCustomChanged]
- push af
- ld a, [wCustomSavedTurn]
- push af
- ld a, [wCustomMove]
- push af
- ld a, [wCustomChance]
- push af
- ld a, [wCustomRandomValue]
- push af
- ld a, [wAbilityTemp]
- push af
- ld a, [wAbilityTemp + 1]
- push af
- ld hl, wStatAbilityGuard
- set 0, [hl]
- ld a, [H_WHOSETURN]
- push af
- ld a, [wCustomSide]
- ld [H_WHOSETURN], a ; the reflection originates from the armor holder
- xor 1
- ld [wCustomSide], a
- callab CustomChangeStage
- pop af
- ld [H_WHOSETURN], a
- ld hl, wStatAbilityGuard
- res 0, [hl]
- pop af
- ld [wAbilityTemp + 1], a
- pop af
- ld [wAbilityTemp], a
- pop af
- ld [wCustomRandomValue], a
- pop af
- ld [wCustomChance], a
- pop af
- ld [wCustomMove], a
- pop af
- ld [wCustomSavedTurn], a
- pop af
- ld [wCustomChanged], a
- pop af
- ld [wCustomDelta], a
- pop af
- ld [wCustomStat], a
- pop af
- ld [wCustomSide], a
- pop af
- ld [wAbilitySide], a
- ld a, 1
- ld [wAbilityCheckResult], a
- ret
-.dead
- pop af
- ld [wAbilitySide], a
- ret
+ jpab AbilityMirrorArmorCustomBanked
 
 AbilityMirrorArmorLegacy:
  xor a

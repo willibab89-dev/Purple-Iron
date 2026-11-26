@@ -116,6 +116,7 @@ AbilityTextPointers:
 	dw AbilityText281, AbilityText282, AbilityText283, AbilityText284, AbilityText285
 	dw AbilityText286, AbilityText287, AbilityText288, AbilityText289
 	dw AbilityText290, AbilityText291, AbilityText292
+	dw AbilityText293, AbilityText294, AbilityText295
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -501,6 +502,9 @@ AbilityText289: db "BURNING RAGE",$4e,"Damage x1.25 vs",$4e,"burned foe.@"
 AbilityText290: db "MOXIE",$4e,"Knock out a foe:",$4e,"Attack +1.@"
 AbilityText291: db "ARMOR CRUSHER",$4e,"Bug moves are strong",$4e,"against Rock.@"
 AbilityText292: db "CRUSHING GRIP",$4e,"Physical hit: 20%",$4e,"foe Defense -1.@"
+AbilityText293: db "UNSTOPPABLE",$4e,"Prevents flinching",$4e,"and Attack drops.@"
+AbilityText294: db "ANGER POINT",$4e,"Critical hit taken:",$4e,"Attack +2 once.@"
+AbilityText295: db "SAP SIPPER",$4e,"Grass move hit:",$4e,"Attack +1.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -584,6 +588,7 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_HOT_TEMPER, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_HYPER_CUTTER, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_HARD_SHELL
+	db AB_STAMPEDE, AB_RAMPAGE, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -731,6 +736,7 @@ AbilitySpeciesPools:
 	db ELECTABUZZ, 78
 	db MAGMAR, 79
 	db PINSIR, 80
+	db TAUROS, 81
 	db 0
 
 ; Shared battle move flags live with the banked ability data.
@@ -803,6 +809,9 @@ AbilityExtendedPoolIds:
  db 80, 1, AB_MOXIE - ABILITY_EXTENDED
  db 80, 3, AB_ARMOR_CRUSHER - ABILITY_EXTENDED
  db 80, 4, AB_CRUSHING_GRIP - ABILITY_EXTENDED
+ db 81, 3, AB_UNSTOPPABLE - ABILITY_EXTENDED
+ db 81, 4, AB_ANGER_POINT - ABILITY_EXTENDED
+ db 81, 5, AB_SAP_SIPPER - ABILITY_EXTENDED
  db 0
 
 
