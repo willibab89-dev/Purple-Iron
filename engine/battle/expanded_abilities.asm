@@ -481,6 +481,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityIceQueenDamage
 	call AbilitySharpBladesDamage
 	call AbilityEqualizerDamage
 	call AbilityFocusedDamage
@@ -1424,6 +1425,7 @@ AbilityAttempt:
 
 ; Ground/Normal abilities trigger only when a move was actually executed.
 AbilitySandAfterAction:
+	call AbilityDancerAfterAction
 	ld a, [wAbilityHit]
 	bit 3, a
 	ret z
@@ -1753,7 +1755,10 @@ AbilityConfounding:
  cp AB_CONFOUNDING
  jr z, .psychic
  cp AB_COLLECTIVE_MIND
- ret nz
+ jr z, .psychic
+ ld c, AB_ENCHANTRESS - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
 .psychic
  ld a, [wAbilityMoveType]
  cp PSYCHIC
@@ -3717,7 +3722,19 @@ AbilityMoveFlags:
 	ld d, 0
 	ld hl, AbilityMoveMetadata
 	add hl, de
-	ld a, [hl]
+	push bc
+	ld a, [wBuffer]
+	push af
+	ld de, wBuffer
+	ld bc, 1
+	ld a, BANK(AbilityMoveMetadata)
+	call FarCopyData
+	ld a, [wBuffer]
+	ld e, a
+	pop af
+	ld [wBuffer], a
+	ld a, e
+	pop bc
 	ret
 
 .invalid
@@ -3981,7 +3998,6 @@ AbilitySquirtleFamily:
 	cp BLASTOISE
 	ret
 
-INCLUDE "data/ability_move_metadata.asm"
 
 AbilityDustOnly:
 	xor a
@@ -7344,6 +7360,60 @@ AbilityExtendedActorIs:
  and a
  ret
 
+; Jynx status boost happens once per battle, only on an executed status move.
+AbilityDancerAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ ld c, AB_DANCER - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ call AbilityMove
+ ld a, [hl]
+ call AbilityMoveFlags
+ bit 0, a
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ call AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ ld a, 2
+ jp AbilityRaiseStage
+
+AbilityIceQueenDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ ld c, AB_ICE_QUEEN - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ call AbilityActorMoveType
+ cp ICE
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ dec hl
+ call AbilityHalfHP
+ ret c
+ ret z
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 125
+ jp AbilityScaleDamage
+
 AbilitySharpBladesDamage:
  ld a, [wUnusedC000]
  bit 4, a
@@ -7670,12 +7740,21 @@ AbilityFocusedFixedDamage:
 AbilityWaterJet:
  ld c, AB_WATER_JET - ABILITY_EXTENDED
  call AbilityExtendedActorIs
+ jr c, .water
+ ld c, AB_COLD_TOUCH - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
  ret nc
- ld a, [wAbilityHit]
- bit 1, a
- ret nz
+ ld a, [wAbilityMoveType]
+ cp FIRE
+ ret nc
+ jr .eligible
+.water
  ld a, [wAbilityMoveType]
  cp WATER
+ ret nz
+.eligible
+ ld a, [wAbilityHit]
+ bit 1, a
  ret nz
  call AbilityTarget
  cp AB_SHIELD_DUST

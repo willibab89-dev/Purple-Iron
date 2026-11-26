@@ -112,6 +112,7 @@ AbilityTextPointers:
 	dw AbilityText267, AbilityText268, AbilityText269, AbilityText270
 	dw AbilityText271, AbilityText272, AbilityText273
 	dw AbilityText274, AbilityText275, AbilityText276
+	dw AbilityText277, AbilityText278, AbilityText279, AbilityText280
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -481,6 +482,10 @@ AbilityText273: db "MIRROR ARMOR",$4e,"Reflects stat",$4e,"reductions.@"
 AbilityText274: db "SHARP BLADES",$4e,"Cutting moves deal",$4e,"x1.25 damage.@"
 AbilityText275: db "VANGUARD",$4e,"First attack each",$4e,"entry: priority +1.@"
 AbilityText276: db "DOUBLE SCYTHES",$4e,"Cutting moves: 20%",$4e,"chance of half hit.@"
+AbilityText277: db "DANCER",$4e,"Status move: Speed",$4e,"+1 once per battle.@"
+AbilityText278: db "COLD TOUCH",$4e,"Physical hit: 20%",$4e,"foe Speed -1.@"
+AbilityText279: db "ENCHANTRESS",$4e,"Psychic hit: 20%",$4e,"confuses foe.@"
+AbilityText280: db "ICE QUEEN",$4e,"Ice moves x1.25",$4e,"above half HP.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -560,6 +565,7 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_NATURAL_CURE, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_PRANKSTER, AB_MAGIC_BOUNCE, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db AB_TECHNICIAN, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_EXECUTIONER, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SNOW_VEIL
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -703,4 +709,8 @@ AbilitySpeciesPools:
 	db STARMIE, 74
 	db MR_MIME, 75
 	db SCYTHER, 76
+	db JYNX, 77
 	db 0
+
+; Shared battle move flags live with the banked ability data.
+INCLUDE "data/ability_move_metadata.asm"

@@ -94,6 +94,10 @@ AbilityExtendedPoolIds:
  db 76, 2, AB_SHARP_BLADES - ABILITY_EXTENDED
  db 76, 3, AB_VANGUARD - ABILITY_EXTENDED
  db 76, 5, AB_DOUBLE_SCYTHES - ABILITY_EXTENDED
+ db 77, 1, AB_DANCER - ABILITY_EXTENDED
+ db 77, 2, AB_COLD_TOUCH - ABILITY_EXTENDED
+ db 77, 3, AB_ENCHANTRESS - ABILITY_EXTENDED
+ db 77, 4, AB_ICE_QUEEN - ABILITY_EXTENDED
  db 0
 
 ; Nature format keeps the persistent ability slot in stored Type1 high bits.

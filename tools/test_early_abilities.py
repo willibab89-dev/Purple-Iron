@@ -164,7 +164,8 @@ def validate(version):
                'GOLDEEN':['ROYAL_HORN','SWIFT_SWIM','WATER_VEIL','HORN_BREAKER','LIGHTNING_ROD'],
                'STARYU':['REGENERATOR','COSMIC_CORE','ILLUMINATE','NATURAL_CURE','EQUALIZER'],
                'MR_MIME':['COPYCAT','PRANKSTER','MAGIC_BOUNCE','STRONGMAN','MIRROR_ARMOR'],
-               'SCYTHER':['TECHNICIAN','SHARP_BLADES','VANGUARD','EXECUTIONER','DOUBLE_SCYTHES']}
+               'SCYTHER':['TECHNICIAN','SHARP_BLADES','VANGUARD','EXECUTIONER','DOUBLE_SCYTHES'],
+               'JYNX':['DANCER','COLD_TOUCH','ENCHANTRESS','ICE_QUEEN','SNOW_VEIL']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1402,6 +1403,23 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Jynx: once-per-battle boosts, hit effects, and Ice damage threshold.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,want in [('GROWL',8),('SWORDS_DANCE',8),('TACKLE',7),('ICE_BEAM',7)]:
+                init(turn);move(turn,attack);aid(turn,'DANCER');call('AbilityAttempt');call('AbilityAfterAction');assert get(actor+'MonSpeedMod')==want,(turn,attack,'dancer',get(actor+'MonSpeedMod'));call('AbilityAfterAction');assert get(actor+'MonSpeedMod')==want,(turn,'dancer once')
+            init(turn);move(turn,'GROWL');aid(turn,'DANCER');call('AbilityAfterAction');assert get(actor+'MonSpeedMod')==7,(turn,'unexecuted dancer')
+            for attack,roll,sub,protection,want in [('TACKLE',0,0,None,6),('TACKLE',39,0,None,6),('TACKLE',40,0,None,7),('EMBER',0,0,None,7),('TACKLE',0,1,None,7),('TACKLE',0,0,'SHIELD_DUST',7),('TACKLE',0,0,'CLEAR_BODY',7)]:
+                init(turn);move(turn,attack);aid(turn,'COLD_TOUCH');aid(1-turn,protection);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(target+'MonSpeedMod')==want,(turn,attack,roll,sub,protection,'cold touch',get(target+'MonSpeedMod'))
+            for attack,roll,sub,protection,want in [('PSYCHIC_M',0,0,None,True),('PSYCHIC_M',39,0,None,True),('PSYCHIC_M',40,0,None,False),('TACKLE',0,0,None,False),('PSYCHIC_M',0,1,None,False),('PSYCHIC_M',0,0,'SHIELD_DUST',False),('PSYCHIC_M',0,0,'OBLIVIOUS',False)]:
+                init(turn);move(turn,attack);aid(turn,'ENCHANTRESS');aid(1-turn,protection);put('wCustomTargetHadSub',sub);rng(roll,0);call('AbilityAfterHit');assert bool(get(target+'BattleStatus1')&128)==want,(turn,attack,roll,sub,protection,'enchantress')
+            for attack,hp,want in [('ICE_BEAM',81,125),('ICE_BEAM',80,100),('ICE_BEAM',79,100),('ICE_BEAM',0,100),('TACKLE',160,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'ICE_QUEEN');word(ap+'HP',hp);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,hp,'ice queen',readword('wDamage'))
+            for attack,want in [('ICE_BEAM',8),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(turn,'SNOW_VEIL');call('AbilityAttempt');call('AbilityAfterAction');assert get(actor+'MonEvasionMod')==want,(turn,attack,'snow veil');call('AbilityAfterAction');assert get(actor+'MonEvasionMod')==want
+        for slot,name in [(1,'DANCER'),(2,'COLD TOUCH'),(3,'ENCHANTRESS'),(4,'ICE QUEEN')]:
+            metadata('wPartyMon1','JYNX',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Scyther: cutting damage, first-attack priority, and extra strike odds.
         for turn in (0,1):
             for attack,want in [('SLASH',125),('CUT',125),('TACKLE',100),('EMBER',100)]:
@@ -1665,6 +1683,12 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('GROWL',turn,actor='DANCER',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8,(turn,'live dancer')
+            ap,tp=execute('TACKLE',turn,actor='COLD_TOUCH',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==6,(turn,'live cold touch')
+            ap,tp=execute('PSYCHIC_M',turn,actor='ENCHANTRESS',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128,(turn,'live enchantress')
+            ap,tp=execute('ICE_BEAM',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('ICE_BEAM',turn,actor='ICE_QUEEN',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live ice queen',normal,readword(tp+'HP'))
+            ap,tp=execute('ICE_BEAM',turn,actor='SNOW_VEIL',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8,(turn,'live snow veil')
             ap,tp=execute('SWORDS_DANCE',turn,target='COPYCAT',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==9,(turn,'live copycat',get('w'+('Player' if turn else 'Enemy')+'MonAttackMod'))
             ap,tp=execute('GROWL',turn,target='MIRROR_ARMOR',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7 and get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==6,(turn,'live mirror armor')
             ap,tp=execute('SCREECH',turn,target='MIRROR_ARMOR',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==7 and get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==5,(turn,'live mirror two-stage drop')
@@ -1967,7 +1991,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 124 species / 620 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 125 species / 625 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
