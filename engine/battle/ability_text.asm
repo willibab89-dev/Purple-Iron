@@ -126,7 +126,7 @@ AbilityTextPointers:
 	dw AbilityText317, AbilityText318
 	dw AbilityText319, AbilityText320, AbilityText321
 	dw AbilityText322, AbilityText323, AbilityText324, AbilityText325, AbilityText326
-	dw AbilityText327, AbilityText328, AbilityText329
+	dw AbilityText327, AbilityText328, AbilityText329, AbilityText330
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -549,6 +549,7 @@ AbilityText326: db "DOWNLOAD",$4e,"Entry: Attack or",$4e,"Special +1.@"
 AbilityText327: db "ANCIENT POWER",$4e,"Hits: 10% all stats",$4e,"+1 once per battle.@"
 AbilityText328: db "MIND'S EYE",$4e,"Ignores foe evasion;",$4e,"hits Ghosts.@"
 AbilityText329: db "EXECUTIONER",$4e,"Physical x1.2 vs",$4e,"foes below half HP.@"
+AbilityText330: db "TERRIFYING",$4e,"Entry: foe Defense",$4e,"-1 once per battle.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -644,3 +645,4 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, AB_PATIENT, ABILITY_EXTENDED, AB_SHELL_ARMOR
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, AB_BATTLE_ARMOR, AB_LEECHING, ABILITY_EXTENDED
+	db AB_PREDATOR, AB_ROCK_HEAD, AB_RELENTLESS, ABILITY_EXTENDED, ABILITY_EXTENDED

@@ -2195,6 +2195,8 @@ AbilityExtendedPoolIds:
  db 92, 1, AB_KABUTO_EXECUTIONER - ABILITY_EXTENDED
  db 92, 2, AB_ANCIENT_POWER - ABILITY_EXTENDED
  db 92, 5, AB_SHARP_BLADES - ABILITY_EXTENDED
+ db 93, 4, AB_SAVAGE_JAWS - ABILITY_EXTENDED
+ db 93, 5, AB_TERRIFYING - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2501,6 +2503,7 @@ AbilitySpeciesPools:
 	db OMASTAR, 91
 	db KABUTO, 92
 	db KABUTOPS, 92
+	db AERODACTYL, 93
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3014,4 +3017,53 @@ AbilityAncientPowerOnHit:
  ld a, b
  cp 4
  jr c, .loop
+ ret
+
+; The entry dispatcher calls this for each battler once both are ready.
+AbilityTerrifying:
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_TERRIFYING - ABILITY_EXTENDED
+ ret nz
+ callab AbilityFlagsPointer
+ bit 6, [hl]
+ ret nz
+ ld a, [wAbilitySide]
+ push af
+ xor 1
+ ld [wAbilitySide], a
+ and a
+ jr nz, .targetReady
+ ld a, [wBattleMonSpecies]
+ and a
+ jr z, .restore
+.targetReady
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .restore
+ ; Spend the holder's use even if the target prevents the stat drop.
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ callab AbilityFlagsPointer
+ set 6, [hl]
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ ld [wCustomSide], a
+ callab AbilityGetCustomSideResult
+ ld a, [wAbilityCheckResult]
+ cp AB_CLEAR_BODY
+ jr z, .restore
+ ld a, 1 ; Defense
+ ld [wCustomStat], a
+ ld a, -1
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChanged], a
+ callab CustomChangeStage
+.restore
+ pop af
+ ld [wAbilitySide], a
  ret

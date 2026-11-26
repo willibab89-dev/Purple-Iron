@@ -1,4 +1,4 @@
-SECTION "Liquid Ooze seed transfer", ROMX, BANK[$3f]
+SECTION "Liquid Ooze seed transfer", ROMX, BANK[$35]
 
 ; adds bc to enemy HP
 ; bc isn't updated if HP subtracted was capped to prevent overkill

@@ -136,6 +136,7 @@ AbilityQuickFeet:
 
 ; Each holder may trigger once; each target may be affected once per battle.
 AbilityIntimidate:
+	callab AbilityTerrifying
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_INTIMIDATE

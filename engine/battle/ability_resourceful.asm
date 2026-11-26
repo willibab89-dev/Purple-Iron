@@ -1,4 +1,4 @@
-SECTION "Resourceful ability and PP", ROMX, BANK[$3f]
+SECTION "Resourceful ability and PP", ROMX, BANK[$35]
 
  ; Return nonzero only for the saved Resourceful slot of this family.
 AbilityResourcefulCheckMon:
