@@ -28,6 +28,12 @@ HealEffect_:
 	ld a, b
 	cp REST
 	jr nz, .healHP
+	abilitycall AbilityAntivirusActor
+	ld a, [wAbilityCheckResult]
+	and a
+	jp nz, .failed
+	ld a, b
+	cp REST ; restore Z for the heal amount below
 	push hl
 	push de
 	push af

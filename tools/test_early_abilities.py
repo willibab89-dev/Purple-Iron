@@ -177,7 +177,8 @@ def validate(version):
                'EEVEE':['VERSATILITY','ADAPTABLE','FLEXIBLE','QUICK_LEARNER','PROTEAN'],
                'VAPOREON':['LIQUID_BODY','WATER_VEIL','REGENERATION','WATER_ABSORB','DEEP_SEA_PRESSURE'],
                'JOLTEON':['GALVANIZE','QUICK_FEET','SPIKY_FUR','VOLT_ABSORB','HIGH_VOLTAGE'],
-               'FLAREON':['HEAT_WAVE','MAGMA_COAT','COMBUSTION','FLUFFY','FLAME_BODY']}
+               'FLAREON':['HEAT_WAVE','MAGMA_COAT','COMBUSTION','FLUFFY','FLAME_BODY'],
+               'PORYGON':['CONSERVATIVE','TRACE','ANTIVIRUS','OVERCLOCK','DOWNLOAD']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1415,6 +1416,38 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Porygon: PP conservation, temporary Trace, immunity, and entry boosts.
+        for roll,want in [(0,20),(63,20),(64,19),(255,19)]:
+            init();move(0,'TACKLE');aid(0,'CONSERVATIVE');put('wBattleMonPP',20);put('wPartyMon1PP',20);call('AbilityBeforeAction');call('AbilityAttempt');rng(roll);call('DecrementPP',DE=addr('wPlayerSelectedMove'));call('AbilityAfterAction');assert (get('wBattleMonPP'),get('wPartyMon1PP'))==(want,want),(roll,'conservative',get('wBattleMonPP'),get('wPartyMon1PP'))
+        init();move(0,'TACKLE');aid(0,'CONSERVATIVE');aid(1,'NEUTRALIZING_GAS');put('wBattleMonPP',20);put('wPartyMon1PP',20);call('AbilityBeforeAction');call('AbilityAttempt');rng(0);call('DecrementPP',DE=addr('wPlayerSelectedMove'));call('AbilityAfterAction');assert get('wBattleMonPP')==19 and get('wPartyMon1PP')==19,('suppressed conservative')
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for opponent in ('BLAZE','GALVANIZE','SAP_SIPPER'):
+                ap,tp=init(turn);aid(turn,'TRACE');aid(1-turn,opponent);put('wAbilitySide',turn);call('AbilityEntrySpeed');actual=game.memory[addr('wActiveAbilities')+turn];extended=game.memory[addr('wActiveAbilityExtended')+turn];expected=ab[opponent];assert (actual,extended)==((255,expected-255) if expected>=256 else (expected,0)),(turn,opponent,'trace',actual,extended)
+            for opponent,hp in [(None,160),('TRACE',160),('BLAZE',0),('NEUTRALIZING_GAS',160)]:
+                ap,tp=init(turn);aid(turn,'TRACE');aid(1-turn,opponent);word(tp+'HP',hp);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert game.memory[addr('wActiveAbilityExtended')+turn]==ab['TRACE']-255,(turn,opponent,hp,'trace not copied')
+            ap,tp=init(turn);aid(turn,'TRACE');aid(1-turn,'BLAZE');put('wAbilitySide',turn);call('AbilityEntrySpeed')
+            if turn==0:
+                metadata('wPartyMon1','PORYGON',2,17);put('wWhichPokemon',0);call('AbilityLoadPlayer')
+            else:
+                put('wEnemyMonSpecies2',ids['PORYGON']);put('wNatureEnemySlot',2);call('AbilityLoadEnemy')
+            assert game.memory[addr('wActiveAbilityExtended')+turn]==ab['TRACE']-255,(turn,'trace restored on reload')
+            for delta in (8,16,32,64):
+                ap,tp=init(turn);aid(1-turn,'ANTIVIRUS');put('wCustomSide',1-turn);put('wCustomDelta',delta);call('UtilityInflictStatus');assert get(tp+'Status')==0,(turn,delta,'antivirus utility',get(tp+'Status'))
+            for status in (1,3,8,16,32,64):
+                ap,tp=init(turn);aid(turn,'ANTIVIRUS');put(ap+'Status',status);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get(ap+'Status')==0,(turn,status,'antivirus entry')
+            for attack,want in [('GROWL',8),('TACKLE',8),('EMBER',7)]:
+                init(turn);move(turn,attack);aid(turn,'OVERCLOCK');call('AbilityAttempt');call('AbilityAfterAction');assert get(actor+'MonSpeedMod')==want,(turn,attack,'overclock');call('AbilityAfterAction');assert get(actor+'MonSpeedMod')==want
+            for defense,special,atk,sp in [(99,100,8,7),(100,100,7,8),(101,100,7,8),(255,256,8,7),(256,255,7,8)]:
+                ap,tp=init(turn);aid(turn,'DOWNLOAD');word(tp+'Defense',defense);word(tp+'Special',special);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert (get(actor+'MonAttackMod'),get(actor+'MonSpecialMod'))==(atk,sp),(turn,defense,special,'download',get(actor+'MonAttackMod'),get(actor+'MonSpecialMod'))
+        init();aid(0,'BLAZE');aid(1,'TRACE');put('wFirstMonsNotOutYet',1);put('wAbilitySide',1);call('AbilityEntrySpeed');assert game.memory[addr('wActiveAbilityExtended')+1]==ab['TRACE']-255;put('wAbilitySide',0);call('AbilityEntrySpeed');assert game.memory[addr('wActiveAbilities')+1]==ab['BLAZE'],('first enemy trace')
+        init();aid(0,'TAILWIND');aid(1,'TRACE');put('wFirstMonsNotOutYet',1);put('wAbilitySide',1);call('AbilityEntrySpeed');put('wAbilitySide',0);call('AbilityEntrySpeed');assert get('wEnemyMonSpeedMod')==8 and get('wPlayerMonSpeedMod')==8,('first enemy traced entry ability',get('wEnemyMonSpeedMod'),get('wPlayerMonSpeedMod'))
+        for turn in (0,1):
+            ap,tp=init(turn);aid(turn,'TRACE');aid(1-turn,'DOWNLOAD');word(tp+'Defense',100);word(tp+'Special',120);word(ap+'Defense',90);word(ap+'Special',100);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==8,(turn,'traced download')
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'ANTIVIRUS');aid(1-turn,'EFFECT_SPORE');rng(0,2);call('AbilityAfterHit');assert get(ap+'Status')==0,(turn,'antivirus effect spore sleep')
+        for slot,name in [(1,'CONSERVATIVE'),(2,'TRACE'),(3,'ANTIVIRUS'),(4,'OVERCLOCK'),(5,'DOWNLOAD')]:
+            metadata('wPartyMon1','PORYGON',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Flareon: residual heat, protection, burn odds and Fluffy damage.
         for turn in (0,1):
             target='w'+('Player' if turn else 'Enemy')
@@ -1937,6 +1970,14 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            if turn==0:
+                ap,tp=execute('TACKLE',turn,actor='CONSERVATIVE',pp=20,random_value=0);assert get('wBattleMonPP')==20 and get('wPartyMon1PP')==20,('live conservative',get('wBattleMonPP'),get('wPartyMon1PP'))
+                ap,tp=execute('METRONOME',turn,actor='CONSERVATIVE',pp=20,random_value=MOVES['TACKLE']);assert get('wBattleMonPP')==20 and get('wPartyMon1PP')==20,('conservative metronome',get('wBattleMonPP'),get('wPartyMon1PP'))
+            for attack in ('SLEEP_POWDER','POISONPOWDER','THUNDER_WAVE','WILL_O_WISP','FLASH_FREEZE'):
+                ap,tp=execute(attack,turn,target='ANTIVIRUS',random_value=100);assert get(tp+'Status')==0,(turn,attack,'live antivirus',get(tp+'Status'))
+            for attack in ('EMBER','ICE_BEAM','THUNDERSHOCK'):
+                ap,tp=execute(attack,turn,target='ANTIVIRUS',random_value=0);assert get(tp+'Status')==0 and readword(tp+'HP')<160,(turn,attack,'live antivirus secondary',get(tp+'Status'),readword(tp+'HP'))
+            ap,tp=execute('REST',turn,actor='ANTIVIRUS',actor_hp=80,random_value=100);assert get(ap+'Status')==0 and readword(ap+'HP')==80,(turn,'antivirus rest',get(ap+'Status'),readword(ap+'HP'))
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('TACKLE',turn,target='FLUFFY',random_value=100);assert 160-readword(tp+'HP')<normal,(turn,'live fluffy physical')
             ap,tp=execute('EMBER',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -2295,7 +2336,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 137 species / 685 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 138 species / 690 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

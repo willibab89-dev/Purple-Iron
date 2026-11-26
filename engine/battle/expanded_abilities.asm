@@ -38,6 +38,26 @@ AbilityClearRelentless:
 
 ; Called after the newly loaded combatant's stat stages are initialized.
 AbilityEntrySpeed:
+	callab AbilityPorygonEntry
+	call AbilityEntryOwnEffects
+	ld a, [wFirstMonsNotOutYet]
+	and a
+	jr z, .oneSide
+	ld a, [wAbilitySide]
+	and a
+	ret nz ; first enemy waits until the player's first combatant is ready
+	call AbilityIntimidate
+	ld a, 1
+	ld [wAbilitySide], a
+	call AbilityIntimidate
+	xor a
+	ld [wAbilitySide], a
+	ret
+.oneSide
+	jp AbilityIntimidate
+
+
+AbilityEntryOwnEffects:
 	call AbilityHealerOnEntry
 	call AbilityImmunityOnEntry
 	ld a, [wAbilitySide]
@@ -74,26 +94,10 @@ AbilityEntrySpeed:
 	ld a, [wAbilitySide]
 	call AbilityGet
 	cp AB_GUTS
-	jr nz, .checkIntimidate
+	ret nz
 	call AbilityFlagsPointer
 	res 0, [hl]
-	call AbilityGuts
-.checkIntimidate
-	ld a, [wFirstMonsNotOutYet]
-	and a
-	jr z, .oneSide
-	ld a, [wAbilitySide]
-	and a
-	ret nz ; first enemy waits until the player's first combatant is ready
-	call AbilityIntimidate
-	ld a, 1
-	ld [wAbilitySide], a
-	call AbilityIntimidate
-	xor a
-	ld [wAbilitySide], a
-	ret
-.oneSide
-	jp AbilityIntimidate
+	jp AbilityGuts
 
 AbilityQuickFeetBoth:
 	xor a
@@ -486,6 +490,14 @@ AbilityRoll:
 ; The RNG draw is already in wCustomRandomValue. Halving it doubles the
 ; threshold probability exactly and makes thresholds >=128 guaranteed.
 AbilityMeasuredEffectRoll:
+	callab AbilityAntivirusSecondaryRoll
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .ordinaryFreezeCheck
+	ld a, $ff
+	ld [wCustomRandomValue], a
+	ret
+.ordinaryFreezeCheck
 	call AbilityMove
 	inc hl
 	ld a, [hl]
@@ -2745,11 +2757,16 @@ AbilityEffectSpore:
 	ld [H_WHOSETURN], a
 	ret
 .sleep
+	callab AbilityAntivirusActor
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
+.sleepRoll
 	callab CustomRandomInBattleBank
 	ld a, [wCustomRandomValue]
 	and 7
 	cp 2
-	jr c, .sleep
+	jr c, .sleepRoll
 	ld b, a
 	ld a, [H_WHOSETURN]
 	ld [wCustomSide], a
@@ -3812,49 +3829,12 @@ AbilitySecondaryEffects:
 	db ATTACK_AND_STAT_EFFECT, $ff
 
 AbilityBurnGate:
-	ld a, [wCustomDelta]
-	cp 1 << FRZ
-	jr nz, .notFreeze
-	xor a
-	ld [wAbilityCheckResult], a
-	ld a, [wCustomSide]
-	call AbilityGet
-	cp ABILITY_EXTENDED
-	ret nz
-	ld a, [wAbilityResolvedExtended]
-	cp AB_MAGMA_ARMOR - ABILITY_EXTENDED
-	jr z, .block
-	ret
-.notFreeze
-	ld a, [wCustomDelta]
-	cp 1 << PAR
-	jr nz, .ordinary
-	ld a, [wCustomSide]
-	call AbilityGet
-	cp AB_LIMBER
-	jr z, .block
-.ordinary
-	xor a
-	ld [wAbilityCheckResult], a
-	ld a, [wCustomDelta]
-	cp 1 << PSN
-	jr nz, .burn
-	ld a, [wCustomSide]
-	call AbilityGet
-	cp AB_IMMUNITY
-	jr z, .block
-	ret
-.burn
-	ld a, [wCustomDelta]
-	cp 1 << BRN
-	ret nz
-	call AbilityTarget
-	cp AB_WATER_VEIL
-	ret nz
-.block
-	ld a, 1
-	ld [wAbilityCheckResult], a
-	ret
+ jpab AbilityBurnGateBanked
+
+AbilityGetCustomSideResult:
+ call AbilityGetCustomSide
+ ld [wAbilityCheckResult], a
+ ret
 
 ; Accuracy is scaled after nature and stage factors, before final byte cap.
 AbilityAccuracy:
@@ -4256,23 +4236,7 @@ AbilitySquirtleFamily:
 
 
 AbilityDustOnly:
-	xor a
-	ld [wAbilityCheckResult], a
-	call AbilityTarget
-	cp AB_IMMUNITY
-	jr z, .block
-	cp AB_SHIELD_DUST
-	ret nz
-	call AbilityMove
-	inc hl
-	inc hl
-	ld a, [hl]
-	and a
-	ret z
-.block
-	ld a, 1
-	ld [wAbilityCheckResult], a
-	ret
+ jpab AbilityDustOnlyBanked
 
 AbilityHalfHP:
 	ld a, [hli]
@@ -4308,18 +4272,15 @@ AbilityPlayerEntry:
 	ret
 
 AbilityVeilOnly:
-	xor a
-	ld [wAbilityCheckResult], a
-	call AbilityTarget
-	cp AB_WATER_VEIL
-	ret nz
-	ld a, 1
-	ld [wAbilityCheckResult], a
-	ret
+ jpab AbilityVeilOnlyBanked
 
 ; Ability poison is ordinary poison. Poison Fang's shared utility deliberately
 ; inflicts bad poison, so use a separate status writer for these passives.
 AbilityInflictOrdinaryStatus:
+	callab AbilityAntivirusCustom
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	ld a, [wCustomDelta]
 	cp 1 << PSN
 	jp nz, .burn
@@ -6656,6 +6617,10 @@ AbilityEarthEaterOnHit:
 
 ; Apply one sleep roll after a successful unshielded Ground attack.
 AbilitySandmanSleep:
+ callab AbilityAntivirusTarget
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
  call AbilityTargetStatus
  ld a, [hl]
  and a
@@ -7208,14 +7173,7 @@ AbilityResilienceIncoming:
  ret
 
 AbilityLimberTarget:
- xor a
- ld [wAbilityCheckResult], a
- call AbilityTarget
- cp AB_LIMBER
- ret nz
- ld a, 1
- ld [wAbilityCheckResult], a
- ret
+ jpab AbilityLimberTargetBanked
 
 AbilityLimberSecondary:
  call AbilityMove

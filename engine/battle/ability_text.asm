@@ -125,6 +125,7 @@ AbilityTextPointers:
 	dw AbilityText314, AbilityText315, AbilityText316
 	dw AbilityText317, AbilityText318
 	dw AbilityText319, AbilityText320, AbilityText321
+	dw AbilityText322, AbilityText323, AbilityText324, AbilityText325, AbilityText326
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -539,6 +540,11 @@ AbilityText318: db "VOLT ABSORB",$4e,"Electric hits heal",$4e,"1/4 maximum HP.@"
 AbilityText319: db "HEAT WAVE",$4e,"Foe loses 1/16 HP",$4e,"unless Fire type.@"
 AbilityText320: db "MAGMA COAT",$4e,"Super-effective",$4e,"damage x0.75.@"
 AbilityText321: db "FLUFFY",$4e,"Physical x0.7;",$4e,"Fire damage x2.@"
+AbilityText322: db "CONSERVATIVE",$4e,"Moves: 25% chance",$4e,"to save PP.@"
+AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
+AbilityText324: db "ANTIVIRUS",$4e,"Immune to major",$4e,"status conditions.@"
+AbilityText325: db "OVERCLOCK",$4e,"Normal move: Speed",$4e,"+1 once per battle.@"
+AbilityText326: db "DOWNLOAD",$4e,"Entry: Attack or",$4e,"Special +1.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -631,7 +637,4 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, AB_WATER_VEIL, AB_REGENERATION, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_QUICK_FEET, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_HIGH_VOLTAGE
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, AB_COMBUSTION, ABILITY_EXTENDED, AB_FLAME_BODY
-
-
-; Shared battle move flags live with the banked ability data.
-INCLUDE "data/ability_move_metadata.asm"
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED

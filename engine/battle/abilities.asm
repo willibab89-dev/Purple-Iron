@@ -519,6 +519,7 @@ AbilityRaiseStage:
 	jpab CustomChangeStage
 
 AbilityAfterAction:
+	abilitycall AbilityConservativeRefund
 	abilitycall AbilitySleepAfterAction
 	abilitycall AbilityMindGamesAfter
 	abilitycall AbilityPatientMarkAction

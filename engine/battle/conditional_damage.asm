@@ -307,6 +307,10 @@ ConditionalAccuracyCheck:
 	push hl
 	push de
 	push bc
+	abilitycall AbilityAntivirusSleepCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr nz, .immune
 	abilitycall AbilitySteadfastDirectCheck
 	ld a, [wAbilityCheckResult]
 	and a
@@ -1894,9 +1898,23 @@ AbilityQuickLearnerAfterAction:
  callab AbilityActor
  ld a, [wAbilityResolvedExtended]
  cp AB_QUICK_LEARNER - ABILITY_EXTENDED
+ jr z, .offType
+ cp AB_OVERCLOCK - ABILITY_EXTENDED
  ret nz
+ ld hl, wPlayerMoveType
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .normalType
+ ld hl, wEnemyMoveType
+.normalType
+ ld a, [hl]
+ cp NORMAL
+ ret nz
+ jr .eligible
+.offType
  call AbilityEeveeMoveOffType
  ret nc
+.eligible
  ld a, [H_WHOSETURN]
  ld [wAbilitySide], a
  callab AbilityHP
@@ -2166,6 +2184,11 @@ AbilityExtendedPoolIds:
  db 89, 1, AB_HEAT_WAVE - ABILITY_EXTENDED
  db 89, 2, AB_MAGMA_COAT - ABILITY_EXTENDED
  db 89, 4, AB_FLUFFY - ABILITY_EXTENDED
+ db 90, 1, AB_CONSERVATIVE - ABILITY_EXTENDED
+ db 90, 2, AB_TRACE - ABILITY_EXTENDED
+ db 90, 3, AB_ANTIVIRUS - ABILITY_EXTENDED
+ db 90, 4, AB_OVERCLOCK - ABILITY_EXTENDED
+ db 90, 5, AB_DOWNLOAD - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2467,4 +2490,468 @@ AbilitySpeciesPools:
 	db VAPOREON, 87
 	db JOLTEON, 88
 	db FLAREON, 89
+	db PORYGON, 90
 	db 0
+
+; The first pair is processed together once both battlers are present.
+AbilityPorygonEntry:
+ ld a, [wAbilitySide]
+ push af
+ ld a, [wFirstMonsNotOutYet]
+ and a
+ jr z, .single
+ ld a, [wAbilitySide]
+ and a
+ jr nz, .restore
+ xor a
+ ld [wAbilitySide], a
+ call .trace
+ ld a, 1
+ ld [wAbilitySide], a
+ call .trace
+ jr nc, .enemyTraceDone
+ callab AbilityEntryOwnEffects
+.enemyTraceDone
+ xor a
+ ld [wAbilitySide], a
+ call .entryEffects
+ ld a, 1
+ ld [wAbilitySide], a
+ call .entryEffects
+ jr .restore
+.single
+ call .trace
+ call .entryEffects
+.restore
+ pop af
+ ld [wAbilitySide], a
+ ret
+.trace
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_TRACE - ABILITY_EXTENDED
+ jr nz, .traceNoChange
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .traceNoChange
+ ld a, [wAbilitySide]
+ push af
+ xor 1
+ ld [wAbilitySide], a
+ ld hl, wBattleMonSpecies
+ and a
+ jr z, .traceSpecies
+ ld hl, wEnemyMonSpecies
+.traceSpecies
+ ld a, [hl]
+ and a
+ jr z, .traceRestore
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .traceRestore
+ ld hl, wActiveAbilities
+ ld de, wActiveAbilityExtended
+ ld a, [wAbilitySide]
+ and a
+ jr z, .readAbility
+ inc hl
+ inc de
+.readAbility
+ ld a, [hl]
+ and a
+ jr z, .traceRestore
+ ld b, a
+ ld a, [de]
+ ld c, a
+ ld a, b
+ cp ABILITY_EXTENDED
+ jr nz, .copy
+ ld a, c
+ cp AB_TRACE - ABILITY_EXTENDED
+ jr z, .traceRestore
+.copy
+ pop af
+ ld [wAbilitySide], a
+ ld hl, wActiveAbilities
+ ld de, wActiveAbilityExtended
+ and a
+ jr z, .store
+ inc hl
+ inc de
+.store
+ ld [hl], b
+ ld a, c
+ ld [de], a
+ scf
+ ret
+.traceRestore
+ pop af
+ ld [wAbilitySide], a
+.traceNoChange
+ and a
+ ret
+.entryEffects
+ call .antivirusEntry
+ call .download
+ ret
+.antivirusEntry
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ANTIVIRUS - ABILITY_EXTENDED
+ ret nz
+ ld hl, wBattleMonStatus
+ ld de, wPlayerBattleStatus3
+ ld a, [wAbilitySide]
+ and a
+ jr z, .status
+ ld hl, wEnemyMonStatus
+ ld de, wEnemyBattleStatus3
+.status
+ ld a, [hl]
+ and a
+ ret z
+ xor a
+ ld [hl], a
+ ld a, [de]
+ res BADLY_POISONED, a
+ ld [de], a
+ ld hl, wPlayerToxicCounter
+ ld a, [wAbilitySide]
+ and a
+ jr z, .toxic
+ ld hl, wEnemyToxicCounter
+.toxic
+ xor a
+ ld [hl], a
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ callab CustomRecalculate
+ jpab UtilitySyncParty
+.download
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DOWNLOAD - ABILITY_EXTENDED
+ ret nz
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [wAbilitySide]
+ push af
+ xor 1
+ ld [wAbilitySide], a
+ ld hl, wBattleMonSpecies
+ and a
+ jr z, .downloadSpecies
+ ld hl, wEnemyMonSpecies
+.downloadSpecies
+ ld a, [hl]
+ and a
+ jr z, .downloadMissing
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .downloadMissing
+ ld hl, wBattleMonDefense
+ ld de, wBattleMonSpecial
+ ld a, [wAbilitySide]
+ and a
+ jr z, .compare
+ ld hl, wEnemyMonDefense
+ ld de, wEnemyMonSpecial
+.compare
+ ld a, [de]
+ ld b, a
+ ld a, [hli]
+ cp b
+ jr c, .attack
+ jr nz, .special
+ inc de
+ ld a, [de]
+ ld b, a
+ ld a, [hl]
+ cp b
+ jr c, .attack
+.special
+ ld a, 3
+ jr .raise
+.attack
+ xor a
+.raise
+ ld [wCustomStat], a
+ pop af
+ ld [wAbilitySide], a
+ ld [wCustomSide], a
+ ld a, 1
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChanged], a
+ jpab CustomChangeStage
+.downloadMissing
+ pop af
+ ld [wAbilitySide], a
+ ret
+
+; One random decision per actual player action, including Metronome re-entry.
+; Parental scratch bits 5 and 4 mark the roll and a pending PP refund.
+AbilityConservativeMaybe:
+ ld a, [wParentalState]
+ bit 5, a
+ ret nz
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_CONSERVATIVE - ABILITY_EXTENDED
+ ret nz
+ ld hl, wParentalState
+ set 5, [hl]
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ cp 64
+ ret nc
+ ld hl, wParentalState
+ set 4, [hl]
+ ret
+
+AbilityConservativeRefund:
+ ld a, [H_WHOSETURN]
+ and a
+ ret nz ; enemy moves have unlimited PP in ordinary battles
+ ld hl, wParentalState
+ bit 4, [hl]
+ ret z
+ res 4, [hl]
+ ld a, [wPlayerMoveListIndex]
+ and 3
+ ld c, a
+ ld b, 0
+ ld hl, wBattleMonPP
+ add hl, bc
+ ld a, [hl]
+ and $3f
+ ld b, a
+ ld a, [wAbilityPPLeft]
+ cp b
+ ret z
+ ret c ; never increase PP that did not actually decrease
+ inc [hl]
+ ld a, [wPlayerBattleStatus3]
+ bit TRANSFORMED, a
+ ret nz
+ ld a, [wPlayerMonNumber]
+ ld hl, wPartyMon1PP
+ ld bc, wPartyMon2 - wPartyMon1
+ call AddNTimes
+ ld a, [wPlayerMoveListIndex]
+ and 3
+ ld c, a
+ ld b, 0
+ add hl, bc
+ inc [hl]
+ ret
+
+AbilityAntivirusTarget:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityTarget
+ jr AbilityAntivirusResolved
+AbilityAntivirusActor:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityActor
+ jr AbilityAntivirusResolved
+AbilityAntivirusCustom:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityGetCustomSide
+AbilityAntivirusResolved:
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ANTIVIRUS - ABILITY_EXTENDED
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityAntivirusSleepCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ call ConditionalActorMove
+ inc hl
+ ld a, [hl]
+ cp SLEEP_EFFECT
+ ret nz
+ jp AbilityAntivirusTarget
+
+; The roll hook covers the legacy burn, freeze and paralysis secondary paths.
+AbilityAntivirusSecondaryRoll:
+ xor a
+ ld [wAbilityCheckResult], a
+ call ConditionalActorMove
+ inc hl
+ ld a, [hl]
+ cp BURN_SIDE_EFFECT1
+ jr z, .check
+ cp BURN_SIDE_EFFECT2
+ jr z, .check
+ cp FREEZE_SIDE_EFFECT
+ jr z, .check
+ cp PARALYZE_SIDE_EFFECT1
+ jr z, .check
+ cp PARALYZE_SIDE_EFFECT2
+ ret nz
+.check
+ jp AbilityAntivirusTarget
+
+DecrementPPBanked:
+; after using a move, decrement pp in battle and (if not transformed?) in party
+	ld a, [de]
+	cp STRUGGLE
+	ret z                ; if the pokemon is using "struggle", there's nothing to do
+	                     ; we don't decrement PP for "struggle"
+	ld hl, wPlayerBattleStatus1
+	ld a, [hli]          ; load the wPlayerBattleStatus1 pokemon status flags and increment hl to load the
+	                     ; wPlayerBattleStatus2 status flags later
+	and (1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << ATTACKING_MULTIPLE_TIMES)
+	ret nz               ; if any of these statuses are true, don't decrement PP
+	bit USING_RAGE, [hl]
+	ret nz               ; don't decrement PP either if Pokemon is using Rage
+	callab AbilityConservativeMaybe
+	ld hl, wBattleMonPP  ; PP of first move (in battle)
+
+; decrement PP in the battle struct
+	call .DecrementPP
+
+; decrement PP in the party struct
+	ld a, [wPlayerBattleStatus3]
+	bit TRANSFORMED, a
+	ret nz               ; Return if transformed. Pokemon Red stores the "current pokemon's" PP
+	                     ; separately from the "Pokemon in your party's" PP.  This is
+	                     ; duplication -- in all cases *other* than Pokemon with Transform.
+	                     ; Normally, this means we have to go on and make the same
+	                     ; modification to the "party's pokemon" PP that we made to the
+	                     ; "current pokemon's" PP.  But, if we're dealing with a Transformed
+	                     ; Pokemon, it has separate PP for the move set that it copied from
+	                     ; its opponent, which is *not* the same as its real PP as part of your
+	                     ; party.  So we return, and don't do that part.
+
+	ld hl, wPartyMon1PP  ; PP of first move (in party)
+	ld a, [wPlayerMonNumber] ; which mon in party is active
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes       ; calculate address of the mon to modify
+.DecrementPP:
+	ld a, [wPlayerMoveListIndex] ; which move (0, 1, 2, 3) did we use?
+	ld c, a
+	ld b, 0
+	add hl ,bc           ; calculate the address in memory of the PP we need to decrement
+	                     ; based on the move chosen.
+	dec [hl]             ; Decrement PP
+	ret
+
+AbilityDustOnlyBanked:
+ call AbilityAntivirusTarget
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
+ callab AbilityTargetResult
+ ld a, [wAbilityCheckResult]
+ cp AB_IMMUNITY
+ jr z, .block
+ cp AB_SHIELD_DUST
+ jr nz, .clear
+ callab AbilityMove
+ inc hl
+ inc hl
+ ld a, [hl]
+ and a
+ jr z, .clear
+.block
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+.clear
+ xor a
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityVeilOnlyBanked:
+ call AbilityAntivirusTarget
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
+ callab AbilityTargetResult
+ ld a, [wAbilityCheckResult]
+ cp AB_WATER_VEIL
+ jr z, .block
+ xor a
+ ld [wAbilityCheckResult], a
+ ret
+.block
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityLimberTargetBanked:
+ call AbilityAntivirusTarget
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
+ callab AbilityTargetResult
+ ld a, [wAbilityCheckResult]
+ cp AB_LIMBER
+ jr z, .block
+ xor a
+ ld [wAbilityCheckResult], a
+ ret
+.block
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityBurnGateBanked:
+ call AbilityAntivirusCustom
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
+ ld a, [wCustomDelta]
+ cp 1 << FRZ
+ jr nz, .notFreeze
+ callab AbilityGetCustomSide
+ ld a, [wAbilityResolvedExtended]
+ cp AB_MAGMA_ARMOR - ABILITY_EXTENDED
+ jr z, .block
+ jr .clear
+.notFreeze
+ cp 1 << PAR
+ jr nz, .notParalysis
+ callab AbilityGetCustomSideResult
+ ld a, [wAbilityCheckResult]
+ cp AB_LIMBER
+ jr z, .block
+ jr .clear
+.notParalysis
+ cp 1 << PSN
+ jr nz, .burn
+ callab AbilityGetCustomSideResult
+ ld a, [wAbilityCheckResult]
+ cp AB_IMMUNITY
+ jr z, .block
+ jr .clear
+.burn
+ cp 1 << BRN
+ jr nz, .clear
+ callab AbilityTargetResult
+ ld a, [wAbilityCheckResult]
+ cp AB_WATER_VEIL
+ jr z, .block
+.clear
+ xor a
+ ld [wAbilityCheckResult], a
+ ret
+.block
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; Shared battle move flags are read through a banked lookup.
+INCLUDE "data/ability_move_metadata.asm"
