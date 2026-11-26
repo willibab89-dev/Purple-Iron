@@ -61,12 +61,12 @@ def validate(version):
     try:
         nature=json.loads((ROOT/'data/nature_compatibility.json').read_text())
         assert nature['previous_legacy_damage_source_sha256']==PLAN['legacy_damage_source_sha256']
-        # The Piercing Beak hook is the only intended change to the legacy
-        # implementation; retain the original source fingerprint otherwise.
+        # Check the original source apart from the two ability hooks.
         legacy=(ROOT/'engine/battle/legacy_damage_vars.asm').read_bytes()
-        hook=b'\tcall AdjustPiercingBeakDefense\n'
-        assert legacy.count(hook)==2
-        assert hashlib.sha256(legacy.replace(hook,b'')).hexdigest()==nature['legacy_damage_source_sha256']
+        for hook in (b'\tcall AdjustPiercingBeakDefense\n', b'\tcall StrongmanAttackPointer\n'):
+            assert legacy.count(hook)==2
+            legacy=legacy.replace(hook,b'')
+        assert hashlib.sha256(legacy).hexdigest()==nature['legacy_damage_source_sha256']
         # Full move-table delta, including unchanged legacy moves/new patch-3 IDs.
         bank,start=syms['Moves'];updates={x['id']:x['after'] for x in PLAN['existing_changes']}
         patch5=json.loads((ROOT/'data/move_patch_5.json').read_text())

@@ -3423,8 +3423,11 @@ wActiveAbilityExtended:: ds 2
 wAbilityResolvedExtended:: ds 1
 wParentalState:: ds 1
 wParentalFirstDamage:: ds 2
-SECTION "Stack", WRAM0[$df58]
-	ds $a7
+wCopycatDelta:: ds 1
+wStatAbilityGuard:: ds 1
+wCopycatStat:: ds 1
+SECTION "Stack", WRAM0[$df5b]
+	ds $a4
 wStack:: ; dfff
 
 

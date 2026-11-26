@@ -94,6 +94,7 @@ LegacyPlayerDamageVars:
 ; this allows values with up to 10 bits (values up to 1023) to be handled
 ; anything larger will wrap around
 .scaleStats
+	call StrongmanAttackPointer
 	call AdjustPiercingBeakDefense
 	ld a, [hli]
 	ld l, [hl]
@@ -233,6 +234,7 @@ LegacyEnemyDamageVars:
 ; this allows values with up to 10 bits (values up to 1023) to be handled
 ; anything larger will wrap around
 .scaleStats
+	call StrongmanAttackPointer
 	call AdjustPiercingBeakDefense
 	ld a, [hli]
 	ld l, [hl]

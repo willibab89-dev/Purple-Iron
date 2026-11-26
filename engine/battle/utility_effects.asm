@@ -300,14 +300,25 @@ UtilityPsychUp:
  jr nz, .skipCopy
 .compare
 	ld a, [de]
-	cp [hl]
+	ld c, a
+	ld a, [hl]
+	sub c
+	ld [wCopycatDelta], a
 	jr z, .same
 	ld a, 1
 	ld [wCustomChanged], a
 .same
+	ld a, 6
+	sub b
+	ld [wCustomStat], a
 	ld a, [hli]
 	ld [de], a
-	jr nc, .noIncrease
+	ld a, [wCopycatDelta]
+	and a
+	jr z, .noIncrease
+	bit 7, a
+	jr nz, .noIncrease
+	abilitycall AbilityCopycatFromSide
 	abilitycall AbilityCompetitiveFromSide
 .noIncrease
 	inc de

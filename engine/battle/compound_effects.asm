@@ -266,9 +266,16 @@ CustomAmnesia:
 	ld a, [hl]
 	cp 7
 	jr nc, .next
+	ld a, 7
+	sub [hl]
+	ld [wCopycatDelta], a
+	ld a, 6
+	sub b
+	ld [wCustomStat], a
 	ld [hl], 7
 	ld a, 1
 	ld [wCustomChanged], a
+	abilitycall AbilityCopycatFromSide
 	abilitycall AbilityCompetitiveFromSide
 .next
 	inc hl
@@ -305,6 +312,10 @@ CustomChangeStage:
 	inc sp
 	ret
 CustomChangeStageInner:
+	abilitycall AbilityMirrorArmorCustom
+	ld a, [wAbilityCheckResult]
+	and a
+	ret nz
 	abilitycall AbilityKeenEyeCustom
 	ld a, [wAbilityCheckResult]
 	and a
@@ -331,6 +342,12 @@ CustomChangeStageInner:
 	cp b
 	ret z
 	ld [hl], a
+	sub b
+	ld [wCopycatDelta], a
+	bit 7, a
+	jr nz, .notCopycat
+	abilitycall AbilityCopycatFromSide
+.notCopycat
 	ld a, 1
 	ld [wCustomChanged], a
 	call CustomRecalculate

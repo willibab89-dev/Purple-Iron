@@ -413,6 +413,16 @@ ConditionalDamageVars:
 	ld a, 1
 	ld [wCustomChanged], a
 .power
+	abilitycall AbilityStrongmanCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .ordinaryOffense
+	ld a, [wCustomStat]
+	and a
+	jr nz, .ordinaryOffense
+	ld a, 3
+	ld [wCustomStat], a
+.ordinaryOffense
 	call ConditionalPower
 	call ConditionalOffense
 	push hl
@@ -1150,4 +1160,96 @@ UnawareActorStats:
  and a
  ret z
  ld hl, wEnemyMonAttack
+ ret
+
+; HL points to the actor's physical offensive stat in the legacy damage path.
+StrongmanAttackPointer:
+ abilitycall AbilityStrongmanCheck
+ ld a, [wAbilityCheckResult]
+ and a
+ ret z
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .offset
+ ld a, [wCriticalHitOrOHKO]
+ and a
+ jr z, .offset
+ ; Enemy critical damage normally retrieves Attack into H_PRODUCT.
+ push bc
+ push de
+ ld c, 5
+ call GetEnemyMonStat
+ ld hl, H_PRODUCT + 2
+ pop de
+ pop bc
+ ret
+.offset
+ push de
+ ld de, 6
+ add hl, de
+ pop de
+ ret
+
+; Transform replaces stages directly. Its temporary snapshot shares Unaware's
+; damage-calculation buffer, which is idle while this status move executes.
+AbilityCopycatTransformSnapshot:
+ ld hl, wPlayerMonStatMods
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .copy
+ ld hl, wEnemyMonStatMods
+.copy
+ ld de, wUnawareSaved
+ ld b, 6
+.loop
+ ld a, [hli]
+ ld [de], a
+ inc de
+ dec b
+ jr nz, .loop
+ ret
+
+AbilityCopycatTransformApply:
+ ld a, [wCustomSide]
+ push af
+ ld a, [wCustomStat]
+ push af
+ ld a, [H_WHOSETURN]
+ ld [wCustomSide], a
+ and a
+ ld hl, wPlayerMonStatMods
+ jr z, .side
+ ld hl, wEnemyMonStatMods
+.side
+ ld de, wUnawareSaved
+ ld b, 0
+.loop
+ ld a, [de]
+ ld c, a
+ ld a, [hl]
+ sub c
+ jr z, .next
+ bit 7, a
+ jr nz, .next
+ ld [wCopycatDelta], a
+ ld a, b
+ ld [wCustomStat], a
+ push hl
+ push de
+ push bc
+ abilitycall AbilityCopycatFromSide
+ pop bc
+ pop de
+ pop hl
+.next
+ inc hl
+ inc de
+ inc b
+ ld a, b
+ cp 6
+ jr nz, .loop
+ pop af
+ ld [wCustomStat], a
+ pop af
+ ld [wCustomSide], a
  ret

@@ -250,6 +250,10 @@ AbilityKeenEyeCustom:
  ret
 
 AbilityKeenEyeTarget::
+ call AbilityMirrorArmorLegacy
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
  xor a
  ld [wAbilityCheckResult], a
  call AbilityTarget
@@ -5250,9 +5254,16 @@ AbilityFlameBody:
 AbilityCompetitiveLegacy:
  ld a, [wCustomSide]
  push af
+ ld a, [wCustomStat]
+ push af
  ld a, [H_WHOSETURN]
  ld [wCustomSide], a
+ ld a, [wCopycatStat]
+ ld [wCustomStat], a
+ call AbilityCopycatFromSide
  call AbilityCompetitiveFromSide
+ pop af
+ ld [wCustomStat], a
  pop af
  ld [wCustomSide], a
  ret
@@ -5405,7 +5416,8 @@ AbilitySimpleLegacyUp:
  and a
  ret nz
  ld a, [H_WHOSETURN]
- jr AbilitySimpleLegacy
+ call AbilitySimpleLegacy
+ jp AbilityCopycatLegacy
 AbilitySimpleLegacyDown:
  ld a, [H_WHOSETURN]
  xor 1
@@ -7745,4 +7757,238 @@ AbilityEqualizerAIFinal:
  ret nz
  ld a, 10
  ld [wTypeEffectiveness], a
+ ret
+
+AbilityStrongmanCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld c, AB_STRONGMAN - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ call AbilityActorMoveType
+ cp FIRE
+ ret nc
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; Reflect stage reductions via the same protected, capped stat-change path.
+AbilityMirrorArmorCustom:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wStatAbilityGuard]
+ bit 0, a
+ ret nz
+ ld a, [wCustomDelta]
+ bit 7, a
+ ret z
+ ld a, [wCustomSide]
+ call AbilityGet
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_MIRROR_ARMOR - ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilitySide]
+ push af
+ ld a, [wCustomSide]
+ ld [wAbilitySide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .dead
+ ld a, [wCustomSide]
+ push af
+ ld a, [wCustomStat]
+ push af
+ ld a, [wCustomDelta]
+ push af
+ ld a, [wCustomChanged]
+ push af
+ ld a, [wCustomSavedTurn]
+ push af
+ ld a, [wCustomMove]
+ push af
+ ld a, [wCustomChance]
+ push af
+ ld a, [wCustomRandomValue]
+ push af
+ ld a, [wAbilityTemp]
+ push af
+ ld a, [wAbilityTemp + 1]
+ push af
+ ld hl, wStatAbilityGuard
+ set 0, [hl]
+ ld a, [H_WHOSETURN]
+ push af
+ ld a, [wCustomSide]
+ ld [H_WHOSETURN], a ; the reflection originates from the armor holder
+ xor 1
+ ld [wCustomSide], a
+ callab CustomChangeStage
+ pop af
+ ld [H_WHOSETURN], a
+ ld hl, wStatAbilityGuard
+ res 0, [hl]
+ pop af
+ ld [wAbilityTemp + 1], a
+ pop af
+ ld [wAbilityTemp], a
+ pop af
+ ld [wCustomRandomValue], a
+ pop af
+ ld [wCustomChance], a
+ pop af
+ ld [wCustomMove], a
+ pop af
+ ld [wCustomSavedTurn], a
+ pop af
+ ld [wCustomChanged], a
+ pop af
+ ld [wCustomDelta], a
+ pop af
+ ld [wCustomStat], a
+ pop af
+ ld [wCustomSide], a
+ pop af
+ ld [wAbilitySide], a
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+.dead
+ pop af
+ ld [wAbilitySide], a
+ ret
+
+AbilityMirrorArmorLegacy:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wCustomSide]
+ push af
+ ld a, [wCustomDelta]
+ push af
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wCustomSide], a
+ call AbilityMove
+ inc hl
+ ld a, [hl]
+ cp ATTACK_DOWN2_EFFECT
+ jr c, .one
+ cp EVASION_DOWN2_EFFECT + 1
+ jr nc, .one
+ ld a, -2
+ jr .delta
+.one
+ ld a, -1
+.delta
+ ld [wCustomDelta], a
+ call AbilityMirrorArmorCustom
+ pop af
+ ld [wCustomDelta], a
+ pop af
+ ld [wCustomSide], a
+ ret
+
+; Copy a positive actual stage delta once, with a guard for two holders.
+AbilityCopycatFromSide:
+ ld a, [wStatAbilityGuard]
+ bit 1, a
+ ret nz
+ ld a, [wCopycatDelta]
+ and a
+ ret z
+ bit 7, a
+ ret nz
+ ld a, [wCustomSide]
+ xor 1
+ call AbilityGet
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_COPYCAT - ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilitySide]
+ push af
+ ld a, [wCustomSide]
+ push af
+ ld a, [wCustomStat]
+ push af
+ ld a, [wCustomDelta]
+ push af
+ ld a, [wCustomChanged]
+ push af
+ ld a, [wCustomSavedTurn]
+ push af
+ ld a, [wCustomMove]
+ push af
+ ld a, [wCustomChance]
+ push af
+ ld a, [wCustomRandomValue]
+ push af
+ ld a, [wAbilityCheckResult]
+ push af
+ ld a, [wAbilityTemp]
+ push af
+ ld a, [wAbilityTemp + 1]
+ push af
+ ld a, [wCustomSide]
+ xor 1
+ ld [wAbilitySide], a
+ ld [wCustomSide], a
+ call AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .restore
+ ld a, [wCopycatDelta]
+ ld [wCustomDelta], a
+ ld hl, wStatAbilityGuard
+ set 1, [hl]
+ callab CustomChangeStage
+ ld hl, wStatAbilityGuard
+ res 1, [hl]
+.restore
+ pop af
+ ld [wAbilityTemp + 1], a
+ pop af
+ ld [wAbilityTemp], a
+ pop af
+ ld [wAbilityCheckResult], a
+ pop af
+ ld [wCustomRandomValue], a
+ pop af
+ ld [wCustomChance], a
+ pop af
+ ld [wCustomMove], a
+ pop af
+ ld [wCustomSavedTurn], a
+ pop af
+ ld [wCustomChanged], a
+ pop af
+ ld [wCustomDelta], a
+ pop af
+ ld [wCustomStat], a
+ pop af
+ ld [wCustomSide], a
+ pop af
+ ld [wAbilitySide], a
+ ret
+
+; Legacy stat-up hook runs before its clamped new stage is written.
+AbilityCopycatLegacy:
+ ld a, [wUnusedD71B]
+ dec a
+ ld [wCopycatStat], a
+ ld e, a
+ ld d, 0
+ ld hl, wPlayerMonStatMods
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .stage
+ ld hl, wEnemyMonStatMods
+.stage
+ add hl, de
+ ld a, [wAbilityTemp]
+ sub [hl]
+ ld [wCopycatDelta], a
  ret

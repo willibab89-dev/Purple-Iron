@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf58:0xdf78]=[0xa5]*32
+        game.memory[0xdf5b:0xdf7b]=[0xa5]*32
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf58:0xdf78])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf5b:0xdf7b])==bytes([0xa5]*32),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -162,7 +162,8 @@ def validate(version):
                'KANGASKHAN':['PARENTAL_BOND','SCRAPPY','HEAVY_HITTER','EARLY_BIRD','MATERNAL_RAGE'],
                'HORSEA':['SNIPER','INK_CLOUD','WATER_JET','FOCUSED','TOXIC_SPINES'],
                'GOLDEEN':['ROYAL_HORN','SWIFT_SWIM','WATER_VEIL','HORN_BREAKER','LIGHTNING_ROD'],
-               'STARYU':['REGENERATOR','COSMIC_CORE','ILLUMINATE','NATURAL_CURE','EQUALIZER']}
+               'STARYU':['REGENERATOR','COSMIC_CORE','ILLUMINATE','NATURAL_CURE','EQUALIZER'],
+               'MR_MIME':['COPYCAT','PRANKSTER','MAGIC_BOUNCE','STRONGMAN','MIRROR_ARMOR']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1474,6 +1475,30 @@ def validate(version):
         for slot,name in [(1,'REGENERATOR'),(2,'COSMIC CORE'),(3,'ILLUMINATE'),(5,'EQUALIZER')]:
             metadata('wPartyMon1','STARYU',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
             game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
+        # Mr. Mime: exact copied stages, reflected drops, and hybrid offense.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for stat,stage,delta,want in [(0,7,2,9),(1,12,2,8),(2,7,1,8),(3,7,1,8),(4,7,1,8),(5,7,1,8)]:
+                init(turn);aid(1-turn,'COPYCAT');game.memory[addr(actor+'MonStatMods')+stat]=stage;put('wCustomSide',turn);put('wCustomStat',stat);put('wCustomDelta',delta);call('CustomChangeStage');assert game.memory[addr(target+'MonStatMods')+stat]==want,(turn,stat,stage,delta,'copycat',game.memory[addr(target+'MonStatMods')+stat])
+            init(turn);aid(0,'COPYCAT');aid(1,'COPYCAT');put('wCustomSide',turn);put('wCustomStat',0);put('wCustomDelta',1);call('CustomChangeStage');assert get(actor+'MonAttackMod')==8 and get(target+'MonAttackMod')==8,(turn,'two copycats')
+            anim_bank,anim_addr=syms['PlayCurrentMoveAnimation'];anim_old=game.memory[anim_bank,anim_addr];patch('PlayCurrentMoveAnimation',[0xc9])
+            init(turn);move(turn,'PSYCH_UP');aid(1-turn,'COPYCAT');put(actor+'MonAttackMod',7);put(target+'MonAttackMod',9);call('UtilityPsychUp');assert get(actor+'MonAttackMod')==9 and get(target+'MonAttackMod')==11,(turn,'copycat psych up',get(actor+'MonAttackMod'),get(target+'MonAttackMod'))
+            init(turn);move(turn,'AMNESIA');aid(1-turn,'COPYCAT');put(actor+'MonAttackMod',4);put('wCustomSide',turn);call('CustomAmnesia');assert get(actor+'MonAttackMod')==7 and get(target+'MonAttackMod')==10,(turn,'copycat stage reset',get(actor+'MonAttackMod'),get(target+'MonAttackMod'))
+            init(turn);move(turn,'TRANSFORM');aid(1-turn,'COPYCAT');put(actor+'MonAttackMod',7);put(target+'MonAttackMod',9);call('TransformEffect_');assert get(actor+'MonAttackMod')==9 and get(target+'MonAttackMod')==11,(turn,'copycat transform',get(actor+'MonAttackMod'),get(target+'MonAttackMod'))
+            game.memory[anim_bank,anim_addr]=anim_old
+            for stat in range(6):
+                init(turn);aid(1-turn,'MIRROR_ARMOR');put('wCustomSide',1-turn);put('wCustomStat',stat);put('wCustomDelta',254);call('CustomChangeStage');assert game.memory[addr(target+'MonStatMods')+stat]==7 and game.memory[addr(actor+'MonStatMods')+stat]==5,(turn,stat,'mirror armor')
+            init(turn);aid(0,'MIRROR_ARMOR');aid(1,'MIRROR_ARMOR');put('wCustomSide',1-turn);put('wCustomStat',0);put('wCustomDelta',255);call('CustomChangeStage');assert get(target+'MonAttackMod')==7 and get(actor+'MonAttackMod')==6,(turn,'mirror recursion')
+            init(turn);aid(turn,'CLEAR_BODY');aid(1-turn,'MIRROR_ARMOR');put('wCustomSide',1-turn);put('wCustomStat',0);put('wCustomDelta',255);call('CustomChangeStage');assert get(target+'MonAttackMod')==7 and get(actor+'MonAttackMod')==7,(turn,'clear body blocks reflection')
+            init(turn);aid(turn,'NEUTRALIZING_GAS');aid(1-turn,'MIRROR_ARMOR');put('wCustomSide',1-turn);put('wCustomStat',0);put('wCustomDelta',255);call('CustomChangeStage');assert get(target+'MonAttackMod')==6 and get(actor+'MonAttackMod')==7,(turn,'suppressed mirror armor')
+            init(turn);aid(turn,'MIRROR_ARMOR');put('wCustomSide',turn);put('wCustomStat',0);put('wCustomDelta',255);call('CustomChangeStage');assert get(actor+'MonAttackMod')==7 and get(target+'MonAttackMod')==6,(turn,'mirror self reduction')
+            for attack,offense,want in [('TACKLE',200,200),('FACADE',200,200),('EMBER',200,200),('STONE_PRESS',200,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'STRONGMAN');word(ap+'Attack',100);word(ap+'Defense',100);word(ap+'Special',offense);call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack');assert game.register_file.B==want,(turn,attack,'strongman',game.register_file.B,want)
+            # Critical hits use the holder's unmodified Special, not unmodified Attack.
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'STRONGMAN');put('wCriticalHitOrOHKO',1);put('w'+('Enemy' if turn else 'Player')+'BattleStatus3',8);word('w'+('Enemy' if turn else 'Player')+'MonUnmodifiedAttack',100);word('w'+('Enemy' if turn else 'Player')+'MonUnmodifiedSpecial',200);call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack');assert game.register_file.B==200,(turn,'critical strongman',game.register_file.B)
+        for slot,name in [(1,'COPYCAT'),(4,'STRONGMAN'),(5,'MIRROR ARMOR')]:
+            metadata('wPartyMon1','MR_MIME',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Greedy rewards only a participating holder and never stacks.
         init();metadata('wPartyMon1','MEOWTH',2);put('wPartyCount',1);put('wAbilitySide',0);aid(0,'GREEDY');call('AbilityEntry')
         game.memory[addr('wAmountMoneyWon'):addr('wAmountMoneyWon')+3]=[0x00,0x12,0x34];put('wd72d',0);call('PrintEndBattleText')
@@ -1626,6 +1651,9 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('SWORDS_DANCE',turn,target='COPYCAT',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==9,(turn,'live copycat',get('w'+('Player' if turn else 'Enemy')+'MonAttackMod'))
+            ap,tp=execute('GROWL',turn,target='MIRROR_ARMOR',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7 and get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==6,(turn,'live mirror armor')
+            ap,tp=execute('SCREECH',turn,target='MIRROR_ARMOR',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==7 and get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==5,(turn,'live mirror two-stage drop')
             ap,tp=execute('EMBER',turn,target_types=('NORMAL','NORMAL'),random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('EMBER',turn,actor='EQUALIZER',target_types=('WATER','DRAGON'),random_value=100);assert 160-readword(tp+'HP')==normal,(turn,'live equalizer',normal,readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,actor='EQUALIZER',target_types=('GHOST','GHOST'),random_value=100);assert readword(tp+'HP')==160,(turn,'equalizer preserves immunity')
@@ -1921,7 +1949,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 122 species / 610 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 123 species / 615 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
