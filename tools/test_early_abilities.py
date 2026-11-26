@@ -196,7 +196,8 @@ def validate(version):
                'KABUTO':['KABUTO_EXECUTIONER','ANCIENT_POWER','BATTLE_ARMOR','LEECHING','SHARP_BLADES'],
                'AERODACTYL':['PREDATOR','ROCK_HEAD','RELENTLESS','SAVAGE_JAWS','TERRIFYING'],
                'SNORLAX':['HEAVY_SLEEPER','THICK_FAT','GLUTTONY','SLEEPWALKER','IMMUNITY'],
-               'ARTICUNO':['ABSOLUTE_ZERO']*5}
+               'ARTICUNO':['ABSOLUTE_ZERO']*5,
+               'ZAPDOS':['LIGHTNING_SPEED']*5}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1287,6 +1288,15 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Lightning Speed boosts Electric attacks and status moves for both sides.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player')
+            for attack,want in [('THUNDERSHOCK',1),('THUNDER_WAVE',1),('THUNDERCLAP',2),('TACKLE',0),('QUICK_ATTACK',1),('GROWL',0)]:
+                init(turn);move(turn,attack);aid(turn,'LIGHTNING_SPEED');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==want,(turn,attack,game.register_file.A)
+            for invalid in (0,237,255):
+                init(turn);aid(turn,'LIGHTNING_SPEED');put(actor+'SelectedMove',invalid);put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,invalid)
+            init(turn);move(turn,'THUNDER_WAVE');aid(turn,'LIGHTNING_SPEED');aid(1-turn,'NEUTRALIZING_GAS');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,'suppressed')
+            init(turn);move(turn,'THUNDERCLAP');move(1-turn,'QUICK_ATTACK');aid(turn,'LIGHTNING_SPEED');call('AbilityPriority');assert get('wAbilityCheckResult')==(2 if turn else 1),(turn,'stacking order')
         # Absolute Zero neutralizes each resisted Ice matchup, including for AI.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player')
@@ -2397,7 +2407,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 145 species / 725 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 146 species / 730 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

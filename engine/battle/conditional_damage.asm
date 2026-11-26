@@ -2204,6 +2204,11 @@ AbilityExtendedPoolIds:
  db 95, 3, AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
  db 95, 4, AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
  db 95, 5, AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
+ db 96, 1, AB_LIGHTNING_SPEED - ABILITY_EXTENDED
+ db 96, 2, AB_LIGHTNING_SPEED - ABILITY_EXTENDED
+ db 96, 3, AB_LIGHTNING_SPEED - ABILITY_EXTENDED
+ db 96, 4, AB_LIGHTNING_SPEED - ABILITY_EXTENDED
+ db 96, 5, AB_LIGHTNING_SPEED - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2513,6 +2518,7 @@ AbilitySpeciesPools:
 	db AERODACTYL, 93
 	db SNORLAX, 94
 	db ARTICUNO, 95
+	db ZAPDOS, 96
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3225,5 +3231,37 @@ AbilityTypeOverrideBanked:
  ret nz
 .neutral
  ld a, 10
+ ld [wAbilityCheckResult], a
+ ret
+
+; Read the selected move's actual type before move execution has begun.
+AbilityLightningSpeedMove:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wAbilityTemp + 1]
+ and a
+ ret z
+ cp MAX_MOVE_ID + 1
+ ret nc
+ dec a
+ ld l, a
+ ld h, 0
+ add hl, hl
+ ld d, h
+ ld e, l
+ add hl, hl
+ add hl, de ; six-byte move record
+ ld de, Moves + 3 ; type field
+ add hl, de
+ ld de, wAbilityCheckResult
+ ld bc, 1
+ ld a, BANK(Moves)
+ call FarCopyData
+ ld a, [wAbilityCheckResult]
+ cp ELECTRIC
+ ld a, 0
+ jr nz, .store
+ inc a
+.store
  ld [wAbilityCheckResult], a
  ret

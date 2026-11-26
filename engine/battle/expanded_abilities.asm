@@ -4004,7 +4004,7 @@ AbilityPriorityOne:
 	jr nz, .notTriage
 	ld a, [wAbilityTemp + 1]
 	call AbilityTriageMove
-	jr nc, .plain
+	jp nc, .plain
 	pop bc
 	inc b
 	inc b
@@ -4051,6 +4051,20 @@ AbilityPriorityOne:
 	ld a, b
 	ret
 .wings
+	cp ABILITY_EXTENDED
+	jr nz, .galeWings
+	ld a, [wAbilityResolvedExtended]
+	cp AB_LIGHTNING_SPEED - ABILITY_EXTENDED
+	jr nz, .plain
+	callab AbilityLightningSpeedMove
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .plain
+	pop bc
+	inc b
+	ld a, b
+	ret
+.galeWings
 	cp AB_GALE_WINGS
 	jr nz, .plain
 	call AbilityHP
