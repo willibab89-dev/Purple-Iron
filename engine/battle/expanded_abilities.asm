@@ -481,6 +481,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilitySharpBladesDamage
 	call AbilityEqualizerDamage
 	call AbilityFocusedDamage
 	call AbilityHeavyHitterDamage
@@ -3801,7 +3802,13 @@ AbilityPriorityOne:
 	ret
 .notTriage
 	cp AB_QUICK_REFLEXES
+	jr z, .quickReflexes
+	cp ABILITY_EXTENDED
 	jr nz, .gale
+	ld a, [wAbilityResolvedExtended]
+	cp AB_VANGUARD - ABILITY_EXTENDED
+	jr nz, .gale
+.quickReflexes
 	call AbilityFlagsPointer
 	bit 3, [hl]
 	jr nz, .plain
@@ -3814,6 +3821,8 @@ AbilityPriorityOne:
 	ld a, b
 	ret
 .gale
+	ld a, [wAbilitySide]
+	call AbilityGet
 	cp AB_PRANKSTER
 	jr nz, .wings
 	ld a, [wAbilityTemp + 1]
@@ -7335,6 +7344,23 @@ AbilityExtendedActorIs:
  and a
  ret
 
+AbilitySharpBladesDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ ld c, AB_SHARP_BLADES - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ call AbilityCuttingCheck
+ ret nc
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 125
+ jp AbilityScaleDamage
+
 AbilityHeavyHitterDamage:
  ld a, [wUnusedC000]
  bit 4, a
@@ -7409,7 +7435,31 @@ AbilityEarlyBirdBeforeAction:
 AbilityParentalAfterHit:
  ld c, AB_PARENTAL_BOND - ABILITY_EXTENDED
  call AbilityExtendedActorIs
+ jr c, .eligible
+ ld c, AB_DOUBLE_SCYTHES - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
  ret nc
+ call AbilityCuttingCheck
+ ret nc
+ ld a, [wParentalState]
+ and $0c
+ jr nz, .eligible
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld a, 4
+ ld [wParentalState], a
+ ld b, 20
+ call AbilityRoll
+ ret nc
+ ld a, 8
+ ld [wParentalState], a
+.eligible
+ ld a, [wParentalState]
+ bit 2, a
+ ret nz
  call AbilityMove
  ld a, [hli]
  cp BIDE
@@ -7433,7 +7483,8 @@ AbilityParentalAfterHit:
  ld [wParentalFirstDamage], a
  ld a, [wDamage + 1]
  ld [wParentalFirstDamage + 1], a
- ld a, 1
+ ld a, [wParentalState]
+ or 1
  ld [wParentalState], a
 .recorded
  ld a, [H_WHOSETURN]
@@ -7492,7 +7543,8 @@ AbilityParentalAfterHit:
  ld [de], a
  ld [bc], a
 .scheduled
- ld a, 3
+ ld a, [wParentalState]
+ or 3
  ld [wParentalState], a
  ret
 .native
@@ -7521,8 +7573,12 @@ AbilityParentalOverride:
  ld c, a
  srl b
  rr c
+ ld a, [wParentalState]
+ bit 3, a
+ jr nz, .scaled
  srl b
  rr c
+.scaled
  ld a, b
  or c
  jr nz, .store

@@ -163,7 +163,8 @@ def validate(version):
                'HORSEA':['SNIPER','INK_CLOUD','WATER_JET','FOCUSED','TOXIC_SPINES'],
                'GOLDEEN':['ROYAL_HORN','SWIFT_SWIM','WATER_VEIL','HORN_BREAKER','LIGHTNING_ROD'],
                'STARYU':['REGENERATOR','COSMIC_CORE','ILLUMINATE','NATURAL_CURE','EQUALIZER'],
-               'MR_MIME':['COPYCAT','PRANKSTER','MAGIC_BOUNCE','STRONGMAN','MIRROR_ARMOR']}
+               'MR_MIME':['COPYCAT','PRANKSTER','MAGIC_BOUNCE','STRONGMAN','MIRROR_ARMOR'],
+               'SCYTHER':['TECHNICIAN','SHARP_BLADES','VANGUARD','EXECUTIONER','DOUBLE_SCYTHES']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1401,6 +1402,19 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Scyther: cutting damage, first-attack priority, and extra strike odds.
+        for turn in (0,1):
+            for attack,want in [('SLASH',125),('CUT',125),('TACKLE',100),('EMBER',100)]:
+                init(turn);move(turn,attack);aid(turn,'SHARP_BLADES');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'sharp blades',readword('wDamage'))
+            for attack,want in [('TACKLE',1),('GROWL',0)]:
+                init(turn);move(turn,attack);aid(turn,'VANGUARD');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==want,(turn,attack,'vanguard',game.register_file.A)
+            for roll,scheduled in [(0,True),(39,True),(40,False),(199,False)]:
+                init(turn);move(turn,'SLASH');aid(turn,'DOUBLE_SCYTHES');word('wDamage',100);rng(roll);call('AbilityAfterHit');assert bool(get('wParentalState')&2)==scheduled,(turn,roll,'double scythes',get('wParentalState'))
+                if scheduled:
+                    put('w'+('Enemy' if turn else 'Player')+'NumAttacksLeft',1);word('wDamage',200);call('AbilityParentalOverride');assert readword('wDamage')==50,(turn,'double scythes damage',readword('wDamage'))
+                else:
+                    call('AbilityAfterHit');assert state['index']==1,(turn,'double scythes one roll')
+            init(turn);move(turn,'TACKLE');aid(turn,'DOUBLE_SCYTHES');rng(0);call('AbilityAfterHit');assert get('wParentalState')==0 and state['index']==0,(turn,'not cutting')
         # Kangaskhan: extended IDs, turn order, sleep and HP threshold.
         for turn in (0,1):
             for attack,acted,want in [('TACKLE',True,120),('TACKLE',False,100),('EMBER',True,100)]:
@@ -1667,6 +1681,10 @@ def validate(version):
             ap,tp=execute('TACKLE',turn,actor='EARLY_BIRD',random_value=100);put(ap+'Status',7)
             for expected in (5,3,1,0):
                 call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove');assert get(ap+'Status')==expected,(turn,'live early bird sleep',expected,get(ap+'Status'));call('SequenceNewRound')
+            ap,tp=execute('CUT',turn,random_value=0);normal=160-readword(tp+'HP')
+            ap,tp=execute('CUT',turn,actor='DOUBLE_SCYTHES',random_value=0);assert 160-readword(tp+'HP')==normal+max(1,normal//2),(turn,'live double scythes',normal,readword(tp+'HP'))
+            ap,tp=execute('SLASH',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('SLASH',turn,actor='DOUBLE_SCYTHES',random_value=100);assert 160-readword(tp+'HP')==normal,(turn,'live double scythes no proc',normal,readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('TACKLE',turn,actor='PARENTAL_BOND',random_value=100);assert 160-readword(tp+'HP')==normal+max(1,normal//4),(turn,'live parental tackle',normal,readword(tp+'HP'))
             ap,tp=execute('SONICBOOM',turn,actor='PARENTAL_BOND',random_value=0);assert readword(tp+'HP')==135,(turn,'live parental fixed',readword(tp+'HP'))
@@ -1949,7 +1967,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 123 species / 615 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 124 species / 620 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

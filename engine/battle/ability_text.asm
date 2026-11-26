@@ -111,6 +111,7 @@ AbilityTextPointers:
 	dw AbilityText265, AbilityText266
 	dw AbilityText267, AbilityText268, AbilityText269, AbilityText270
 	dw AbilityText271, AbilityText272, AbilityText273
+	dw AbilityText274, AbilityText275, AbilityText276
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -477,6 +478,9 @@ AbilityText270: db "EQUALIZER",$4e,"Resisted attacks",$4e,"deal neutral damage.@
 AbilityText271: db "COPYCAT",$4e,"Copies foe stat",$4e,"increases.@"
 AbilityText272: db "STRONGMAN",$4e,"Physical moves use",$4e,"Special as Attack.@"
 AbilityText273: db "MIRROR ARMOR",$4e,"Reflects stat",$4e,"reductions.@"
+AbilityText274: db "SHARP BLADES",$4e,"Cutting moves deal",$4e,"x1.25 damage.@"
+AbilityText275: db "VANGUARD",$4e,"First attack each",$4e,"entry: priority +1.@"
+AbilityText276: db "DOUBLE SCYTHES",$4e,"Cutting moves: 20%",$4e,"chance of half hit.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -555,6 +559,7 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, AB_SWIFT_SWIM, AB_WATER_VEIL, AB_HORN_BREAKER, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_NATURAL_CURE, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_PRANKSTER, AB_MAGIC_BOUNCE, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db AB_TECHNICIAN, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_EXECUTIONER, ABILITY_EXTENDED
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -697,4 +702,5 @@ AbilitySpeciesPools:
 	db STARYU, 74
 	db STARMIE, 74
 	db MR_MIME, 75
+	db SCYTHER, 76
 	db 0
