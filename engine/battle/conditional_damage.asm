@@ -1253,3 +1253,83 @@ AbilityCopycatTransformApply:
  pop af
  ld [wCustomSide], a
  ret
+
+; Copycat uses the battle stat-change path; its scratch is shared across banks.
+AbilityCopycatFromSideBanked:
+ ld a, [wStatAbilityGuard]
+ bit 1, a
+ ret nz
+ ld a, [wCopycatDelta]
+ and a
+ ret z
+ bit 7, a
+ ret nz
+ callab AbilityGetCopycatTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_COPYCAT - ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilitySide]
+ push af
+ ld a, [wCustomSide]
+ push af
+ ld a, [wCustomStat]
+ push af
+ ld a, [wCustomDelta]
+ push af
+ ld a, [wCustomChanged]
+ push af
+ ld a, [wCustomSavedTurn]
+ push af
+ ld a, [wCustomMove]
+ push af
+ ld a, [wCustomChance]
+ push af
+ ld a, [wCustomRandomValue]
+ push af
+ ld a, [wAbilityCheckResult]
+ push af
+ ld a, [wAbilityTemp]
+ push af
+ ld a, [wAbilityTemp + 1]
+ push af
+ ld a, [wCustomSide]
+ xor 1
+ ld [wAbilitySide], a
+ ld [wCustomSide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .restore
+ ld a, [wCopycatDelta]
+ ld [wCustomDelta], a
+ ld hl, wStatAbilityGuard
+ set 1, [hl]
+ callab CustomChangeStage
+ ld hl, wStatAbilityGuard
+ res 1, [hl]
+.restore
+ pop af
+ ld [wAbilityTemp + 1], a
+ pop af
+ ld [wAbilityTemp], a
+ pop af
+ ld [wAbilityCheckResult], a
+ pop af
+ ld [wCustomRandomValue], a
+ pop af
+ ld [wCustomChance], a
+ pop af
+ ld [wCustomMove], a
+ pop af
+ ld [wCustomSavedTurn], a
+ pop af
+ ld [wCustomChanged], a
+ pop af
+ ld [wCustomDelta], a
+ pop af
+ ld [wCustomStat], a
+ pop af
+ ld [wCustomSide], a
+ pop af
+ ld [wAbilitySide], a
+ ret

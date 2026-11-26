@@ -166,7 +166,8 @@ def validate(version):
                'MR_MIME':['COPYCAT','PRANKSTER','MAGIC_BOUNCE','STRONGMAN','MIRROR_ARMOR'],
                'SCYTHER':['TECHNICIAN','SHARP_BLADES','VANGUARD','EXECUTIONER','DOUBLE_SCYTHES'],
                'JYNX':['DANCER','COLD_TOUCH','ENCHANTRESS','ICE_QUEEN','SNOW_VEIL'],
-               'ELECTABUZZ':['POWER_SURGE','ENERGY_DRAIN','THUNDERSTRUCK','LIVE_WIRE','GALVANIZE']}
+               'ELECTABUZZ':['POWER_SURGE','ENERGY_DRAIN','THUNDERSTRUCK','LIVE_WIRE','GALVANIZE'],
+               'MAGMAR':['MAGMAR_FLAME_BODY','HOT_TEMPER','MAGMA_ARMOR','VITAL_HEAT','BURNING_RAGE']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1404,6 +1405,28 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Magmar: physical reactions, both freeze paths, healing and burn damage.
+        anim_bank,anim_addr=syms['PlayBattleAnimation'];anim_original=game.memory[anim_bank,anim_addr];patch('PlayBattleAnimation',[0xc9])
+        for turn in (0,1):
+            target='w'+('Player' if turn else 'Enemy')
+            for attack,roll,sub,protection,want in [('TACKLE',0,0,None,16),('TACKLE',49,0,None,16),('TACKLE',50,0,None,0),('EMBER',0,0,None,0),('TACKLE',0,1,None,0),('TACKLE',0,0,'WATER_VEIL',0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,protection);aid(1-turn,'MAGMAR_FLAME_BODY');put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(ap+'Status')==want,(turn,attack,roll,sub,protection,'magmar flame body',get(ap+'Status'))
+            for attack,want in [('TACKLE',8),('EMBER',7)]:
+                init(turn);move(turn,attack);aid(1-turn,'HOT_TEMPER');rng(100);call('AbilityAfterHit');assert get(target+'MonSpecialMod')==want,(turn,attack,'hot temper');put('wAbilityHit',0);call('AbilityAfterHit');assert get(target+'MonSpecialMod')==want
+            for attack,want in [('ICE_BEAM',50),('TACKLE',100),('EMBER',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'MAGMA_ARMOR');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'magma armor',readword('wDamage'))
+            for protection,blocked in [('MAGMA_ARMOR',True),(None,False)]:
+                ap,tp=init(turn);move(turn,'ICE_BEAM');aid(1-turn,protection);put('wCustomSide',1-turn);put('wCustomDelta',32);call('UtilityInflictStatus');assert bool(get(tp+'Status')&32)!=blocked,(turn,'direct freeze',protection,get(tp+'Status'))
+                ap,tp=init(turn);move(turn,'ICE_BEAM');aid(1-turn,protection);rng(0);call('FreezeBurnParalyzeEffect');assert bool(get(tp+'Status')&32)!=blocked,(turn,'secondary freeze',protection,get(tp+'Status'))
+            ap,tp=init(turn);move(turn,'ICE_BEAM');aid(1-turn,'MAGMA_ARMOR');aid(turn,'NEUTRALIZING_GAS');rng(0);call('FreezeBurnParalyzeEffect');assert get(tp+'Status')&32,(turn,'suppressed magma armor')
+            for attack,hp,want in [('EMBER',80,100),('WILL_O_WISP',80,100),('TACKLE',80,80),('EMBER',155,160),('EMBER',0,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'VITAL_HEAT');word(ap+'HP',hp);call('AbilityAttempt');call('AbilityAfterAction');assert readword(ap+'HP')==want,(turn,attack,hp,'vital heat',readword(ap+'HP'))
+            for attack,status,want in [('TACKLE',16,125),('EMBER',16,125),('TACKLE',0,100),('TACKLE',8,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'BURNING_RAGE');put(tp+'Status',status);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,status,'burning rage',readword('wDamage'))
+        game.memory[anim_bank,anim_addr]=anim_original
+        for slot,name in [(1,'FLAME BODY'),(3,'MAGMA ARMOR'),(4,'VITAL HEAT'),(5,'BURNING RAGE')]:
+            metadata('wPartyMon1','MAGMAR',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Electabuzz: HP threshold, Electric move hooks, and type conversion.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -1701,6 +1724,13 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,target='MAGMAR_FLAME_BODY',random_value=0);assert get(ap+'Status')==16,(turn,'live magmar flame body')
+            ap,tp=execute('TACKLE',turn,target='HOT_TEMPER',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonSpecialMod')==8,(turn,'live hot temper')
+            ap,tp=execute('ICE_BEAM',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('ICE_BEAM',turn,target='MAGMA_ARMOR',random_value=100);assert 160-readword(tp+'HP')<normal,(turn,'live magma armor',normal,readword(tp+'HP'))
+            ap,tp=execute('EMBER',turn,actor='VITAL_HEAT',actor_hp=80,random_value=100);assert readword(ap+'HP')==100,(turn,'live vital heat')
+            ap,tp=execute('TACKLE',turn,status=16,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='BURNING_RAGE',status=16,random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live burning rage',normal,readword(tp+'HP'))
             ap,tp=execute('THUNDERBOLT',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('THUNDERBOLT',turn,actor='POWER_SURGE',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live power surge',normal,readword(tp+'HP'))
             ap,tp=execute('THUNDERBOLT',turn,actor='ENERGY_DRAIN',actor_hp=80,random_value=100);assert readword(ap+'HP')==100,(turn,'live energy drain',readword(ap+'HP'))
@@ -2015,7 +2045,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 126 species / 630 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 127 species / 635 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

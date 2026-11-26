@@ -46,64 +46,23 @@ AbilityResolvePoolId:
  pop bc
  cp ABILITY_EXTENDED
  ret nz
- ; Each entry is pool, one-based slot, extended index (ID minus 255).
- ld hl, AbilityExtendedPoolIds
-.find
- ld a, [hli]
- and a
- jr z, .missing
- cp c
- jr nz, .next
- ld a, [hli]
- cp b
- jr z, .found
- inc hl
- jr .find
-.next
- inc hl
- inc hl
- jr .find
-.found
- ld a, [hl]
+ ; Search the extended pool table in its data bank.
+ ld a, [wAbilityTemp]
+ push af
+ ld a, c
+ ld [wAbilityTemp], a
+ ld a, b
  ld [wAbilityResolvedExtended], a
+ push bc
+ callab AbilityFindExtendedPool
+ pop bc
+ pop af
+ ld [wAbilityTemp], a
+ ld a, [wAbilityResolvedExtended]
+ and a
+ ret z
  ld a, ABILITY_EXTENDED
  ret
-.missing
- xor a
- ret
-
-AbilityExtendedPoolIds:
- db 70, 4, AB_THICK_VINES - ABILITY_EXTENDED
- db 71, 1, AB_PARENTAL_BOND - ABILITY_EXTENDED
- db 71, 3, AB_HEAVY_HITTER - ABILITY_EXTENDED
- db 71, 4, AB_EARLY_BIRD - ABILITY_EXTENDED
- db 71, 5, AB_MATERNAL_RAGE - ABILITY_EXTENDED
- db 72, 2, AB_INK_CLOUD - ABILITY_EXTENDED
- db 72, 3, AB_WATER_JET - ABILITY_EXTENDED
- db 72, 4, AB_FOCUSED - ABILITY_EXTENDED
- db 72, 5, AB_TOXIC_SPINES - ABILITY_EXTENDED
- db 73, 1, AB_ROYAL_HORN - ABILITY_EXTENDED
- db 73, 5, AB_LIGHTNING_ROD - ABILITY_EXTENDED
- db 74, 1, AB_REGENERATOR - ABILITY_EXTENDED
- db 74, 2, AB_COSMIC_CORE - ABILITY_EXTENDED
- db 74, 3, AB_ILLUMINATE - ABILITY_EXTENDED
- db 74, 5, AB_EQUALIZER - ABILITY_EXTENDED
- db 75, 1, AB_COPYCAT - ABILITY_EXTENDED
- db 75, 4, AB_STRONGMAN - ABILITY_EXTENDED
- db 75, 5, AB_MIRROR_ARMOR - ABILITY_EXTENDED
- db 76, 2, AB_SHARP_BLADES - ABILITY_EXTENDED
- db 76, 3, AB_VANGUARD - ABILITY_EXTENDED
- db 76, 5, AB_DOUBLE_SCYTHES - ABILITY_EXTENDED
- db 77, 1, AB_DANCER - ABILITY_EXTENDED
- db 77, 2, AB_COLD_TOUCH - ABILITY_EXTENDED
- db 77, 3, AB_ENCHANTRESS - ABILITY_EXTENDED
- db 77, 4, AB_ICE_QUEEN - ABILITY_EXTENDED
- db 78, 1, AB_POWER_SURGE - ABILITY_EXTENDED
- db 78, 2, AB_ENERGY_DRAIN - ABILITY_EXTENDED
- db 78, 3, AB_THUNDERSTRUCK - ABILITY_EXTENDED
- db 78, 4, AB_LIVE_WIRE - ABILITY_EXTENDED
- db 78, 5, AB_GALVANIZE - ABILITY_EXTENDED
- db 0
 
 ; Nature format keeps the persistent ability slot in stored Type1 high bits.
 AbilityEnsureMon:

@@ -443,6 +443,21 @@ AbilityRoll:
 ; The RNG draw is already in wCustomRandomValue. Halving it doubles the
 ; threshold probability exactly and makes thresholds >=128 guaranteed.
 AbilityMeasuredEffectRoll:
+	call AbilityMove
+	inc hl
+	ld a, [hl]
+	cp FREEZE_SIDE_EFFECT
+	jr nz, .ordinary
+	call AbilityTarget
+	cp ABILITY_EXTENDED
+	jr nz, .ordinary
+	ld a, [wAbilityResolvedExtended]
+	cp AB_MAGMA_ARMOR - ABILITY_EXTENDED
+	jr nz, .ordinary
+	ld a, $ff
+	ld [wCustomRandomValue], a
+	ret
+.ordinary
 	call AbilityActor
 	cp AB_MEASURED
 	jr z, .double
@@ -481,6 +496,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityBurningRageDamage
 	call AbilityIceQueenDamage
 	call AbilitySharpBladesDamage
 	call AbilityEqualizerDamage
@@ -896,6 +912,19 @@ AbilityModifyDamage:
 
 .defender
 	call AbilityTarget
+	cp ABILITY_EXTENDED
+	jr nz, .defenderOrdinary
+	ld a, [wAbilityResolvedExtended]
+	cp AB_MAGMA_ARMOR - ABILITY_EXTENDED
+	jr nz, .restoreDefender
+	ld a, [wAbilityMoveType]
+	cp ICE
+	ret nz
+	ld c, 50
+	jp .reduce
+.restoreDefender
+	call AbilityTarget
+.defenderOrdinary
 	cp AB_SOFT_BODY
 	jr nz, .notSoftBody
 	ld a, [wAbilityMoveType]
@@ -1079,6 +1108,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityBurningRageFixedDamage
 	call AbilityFocusedFixedDamage
 	call AbilityHeavyHitterFixedDamage
 	call AbilityTangelaFixedDamage
@@ -1287,6 +1317,14 @@ AbilityExistingFixedDamageModifiers:
 	cp ABILITY_EXTENDED
 	jr nz, .fixedLegacySpecial
 	ld a, [wAbilityResolvedExtended]
+	cp AB_MAGMA_ARMOR - ABILITY_EXTENDED
+	jr nz, .fixedCosmic
+	call AbilityActorMoveType
+	cp ICE
+	ret nz
+	ld c, 50
+	jp .scale
+.fixedCosmic
 	cp AB_COSMIC_CORE - ABILITY_EXTENDED
 	jr z, .fixedMentalShield
 	call AbilityTarget
@@ -1433,6 +1471,8 @@ AbilitySandAfterAction:
 	cp ABILITY_EXTENDED
 	jr nz, .ordinaryAbility
 	ld a, [wAbilityResolvedExtended]
+	cp AB_VITAL_HEAT - ABILITY_EXTENDED
+	jp z, .vitalHeat
 	cp AB_ENERGY_DRAIN - ABILITY_EXTENDED
 	jp z, .energyDrain
 	cp AB_LIVE_WIRE - ABILITY_EXTENDED
@@ -1559,6 +1599,11 @@ AbilitySandAfterAction:
 	ret nz
 	ld a, 5
 	jr .once
+.vitalHeat
+	call AbilityActorMoveType
+	cp FIRE
+	ret nz
+	jp .healWaterOrGround
 .energyDrain
 	call AbilityActorMoveType
 	cp ELECTRIC
@@ -3595,6 +3640,20 @@ AbilitySecondaryEffects:
 
 AbilityBurnGate:
 	ld a, [wCustomDelta]
+	cp 1 << FRZ
+	jr nz, .notFreeze
+	xor a
+	ld [wAbilityCheckResult], a
+	ld a, [wCustomSide]
+	call AbilityGet
+	cp ABILITY_EXTENDED
+	ret nz
+	ld a, [wAbilityResolvedExtended]
+	cp AB_MAGMA_ARMOR - ABILITY_EXTENDED
+	jr z, .block
+	ret
+.notFreeze
+	ld a, [wCustomDelta]
 	cp 1 << PAR
 	jr nz, .ordinary
 	ld a, [wCustomSide]
@@ -4367,9 +4426,8 @@ AbilityBounceDispatch:
  and a
  jr nz, .ordinary
  ld a, b
- ld hl, AbilityBounceMoves
- ld de, 1
- call IsInArray
+ ld [wAbilityResolvedExtended], a
+ callab AbilityBounceMoveBanked
  jr nc, .ordinary
  ; Preserve the opposing move record on the stack, then lend it the move.
  ld hl, wPlayerMoveNum
@@ -4411,12 +4469,6 @@ AbilityBounceDispatch:
  ret
 .ordinary
  jpab DispatchMoveEffect
-
-AbilityBounceMoves:
- db WHIRLWIND, TAIL_WHIP, LEER, GROWL, ROAR, SING, SUPERSONIC, DISABLE
- db LEECH_SEED, POISONPOWDER, STUN_SPORE, SLEEP_POWDER, THUNDER_WAVE, TOXIC
- db HYPNOSIS, SCREECH, SMOKESCREEN, CONFUSE_RAY, KINESIS, SPLASH, GLARE, POISON_GAS
- db LOVELY_KISS, SPORE, WILL_O_WISP, FLASH_FREEZE, CURSE, CHARM, $ff
 
 AbilityMultiHitEffect:
 	ld hl, wPlayerBattleStatus1
@@ -5274,17 +5326,28 @@ AbilityCompareFaster:
 AbilityFlameBody:
  call AbilityTarget
  cp AB_FLAME_BODY
+ jr z, .ordinary
+ cp ABILITY_EXTENDED
  ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_MAGMAR_FLAME_BODY - ABILITY_EXTENDED
+ ret nz
+ ld b, 25
+ jr .physical
+.ordinary
+ ld b, 20
+.physical
+ push bc
  ld a, [wAbilityMoveType]
  cp FIRE
- ret nc
+ jr nc, .noPhysical
  ld a, [H_WHOSETURN]
  ld [wAbilitySide], a
  call AbilityHP
  ld a, [hli]
  or [hl]
- ret z
- ld b, 20
+ jr z, .noPhysical
+ pop bc
  call AbilityRoll
  ret nc
  ld a, [H_WHOSETURN]
@@ -5297,6 +5360,9 @@ AbilityFlameBody:
  callab UtilityInflictStatus
  pop af
  ld [H_WHOSETURN], a
+ ret
+.noPhysical
+ pop bc
  ret
 
 ; Legacy stat-up effects raise the active side. Preserve their scratch state.
@@ -7464,6 +7530,25 @@ AbilityIceQueenDamage:
 .scale
  jp AbilityScaleDamage
 
+AbilityBurningRageDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityBurningRageFixedDamage:
+ ld c, AB_BURNING_RAGE - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ ret nc
+ call AbilityTargetStatus
+ bit BRN, [hl]
+ ret z
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld c, 125
+ jp AbilityScaleDamage
+
 AbilitySharpBladesDamage:
  ld a, [wUnusedC000]
  bit 4, a
@@ -8077,87 +8162,12 @@ AbilityMirrorArmorLegacy:
 
 ; Copy a positive actual stage delta once, with a guard for two holders.
 AbilityCopycatFromSide:
- ld a, [wStatAbilityGuard]
- bit 1, a
- ret nz
- ld a, [wCopycatDelta]
- and a
- ret z
- bit 7, a
- ret nz
+ jpab AbilityCopycatFromSideBanked
+
+AbilityGetCopycatTarget:
  ld a, [wCustomSide]
  xor 1
- call AbilityGet
- cp ABILITY_EXTENDED
- ret nz
- ld a, [wAbilityResolvedExtended]
- cp AB_COPYCAT - ABILITY_EXTENDED
- ret nz
- ld a, [wAbilitySide]
- push af
- ld a, [wCustomSide]
- push af
- ld a, [wCustomStat]
- push af
- ld a, [wCustomDelta]
- push af
- ld a, [wCustomChanged]
- push af
- ld a, [wCustomSavedTurn]
- push af
- ld a, [wCustomMove]
- push af
- ld a, [wCustomChance]
- push af
- ld a, [wCustomRandomValue]
- push af
- ld a, [wAbilityCheckResult]
- push af
- ld a, [wAbilityTemp]
- push af
- ld a, [wAbilityTemp + 1]
- push af
- ld a, [wCustomSide]
- xor 1
- ld [wAbilitySide], a
- ld [wCustomSide], a
- call AbilityHP
- ld a, [hli]
- or [hl]
- jr z, .restore
- ld a, [wCopycatDelta]
- ld [wCustomDelta], a
- ld hl, wStatAbilityGuard
- set 1, [hl]
- callab CustomChangeStage
- ld hl, wStatAbilityGuard
- res 1, [hl]
-.restore
- pop af
- ld [wAbilityTemp + 1], a
- pop af
- ld [wAbilityTemp], a
- pop af
- ld [wAbilityCheckResult], a
- pop af
- ld [wCustomRandomValue], a
- pop af
- ld [wCustomChance], a
- pop af
- ld [wCustomMove], a
- pop af
- ld [wCustomSavedTurn], a
- pop af
- ld [wCustomChanged], a
- pop af
- ld [wCustomDelta], a
- pop af
- ld [wCustomStat], a
- pop af
- ld [wCustomSide], a
- pop af
- ld [wAbilitySide], a
- ret
+ jp AbilityGet
 
 ; Legacy stat-up hook runs before its clamped new stage is written.
 AbilityCopycatLegacy:

@@ -114,6 +114,7 @@ AbilityTextPointers:
 	dw AbilityText274, AbilityText275, AbilityText276
 	dw AbilityText277, AbilityText278, AbilityText279, AbilityText280
 	dw AbilityText281, AbilityText282, AbilityText283, AbilityText284, AbilityText285
+	dw AbilityText286, AbilityText287, AbilityText288, AbilityText289
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -492,6 +493,10 @@ AbilityText282: db "ENERGY DRAIN",$4e,"Electric move: heal",$4e,"1/8 max HP.@"
 AbilityText283: db "THUNDERSTRUCK",$4e,"Electric hit: 20%",$4e,"confuses foe.@"
 AbilityText284: db "LIVE WIRE",$4e,"Electric move:",$4e,"Attack +1 once.@"
 AbilityText285: db "GALVANIZE",$4e,"Normal moves become",$4e,"Electric type.@"
+AbilityText286: db "FLAME BODY",$4e,"Physical hit: 25%",$4e,"burns attacker.@"
+AbilityText287: db "MAGMA ARMOR",$4e,"Prevents freeze;",$4e,"Ice damage x0.5.@"
+AbilityText288: db "VITAL HEAT",$4e,"Fire move: heal",$4e,"1/8 max HP.@"
+AbilityText289: db "BURNING RAGE",$4e,"Damage x1.25 vs",$4e,"burned foe.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -573,6 +578,7 @@ AbilityPoolIds:
 	db AB_TECHNICIAN, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_EXECUTIONER, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SNOW_VEIL
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, AB_HOT_TEMPER, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -718,7 +724,87 @@ AbilitySpeciesPools:
 	db SCYTHER, 76
 	db JYNX, 77
 	db ELECTABUZZ, 78
+	db MAGMAR, 79
 	db 0
 
 ; Shared battle move flags live with the banked ability data.
 INCLUDE "data/ability_move_metadata.asm"
+
+; B carries the bank during the call; recover the saved slot from scratch.
+AbilityFindExtendedPool:
+ ld a, [wAbilityTemp]
+ ld c, a
+ ld a, [wAbilityResolvedExtended]
+ ld b, a
+ xor a
+ ld [wAbilityResolvedExtended], a
+ ld hl, AbilityExtendedPoolIds
+.find
+ ld a, [hli]
+ and a
+ ret z
+ cp c
+ jr nz, .next
+ ld a, [hli]
+ cp b
+ jr z, .found
+ inc hl
+ jr .find
+.next
+ inc hl
+ inc hl
+ jr .find
+.found
+ ld a, [hl]
+ ld [wAbilityResolvedExtended], a
+ ret
+
+AbilityExtendedPoolIds:
+ db 70, 4, AB_THICK_VINES - ABILITY_EXTENDED
+ db 71, 1, AB_PARENTAL_BOND - ABILITY_EXTENDED
+ db 71, 3, AB_HEAVY_HITTER - ABILITY_EXTENDED
+ db 71, 4, AB_EARLY_BIRD - ABILITY_EXTENDED
+ db 71, 5, AB_MATERNAL_RAGE - ABILITY_EXTENDED
+ db 72, 2, AB_INK_CLOUD - ABILITY_EXTENDED
+ db 72, 3, AB_WATER_JET - ABILITY_EXTENDED
+ db 72, 4, AB_FOCUSED - ABILITY_EXTENDED
+ db 72, 5, AB_TOXIC_SPINES - ABILITY_EXTENDED
+ db 73, 1, AB_ROYAL_HORN - ABILITY_EXTENDED
+ db 73, 5, AB_LIGHTNING_ROD - ABILITY_EXTENDED
+ db 74, 1, AB_REGENERATOR - ABILITY_EXTENDED
+ db 74, 2, AB_COSMIC_CORE - ABILITY_EXTENDED
+ db 74, 3, AB_ILLUMINATE - ABILITY_EXTENDED
+ db 74, 5, AB_EQUALIZER - ABILITY_EXTENDED
+ db 75, 1, AB_COPYCAT - ABILITY_EXTENDED
+ db 75, 4, AB_STRONGMAN - ABILITY_EXTENDED
+ db 75, 5, AB_MIRROR_ARMOR - ABILITY_EXTENDED
+ db 76, 2, AB_SHARP_BLADES - ABILITY_EXTENDED
+ db 76, 3, AB_VANGUARD - ABILITY_EXTENDED
+ db 76, 5, AB_DOUBLE_SCYTHES - ABILITY_EXTENDED
+ db 77, 1, AB_DANCER - ABILITY_EXTENDED
+ db 77, 2, AB_COLD_TOUCH - ABILITY_EXTENDED
+ db 77, 3, AB_ENCHANTRESS - ABILITY_EXTENDED
+ db 77, 4, AB_ICE_QUEEN - ABILITY_EXTENDED
+ db 78, 1, AB_POWER_SURGE - ABILITY_EXTENDED
+ db 78, 2, AB_ENERGY_DRAIN - ABILITY_EXTENDED
+ db 78, 3, AB_THUNDERSTRUCK - ABILITY_EXTENDED
+ db 78, 4, AB_LIVE_WIRE - ABILITY_EXTENDED
+ db 78, 5, AB_GALVANIZE - ABILITY_EXTENDED
+ db 79, 1, AB_MAGMAR_FLAME_BODY - ABILITY_EXTENDED
+ db 79, 3, AB_MAGMA_ARMOR - ABILITY_EXTENDED
+ db 79, 4, AB_VITAL_HEAT - ABILITY_EXTENDED
+ db 79, 5, AB_BURNING_RAGE - ABILITY_EXTENDED
+ db 0
+
+
+AbilityBounceMoveBanked:
+ ld a, [wAbilityResolvedExtended]
+ ld hl, AbilityBounceMoves
+ ld de, 1
+ jp IsInArray
+
+AbilityBounceMoves:
+ db WHIRLWIND, TAIL_WHIP, LEER, GROWL, ROAR, SING, SUPERSONIC, DISABLE
+ db LEECH_SEED, POISONPOWDER, STUN_SPORE, SLEEP_POWDER, THUNDER_WAVE, TOXIC
+ db HYPNOSIS, SCREECH, SMOKESCREEN, CONFUSE_RAY, KINESIS, SPLASH, GLARE, POISON_GAS
+ db LOVELY_KISS, SPORE, WILL_O_WISP, FLASH_FREEZE, CURSE, CHARM, $ff
