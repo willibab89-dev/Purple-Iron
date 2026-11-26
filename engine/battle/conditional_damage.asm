@@ -2199,6 +2199,11 @@ AbilityExtendedPoolIds:
  db 93, 5, AB_TERRIFYING - ABILITY_EXTENDED
  db 94, 1, AB_HEAVY_SLEEPER - ABILITY_EXTENDED
  db 94, 4, AB_SLEEPWALKER - ABILITY_EXTENDED
+ db 95, 1, AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
+ db 95, 2, AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
+ db 95, 3, AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
+ db 95, 4, AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
+ db 95, 5, AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2507,6 +2512,7 @@ AbilitySpeciesPools:
 	db KABUTOPS, 92
 	db AERODACTYL, 93
 	db SNORLAX, 94
+	db ARTICUNO, 95
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3136,3 +3142,88 @@ AbilityHeavySleeperBoth:
  and SLP
  ret z
  jpab AbilityRegeneration
+
+; Shared type-chart overrides for battle damage and AI scoring.
+AbilityTypeOverrideBanked:
+ ld a, [wAbilityCheckResult]
+ push af
+ xor a
+ ld [wAbilityCheckResult], a
+ pop af
+ ; The neutral chart entry makes Bug/Rock available to the shared hooks.
+ push af
+ ld a, [wAbilityTemp]
+ cp ROCK
+ jr nz, .otherMatchup
+ ld a, [wAbilityTemp + 1]
+ cp BUG
+ jr nz, .otherMatchup
+ pop af
+ cp ABILITY_EXTENDED
+ jr nz, .bugRockNeutral
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ARMOR_CRUSHER - ABILITY_EXTENDED
+ jr nz, .bugRockNeutral
+ ld a, 20
+ jr .bugRockStore
+.bugRockNeutral
+ ld a, 10
+.bugRockStore
+ ld [wAbilityCheckResult], a
+ ret
+.otherMatchup
+ pop af
+ cp AB_ICEBREAKER
+ jr nz, .notIcebreaker
+ ld a, [wAbilityTemp]
+ cp WATER
+ ret nz
+ ld a, [wAbilityTemp + 1]
+ cp ICE
+ ret nz
+ ld a, 20
+ ld [wAbilityCheckResult], a
+ ret
+.notIcebreaker
+ cp AB_CORROSIVE_VENOM
+ jr nz, .scrappy
+ ld a, [wAbilityTemp]
+ cp ROCK
+ ret nz
+ ld a, [wAbilityTemp + 1]
+ cp POISON
+ ret nz
+ ld a, 20
+ ld [wAbilityCheckResult], a
+ ret
+.scrappy
+ cp AB_SCRAPPY
+ jr z, .scrappyMatch
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ABSOLUTE_ZERO - ABILITY_EXTENDED
+ jr nz, .checkMindsEye
+ ld a, [wAbilityTemp + 1]
+ cp ICE
+ ret nz
+ ld a, [wCustomRandomValue]
+ cp 5
+ ret nz
+ jr .neutral
+.checkMindsEye
+ cp AB_MINDS_EYE - ABILITY_EXTENDED
+ ret nz
+.scrappyMatch
+ ld a, [wAbilityTemp]
+ cp GHOST
+ ret nz
+ ld a, [wAbilityTemp + 1]
+ cp NORMAL
+ jr z, .neutral
+ cp FIGHTING
+ ret nz
+.neutral
+ ld a, 10
+ ld [wAbilityCheckResult], a
+ ret

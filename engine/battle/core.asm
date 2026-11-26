@@ -5091,6 +5091,7 @@ AdjustDamageForMoveType:
 	ld b, a
 	ld a, [hl] ; a = damage multiplier from type chart table (can be $00, $05, or $14)
 	ld [H_MULTIPLIER], a
+	ld [wAbilityCheckResult], a ; preserve chart multiplier for the banked hook
 	dec hl
 	ld a, [hli] ; defending type of this chart entry
 	ld [wAbilityTemp], a
@@ -5226,6 +5227,8 @@ AIGetTypeEffectiveness:
 	dec hl
 	ld a, [hli] ; defending type
 	ld [wAbilityTemp], a
+	ld a, [hl]
+	ld [wAbilityCheckResult], a
 	abilitycall AbilityCorrosiveAICheck
 	ld a, [wAbilityCheckResult]
 	and a

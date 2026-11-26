@@ -195,7 +195,8 @@ def validate(version):
                'OMANYTE':['ANCIENT_POWER','MINDS_EYE','PATIENT','CRUSHING_GRIP','SHELL_ARMOR'],
                'KABUTO':['KABUTO_EXECUTIONER','ANCIENT_POWER','BATTLE_ARMOR','LEECHING','SHARP_BLADES'],
                'AERODACTYL':['PREDATOR','ROCK_HEAD','RELENTLESS','SAVAGE_JAWS','TERRIFYING'],
-               'SNORLAX':['HEAVY_SLEEPER','THICK_FAT','GLUTTONY','SLEEPWALKER','IMMUNITY']}
+               'SNORLAX':['HEAVY_SLEEPER','THICK_FAT','GLUTTONY','SLEEPWALKER','IMMUNITY'],
+               'ARTICUNO':['ABSOLUTE_ZERO']*5}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1286,6 +1287,13 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Absolute Zero neutralizes each resisted Ice matchup, including for AI.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player')
+            for attack,t1,t2,want in [('ICE','WATER','WATER',10),('ICE','ICE','ICE',10),('ICE','WATER','ICE',10),('ICE','WATER','GRASS',20),('ICE','ICE','DRAGON',20),('ICE','GRASS','GROUND',40),('FIRE','WATER','WATER',5)]:
+                ap,tp=init(turn);aid(turn,'ABSOLUTE_ZERO');put(ap+'Type1',TYPES['NORMAL']);put(ap+'Type2',TYPES['NORMAL']);put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2]);put(actor+'MoveType',TYPES[attack]);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==want*10 and get('wDamageMultipliers')==want,(turn,attack,t1,t2,readword('wDamage'),get('wDamageMultipliers'))
+                put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==want,(turn,attack,t1,t2,'AI',get('wTypeEffectiveness'))
+            ap,tp=init(turn);aid(turn,'ABSOLUTE_ZERO');aid(1-turn,'NEUTRALIZING_GAS');put(tp+'Type1',TYPES['WATER']);put(tp+'Type2',TYPES['WATER']);put(actor+'MoveType',TYPES['ICE']);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==50,(turn,'gas')
         # Heavy Sleeper heals only living sleeping holders, once per round.
         for turn in (0,1):
             for status,hp,want in [(2,80,90),(0,80,80),(2,0,0),(2,159,160)]:
@@ -2014,6 +2022,8 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('ICE_BEAM',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('ICE_BEAM',turn,actor='ABSOLUTE_ZERO',target_types=('WATER','WATER'),random_value=100);assert 160-readword(tp+'HP')==normal,(turn,'live absolute zero',normal,readword(tp+'HP'))
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('TACKLE',turn,actor='SLEEPWALKER',actor_status=2,random_value=100);assert 160-readword(tp+'HP')==normal//2 and get(ap+'Status')==1,(turn,'sleepwalking tackle',normal,readword(tp+'HP'),get(ap+'Status'))
             ap,tp=execute('TACKLE',turn,actor_status=2,random_value=100);assert readword(tp+'HP')==160 and get(ap+'Status')==1,(turn,'ordinary sleep')
@@ -2387,7 +2397,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 144 species / 720 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 145 species / 725 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

@@ -364,15 +364,20 @@ AbilityPiercingBeakCheck:
 ; The chart supplies the matched defending type in wAbilityTemp. The result
 ; is the replacement multiplier (0 means no override).
 AbilityCorrosiveCheck:
+ ld a, [wAbilityCheckResult] ; current chart multiplier
+ push af
  call AbilityEqualizerSnapshot
  xor a
  ld [wAbilityCheckResult], a
  ld a, [wMoveType]
  ld [wAbilityTemp + 1], a
  call AbilityActor
+ pop bc ; B holds the chart multiplier
  jr AbilityTypeOverride
 
 AbilityCorrosiveAICheck:
+ ld a, [wAbilityCheckResult]
+ push af
  xor a
  ld [wAbilityCheckResult], a
  ld a, [wUnusedC000]
@@ -389,73 +394,16 @@ AbilityCorrosiveAICheck:
  xor a
 .side
  call AbilityGet
+ pop bc
 AbilityTypeOverride:
- ; The neutral chart entry makes Bug/Rock available to the shared hooks.
+ ld [wAbilityCheckResult], a
+ ld a, [wCustomRandomValue]
  push af
- ld a, [wAbilityTemp]
- cp ROCK
- jr nz, .otherMatchup
- ld a, [wAbilityTemp + 1]
- cp BUG
- jr nz, .otherMatchup
+ ld a, b
+ ld [wCustomRandomValue], a
+ callab AbilityTypeOverrideBanked
  pop af
- cp ABILITY_EXTENDED
- jr nz, .bugRockNeutral
- ld a, [wAbilityResolvedExtended]
- cp AB_ARMOR_CRUSHER - ABILITY_EXTENDED
- jr nz, .bugRockNeutral
- ld a, 20
- jr .bugRockStore
-.bugRockNeutral
- ld a, 10
-.bugRockStore
- ld [wAbilityCheckResult], a
- ret
-.otherMatchup
- pop af
- cp AB_ICEBREAKER
- jr nz, .notIcebreaker
- ld a, [wAbilityTemp]
- cp WATER
- ret nz
- ld a, [wAbilityTemp + 1]
- cp ICE
- ret nz
- ld a, 20
- ld [wAbilityCheckResult], a
- ret
-.notIcebreaker
- cp AB_CORROSIVE_VENOM
- jr nz, .scrappy
- ld a, [wAbilityTemp]
- cp ROCK
- ret nz
- ld a, [wAbilityTemp + 1]
- cp POISON
- ret nz
- ld a, 20
- ld [wAbilityCheckResult], a
- ret
-.scrappy
- cp AB_SCRAPPY
- jr z, .scrappyMatch
- cp ABILITY_EXTENDED
- ret nz
- ld a, [wAbilityResolvedExtended]
- cp AB_MINDS_EYE - ABILITY_EXTENDED
- ret nz
-.scrappyMatch
- ld a, [wAbilityTemp]
- cp GHOST
- ret nz
- ld a, [wAbilityTemp + 1]
- cp NORMAL
- jr z, .neutral
- cp FIGHTING
- ret nz
-.neutral
- ld a, 10
- ld [wAbilityCheckResult], a
+ ld [wCustomRandomValue], a
  ret
 
 AbilityDefiantTarget:
