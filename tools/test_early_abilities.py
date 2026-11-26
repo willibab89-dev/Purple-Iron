@@ -173,7 +173,8 @@ def validate(version):
                'MAGIKARP':['PATHETIC','SPLASHING','DETERMINATION','SWIFT_SWIM','DESPERATION'],
                'GYARADOS':['OVERWHELMING','GROWL_INTIMIDATE','WRATH','MOXIE','SAVAGE_JAWS'],
                'LAPRAS':['ANCIENT_SHELL','ICEBREAKER','SAP_SIPPER','GENTLE_GIANT','SHELL_ARMOR'],
-               'DITTO':['PERFECT_COPY','UNSTABLE_DNA','SHAPESHIFTER','COPY_MASTER','SOFT_BODY']}
+               'DITTO':['PERFECT_COPY','UNSTABLE_DNA','SHAPESHIFTER','COPY_MASTER','SOFT_BODY'],
+               'EEVEE':['VERSATILITY','ADAPTABLE','FLEXIBLE','QUICK_LEARNER','PROTEAN']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1411,6 +1412,24 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Eevee: current types, resistance, off-type Speed and Protean timing.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,types,want in [('TACKLE',('NORMAL','NORMAL'),100),('EMBER',('NORMAL','NORMAL'),120),('EMBER',('NORMAL','FIRE'),100),('WATER_GUN',('NORMAL','FIRE'),120)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'VERSATILITY');put(ap+'Type1',TYPES[types[0]]);put(ap+'Type2',TYPES[types[1]]);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,types,'versatility',readword('wDamage'))
+            init(turn);move(turn,'SONICBOOM');aid(turn,'VERSATILITY');put(actor+'MoveType',TYPES['FIRE']);put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==120,(turn,'versatility fixed',readword('wDamage'))
+            for mult,want in [(0,100),(2,120),(5,120),(10,100),(20,100),(0x85,120)]:
+                init(turn);move(turn,'TACKLE');aid(turn,'ADAPTABLE');put('wDamageMultipliers',mult);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,mult,'adaptable',readword('wDamage'))
+            for mult,want in [(0,100),(5,100),(10,100),(20,75),(40,75),(0x94,75)]:
+                init(turn);move(turn,'TACKLE');aid(1-turn,'FLEXIBLE');put('wDamageMultipliers',mult);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,mult,'flexible',readword('wDamage'))
+            for attack,types,want in [('TACKLE',('NORMAL','NORMAL'),7),('EMBER',('NORMAL','NORMAL'),8),('EMBER',('NORMAL','FIRE'),7),('WILL_O_WISP',('NORMAL','NORMAL'),8)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'QUICK_LEARNER');put(ap+'Type1',TYPES[types[0]]);put(ap+'Type2',TYPES[types[1]]);call('AbilityAttempt');call('AbilityAfterAction');assert get(actor+'MonSpeedMod')==want,(turn,attack,types,'quick learner',get(actor+'MonSpeedMod'));call('AbilityAfterAction');assert get(actor+'MonSpeedMod')==want,(turn,'quick learner once')
+            for attack,want in [('EMBER','FIRE'),('WATER_GUN','WATER'),('GROWL','NORMAL'),('WILL_O_WISP','FIRE')]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'PROTEAN');put(ap+'Type1',TYPES['GRASS']);put(ap+'Type2',TYPES['WATER']);original=bytes(game.memory[addr('wPartyMon1Type1'):addr('wPartyMon1Type1')+2]);call('AbilityAttempt');assert (get(ap+'Type1'),get(ap+'Type2'))==(TYPES[want],TYPES[want]),(turn,attack,'protean',get(ap+'Type1'),get(ap+'Type2'));assert bytes(game.memory[addr('wPartyMon1Type1'):addr('wPartyMon1Type1')+2])==original,(turn,'protean party')
+            ap,tp=init(turn);move(turn,'EMBER');aid(turn,'PROTEAN');aid(1-turn,'NEUTRALIZING_GAS');call('AbilityAttempt');assert get(ap+'Type1')==0 and get(ap+'Type2')==0,(turn,'suppressed protean')
+        for slot,name in [(1,'VERSATILITY'),(2,'ADAPTABLE'),(3,'FLEXIBLE'),(4,'QUICK LEARNER'),(5,'PROTEAN')]:
+            metadata('wPartyMon1','EEVEE',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Ditto: real transformations, copied PP, per-battle and residual effects.
         transform_bank,transform_addr=syms['PlayCurrentMoveAnimation'];transform_old=game.memory[transform_bank,transform_addr];patch('PlayCurrentMoveAnimation',[0xc9])
         for turn in (0,1):
@@ -1857,6 +1876,11 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('EMBER',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('EMBER',turn,actor='VERSATILITY',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live versatility')
+            ap,tp=execute('EMBER',turn,actor='PROTEAN',random_value=100);assert get(ap+'Type1')==TYPES['FIRE'] and get(ap+'Type2')==TYPES['FIRE'] and 160-readword(tp+'HP')>normal,(turn,'live protean STAB')
+            ap,tp=execute('METRONOME',turn,actor='PROTEAN',random_value=MOVES['EMBER']);assert get(ap+'Type1')==TYPES['FIRE'] and get(ap+'Type2')==TYPES['FIRE'],(turn,'protean metronome',get(ap+'Type1'))
+            ap,tp=execute('WILL_O_WISP',turn,actor='QUICK_LEARNER',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8,(turn,'live quick learner')
             ap,tp=execute('GROWL',turn,actor='GENTLE_GIANT',actor_hp=80,random_value=100);assert readword(ap+'HP')==100,(turn,'live gentle giant')
             ap,tp=execute('THUNDERBOLT',turn,target_types=('WATER','WATER'),random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('THUNDERBOLT',turn,target='ANCIENT_SHELL',target_types=('WATER','WATER'),random_value=100);assert 160-readword(tp+'HP')<normal,(turn,'live ancient shell',normal,readword(tp+'HP'))
@@ -2200,7 +2224,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 133 species / 665 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 134 species / 670 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

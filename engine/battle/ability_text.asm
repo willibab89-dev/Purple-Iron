@@ -121,6 +121,7 @@ AbilityTextPointers:
 	dw AbilityText300, AbilityText301, AbilityText302
 	dw AbilityText303, AbilityText304
 	dw AbilityText305, AbilityText306, AbilityText307, AbilityText308
+	dw AbilityText309, AbilityText310, AbilityText311, AbilityText312, AbilityText313
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -522,6 +523,11 @@ AbilityText305: db "PERFECT COPY",$4e,"Transform: heal",$4e,"1/4 max HP once.@"
 AbilityText306: db "UNSTABLE DNA",$4e,"Transformed: heal",$4e,"1/16 HP per turn.@"
 AbilityText307: db "SHAPESHIFTER",$4e,"Transform: Speed",$4e,"+1 once per battle.@"
 AbilityText308: db "COPY MASTER",$4e,"Transformed moves",$4e,"have 10 PP.@"
+AbilityText309: db "VERSATILITY",$4e,"Off-type moves deal",$4e,"x1.2 damage.@"
+AbilityText310: db "ADAPTABLE",$4e,"Resisted hits deal",$4e,"x1.2 damage.@"
+AbilityText311: db "FLEXIBLE",$4e,"Super-effective",$4e,"damage x0.75.@"
+AbilityText312: db "QUICK LEARNER",$4e,"Off-type move:",$4e,"Speed +1 once.@"
+AbilityText313: db "PROTEAN",$4e,"Changes type to",$4e,"the move used.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -610,6 +616,7 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, AB_GROWL_INTIMIDATE, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_ICEBREAKER, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SHELL_ARMOR
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SOFT_BODY
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -762,6 +769,7 @@ AbilitySpeciesPools:
 	db GYARADOS, 83
 	db LAPRAS, 84
 	db DITTO, 85
+	db EEVEE, 86
 	db 0
 
 ; Shared battle move flags live with the banked ability data.
@@ -852,6 +860,11 @@ AbilityExtendedPoolIds:
  db 85, 2, AB_UNSTABLE_DNA - ABILITY_EXTENDED
  db 85, 3, AB_SHAPESHIFTER - ABILITY_EXTENDED
  db 85, 4, AB_COPY_MASTER - ABILITY_EXTENDED
+ db 86, 1, AB_VERSATILITY - ABILITY_EXTENDED
+ db 86, 2, AB_ADAPTABLE - ABILITY_EXTENDED
+ db 86, 3, AB_FLEXIBLE - ABILITY_EXTENDED
+ db 86, 4, AB_QUICK_LEARNER - ABILITY_EXTENDED
+ db 86, 5, AB_PROTEAN - ABILITY_EXTENDED
  db 0
 
 

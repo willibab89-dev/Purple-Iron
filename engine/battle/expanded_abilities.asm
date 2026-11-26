@@ -539,10 +539,11 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	callab AbilityEeveeDamage
 	callab AbilityGyaradosDamage
 	call AbilityDesperationDamage
 	callab AbilityBurningRageBanked
-	call AbilityIceQueenDamage
+	callab AbilityHighHPTypeDamage
 	callab AbilitySharpBladesBanked
 	call AbilityEqualizerDamage
 	call AbilityFocusedDamage
@@ -960,6 +961,8 @@ AbilityModifyDamage:
 	cp ABILITY_EXTENDED
 	jr nz, .defenderOrdinary
 	ld a, [wAbilityResolvedExtended]
+	cp AB_FLEXIBLE - ABILITY_EXTENDED
+	jp z, .superEffective
 	cp AB_ANCIENT_SHELL - ABILITY_EXTENDED
 	jp z, .superEffective
 	cp AB_MAGMA_ARMOR - ABILITY_EXTENDED
@@ -1155,6 +1158,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	callab AbilityEeveeFixedDamage
 	callab AbilityGyaradosFixedDamage
 	call AbilityDesperationFixedDamage
 	callab AbilityBurningRageFixedBanked
@@ -1333,6 +1337,8 @@ AbilityExistingFixedDamageModifiers:
 	cp ABILITY_EXTENDED
 	jr nz, .notSolidRock
 	ld a, [wAbilityResolvedExtended]
+	cp AB_FLEXIBLE - ABILITY_EXTENDED
+	jr z, .fixedSuperEffective
 	cp AB_ANCIENT_SHELL - ABILITY_EXTENDED
 	jr z, .fixedSuperEffective
 	call AbilityTarget
@@ -1521,6 +1527,7 @@ AbilityAttempt:
 
 ; Ground/Normal abilities trigger only when a move was actually executed.
 AbilitySandAfterAction:
+	callab AbilityQuickLearnerAfterAction
 	call AbilitySapSipperStatus
 	call AbilityDancerAfterAction
 	ld a, [wAbilityHit]
@@ -6184,6 +6191,16 @@ AbilityBirdRelentlessAfterAction:
 ; Convert damaging Normal moves to Ice or Water before damage and type checks.
 AbilityRefrigerateConvert:
  call AbilityActor
+ cp ABILITY_EXTENDED
+ jr nz, .ordinary
+ ld a, [wAbilityResolvedExtended]
+ cp AB_PROTEAN - ABILITY_EXTENDED
+ jr z, .protean
+ ld a, ABILITY_EXTENDED
+ jr .ordinary
+.protean
+ jpab AbilityProteanConvert
+.ordinary
  cp AB_REFRIGERATE
  jr z, .ice
  cp AB_LIQUIDATE
@@ -7606,47 +7623,8 @@ AbilityRaiseSpeed:
  ld a, 2
  jp AbilityRaiseStage
 
-AbilityIceQueenDamage:
- ld a, [wUnusedC000]
- bit 4, a
- ret nz
- ld c, AB_ICE_QUEEN - ABILITY_EXTENDED
- call AbilityExtendedActorIs
- jr c, .ice
- ld c, AB_POWER_SURGE - ABILITY_EXTENDED
- call AbilityExtendedActorIs
- ret nc
- call AbilityActorMoveType
- cp ELECTRIC
- ret nz
- jr .checkHP
-.ice
- call AbilityActorMoveType
- cp ICE
- ret nz
-.checkHP
- ld a, [H_WHOSETURN]
- ld [wAbilitySide], a
- call AbilityHP
- ld a, [hli]
- or [hl]
- ret z
- dec hl
- call AbilityHalfHP
- ret c
- ret z
- ld a, [wDamage]
- ld b, a
- ld a, [wDamage + 1]
- or b
- ret z
- ld c, 125
- call AbilityActor
- ld a, [wAbilityResolvedExtended]
- cp AB_POWER_SURGE - ABILITY_EXTENDED
- jr nz, .scale
+AbilityScaleDamage115:
  ld c, 115
-.scale
  jp AbilityScaleDamage
 
 AbilityDesperationDamage:

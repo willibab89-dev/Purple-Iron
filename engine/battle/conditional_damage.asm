@@ -1829,3 +1829,167 @@ AbilityCopyMasterMaxPP:
  ld a, 10
  ld [wMaxPP], a
  ret
+
+; Carry when the executing move is neither of the user's current types.
+AbilityEeveeMoveOffType:
+ ld hl, wPlayerMoveType
+ ld de, wBattleMonType1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .compare
+ ld hl, wEnemyMoveType
+ ld de, wEnemyMonType1
+.compare
+ ld a, [hl]
+ and $1f
+ ld b, a
+ ld a, [de]
+ and $1f
+ cp b
+ jr z, .same
+ inc de
+ ld a, [de]
+ and $1f
+ cp b
+ jr z, .same
+ scf
+ ret
+.same
+ and a
+ ret
+
+AbilityEeveeDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityEeveeFixedDamage:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_VERSATILITY - ABILITY_EXTENDED
+ jr z, .versatility
+ cp AB_ADAPTABLE - ABILITY_EXTENDED
+ ret nz
+ ld a, [wDamageMultipliers]
+ and $7f
+ ret z
+ cp 10
+ ret nc
+ jr .boost
+.versatility
+ call AbilityEeveeMoveOffType
+ ret nc
+.boost
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ jpab AbilityScaleDamage120
+
+AbilityQuickLearnerAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_QUICK_LEARNER - ABILITY_EXTENDED
+ ret nz
+ call AbilityEeveeMoveOffType
+ ret nc
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ jpab AbilityRaiseSpeed
+
+; Protean changes the battle types, leaving saved party data untouched.
+AbilityProteanConvert:
+ ld hl, wPlayerMoveNum
+ ld de, wBattleMonType1
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .move
+ ld hl, wEnemyMoveNum
+ ld de, wEnemyMonType1
+.move
+ ld a, [hli]
+ and a
+ ret z
+ cp MAX_MOVE_ID + 1
+ ret nc
+ inc hl
+ inc hl
+ ld a, [hl] ; current move type, including dynamically reloaded moves
+ and $1f
+ ld [de], a
+ inc de
+ ld [de], a
+ ret
+
+AbilityHighHPTypeDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ICE_QUEEN - ABILITY_EXTENDED
+ jr z, .ice
+ cp AB_POWER_SURGE - ABILITY_EXTENDED
+ ret nz
+ ld b, ELECTRIC
+ jr .type
+.ice
+ ld b, ICE
+.type
+ ld hl, wPlayerMoveType
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .compare
+ ld hl, wEnemyMoveType
+.compare
+ ld a, [hl]
+ cp b
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ ld l, [hl]
+ ld h, a
+ ld a, h
+ or l
+ ret z
+ add hl, hl
+ jr c, .aboveHalf
+ ld a, [de]
+ ld b, a
+ inc de
+ ld a, [de]
+ ld c, a
+ ld a, h
+ cp b
+ ret c
+ jr nz, .aboveHalf
+ ld a, l
+ cp c
+ ret c
+ ret z
+.aboveHalf
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_POWER_SURGE - ABILITY_EXTENDED
+ jp z, .electric
+ jpab AbilityScaleDamage125
+.electric
+ jpab AbilityScaleDamage115
