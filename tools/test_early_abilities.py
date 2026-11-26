@@ -174,7 +174,8 @@ def validate(version):
                'GYARADOS':['OVERWHELMING','GROWL_INTIMIDATE','WRATH','MOXIE','SAVAGE_JAWS'],
                'LAPRAS':['ANCIENT_SHELL','ICEBREAKER','SAP_SIPPER','GENTLE_GIANT','SHELL_ARMOR'],
                'DITTO':['PERFECT_COPY','UNSTABLE_DNA','SHAPESHIFTER','COPY_MASTER','SOFT_BODY'],
-               'EEVEE':['VERSATILITY','ADAPTABLE','FLEXIBLE','QUICK_LEARNER','PROTEAN']}
+               'EEVEE':['VERSATILITY','ADAPTABLE','FLEXIBLE','QUICK_LEARNER','PROTEAN'],
+               'VAPOREON':['LIQUID_BODY','WATER_VEIL','REGENERATION','WATER_ABSORB','DEEP_SEA_PRESSURE']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1412,6 +1413,25 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Vaporeon: physical protection, hit-based absorption, and Water effects.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,want in [('TACKLE',80),('KARATE_CHOP',80),('EMBER',100),('WATER_GUN',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'LIQUID_BODY');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'liquid body',readword('wDamage'))
+            init(turn);move(turn,'SEISMIC_TOSS');aid(1-turn,'LIQUID_BODY');put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==80,(turn,'fixed liquid body',readword('wDamage'))
+            ap,tp=init(turn);move(turn,'FLAMETHROWER');aid(1-turn,'WATER_VEIL');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==50,(turn,'water veil')
+            ap,tp=init(turn);aid(turn,'REGENERATION');word(ap+'HP',80);call('AbilityEndRound');assert readword(ap+'HP')==90,(turn,'regeneration')
+            for attack,hp,roll,protection,want,missed in [('WATER_GUN',80,0,None,120,2),('WATER_GUN',150,0,None,160,2),('WATER_GUN',160,0,None,160,2),('TACKLE',80,0,None,80,0),('HYDRO_PUMP',80,255,None,80,1),('SNIPE_SHOT',80,255,None,120,2),('WATER_GUN',80,0,'NEUTRALIZING_GAS',80,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,protection);aid(1-turn,'WATER_ABSORB');word(tp+'HP',hp);rng(roll);call('MoveHitTest');assert readword(tp+'HP')==want and get('wMoveMissed')==missed,(turn,attack,hp,roll,protection,'water absorb',readword(tp+'HP'),get('wMoveMissed'))
+            ap,tp=init(turn);move(turn,'WATER_GUN');aid(1-turn,'WATER_ABSORB');word(tp+'HP',80);put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==0,(turn,'water absorb AI')
+            for attack,roll,sub,protection,want in [('WATER_GUN',0,0,None,6),('WATER_GUN',39,0,None,6),('WATER_GUN',40,0,None,7),('TACKLE',0,0,None,7),('WATER_GUN',0,1,None,7),('WATER_GUN',0,0,'SHIELD_DUST',7),('WATER_GUN',0,0,'CLEAR_BODY',7)]:
+                init(turn);move(turn,attack);aid(turn,'DEEP_SEA_PRESSURE');aid(1-turn,protection);put('wCustomTargetHadSub',sub);rng(roll);call('AbilityAfterHit');assert get(target+'MonSpeedMod')==want,(turn,attack,roll,sub,protection,'deep sea pressure',get(target+'MonSpeedMod'))
+            ap,tp=init(turn);move(turn,'BARRAGE');put(actor+'MoveType',TYPES['WATER']);aid(turn,'DEEP_SEA_PRESSURE');rng(40,0);call('AbilityAfterHit');call('AbilityAfterHit');assert get(target+'MonSpeedMod')==7 and state['index']==1,(turn,'deep sea one roll')
+        for slot,name in [(1,'LIQUID BODY'),(4,'WATER ABSORB'),(5,'DEEP SEA PRESSURE')]:
+            metadata('wPartyMon1','VAPOREON',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
+        for slot in range(1,6):
+            metadata('wPartyMon1','EEVEE',slot,17);put('wPartyMon1Species',ids['VAPOREON']);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert get('wPartyMon1Type1')>>5==slot,(slot,'vaporeon evolution slot')
         # Eevee: current types, resistance, off-type Speed and Protean timing.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -1876,6 +1896,9 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('WATER_GUN',turn,target='WATER_ABSORB',hp=80,random_value=100);assert readword(tp+'HP')==120,(turn,'live water absorb',readword(tp+'HP'))
+            ap,tp=execute('SNIPE_SHOT',turn,target='WATER_ABSORB',hp=80,random_value=100);assert readword(tp+'HP')==120,(turn,'always-hit water absorb',readword(tp+'HP'))
+            ap,tp=execute('WATER_GUN',turn,actor='DEEP_SEA_PRESSURE',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==6,(turn,'live deep sea pressure')
             ap,tp=execute('EMBER',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('EMBER',turn,actor='VERSATILITY',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live versatility')
             ap,tp=execute('EMBER',turn,actor='PROTEAN',random_value=100);assert get(ap+'Type1')==TYPES['FIRE'] and get(ap+'Type2')==TYPES['FIRE'] and 160-readword(tp+'HP')>normal,(turn,'live protean STAB')
@@ -2224,7 +2247,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 134 species / 670 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 135 species / 675 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

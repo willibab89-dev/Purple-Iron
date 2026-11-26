@@ -359,6 +359,7 @@ ConditionalAccuracyCheck:
 	jr nz, .yes
 	jr .no
 .yes
+	abilitycall AbilityEarthEaterOnHit
 	scf
 .done
 	pop bc
@@ -1993,3 +1994,165 @@ AbilityHighHPTypeDamage:
  jpab AbilityScaleDamage125
 .electric
  jpab AbilityScaleDamage115
+
+; Absorb only after an attack passes accuracy and reachability.
+AbilityElementAbsorbOnHit:
+ callab AbilityTargetResult
+ ld a, [wAbilityCheckResult]
+ cp AB_EARTH_EATER
+ jr z, .ground
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_WATER_ABSORB - ABILITY_EXTENDED
+ ret nz
+ ld b, WATER
+ jr .attack
+.ground
+ ld b, GROUND
+.attack
+ ld hl, wPlayerMoveNum
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .checkMove
+ ld hl, wEnemyMoveNum
+.checkMove
+ inc hl
+ inc hl
+ ld a, [hli]
+ and a
+ ret z ; status moves are not attacks
+ ld a, [hl]
+ cp b
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityHealQuarter
+ xor a
+ ld [wDamage], a
+ ld [wDamage + 1], a
+ ld a, [wDamageMultipliers]
+ and $80
+ ld [wDamageMultipliers], a
+ xor a
+ ld [wCriticalHitOrOHKO], a
+ ld a, 2
+ ld [wMoveMissed], a
+ ld hl, AbilityElementAbsorbText
+ jp PrintText
+AbilityElementAbsorbText:
+ text "The attack"
+ line "was absorbed!"
+ prompt
+
+AbilityBounceMoveBanked:
+ ld a, [wAbilityResolvedExtended]
+ ld hl, AbilityBounceMoves
+ ld de, 1
+ jp IsInArray
+
+AbilityBounceMoves:
+ db WHIRLWIND, TAIL_WHIP, LEER, GROWL, ROAR, SING, SUPERSONIC, DISABLE
+ db LEECH_SEED, POISONPOWDER, STUN_SPORE, SLEEP_POWDER, THUNDER_WAVE, TOXIC
+ db HYPNOSIS, SCREECH, SMOKESCREEN, CONFUSE_RAY, KINESIS, SPLASH, GLARE, POISON_GAS
+ db LOVELY_KISS, SPORE, WILL_O_WISP, FLASH_FREEZE, CURSE, CHARM, $ff
+
+; B carries the bank during the call; recover the saved slot from scratch.
+AbilityFindExtendedPool:
+ ld a, [wAbilityTemp]
+ ld c, a
+ ld a, [wAbilityResolvedExtended]
+ ld b, a
+ xor a
+ ld [wAbilityResolvedExtended], a
+ ld hl, AbilityExtendedPoolIds
+.find
+ ld a, [hli]
+ and a
+ ret z
+ cp c
+ jr nz, .next
+ ld a, [hli]
+ cp b
+ jr z, .found
+ inc hl
+ jr .find
+.next
+ inc hl
+ inc hl
+ jr .find
+.found
+ ld a, [hl]
+ ld [wAbilityResolvedExtended], a
+ ret
+
+AbilityExtendedPoolIds:
+ db 70, 4, AB_THICK_VINES - ABILITY_EXTENDED
+ db 71, 1, AB_PARENTAL_BOND - ABILITY_EXTENDED
+ db 71, 3, AB_HEAVY_HITTER - ABILITY_EXTENDED
+ db 71, 4, AB_EARLY_BIRD - ABILITY_EXTENDED
+ db 71, 5, AB_MATERNAL_RAGE - ABILITY_EXTENDED
+ db 72, 2, AB_INK_CLOUD - ABILITY_EXTENDED
+ db 72, 3, AB_WATER_JET - ABILITY_EXTENDED
+ db 72, 4, AB_FOCUSED - ABILITY_EXTENDED
+ db 72, 5, AB_TOXIC_SPINES - ABILITY_EXTENDED
+ db 73, 1, AB_ROYAL_HORN - ABILITY_EXTENDED
+ db 73, 5, AB_LIGHTNING_ROD - ABILITY_EXTENDED
+ db 74, 1, AB_REGENERATOR - ABILITY_EXTENDED
+ db 74, 2, AB_COSMIC_CORE - ABILITY_EXTENDED
+ db 74, 3, AB_ILLUMINATE - ABILITY_EXTENDED
+ db 74, 5, AB_EQUALIZER - ABILITY_EXTENDED
+ db 75, 1, AB_COPYCAT - ABILITY_EXTENDED
+ db 75, 4, AB_STRONGMAN - ABILITY_EXTENDED
+ db 75, 5, AB_MIRROR_ARMOR - ABILITY_EXTENDED
+ db 76, 2, AB_SHARP_BLADES - ABILITY_EXTENDED
+ db 76, 3, AB_VANGUARD - ABILITY_EXTENDED
+ db 76, 5, AB_DOUBLE_SCYTHES - ABILITY_EXTENDED
+ db 77, 1, AB_DANCER - ABILITY_EXTENDED
+ db 77, 2, AB_COLD_TOUCH - ABILITY_EXTENDED
+ db 77, 3, AB_ENCHANTRESS - ABILITY_EXTENDED
+ db 77, 4, AB_ICE_QUEEN - ABILITY_EXTENDED
+ db 78, 1, AB_POWER_SURGE - ABILITY_EXTENDED
+ db 78, 2, AB_ENERGY_DRAIN - ABILITY_EXTENDED
+ db 78, 3, AB_THUNDERSTRUCK - ABILITY_EXTENDED
+ db 78, 4, AB_LIVE_WIRE - ABILITY_EXTENDED
+ db 78, 5, AB_GALVANIZE - ABILITY_EXTENDED
+ db 79, 1, AB_MAGMAR_FLAME_BODY - ABILITY_EXTENDED
+ db 79, 3, AB_MAGMA_ARMOR - ABILITY_EXTENDED
+ db 79, 4, AB_VITAL_HEAT - ABILITY_EXTENDED
+ db 79, 5, AB_BURNING_RAGE - ABILITY_EXTENDED
+ db 80, 1, AB_MOXIE - ABILITY_EXTENDED
+ db 80, 3, AB_ARMOR_CRUSHER - ABILITY_EXTENDED
+ db 80, 4, AB_CRUSHING_GRIP - ABILITY_EXTENDED
+ db 81, 3, AB_UNSTOPPABLE - ABILITY_EXTENDED
+ db 81, 4, AB_ANGER_POINT - ABILITY_EXTENDED
+ db 81, 5, AB_SAP_SIPPER - ABILITY_EXTENDED
+ db 82, 1, AB_PATHETIC - ABILITY_EXTENDED
+ db 82, 2, AB_SPLASHING - ABILITY_EXTENDED
+ db 82, 3, AB_DETERMINATION - ABILITY_EXTENDED
+ db 82, 5, AB_DESPERATION - ABILITY_EXTENDED
+ db 83, 1, AB_OVERWHELMING - ABILITY_EXTENDED
+ db 83, 3, AB_WRATH - ABILITY_EXTENDED
+ db 83, 4, AB_MOXIE - ABILITY_EXTENDED
+ db 83, 5, AB_SAVAGE_JAWS - ABILITY_EXTENDED
+ db 84, 1, AB_ANCIENT_SHELL - ABILITY_EXTENDED
+ db 84, 3, AB_SAP_SIPPER - ABILITY_EXTENDED
+ db 84, 4, AB_GENTLE_GIANT - ABILITY_EXTENDED
+ db 85, 1, AB_PERFECT_COPY - ABILITY_EXTENDED
+ db 85, 2, AB_UNSTABLE_DNA - ABILITY_EXTENDED
+ db 85, 3, AB_SHAPESHIFTER - ABILITY_EXTENDED
+ db 85, 4, AB_COPY_MASTER - ABILITY_EXTENDED
+ db 86, 1, AB_VERSATILITY - ABILITY_EXTENDED
+ db 86, 2, AB_ADAPTABLE - ABILITY_EXTENDED
+ db 86, 3, AB_FLEXIBLE - ABILITY_EXTENDED
+ db 86, 4, AB_QUICK_LEARNER - ABILITY_EXTENDED
+ db 86, 5, AB_PROTEAN - ABILITY_EXTENDED
+ db 87, 1, AB_LIQUID_BODY - ABILITY_EXTENDED
+ db 87, 4, AB_WATER_ABSORB - ABILITY_EXTENDED
+ db 87, 5, AB_DEEP_SEA_PRESSURE - ABILITY_EXTENDED
+ db 0

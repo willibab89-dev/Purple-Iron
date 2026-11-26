@@ -961,6 +961,8 @@ AbilityModifyDamage:
 	cp ABILITY_EXTENDED
 	jr nz, .defenderOrdinary
 	ld a, [wAbilityResolvedExtended]
+	cp AB_LIQUID_BODY - ABILITY_EXTENDED
+	jp z, .physicalReduction
 	cp AB_FLEXIBLE - ABILITY_EXTENDED
 	jp z, .superEffective
 	cp AB_ANCIENT_SHELL - ABILITY_EXTENDED
@@ -1337,6 +1339,8 @@ AbilityExistingFixedDamageModifiers:
 	cp ABILITY_EXTENDED
 	jr nz, .notSolidRock
 	ld a, [wAbilityResolvedExtended]
+	cp AB_LIQUID_BODY - ABILITY_EXTENDED
+	jp z, .fixedPhysicalReduction
 	cp AB_FLEXIBLE - ABILITY_EXTENDED
 	jr z, .fixedSuperEffective
 	cp AB_ANCIENT_SHELL - ABILITY_EXTENDED
@@ -5136,6 +5140,8 @@ AbilityLevitateAICheck:
  jr z, .type
  ld a, [wPlayerMoveType]
 .type
+ cp WATER
+ jr z, .water
  cp ELECTRIC
  jr z, .electric
  cp GROUND
@@ -5144,6 +5150,14 @@ AbilityLevitateAICheck:
  cp AB_LEVITATE
  jr z, .immune
  cp AB_EARTH_EATER
+ ret nz
+ jr .immune
+.water
+ call .targetAbility
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_WATER_ABSORB - ABILITY_EXTENDED
  ret nz
  jr .immune
 .electric
@@ -6615,44 +6629,7 @@ AbilityColossalSpeed:
 
 ; Invoked after accuracy and reachability succeed, before damage is applied.
 AbilityEarthEaterOnHit:
- call AbilityTarget
- cp AB_EARTH_EATER
- ret nz
- call AbilityActorMoveType
- cp GROUND
- ret nz
- call AbilityMove
- inc hl
- inc hl
- ld a, [hl]
- and a
- ret z
- ld a, [H_WHOSETURN]
- xor 1
- ld [wAbilitySide], a
- call AbilityHP
- ld a, [hli]
- or [hl]
- ret z
- dec hl
- ld a, 2
- call AbilityHealFractionFromHL
- xor a
- ld [wDamage], a
- ld [wDamage + 1], a
- ld a, [wDamageMultipliers]
- and $80
- ld [wDamageMultipliers], a
- xor a
- ld [wCriticalHitOrOHKO], a
- ld a, 2 ; absorbed: skip damage and the generic failure message
- ld [wMoveMissed], a
- ld hl, AbilityEarthEaterText
- jp PrintText
-AbilityEarthEaterText:
- text "EARTH EATER"
- line "absorbed the hit!"
- prompt
+ jpab AbilityElementAbsorbOnHit
 
 ; Apply one sleep roll after a successful unshielded Ground attack.
 AbilitySandmanSleep:
@@ -7969,6 +7946,9 @@ AbilityFocusedFixedDamage:
 
 AbilityWaterJet:
  ld c, AB_WATER_JET - ABILITY_EXTENDED
+ call AbilityExtendedActorIs
+ jr c, .water
+ ld c, AB_DEEP_SEA_PRESSURE - ABILITY_EXTENDED
  call AbilityExtendedActorIs
  jr c, .water
  ld c, AB_COLD_TOUCH - ABILITY_EXTENDED
