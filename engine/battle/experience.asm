@@ -120,6 +120,7 @@ GainExperience:
 	ld a, [wIsInBattle]
 	dec a ; is it a trainer battle?
 	call nz, BoostExp ; if so, boost exp
+	abilitycall AbilityPatheticExperience
 	inc hl
 	inc hl
 	inc hl

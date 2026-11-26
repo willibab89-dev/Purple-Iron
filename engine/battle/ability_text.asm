@@ -117,6 +117,7 @@ AbilityTextPointers:
 	dw AbilityText286, AbilityText287, AbilityText288, AbilityText289
 	dw AbilityText290, AbilityText291, AbilityText292
 	dw AbilityText293, AbilityText294, AbilityText295
+	dw AbilityText296, AbilityText297, AbilityText298, AbilityText299
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -505,6 +506,10 @@ AbilityText292: db "CRUSHING GRIP",$4e,"Physical hit: 20%",$4e,"foe Defense -1.@
 AbilityText293: db "UNSTOPPABLE",$4e,"Prevents flinching",$4e,"and Attack drops.@"
 AbilityText294: db "ANGER POINT",$4e,"Critical hit taken:",$4e,"Attack +2 once.@"
 AbilityText295: db "SAP SIPPER",$4e,"Grass move hit:",$4e,"Attack +1.@"
+AbilityText296: db "PATHETIC",$4e,"Experience gained",$4e,"is reduced by 25%.@"
+AbilityText297: db "SPLASHING",$4e,"Splash: Evasion +1",$4e,"once per battle.@"
+AbilityText298: db "DETERMINATION",$4e,"Full HP: survive",$4e,"fatal hit once.@"
+AbilityText299: db "DESPERATION",$4e,"Physical moves x1.25",$4e,"below 1/3 HP.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -589,6 +594,7 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, AB_HOT_TEMPER, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_HYPER_CUTTER, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_HARD_SHELL
 	db AB_STAMPEDE, AB_RAMPAGE, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SWIFT_SWIM, ABILITY_EXTENDED
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -737,6 +743,7 @@ AbilitySpeciesPools:
 	db MAGMAR, 79
 	db PINSIR, 80
 	db TAUROS, 81
+	db MAGIKARP, 82
 	db 0
 
 ; Shared battle move flags live with the banked ability data.
@@ -812,6 +819,10 @@ AbilityExtendedPoolIds:
  db 81, 3, AB_UNSTOPPABLE - ABILITY_EXTENDED
  db 81, 4, AB_ANGER_POINT - ABILITY_EXTENDED
  db 81, 5, AB_SAP_SIPPER - ABILITY_EXTENDED
+ db 82, 1, AB_PATHETIC - ABILITY_EXTENDED
+ db 82, 2, AB_SPLASHING - ABILITY_EXTENDED
+ db 82, 3, AB_DETERMINATION - ABILITY_EXTENDED
+ db 82, 5, AB_DESPERATION - ABILITY_EXTENDED
  db 0
 
 

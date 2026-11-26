@@ -169,7 +169,8 @@ def validate(version):
                'ELECTABUZZ':['POWER_SURGE','ENERGY_DRAIN','THUNDERSTRUCK','LIVE_WIRE','GALVANIZE'],
                'MAGMAR':['MAGMAR_FLAME_BODY','HOT_TEMPER','MAGMA_ARMOR','VITAL_HEAT','BURNING_RAGE'],
                'PINSIR':['MOXIE','HYPER_CUTTER','ARMOR_CRUSHER','CRUSHING_GRIP','HARD_SHELL'],
-               'TAUROS':['STAMPEDE','RAMPAGE','UNSTOPPABLE','ANGER_POINT','SAP_SIPPER']}
+               'TAUROS':['STAMPEDE','RAMPAGE','UNSTOPPABLE','ANGER_POINT','SAP_SIPPER'],
+               'MAGIKARP':['PATHETIC','SPLASHING','DETERMINATION','SWIFT_SWIM','DESPERATION']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1407,6 +1408,37 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Magikarp: experience, Splash, full-HP survival and low-HP offense.
+        for slot,species in [(1,'MAGIKARP'),(2,'MAGIKARP'),(1,'GYARADOS'),(1,'PIDGEY')]:
+            for award in (0,1,2,3,4,5,100,101,256,1000,65535):
+                init();metadata('wPartyMon1',species,slot,17);put('wWhichPokemon',0);game.memory[0xff97:0xff99]=[award>>8,award&255];call('AbilityPatheticExperience');actual=game.memory[0xff97]*256+game.memory[0xff98];want=award*3//4 if species=='MAGIKARP' and slot==1 else award;assert actual==want,(species,slot,award,'pathetic',actual,want)
+        init();metadata('wPartyMon1','MAGIKARP',1,17);metadata('wPartyMon2','MAGIKARP',2,17)
+        for party,want in [(0,75),(1,100)]:
+            put('wWhichPokemon',party);game.memory[0xff97:0xff99]=[0,100];call('AbilityPatheticExperience');assert game.memory[0xff97]*256+game.memory[0xff98]==want,(party,'individual exp slot')
+        # Exercise the actual wild/trainer EXP award path, including trade bonuses.
+        exp_bank,exp_addr=syms['AnimateEXPBar'];exp_original=game.memory[exp_bank,exp_addr];patch('AnimateEXPBar',[0xc9])
+        for slot,battle,traded,want in [(1,1,False,75),(2,1,False,100),(1,2,False,112),(1,2,True,168)]:
+            init();put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0);put('wCurEnemyLVL',20);put('wcf91',ids['MAGIKARP']);rng(1,0,0);call('AddPartyMon');metadata('wPartyMon1','MAGIKARP',slot,17)
+            word('wPlayerID',1234);word('wPartyMon1OTID',4321 if traded else 1234);put('wIsInBattle',battle);put('wPartyGainExpFlags',1);put('wPartyFoughtCurrentEnemyFlags',1);put('wPlayerMonNumber',0);put('wBoostExpByExpAll',0);put('wEnemyMonLevel',10);put('wEnemyMonBaseExp',70)
+            before=int.from_bytes(bytes(game.memory[addr('wPartyMon1Exp'):addr('wPartyMon1Exp')+3]),'big');call('GainExperience');after=int.from_bytes(bytes(game.memory[addr('wPartyMon1Exp'):addr('wPartyMon1Exp')+3]),'big');assert after-before==want,(slot,battle,traded,'real experience',before,after,want)
+        init();put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0);put('wCurEnemyLVL',20);put('wcf91',ids['MAGIKARP']);rng(1,0,0);call('AddPartyMon');call('AddPartyMon');metadata('wPartyMon1','MAGIKARP',1,17);metadata('wPartyMon2','MAGIKARP',2,17)
+        word('wPlayerID',1234);word('wPartyMon1OTID',1234);word('wPartyMon2OTID',1234);put('wIsInBattle',1);put('wPartyGainExpFlags',3);put('wPartyFoughtCurrentEnemyFlags',3);put('wPlayerMonNumber',0);put('wBoostExpByExpAll',0);put('wEnemyMonLevel',10);put('wEnemyMonBaseExp',70)
+        before=[int.from_bytes(bytes(game.memory[addr('wPartyMon'+str(i)+'Exp'):addr('wPartyMon'+str(i)+'Exp')+3]),'big') for i in (1,2)];call('GainExperience');after=[int.from_bytes(bytes(game.memory[addr('wPartyMon'+str(i)+'Exp'):addr('wPartyMon'+str(i)+'Exp')+3]),'big') for i in (1,2)];assert [a-b for a,b in zip(after,before)]==[37,50],('shared experience',before,after)
+        game.memory[exp_bank,exp_addr]=exp_original
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,want in [('SPLASH',8),('TACKLE',7),('GROWL',7)]:
+                init(turn);move(turn,attack);aid(turn,'SPLASHING');call('AbilityAttempt');call('AbilityAfterAction');assert get(actor+'MonEvasionMod')==want,(turn,attack,'splashing',get(actor+'MonEvasionMod'));call('AbilityAfterAction');assert get(actor+'MonEvasionMod')==want,(turn,'splashing once')
+            for hp,damage,sub,want in [(160,160,0,159),(160,159,0,159),(80,80,0,80),(160,200,1,200),(0,200,0,200)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'DETERMINATION');word(tp+'HP',hp);word('wDamage',damage);put('wAbilityHit',32);put('wCustomTargetHadSub',sub);call('AbilityIncomingDamage');assert readword('wDamage')==want,(turn,hp,damage,sub,'determination',readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'DETERMINATION');word('wDamage',200);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==159;put('wAbilitySide',1-turn);call('AbilityEntry');word('wDamage',200);put('wAbilityHit',32);call('AbilityIncomingDamage');assert readword('wDamage')==200,(turn,'determination once across switches')
+            for attack,want in [('WATER_GUN',9),('TACKLE',7)]:
+                init(turn);move(turn,attack);aid(1-turn,'SWIFT_SWIM');call('AbilityAfterHit');assert get(target+'MonSpeedMod')==want,(turn,attack,'swift swim')
+            for attack,hp,want in [('TACKLE',53,125),('TACKLE',54,100),('TACKLE',0,100),('EMBER',53,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'DESPERATION');word(ap+'HP',hp);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,hp,'desperation',readword('wDamage'))
+        for slot,name in [(1,'PATHETIC'),(2,'SPLASHING'),(3,'DETERMINATION'),(5,'DESPERATION')]:
+            metadata('wPartyMon1','MAGIKARP',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Tauros: speed scaling, recoil, flinch protection and Grass reactions.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -1765,6 +1797,11 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('SPLASH',turn,actor='SPLASHING',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8,(turn,'live splashing')
+            ap,tp=execute('TACKLE',turn,target='DETERMINATION',hp=160,random_value=100);assert readword(tp+'HP')>0,(turn,'live determination nonfatal')
+            ap,tp=execute('WATER_GUN',turn,target='SWIFT_SWIM',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonSpeedMod')==9,(turn,'live swift swim')
+            ap,tp=execute('TACKLE',turn,actor='DESPERATION',actor_hp=53,random_value=100);with_ability=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor_hp=53,random_value=100);assert with_ability>160-readword(tp+'HP'),(turn,'live desperation')
             ap,tp=execute('TACKLE',turn,target='ANGER_POINT',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==9,(turn,'live anger point')
             ap,tp=execute('VINE_WHIP',turn,target='SAP_SIPPER',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8 and readword(tp+'HP')<160,(turn,'live sap sipper damage')
             ap,tp=execute('SLEEP_POWDER',turn,target='SAP_SIPPER',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'live sap sipper status')
@@ -2094,7 +2131,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 129 species / 645 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 130 species / 650 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

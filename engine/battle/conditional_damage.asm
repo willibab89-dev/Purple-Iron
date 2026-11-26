@@ -1457,3 +1457,160 @@ AbilityMirrorArmorCustomBanked:
  pop af
  ld [wAbilitySide], a
  ret
+
+; Apply the penalty to this recipient's final award after trade/trainer bonuses.
+AbilityPatheticExperience:
+ ld a, [H_QUOTIENT + 2]
+ push af
+ ld a, [H_QUOTIENT + 3]
+ push af
+ callab AbilityEnsureExpRecipient
+ ld a, [wAbilityResolvedExtended]
+ cp AB_PATHETIC - ABILITY_EXTENDED
+ ld a, 0
+ jr nz, .remember
+ inc a
+.remember
+ ld [wAbilityCheckResult], a
+ pop af
+ ld c, a
+ pop af
+ ld b, a
+ ld a, [wAbilityCheckResult]
+ and a
+ jr z, .store
+ ; floor(3 * experience / 4) = experience - ceil(experience / 4).
+ ld h, b
+ ld l, c
+ srl b
+ rr c
+ srl b
+ rr c
+ ld a, l
+ and 3
+ jr z, .subtract
+ inc bc
+.subtract
+ ld a, l
+ sub c
+ ld c, a
+ ld a, h
+ sbc b
+ ld b, a
+.store
+ ld a, b
+ ld [H_QUOTIENT + 2], a
+ ld a, c
+ ld [H_QUOTIENT + 3], a
+ ret
+
+AbilityDesperationBanked:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DESPERATION - ABILITY_EXTENDED
+ ret nz
+ ld hl, wPlayerMoveType
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ and a
+ jr z, .type
+ ld hl, wEnemyMoveType
+.type
+ ld a, [hl]
+ cp FIRE
+ ret nc
+ callab AbilityBelowThird
+ ret nc
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ jpab AbilityScaleDamage125
+
+AbilityDancerAfterActionBanked:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DANCER - ABILITY_EXTENDED
+ ret nz
+ callab AbilityDancerStatusCheck
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ jpab AbilityRaiseSpeed
+
+AbilitySturdyIncomingBanked:
+ callab AbilityHP
+ ld a, [de]
+ cp [hl]
+ ret nz
+ inc de
+ inc hl
+ ld a, [de]
+ cp [hl]
+ ret nz
+ dec hl
+ ld a, [hli]
+ ld b, a
+ ld a, [hl]
+ ld c, a
+ or b
+ ret z
+ ld a, [wDamage]
+ cp b
+ ret c
+ jr nz, .survive
+ ld a, [wDamage + 1]
+ cp c
+ ret c
+.survive
+ push bc
+ ld a, [wAbilityCheckResult]
+ push af
+ callab AbilityTargetResult
+ ld a, [wAbilityCheckResult]
+ ld d, a
+ pop af
+ ld [wAbilityCheckResult], a
+ ld a, d
+ cp AB_ONIX_STURDY
+ jr z, .once
+ cp ABILITY_EXTENDED
+ jr nz, .unused
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DETERMINATION - ABILITY_EXTENDED
+ jr nz, .unused
+.once
+ callab AbilityFlagsPointer
+ bit 0, [hl]
+ jr nz, .alreadyUsed
+ set 0, [hl]
+.unused
+ pop bc
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ jr nz, .notOHKO
+ xor a
+ ld [wCriticalHitOrOHKO], a
+.notOHKO
+ ld a, c
+ sub 1
+ ld [wDamage + 1], a
+ ld a, b
+ sbc 0
+ ld [wDamage], a
+ ret
+.alreadyUsed
+ pop bc
+ ret

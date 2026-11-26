@@ -79,6 +79,14 @@ AbilityEnsureMon:
 	ld b, 0
 	ret
 
+; Resolve the ability of the party member currently receiving experience.
+AbilityEnsureExpRecipient:
+ ld a, [wWhichPokemon]
+ ld hl, wPartyMon1
+ ld bc, wPartyMon2 - wPartyMon1
+ call AddNTimes
+ jp AbilityEnsureMon
+
 AbilityResetBattle:
 	xor a
 	ld [wActiveAbilityExtended], a

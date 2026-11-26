@@ -539,6 +539,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	call AbilityDesperationDamage
 	call AbilityBurningRageDamage
 	call AbilityIceQueenDamage
 	call AbilitySharpBladesDamage
@@ -1151,6 +1152,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	call AbilityDesperationFixedDamage
 	call AbilityBurningRageFixedDamage
 	call AbilityFocusedFixedDamage
 	call AbilityHeavyHitterFixedDamage
@@ -1515,6 +1517,8 @@ AbilitySandAfterAction:
 	cp ABILITY_EXTENDED
 	jr nz, .ordinaryAbility
 	ld a, [wAbilityResolvedExtended]
+	cp AB_SPLASHING - ABILITY_EXTENDED
+	jp z, .splashing
 	cp AB_VITAL_HEAT - ABILITY_EXTENDED
 	jp z, .vitalHeat
 	cp AB_ENERGY_DRAIN - ABILITY_EXTENDED
@@ -1600,7 +1604,7 @@ AbilitySandAfterAction:
 	cp FIGHTING
 	ret nz
 	ld a, 1
-	jr .once
+	jp .once
 .powerSwim
 	cp AB_POWER_SWIM
 	jr nz, .momentum
@@ -1643,6 +1647,13 @@ AbilitySandAfterAction:
 	ret nz
 	ld a, 5
 	jr .once
+.splashing
+	call AbilityMove
+	ld a, [hl]
+	cp SPLASH
+	ret nz
+	ld a, 5 ; Evasion
+	jp .once
 .vitalHeat
 	call AbilityActorMoveType
 	cp FIRE
@@ -1986,6 +1997,13 @@ AbilityIncomingDamage:
 	xor 1
 	ld [wAbilitySide], a
 	call AbilityTarget
+	cp ABILITY_EXTENDED
+	jr nz, .ordinarySturdy
+	ld a, [wAbilityResolvedExtended]
+	cp AB_DETERMINATION - ABILITY_EXTENDED
+	jp z, AbilitySturdyIncoming
+	call AbilityTarget
+.ordinarySturdy
 	cp AB_STURDY
 	jp z, AbilitySturdyIncoming
 	cp AB_ONIX_STURDY
@@ -5114,56 +5132,7 @@ AbilityLevitateAICheck:
 
 ; A direct lethal hit at full HP leaves the defender at 1 HP.
 AbilitySturdyIncoming:
- call AbilityHP
- ld a, [de]
- cp [hl]
- ret nz
- inc de
- inc hl
- ld a, [de]
- cp [hl]
- ret nz
- dec hl
- ld a, [hli]
- ld b, a
- ld a, [hl]
- ld c, a
- or b
- ret z
- ld a, [wDamage]
- cp b
- ret c
- jr nz, .survive
- ld a, [wDamage + 1]
- cp c
- ret c
-.survive
- push bc
- call AbilityTarget
- cp AB_ONIX_STURDY
- jr nz, .unused
- call AbilityFlagsPointer
- bit 0, [hl]
- jr nz, .alreadyUsed
- set 0, [hl]
-.unused
- pop bc
- ld a, [wCriticalHitOrOHKO]
- cp 2
- jr nz, .notOHKO
- xor a
- ld [wCriticalHitOrOHKO], a
-.notOHKO
- ld a, c
- sub 1
- ld [wDamage + 1], a
- ld a, b
- sbc 0
- ld [wDamage], a
- ret
-.alreadyUsed
- pop bc
- ret
+ jpab AbilitySturdyIncomingBanked
 
 AbilityDiggerCheck:
  ld hl, wEnemyMonType1
@@ -7595,27 +7564,16 @@ AbilityRaiseAttack:
 
 ; Jynx status boost happens once per battle, only on an executed status move.
 AbilityDancerAfterAction:
- ld a, [wAbilityHit]
- bit 3, a
- ret z
- ld c, AB_DANCER - ABILITY_EXTENDED
- call AbilityExtendedActorIs
- ret nc
+ jpab AbilityDancerAfterActionBanked
+
+AbilityDancerStatusCheck:
  call AbilityMove
  ld a, [hl]
  call AbilityMoveFlags
  bit 0, a
- ret nz
- ld a, [H_WHOSETURN]
- ld [wAbilitySide], a
- call AbilityHP
- ld a, [hli]
- or [hl]
- ret z
- call AbilityFlagsPointer
- bit 2, [hl]
- ret nz
- set 2, [hl]
+ ret
+
+AbilityRaiseSpeed:
  ld a, 2
  jp AbilityRaiseStage
 
@@ -7660,6 +7618,17 @@ AbilityIceQueenDamage:
  jr nz, .scale
  ld c, 115
 .scale
+ jp AbilityScaleDamage
+
+AbilityDesperationDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityDesperationFixedDamage:
+ jpab AbilityDesperationBanked
+
+AbilityScaleDamage125:
+ ld c, 125
  jp AbilityScaleDamage
 
 AbilityBurningRageDamage:
