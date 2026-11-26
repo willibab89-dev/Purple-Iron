@@ -1722,3 +1722,39 @@ AbilityGyaradosFixedDamage:
  or b
  ret z
  jpab AbilityScaleDamage130
+
+AbilitySharpBladesBanked:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SHARP_BLADES - ABILITY_EXTENDED
+ ret nz
+ callab AbilityCuttingCheck
+ ret nc
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ jpab AbilityScaleDamage125
+
+AbilityBurningRageBanked:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilityBurningRageFixedBanked:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_BURNING_RAGE - ABILITY_EXTENDED
+ ret nz
+ callab AbilityTargetStatus
+ bit BRN, [hl]
+ ret z
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ jpab AbilityScaleDamage125

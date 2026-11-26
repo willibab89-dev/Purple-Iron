@@ -541,9 +541,9 @@ AbilityScaleDamage:
 AbilityModifyDamage:
 	callab AbilityGyaradosDamage
 	call AbilityDesperationDamage
-	call AbilityBurningRageDamage
+	callab AbilityBurningRageBanked
 	call AbilityIceQueenDamage
-	call AbilitySharpBladesDamage
+	callab AbilitySharpBladesBanked
 	call AbilityEqualizerDamage
 	call AbilityFocusedDamage
 	call AbilityHeavyHitterDamage
@@ -960,6 +960,8 @@ AbilityModifyDamage:
 	cp ABILITY_EXTENDED
 	jr nz, .defenderOrdinary
 	ld a, [wAbilityResolvedExtended]
+	cp AB_ANCIENT_SHELL - ABILITY_EXTENDED
+	jp z, .superEffective
 	cp AB_MAGMA_ARMOR - ABILITY_EXTENDED
 	jr nz, .restoreDefender
 	ld a, [wAbilityMoveType]
@@ -1155,7 +1157,7 @@ AbilityExistingFixedDamageModifiers:
 .fixedActor
 	callab AbilityGyaradosFixedDamage
 	call AbilityDesperationFixedDamage
-	call AbilityBurningRageFixedDamage
+	callab AbilityBurningRageFixedBanked
 	call AbilityFocusedFixedDamage
 	call AbilityHeavyHitterFixedDamage
 	call AbilityTangelaFixedDamage
@@ -1327,7 +1329,15 @@ AbilityExistingFixedDamageModifiers:
 .defender
 	call AbilityTarget
 	cp AB_SOLID_ROCK
+	jr z, .fixedSuperEffective
+	cp ABILITY_EXTENDED
 	jr nz, .notSolidRock
+	ld a, [wAbilityResolvedExtended]
+	cp AB_ANCIENT_SHELL - ABILITY_EXTENDED
+	jr z, .fixedSuperEffective
+	call AbilityTarget
+	jr .notSolidRock
+.fixedSuperEffective
 	ld a, [wDamageMultipliers]
 	and $7f
 	cp 11
@@ -1520,6 +1530,8 @@ AbilitySandAfterAction:
 	cp ABILITY_EXTENDED
 	jr nz, .ordinaryAbility
 	ld a, [wAbilityResolvedExtended]
+	cp AB_GENTLE_GIANT - ABILITY_EXTENDED
+	jp z, .gentleGiant
 	cp AB_SPLASHING - ABILITY_EXTENDED
 	jp z, .splashing
 	cp AB_VITAL_HEAT - ABILITY_EXTENDED
@@ -1615,7 +1627,7 @@ AbilitySandAfterAction:
 	cp WATER
 	ret nz
 	xor a ; Attack
-	jr .once
+	jp .once
 .momentum
 	cp AB_MOMENTUM
 	jr nz, .actualSandRush
@@ -1650,6 +1662,14 @@ AbilitySandAfterAction:
 	ret nz
 	ld a, 5
 	jr .once
+.gentleGiant
+	call AbilityMove
+	ld a, [hl]
+	cp BIDE
+	ret z
+	call AbilityDancerStatusCheck
+	ret nz
+	jp .healWaterOrGround
 .splashing
 	call AbilityMove
 	ld a, [hl]
@@ -7662,42 +7682,6 @@ AbilityWrathMoveCheck:
 .no
  and a
  ret
-
-AbilityBurningRageDamage:
- ld a, [wUnusedC000]
- bit 4, a
- ret nz
-AbilityBurningRageFixedDamage:
- ld c, AB_BURNING_RAGE - ABILITY_EXTENDED
- call AbilityExtendedActorIs
- ret nc
- call AbilityTargetStatus
- bit BRN, [hl]
- ret z
- ld a, [wDamage]
- ld b, a
- ld a, [wDamage + 1]
- or b
- ret z
- ld c, 125
- jp AbilityScaleDamage
-
-AbilitySharpBladesDamage:
- ld a, [wUnusedC000]
- bit 4, a
- ret nz
- ld c, AB_SHARP_BLADES - ABILITY_EXTENDED
- call AbilityExtendedActorIs
- ret nc
- call AbilityCuttingCheck
- ret nc
- ld a, [wDamage]
- ld b, a
- ld a, [wDamage + 1]
- or b
- ret z
- ld c, 125
- jp AbilityScaleDamage
 
 AbilityHeavyHitterDamage:
  ld a, [wUnusedC000]

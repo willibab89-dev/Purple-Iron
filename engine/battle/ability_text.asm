@@ -119,6 +119,7 @@ AbilityTextPointers:
 	dw AbilityText293, AbilityText294, AbilityText295
 	dw AbilityText296, AbilityText297, AbilityText298, AbilityText299
 	dw AbilityText300, AbilityText301, AbilityText302
+	dw AbilityText303, AbilityText304
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -514,6 +515,8 @@ AbilityText299: db "DESPERATION",$4e,"Physical moves x1.25",$4e,"below 1/3 HP.@"
 AbilityText300: db "OVERWHELMING",$4e,"Crit and super hit",$4e,"damage x1.25 each.@"
 AbilityText301: db "WRATH",$4e,"Hit: next attack",$4e,"deals x1.2 damage.@"
 AbilityText302: db "SAVAGE JAWS",$4e,"Biting moves deal",$4e,"x1.3 damage.@"
+AbilityText303: db "ANCIENT SHELL",$4e,"Super-effective",$4e,"damage x0.75.@"
+AbilityText304: db "GENTLE GIANT",$4e,"Status move: heal",$4e,"1/8 max HP.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -600,6 +603,7 @@ AbilityPoolIds:
 	db AB_STAMPEDE, AB_RAMPAGE, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SWIFT_SWIM, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_GROWL_INTIMIDATE, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, AB_ICEBREAKER, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_SHELL_ARMOR
 
 
 ; Species-to-pool lookup is banked with the pool data.
@@ -750,6 +754,7 @@ AbilitySpeciesPools:
 	db TAUROS, 81
 	db MAGIKARP, 82
 	db GYARADOS, 83
+	db LAPRAS, 84
 	db 0
 
 ; Shared battle move flags live with the banked ability data.
@@ -833,6 +838,9 @@ AbilityExtendedPoolIds:
  db 83, 3, AB_WRATH - ABILITY_EXTENDED
  db 83, 4, AB_MOXIE - ABILITY_EXTENDED
  db 83, 5, AB_SAVAGE_JAWS - ABILITY_EXTENDED
+ db 84, 1, AB_ANCIENT_SHELL - ABILITY_EXTENDED
+ db 84, 3, AB_SAP_SIPPER - ABILITY_EXTENDED
+ db 84, 4, AB_GENTLE_GIANT - ABILITY_EXTENDED
  db 0
 
 

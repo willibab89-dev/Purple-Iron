@@ -171,7 +171,8 @@ def validate(version):
                'PINSIR':['MOXIE','HYPER_CUTTER','ARMOR_CRUSHER','CRUSHING_GRIP','HARD_SHELL'],
                'TAUROS':['STAMPEDE','RAMPAGE','UNSTOPPABLE','ANGER_POINT','SAP_SIPPER'],
                'MAGIKARP':['PATHETIC','SPLASHING','DETERMINATION','SWIFT_SWIM','DESPERATION'],
-               'GYARADOS':['OVERWHELMING','GROWL_INTIMIDATE','WRATH','MOXIE','SAVAGE_JAWS']}
+               'GYARADOS':['OVERWHELMING','GROWL_INTIMIDATE','WRATH','MOXIE','SAVAGE_JAWS'],
+               'LAPRAS':['ANCIENT_SHELL','ICEBREAKER','SAP_SIPPER','GENTLE_GIANT','SHELL_ARMOR']}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1409,6 +1410,24 @@ def validate(version):
             for attack,want in [('WING_ATTACK',50),('TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'VINE_GUARD');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'vine guard')
             ap,tp=init(turn);move(turn,'SELFDESTRUCT');aid(1-turn,'DAMP');call('AbilityDampCheck');assert get('wAbilityCheckResult')==1
+        # Lapras: damage reduction, status-move healing and shared abilities.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for attack,mult,want in [('TACKLE',20,75),('EMBER',40,75),('TACKLE',10,100),('TACKLE',5,100),('TACKLE',0,100)]:
+                init(turn);move(turn,attack);aid(1-turn,'ANCIENT_SHELL');put('wDamageMultipliers',mult);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,mult,'ancient shell',readword('wDamage'))
+            for mult,want in [(20,75),(10,100)]:
+                init(turn);move(turn,'SONICBOOM');aid(1-turn,'ANCIENT_SHELL');put('wUnusedC000',16);put('wDamageMultipliers',mult);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,mult,'ancient shell fixed',readword('wDamage'))
+            for attack,t1,t2,want in [('ICE','WATER','WATER',20),('ICE','WATER','GRASS',40),('ICE','WATER','ICE',10),('FIRE','WATER','WATER',5)]:
+                ap,tp=init(turn);aid(turn,'ICEBREAKER');put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2]);put(actor+'MoveType',TYPES[attack]);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==want*10,(turn,attack,t1,t2,'icebreaker',readword('wDamage'));put('wUnusedC000',8 if turn==0 else 0);call('AIGetTypeEffectiveness');assert get('wTypeEffectiveness')==want,(turn,attack,t1,t2,'icebreaker AI')
+            for attack,sub,want in [('VINE_WHIP',0,8),('TACKLE',0,7),('VINE_WHIP',1,7)]:
+                init(turn);move(turn,attack);aid(1-turn,'SAP_SIPPER');put('wCustomTargetHadSub',sub);rng(100);call('AbilityAfterHit');assert get(target+'MonAttackMod')==want,(turn,attack,sub,'sap sipper')
+            for attack,hp,want in [('GROWL',80,100),('SPLASH',80,100),('RECOVER',80,100),('TACKLE',80,80),('BIDE',80,80),('GROWL',155,160),('GROWL',0,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'GENTLE_GIANT');word(ap+'HP',hp);call('AbilityAttempt');call('AbilityAfterAction');assert readword(ap+'HP')==want,(turn,attack,hp,'gentle giant',readword(ap+'HP'))
+            init(turn);move(turn,'GROWL');aid(turn,'GENTLE_GIANT');call('AbilityAfterAction');assert readword(('wEnemyMon' if turn else 'wBattleMon')+'HP')==160,(turn,'gentle giant unexecuted')
+            init(turn);aid(1-turn,'SHELL_ARMOR');call('AbilityCriticalGuard');assert get('wAbilityCheckResult')==1,(turn,'lapras shell armor')
+        for slot,name in [(1,'ANCIENT SHELL'),(3,'SAP SIPPER'),(4,'GENTLE GIANT')]:
+            metadata('wPartyMon1','LAPRAS',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Gyarados: independent multipliers, battle-long Wrath and biting moves.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -1817,6 +1836,9 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('GROWL',turn,actor='GENTLE_GIANT',actor_hp=80,random_value=100);assert readword(ap+'HP')==100,(turn,'live gentle giant')
+            ap,tp=execute('THUNDERBOLT',turn,target_types=('WATER','WATER'),random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('THUNDERBOLT',turn,target='ANCIENT_SHELL',target_types=('WATER','WATER'),random_value=100);assert 160-readword(tp+'HP')<normal,(turn,'live ancient shell',normal,readword(tp+'HP'))
             ap,tp=execute('TACKLE',1-turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('TACKLE',turn,target='WRATH',random_value=100);move(1-turn,'TACKLE');put('wActionResultOrTookBattleTurn',0);call('ExecutePlayerMove' if turn else 'ExecuteEnemyMove');assert 160-readword(ap+'HP')>normal,(turn,'live wrath',normal,readword(ap+'HP'))
             ap,tp=execute('BITE',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -2157,7 +2179,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 131 species / 655 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 132 species / 660 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
