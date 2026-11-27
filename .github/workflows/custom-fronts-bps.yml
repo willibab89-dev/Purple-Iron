@@ -64,6 +64,7 @@ jobs:
           python3 tools/test_move_patch_8.py
           python3 tools/test_tm_distribution.py
           python3 tools/test_new_tms.py
+          python3 tools/test_shock_fang.py
           python3 tools/test_backs_and_species.py
           python3 tools/test_moonlight.py
           python3 tools/test_wake_up_slap.py

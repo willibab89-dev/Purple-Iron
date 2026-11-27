@@ -186,7 +186,9 @@ const_value = 1
 	const DEX_LARVITAR
 	const DEX_PUPITAR
 	const DEX_TYRANITAR
+	const DEX_TYKER
+	const DEX_STRAIGAR
 
 ; Space for the next 16 species plus one spare dex entry.
 POKEDEX_CAPACITY EQU 200
-NUM_POKEMON    EQU 183
+NUM_POKEMON    EQU 185

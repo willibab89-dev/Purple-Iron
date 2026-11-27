@@ -189,3 +189,5 @@ MonsterNames:
 	db "BELLSPROUT"
 	db "WEEPINBELL"
 	db "VICTREEBEL"
+	db "TYKER@@@@@"
+	db "STRAIGAR@@"

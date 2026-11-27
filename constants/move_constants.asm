@@ -297,6 +297,7 @@ const_value = 166
 	const CHARM
 
 	const COCOON
+	const SHOCK_FANG
 
 MAX_MOVE_ID EQU const_value + -1
 NUM_ATTACKS EQU MAX_MOVE_ID + -1 ; selectable moves, excluding Struggle

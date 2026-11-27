@@ -190,3 +190,5 @@ CryData:
 	db $21, $55, $01; Bellsprout
 	db $25, $44, $20; Weepinbell
 	db $25, $66, $CC; Victreebel
+	db $1F, $20, $40 ; Tyker
+	db $15, $00, $80 ; Straigar

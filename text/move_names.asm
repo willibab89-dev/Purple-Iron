@@ -236,4 +236,5 @@ MoveNames::
 	db "HEAL BELL@"
 	db "CHARM@"
 	db "COCOON@"
+	db "SHOCK FANG@"
 MoveNamesEnd:

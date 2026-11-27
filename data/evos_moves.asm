@@ -192,6 +192,8 @@ EvosMovesPointerTable:
 	dw BellsproutEvosMoves
 	dw WeepinbellEvosMoves
 	dw VictreebelEvosMoves
+	dw TykerEvosMoves
+	dw StraigarEvosMoves
 
 RhydonEvosMoves:
 ; Evolutions
@@ -1455,6 +1457,7 @@ JolteonEvosMoves:
 	db 36, THUNDER_WAVE
 	db 43, SHOCK_WAVE
 	db 50, THUNDER
+	db 55, SHOCK_FANG
 	db 0
 
 VaporeonEvosMoves:
@@ -2845,3 +2848,26 @@ ReviewedVenusaurErikaEvosMoves:
 	db 47, SYNTHESIS
 	db 55, VENOSHOCK
 	db 0
+
+TykerEvosMoves:
+ db EV_LEVEL, 40, STRAIGAR
+ db 0
+ db 6, THUNDERSHOCK
+ db 13, BITE
+ db 18, QUICK_ATTACK
+ db 23, THUNDER_WAVE
+ db 29, HEADBUTT
+ db 33, CRUNCH
+ db 39, BODY_SLAM
+ db 0
+
+StraigarEvosMoves:
+ db 0
+ db 17, BITE
+ db 22, QUICK_ATTACK
+ db 27, THUNDER_WAVE
+ db 33, HEADBUTT
+ db 37, CRUNCH
+ db 43, SHARPEN
+ db 48, SHOCK_FANG
+ db 0

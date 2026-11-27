@@ -38,8 +38,8 @@ def validate(version):
         assert hashlib.sha256((ROOT/entry['source']).read_bytes()).hexdigest()==entry['sha256']
         assert Image.open(ROOT/entry['png']).size==(56,56)
     assert len(rom)==1024*1024
-    headers=data('BaseStats',183*28);order=data('PokedexOrder',190)
-    assert sorted(n for n in order if n)==list(range(1,184))
+    headers=data('BaseStats',185*28);order=data('PokedexOrder',192)
+    assert sorted(n for n in order if n)==list(range(1,186))
     assert (183+7)//8==23
     assert addr('wPokedexSeen')-addr('wPokedexOwned')==25
     for i,old in enumerate(PLAN['previous_headers']):
@@ -136,18 +136,18 @@ def validate(version):
             assert list(game.memory[slot+off:slot+off+4])==expected_moves,d['name']
             off=addr('wPartyMon1PP')-addr('wPartyMon1')
             assert list(game.memory[slot+off:slot+off+4])==[data('Moves',max(MOVES.values())*6)[(move-1)*6+5] if move else 0 for move in expected_moves]
-            flag=d['dex']-1;assert get('wPokedexOwned',23)[flag//8]&(1<<(flag%8))
+            flag=d['dex']-1;assert get('wPokedexOwned',25)[flag//8]&(1<<(flag%8))
             for dv in range(16):
                 call('DetermineMonGender',D=d['index'],E=dv)
                 assert game.register_file.D==(0 if d['symbol'] in ('BALTOY','CLAYDOL','DITTWO') else 0xf5 if d['symbol']=='MILTANK' or dv<8 else 0xef)
-        snapshot=get('wPokedexOwned',23);assert snapshot[-1]&127==127
+        snapshot=get('wPokedexOwned',25);assert snapshot[22]&127==127
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2')
-        for n in ('wPokedexOwned','wPokedexSeen'):game.memory[addr(n):addr(n)+23]=[0]*23
+        for n in ('wPokedexOwned','wPokedexSeen'):game.memory[addr(n):addr(n)+25]=[0]*25
         call('LoadSAV0');call('LoadSAV2');assert not(game.register_file.F&16)
-        assert get('wPokedexOwned',23)==snapshot
+        assert get('wPokedexOwned',25)==snapshot
         stride=addr('wPartyMon2')-addr('wPartyMon1')
         assert game.memory[addr('wPartyMon1')]==NEW[-1]['index']
-        for name,level,target in [('Baltoy',36,146),('Larvitar',30,161),('Pupitar',55,162),('Golbat',40,156)]:
+        for name,level,target in [('Tyker',40,192),('Baltoy',36,146),('Larvitar',30,161),('Pupitar',55,162),('Golbat',40,156)]:
             assert data(name+'EvosMoves',4)==bytes([1,level,target,0])
         for name,d in TUNING.items():
             index=order.index(d['dex'])+1
@@ -174,7 +174,7 @@ def validate(version):
             for name,rate in expected.items():
                 if name in counts:assert counts[name]==rate,(mapname,kind,name)
             if 'UNIQUE_OMANYTE_UNIQUE' in counts:assert counts['UNIQUE_OMANYTE_UNIQUE']==1
-        print(f'{version}: 183 back-loader paths/pixel comparisons; eleven species/party/gender/evolution/save flags; old stats and encounter shares passed')
+        print(f'{version}: 185 back-loader paths/pixel comparisons; thirteen species/party/gender/evolution/save flags; old stats and encounter shares passed')
     finally:game.stop(save=False)
 
 

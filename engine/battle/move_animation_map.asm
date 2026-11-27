@@ -263,6 +263,7 @@ MoveAnimationMap:
 	db SING ; HEAL_BELL
 	db GROWL ; CHARM
 	db HARDEN ; COCOON
+	db BITE ; SHOCK_FANG
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

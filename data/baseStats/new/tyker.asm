@@ -1,0 +1,26 @@
+db DEX_TYKER
+db 75
+db 75
+db 75
+db 45
+db 45
+db NORMAL
+db ELECTRIC
+db 190
+db 75
+INCBIN "pic/new_species/tyker.pic",0,1
+dw TykerPicFront
+dw TykerPicBack
+db SCRATCH
+db GROWL
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 9
+ tmlearn 18,20,24
+ tmlearn 0
+ tmlearn 34
+ tmlearn 44,45
+ tmlearn 50
+db 0

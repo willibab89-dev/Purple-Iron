@@ -899,5 +899,113 @@
       "Its habits are",
       "still being studied."
     ]
+  },
+  {
+    "name": "tyker",
+    "symbol": "TYKER",
+    "index": 191,
+    "dex": 184,
+    "stats": [
+      75,
+      75,
+      75,
+      45,
+      45
+    ],
+    "types": [
+      "NORMAL",
+      "ELECTRIC"
+    ],
+    "catch": 190,
+    "xp": 75,
+    "start": [
+      "SCRATCH",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        6,
+        "THUNDERSHOCK"
+      ],
+      [
+        13,
+        "BITE"
+      ],
+      [
+        18,
+        "QUICK_ATTACK"
+      ],
+      [
+        23,
+        "THUNDER_WAVE"
+      ],
+      [
+        29,
+        "HEADBUTT"
+      ],
+      [
+        33,
+        "CRUNCH"
+      ],
+      [
+        39,
+        "BODY_SLAM"
+      ]
+    ]
+  },
+  {
+    "name": "straigar",
+    "symbol": "STRAIGAR",
+    "index": 192,
+    "dex": 185,
+    "stats": [
+      120,
+      120,
+      100,
+      60,
+      60
+    ],
+    "types": [
+      "NORMAL",
+      "ELECTRIC"
+    ],
+    "catch": 75,
+    "xp": 185,
+    "start": [
+      "SCRATCH",
+      "GROWL",
+      "THUNDERSHOCK",
+      "ROAR"
+    ],
+    "learn": [
+      [
+        17,
+        "BITE"
+      ],
+      [
+        22,
+        "QUICK_ATTACK"
+      ],
+      [
+        27,
+        "THUNDER_WAVE"
+      ],
+      [
+        33,
+        "HEADBUTT"
+      ],
+      [
+        37,
+        "CRUNCH"
+      ],
+      [
+        43,
+        "SHARPEN"
+      ],
+      [
+        48,
+        "SHOCK_FANG"
+      ]
+    ]
   }
 ]

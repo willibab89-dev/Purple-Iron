@@ -248,6 +248,8 @@ def validate(version):
                'MEW':['ANCESTOR']*5,
                'MAREANIE':['REGENERATOR','MERCILESS','CORROSIVE_VENOM','SNIPER','BARBED_SHELL'],
                'MILTANK':['THICK_FAT','SAP_SIPPER','ROLLOUT','SCRAPPY','SERENE_GRACE'],
+               'TYKER':['STAMINA','THICK_FAT','STATIC','SCRAPPY','SAVAGE_JAWS'],
+               'STRAIGAR':['STAMINA','THICK_FAT','STATIC','SCRAPPY','SAVAGE_JAWS'],
                'LARVITAR':['EARTH_EATER','BATTLE_ARMOR','AFTERSHOCK','SHORT_TEMPER','UNDERDOG'],
                'PUPITAR':['EARTH_EATER','SHELL_ARMOR','EARTHSHAKER','DEFIANT','CONTACT_SPIKED_SHELL'],
                'UNIQUE_BLASTOISE_UNIQUE':['WATER_PRESSURE']*5,
@@ -1500,7 +1502,7 @@ def validate(version):
             actor='w'+('Enemy' if turn else 'Player')
             for attack,want in [('THUNDERSHOCK',1),('THUNDER_WAVE',1),('THUNDERCLAP',2),('TACKLE',0),('QUICK_ATTACK',1),('GROWL',0)]:
                 init(turn);move(turn,attack);aid(turn,'LIGHTNING_SPEED');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==want,(turn,attack,game.register_file.A)
-            for invalid in (0,237,255):
+            for invalid in (0,238,255):
                 init(turn);aid(turn,'LIGHTNING_SPEED');put(actor+'SelectedMove',invalid);put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,invalid)
             init(turn);move(turn,'THUNDER_WAVE');aid(turn,'LIGHTNING_SPEED');aid(1-turn,'NEUTRALIZING_GAS');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,'suppressed')
             init(turn);move(turn,'THUNDERCLAP');move(1-turn,'QUICK_ATTACK');aid(turn,'LIGHTNING_SPEED');call('AbilityPriority');assert get('wAbilityCheckResult')==(2 if turn else 1),(turn,'stacking order')
@@ -2158,7 +2160,7 @@ def validate(version):
             init();move(0,'AMBUSH');move(1,'QUICK_ATTACK');word('wEnemyMonHP',hp)
             if quick:aid(0,'QUICK_REFLEXES')
             call('AbilityPriority');assert get('wAbilityCheckResult')==want,('Ambush priority',hp,quick)
-        for invalid in (0,237,255):
+        for invalid in (0,238,255):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
@@ -2654,7 +2656,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 183 species / 915 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all configured species and ability slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

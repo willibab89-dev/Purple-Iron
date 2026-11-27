@@ -189,6 +189,8 @@ PokedexEntryPointers:
 	dw BellsproutDexEntry
 	dw WeepinbellDexEntry
 	dw VictreebelDexEntry
+	dw TykerDexEntry
+	dw StraigarDexEntry
 
 ; string: species name
 ; height in feet, inches
@@ -1334,3 +1336,17 @@ TyranitarDexEntry:
 	dw 500
 	TX_FAR _TyranitarDexEntry
 	db "@"
+
+TykerDexEntry:
+ db "CUB@"
+ db 2, 0
+ dw 350
+ TX_FAR _TykerDexEntry
+ db "@"
+
+StraigarDexEntry:
+ db "TIGER@"
+ db 5, 0
+ dw 1500
+ TX_FAR _StraigarDexEntry
+ db "@"

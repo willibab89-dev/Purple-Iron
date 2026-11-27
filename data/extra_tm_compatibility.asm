@@ -182,4 +182,6 @@ ExtraTMCompatibilityTable:
 	db $40, $00 ; 181: larvitar
 	db $40, $00 ; 182: pupitar
 	db $40, $00 ; 183: tyranitar
+	db $22, $00 ; 184: tyker
+	db $22, $00 ; 185: straigar
 ExtraTMCompatibilityTableEnd:

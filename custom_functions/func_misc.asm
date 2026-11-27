@@ -234,6 +234,10 @@ DetermineMonGender:
 	jr z, .genderlessNew
 	cp DITTWO
 	jr z, .genderlessNew
+	cp TYKER
+	jr z, .newHalf
+	cp STRAIGAR
+	jr z, .newHalf
 	cp CROBAT
 	jr z, .newHalf
 	cp LARVITAR

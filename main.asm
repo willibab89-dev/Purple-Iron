@@ -914,7 +914,7 @@ SECTION "Battle (bank D)", ROMX, BANK[$D]
 SECTION "bankE",ROMX,BANK[$E]
 
 INCLUDE "data/moves.asm"
-BaseStats: INCLUDE "data/base_stats.asm"
+; Base stats are placed in a separate bank to allow future species.
 INCLUDE "data/cries.asm"
 ;INCLUDE "engine/battle/unused_stats_functions.asm" ;joenote - putting this back into use and moving to bank 2d
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
@@ -2249,3 +2249,6 @@ INCLUDE "engine/menu/color_options.asm"
 INCLUDE "engine/battle/move_info_panel.asm"
 
 INCLUDE "engine/pokedex_expand_save.asm"
+
+SECTION "Expanded species base stats", ROMX, BANK[$3d]
+BaseStats: INCLUDE "data/base_stats.asm"

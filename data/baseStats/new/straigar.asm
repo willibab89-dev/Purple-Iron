@@ -1,0 +1,26 @@
+db DEX_STRAIGAR
+db 120
+db 120
+db 100
+db 60
+db 60
+db NORMAL
+db ELECTRIC
+db 75
+db 185
+INCBIN "pic/new_species/straigar.pic",0,1
+dw StraigarPicFront
+dw StraigarPicBack
+db SCRATCH
+db GROWL
+db THUNDERSHOCK
+db ROAR
+db 0
+ tmlearn 8
+ tmlearn 9,10
+ tmlearn 17,18,20,24
+ tmlearn 0
+ tmlearn 34
+ tmlearn 44,45
+ tmlearn 50
+db 0

@@ -236,3 +236,4 @@ AbilityMoveMetadata:
 	db 80 ; HEAL_BELL
 	db 0 ; CHARM
 	db 64 ; COCOON
+	db 3 ; SHOCK_FANG

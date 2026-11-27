@@ -99,3 +99,16 @@ _TyranitarDexEntry::
 	next "Its habits remain"
 	next "a mystery."
 	dex
+
+TykerPicFront:: INCBIN "pic/new_species/tyker.pic"
+TykerPicBack:: INCBIN "pic/new_species/tyker_b.pic"
+_TykerDexEntry::
+ text "It builds electric"
+ next "charge as it plays."
+ dex
+StraigarPicFront:: INCBIN "pic/new_species/straigar.pic"
+StraigarPicBack:: INCBIN "pic/new_species/straigar_b.pic"
+_StraigarDexEntry::
+ text "Its powerful fangs"
+ next "crackle with energy."
+ dex

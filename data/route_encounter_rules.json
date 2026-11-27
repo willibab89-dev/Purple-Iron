@@ -225,5 +225,17 @@
     ],
     "level": 44,
     "percent": 5
+  },
+  {
+    "species": "TYKER",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_10",
+      "POWER_PLANT"
+    ],
+    "level": 20,
+    "percent": 5
   }
 ]

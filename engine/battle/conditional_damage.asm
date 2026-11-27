@@ -201,6 +201,7 @@ IsConditionalDamageMove:
 	and a
 	ret
 ConditionalDamageMoves:
+	db SHOCK_FANG, 65, ELECTRIC
 	db VINE_CRUSH, 70, GRASS
 	db ELECTRO_BALL, 40, ELECTRIC
 	db WAKE_UP_SLAP, 60, NORMAL
@@ -396,6 +397,15 @@ ConditionalDamageVars:
 	ld a, b
 	ld [wCustomDelta], a ; defensive stat index
 	ld a, [wCustomMove]
+ cp SHOCK_FANG
+ jr nz, .stonePress
+ ; Shock Fang is Electric but uses physical Attack and Defense.
+ xor a
+ ld [wCustomStat], a
+ inc a
+ ld [wCustomDelta], a
+ jr .power
+.stonePress
 	cp STONE_PRESS
 	jr nz, .psyshock
 	ld a, 1
@@ -1719,6 +1729,8 @@ AbilityGyaradosFixedDamage:
  cp SUPER_FANG
  jr z, .jawsBoost
  cp POISON_FANG
+ jr z, .jawsBoost
+ cp SHOCK_FANG
  ret nz
 .jawsBoost
  ld a, [wDamage]
@@ -2355,6 +2367,7 @@ AbilityExtendedPoolIds:
  db 130, 3, AB_HORN_SPECIALIST - ABILITY_EXTENDED
  db 130, 4, AB_HORN_SPECIALIST - ABILITY_EXTENDED
  db 130, 5, AB_HORN_SPECIALIST - ABILITY_EXTENDED
+ db 131, 5, AB_SAVAGE_JAWS - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2702,6 +2715,8 @@ AbilitySpeciesPools:
 	db UNIQUE_CHANSEY_UNIQUE, 128
 	db DITTWO, 129
 	db UNIQUE_GOLDEEN_FIGHTING, 130
+	db TYKER, 131
+	db STRAIGAR, 131
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -4713,3 +4728,4 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db AB_STAMINA, AB_THICK_FAT, AB_STATIC, AB_SCRAPPY, ABILITY_EXTENDED
