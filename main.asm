@@ -2230,3 +2230,5 @@ EarthEaterHitHook:
  ret
 
 INCLUDE "engine/menu/color_options.asm"
+
+INCLUDE "engine/battle/move_info_panel.asm"

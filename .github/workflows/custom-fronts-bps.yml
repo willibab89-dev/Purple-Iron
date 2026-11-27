@@ -88,6 +88,7 @@ jobs:
           python3 tools/test_type_chart.py
           python3 tools/test_abilities.py
           python3 tools/test_early_abilities.py
+          python3 tools/test_move_info_panel.py
           python3 tools/test_natures.py
           python3 tools/test_status_balance.py
           python3 tools/test_curated_supplies.py
