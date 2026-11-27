@@ -1,5 +1,7 @@
 # Design document: implementation status
 
+> **Update:** This is an earlier snapshot. The current build has 198 species, including Garmic and Fangrir. Umbreon remains to be added. Fangrir’s fifth ability slot is currently inactive: Mold Breaker has not been implemented, so a Fangrir with that slot has no ability. Fangrir learns Ice Punch at level 34, but an Ice Punch TM has not been added. Protect also remains outstanding. The historical counts and lists below have not been fully refreshed.
+
 Compared the user-provided `Pasted text.txt` (SHA-256 `ffe58718e00c5239eebe74f1c6323eadf23422bb6977129ad550d127c85a8bb6`) against `unique-species` at commit `f7048e8`. This is a status review, not a change to game behavior. Strikethrough in the source was not used as proof that an item is complete. Earlier redesign notes can reflect decisions made after an older design draft; a difference is flagged for a decision, not treated as an instruction to revert it.
 
 **Scope:** Species/pool presence and the named requests below were checked against the source or documented implementation. The full wording of every original-species ability, move, learnset, encounter, trainer roster, and graphic was not individually re-audited. Items marked “review” need a closer comparison or a user decision; they are not claimed complete.

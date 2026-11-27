@@ -205,6 +205,8 @@ EvosMovesPointerTable:
 	dw MareepEvosMoves
 	dw FlaaffyEvosMoves
 	dw AmpharosEvosMoves
+	dw GarmicEvosMoves
+	dw FangrirEvosMoves
 
 RhydonEvosMoves:
 ; Evolutions
@@ -3024,4 +3026,25 @@ AmpharosEvosMoves:
  db 41, THUNDERBOLT
  db 47, FOCUS_ENERGY
  db 54, THUNDER
+ db 0
+
+GarmicEvosMoves:
+ db EV_LEVEL, 30, FANGRIR
+ db 0
+ db 7, MIMIC
+ db 10, ICY_WIND
+ db 14, QUICK_ATTACK
+ db 18, BITE
+ db 22, SCREECH
+ db 26, FURY_SWIPES
+ db 0
+
+FangrirEvosMoves:
+ db 0
+ db 30, HYPER_FANG
+ db 34, ICE_PUNCH
+ db 39, SLASH
+ db 44, GLARE
+ db 51, THRASH
+ db 57, BLIZZARD
  db 0

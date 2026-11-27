@@ -203,3 +203,5 @@ const_value = 1
 	const MAREEP
 	const FLAAFFY
 	const AMPHAROS
+	const GARMIC
+	const FANGRIR

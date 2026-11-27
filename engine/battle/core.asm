@@ -5229,6 +5229,10 @@ INCLUDE "data/type_effects.asm"
 
 ; some tests that need to pass for a move to hit
 MoveHitTest:
+	abilitycall AbilityPreparedCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jp nz, .moveMissed
 ; player's turn
 	ld hl, wEnemyBattleStatus1
 	ld de, wPlayerMoveEffect

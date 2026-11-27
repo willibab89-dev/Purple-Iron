@@ -202,6 +202,8 @@ PokedexEntryPointers:
 	dw MareepDexEntry
 	dw FlaaffyDexEntry
 	dw AmpharosDexEntry
+	dw GarmicDexEntry
+	dw FangrirDexEntry
 
 ; string: species name
 ; height in feet, inches
@@ -1437,4 +1439,18 @@ AmpharosDexEntry:
  db 3, 0
  dw 650
  TX_FAR _AmpharosDexEntry
+ db "@"
+
+GarmicDexEntry:
+ db "WOLF@"
+ db 3, 0
+ dw 800
+ TX_FAR _GarmicDexEntry
+ db "@"
+
+FangrirDexEntry:
+ db "WOLF@"
+ db 3, 0
+ dw 800
+ TX_FAR _FangrirDexEntry
  db "@"

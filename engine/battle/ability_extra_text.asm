@@ -4,7 +4,7 @@ SECTION "Expanded ability descriptions", ROMX, BANK[$39]
 AbilityDrawExtraDescription:
  ld a, [wAbilityResolvedExtended]
  sub AB_CONSERVATIVE - ABILITY_EXTENDED
- cp 59
+ cp 63
  jr nc, .none
  ld c, a
  ld b, 0
@@ -37,7 +37,8 @@ AbilityExtraTextPointers:
 	dw AbilityText366, AbilityText367, AbilityText368, AbilityText369
 	dw AbilityText370, AbilityText371, AbilityText372, AbilityText373
 	dw AbilityText374, AbilityText375, AbilityText376, AbilityText377
-	dw AbilityText378, AbilityText379, AbilityText380
+	dw AbilityText378, AbilityText379, AbilityText380, AbilityText381
+	dw AbilityText382, AbilityText383, AbilityText384
 AbilityExtraNone: db "NO ABILITY@"
 AbilityText322: db "CONSERVATIVE",$4e,"Moves: 25% chance",$4e,"to save PP.@"
 AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
@@ -102,3 +103,8 @@ AbilityText377: db "WOOL COAT",$4e,"Physical x0.75;",$4e,"Fire damage x1.5.@"
 AbilityText378: db "SHED WOOL",$4e,"Half HP: heal 1/5",$4e,"once per battle.@"
 AbilityText379: db "CHARGE UP",$4e,"Hit: next Electric",$4e,"attack damage x1.3.@"
 AbilityText380: db "STATIC",$4e,"Contact: 20% chance",$4e,"to paralyze foe.@"
+
+AbilityText381: db "BLUFF",$4e,"Entry: 50% chance",$4e,"foe Attack -1.@"
+AbilityText382: db "TERRIFYING",$4e,"Entry: foe Attack",$4e,"-1.@"
+AbilityText383: db "PREPARED",$4e,"Blocks opposing",$4e,"priority moves.@"
+AbilityText384: db "HUGE POWER",$4e,"Doubles Attack",$4e,"for physical moves.@"

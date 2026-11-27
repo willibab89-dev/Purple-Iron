@@ -1,0 +1,26 @@
+db DEX_GARMIC
+db 40
+db 35
+db 45
+db 65
+db 60
+db ICE
+db ICE
+db 190
+db 65
+INCBIN "pic/new_species/garmic.pic",0,1
+dw GarmicPicFront
+dw GarmicPicBack
+db SCRATCH
+db DEFENSE_CURL
+db 0
+db 0
+db 0
+ tmlearn 0
+ tmlearn 0
+ tmlearn 0
+ tmlearn 0
+ tmlearn 0
+ tmlearn 0
+ tmlearn 0
+db 0

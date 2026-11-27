@@ -446,6 +446,7 @@ ConditionalDamageVars:
 	ld c, l
 	pop hl
 	call AdjustPiercingBeakDefense
+	call AbilityHugePowerScale
 	; Identical Gen 1 joint stat scaling, with the existing minimum-one fix.
 	ld a, h
 	or b
@@ -2620,6 +2621,11 @@ AbilityExtendedPoolIds:
  db 136, 2, AB_AMPHAROS_WOOL - ABILITY_EXTENDED
  db 136, 3, AB_SHED_WOOL - ABILITY_EXTENDED
  db 136, 5, AB_CHARGE_UP - ABILITY_EXTENDED
+ db 137, 1, AB_BLUFF - ABILITY_EXTENDED
+ db 137, 4, AB_PREPARED - ABILITY_EXTENDED
+ db 137, 5, AB_HUGE_POWER - ABILITY_EXTENDED
+ db 138, 1, AB_WOLF_TERRIFYING - ABILITY_EXTENDED
+ db 138, 4, AB_PREPARED - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -3159,6 +3165,8 @@ AbilitySpeciesPools:
 	db MAREEP, 135
 	db FLAAFFY, 135
 	db AMPHAROS, 136
+	db GARMIC, 137
+	db FANGRIR, 138
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3725,7 +3733,138 @@ AbilityAncientPowerOnHit:
  ret
 
 ; The entry dispatcher calls this for each battler once both are ready.
+; Wolf entry effects may repeat after switching, unlike once-per-battle auras.
+; Double the chosen physical Attack before the joint 8-bit stat scaling.
+; If it exceeds the legacy 10-bit range, halve both sides first.
+AbilityHugePowerScale:
+ push bc
+ push de
+ push hl
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_HUGE_POWER - ABILITY_EXTENDED
+ jr nz, .unchanged
+ ld a, [H_WHOSETURN]
+ and a
+ ld hl, wPlayerMoveType
+ ld de, wPlayerMoveNum
+ jr z, .move
+ ld hl, wEnemyMoveType
+ ld de, wEnemyMoveNum
+.move
+ ld a, [de]
+ cp STONE_PRESS
+ jr z, .unchanged
+ cp SHOCK_FANG
+ jr z, .double
+ ld a, [hl]
+ cp FIRE
+ jr nc, .unchanged
+.double
+ pop hl
+ pop de
+ pop bc
+ add hl, hl
+ ld a, h
+ cp 4
+ ret c
+ srl h
+ rr l
+ srl b
+ rr c
+ ld a, b
+ or c
+ ret nz
+ inc c
+ ret
+.unchanged
+ pop hl
+ pop de
+ pop bc
+ ret
+
+; Block targeted moves with positive priority, including ability-granted priority.
+AbilityPreparedCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_PREPARED - ABILITY_EXTENDED
+ jr z, .priority
+ xor a
+ ld [wAbilityCheckResult], a
+ ret
+.priority
+ ld a, [wAbilitySide]
+ push af
+ ld a, [wAbilityTemp]
+ push af
+ ld a, [wAbilityTemp + 1]
+ push af
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityPriorityResult
+ ld a, [wAbilityCheckResult]
+ bit 7, a
+ jr nz, .notPriority
+ and a
+ jr z, .notPriority
+ ld a, 1
+ jr .result
+.notPriority
+ xor a
+.result
+ ld [wAbilityCheckResult], a
+ pop af
+ ld [wAbilityTemp + 1], a
+ pop af
+ ld [wAbilityTemp], a
+ pop af
+ ld [wAbilitySide], a
+ ret
+
+AbilityWolfEntry:
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_WOLF_TERRIFYING - ABILITY_EXTENDED
+ jr z, .target
+ cp AB_BLUFF - ABILITY_EXTENDED
+ ret nz
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ cp 128
+ ret nc
+.target
+ ld a, [wAbilitySide]
+ push af
+ xor 1
+ ld [wAbilitySide], a
+ ld [wCustomSide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .done
+ callab AbilityGetCustomSideResult
+ ld a, [wAbilityCheckResult]
+ cp AB_CLEAR_BODY
+ jr z, .done
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DOMINANCE - ABILITY_EXTENDED
+ jr z, .done
+ xor a
+ ld [wCustomStat], a
+ dec a
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChanged], a
+ callab CustomChangeStage
+.done
+ pop af
+ ld [wAbilitySide], a
+ ret
+
 AbilityTerrifying:
+ call AbilityWolfEntry
  callab AbilityGetSideForDitto
  ld a, [wAbilityResolvedExtended]
  cp AB_TYRANITAR_TERRIFYING - ABILITY_EXTENDED
@@ -5197,3 +5336,5 @@ AbilityPoolIds:
 	db AB_POLLEN, AB_SHIELD_DUST, ABILITY_EXTENDED, AB_RUN_AWAY, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_OVERCHARGE, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_OVERCHARGE, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, AB_RUN_AWAY, AB_SNOW_VEIL, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, AB_BIRD_RELENTLESS, AB_REFRIGERATE, ABILITY_EXTENDED, 0 ; Mold Breaker pending

@@ -202,3 +202,5 @@ PokedexOrder:
 	db DEX_MAREEP
 	db DEX_FLAAFFY
 	db DEX_AMPHAROS
+	db DEX_GARMIC
+	db DEX_FANGRIR

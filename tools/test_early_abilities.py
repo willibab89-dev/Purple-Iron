@@ -248,6 +248,8 @@ def validate(version):
                'MEW':['ANCESTOR']*5,
                'MAREANIE':['REGENERATOR','MERCILESS','CORROSIVE_VENOM','SNIPER','BARBED_SHELL'],
                'MILTANK':['THICK_FAT','SAP_SIPPER','ROLLOUT','SCRAPPY','SERENE_GRACE'],
+               'GARMIC':['BLUFF','RUN_AWAY','SNOW_VEIL','PREPARED','HUGE_POWER'],
+               'FANGRIR':['WOLF_TERRIFYING','BIRD_RELENTLESS','REFRIGERATE','PREPARED',None],
                'MAREEP':['CONTACT_STATIC','WOOL_COAT','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
                'FLAAFFY':['CONTACT_STATIC','WOOL_COAT','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
                'AMPHAROS':['CONTACT_STATIC','AMPHAROS_WOOL','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
@@ -294,7 +296,7 @@ def validate(version):
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
                 metadata('wPartyMon1',species,slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'))
-                expected=ab[name];assert game.register_file.A==(255 if expected>=256 else expected),(species,slot,name,game.register_file.A);assert get('wAbilityResolvedExtended')==(expected-255 if expected>=256 else 0)
+                expected=ab[name] if name else 0;assert game.register_file.A==(255 if expected>=256 else expected),(species,slot,name,game.register_file.A);assert get('wAbilityResolvedExtended')==(expected-255 if expected>=256 else 0)
                 assert get('wPartyMon1CatchRate')==17
                 put('wEnemyMonSpecies2',ids[species]);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=17
                 call('AbilityLoadEnemy');assert game.memory[addr('wActiveAbilities')+1]==(255 if expected>=256 else expected);assert game.memory[addr('wActiveAbilityExtended')+1]==(expected-255 if expected>=256 else 0)
@@ -1073,6 +1075,13 @@ def validate(version):
             ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'CHARGE_UP');call('AbilityAfterHit')
             game.memory[addr('turn')]=1-turn;move(1-turn,'THUNDERSHOCK');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==130,(turn,'charge up boost',readword('wDamage'))
             put('wAbilityHit',8);call('AbilityNewAfterAction');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100,(turn,'charge up consumed')
+        for turn in (0,1):
+            for atk,roll,want in [('BLUFF',0,6),('BLUFF',127,6),('BLUFF',128,7),('WOLF_TERRIFYING',255,6)]:
+                ap,tp=init(turn);aid(turn,atk);put('wAbilitySide',turn);rng(roll);call('AbilityWolfEntry');mod='w'+('Player' if turn else 'Enemy')+'MonAttackMod';assert get(mod)==want,(turn,atk,roll,get(mod))
+            for attack,actor_ability,want in [('QUICK_ATTACK',None,1),('AQUA_JET',None,1),('TACKLE',None,0),('TACKLE','QUICK_REFLEXES',1),('COUNTER',None,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,actor_ability);aid(1-turn,'PREPARED');rng(0);call('MoveHitTest');assert bool(get('wMoveMissed'))==bool(want),(turn,attack,actor_ability,'prepared',get('wMoveMissed'))
+            for attack,want in [('TACKLE',200),('EMBER',100),('SHOCK_FANG',200),('STONE_PRESS',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'HUGE_POWER');word(ap+'Attack',100);word(ap+'Special',100);call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack');assert game.register_file.B==want,(turn,attack,'huge power',game.register_file.B)
         # Ponyta family: reactive burn, opposing stat changes, speed and hit reactions.
         for turn in (0,1):
             for attack,roll,sub,actor_ability,actor_fire,want in [('TACKLE',0,0,None,False,16),('TACKLE',39,0,None,False,16),('TACKLE',40,0,None,False,0),('EARTHQUAKE',0,0,None,False,16),('FLAMETHROWER',0,0,None,False,0),('TACKLE',0,1,None,False,0),('TACKLE',0,0,'WATER_VEIL',False,0),('TACKLE',0,0,None,True,0)]:

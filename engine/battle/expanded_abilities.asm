@@ -3901,6 +3901,11 @@ AbilityMoveFlags:
 	ret
 
 ; Exact signed priorities, including Quick Reflexes stacking with +1 moves.
+AbilityPriorityResult:
+ call AbilityPriorityOne
+ ld [wAbilityCheckResult], a
+ ret
+
 AbilityPriority:
 	call AbilityLowHPBoth
 	xor a

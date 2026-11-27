@@ -202,3 +202,5 @@ MonsterNames:
 	db "MAREEP@@@@"
 	db "FLAAFFY@@@"
 	db "AMPHAROS@@"
+	db "GARMIC@@@@"
+	db "FANGRIR@@@"

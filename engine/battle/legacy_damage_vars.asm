@@ -99,6 +99,8 @@ LegacyPlayerDamageVars:
 	ld a, [hli]
 	ld l, [hl]
 	ld h, a ; hl = player's offensive stat
+	call AbilityHugePowerScale
+	ld a, h
 	or b ; is either high byte nonzero?
 	jr z, .next ; if not, we don't need to scale
 ; bc /= 4 (scale enemy's defensive stat)
@@ -239,6 +241,8 @@ LegacyEnemyDamageVars:
 	ld a, [hli]
 	ld l, [hl]
 	ld h, a ; hl = enemy's offensive stat
+	call AbilityHugePowerScale
+	ld a, h
 	or b ; is either high byte nonzero?
 	jr z, .next ; if not, we don't need to scale
 ; bc /= 4 (scale player's defensive stat)

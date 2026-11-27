@@ -1,0 +1,26 @@
+db DEX_FANGRIR
+db 100
+db 95
+db 73
+db 90
+db 67
+db ICE
+db ICE
+db 45
+db 185
+INCBIN "pic/new_species/fangrir.pic",0,1
+dw FangrirPicFront
+dw FangrirPicBack
+db SCRATCH
+db DEFENSE_CURL
+db ICY_WIND
+db QUICK_ATTACK
+db 0
+ tmlearn 8
+ tmlearn 9,10,14
+ tmlearn 17,18,20
+ tmlearn 28,31,32
+ tmlearn 33,34,39,40
+ tmlearn 44,48
+ tmlearn 50
+db 0

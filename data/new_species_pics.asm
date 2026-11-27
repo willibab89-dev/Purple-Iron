@@ -190,3 +190,17 @@ _AmpharosDexEntry::
  text "It stores power"
  next "in its soft wool."
  dex
+
+GarmicPicFront:: INCBIN "pic/new_species/garmic.pic"
+GarmicPicBack:: INCBIN "pic/new_species/garmic_b.pic"
+_GarmicDexEntry::
+ text "It hides behind"
+ next "a fierce disguise."
+ dex
+
+FangrirPicFront:: INCBIN "pic/new_species/fangrir.pic"
+FangrirPicBack:: INCBIN "pic/new_species/fangrir_b.pic"
+_FangrirDexEntry::
+ text "Its howl frightens"
+ next "powerful foes."
+ dex

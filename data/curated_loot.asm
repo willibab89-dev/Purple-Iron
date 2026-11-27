@@ -186,6 +186,12 @@ CuratedLootPools:
 	dw CuratedPool_TM_62
 	db TM_63
 	dw CuratedPool_TM_63
+	db TM_64
+	dw CuratedPool_TM_64
+	db TM_65
+	dw CuratedPool_TM_65
+	db TM_66
+	dw CuratedPool_TM_66
 	db 0
 CuratedPool_POTION:
 	db 8, POTION, POTION, POTION, ANTIDOTE, PARLYZ_HEAL, AWAKENING, BURN_HEAL, POKE_BALL
@@ -258,11 +264,11 @@ CuratedPool_TM_06:
 CuratedPool_TM_07:
 	db 1, TM_07
 CuratedPool_TM_08:
-	db 7, TM_08, TM_09, TM_10, TM_37, TM_39, TM_49, TM_52
+	db 8, TM_08, TM_09, TM_10, TM_37, TM_39, TM_49, TM_52, TM_64
 CuratedPool_TM_09:
 	db 6, TM_08, TM_09, TM_16, TM_39, TM_49, TM_52
 CuratedPool_TM_10:
-	db 4, TM_08, TM_10, TM_37, TM_49
+	db 5, TM_08, TM_10, TM_37, TM_49, TM_64
 CuratedPool_TM_11:
 	db 4, TM_11, TM_12, TM_53, TM_59
 CuratedPool_TM_12:
@@ -284,7 +290,7 @@ CuratedPool_TM_19:
 CuratedPool_TM_20:
 	db 2, TM_20, TM_52
 CuratedPool_TM_21:
-	db 1, TM_21
+	db 2, TM_21, TM_65
 CuratedPool_TM_22:
 	db 1, TM_22
 CuratedPool_TM_23:
@@ -316,7 +322,7 @@ CuratedPool_TM_35:
 CuratedPool_TM_36:
 	db 1, TM_36
 CuratedPool_TM_37:
-	db 4, TM_08, TM_10, TM_37, TM_49
+	db 5, TM_08, TM_10, TM_37, TM_49, TM_64
 CuratedPool_TM_38:
 	db 1, TM_38
 CuratedPool_TM_39:
@@ -340,7 +346,7 @@ CuratedPool_TM_47:
 CuratedPool_TM_48:
 	db 2, TM_48, TM_57
 CuratedPool_TM_49:
-	db 7, TM_08, TM_09, TM_10, TM_37, TM_39, TM_49, TM_52
+	db 8, TM_08, TM_09, TM_10, TM_37, TM_39, TM_49, TM_52, TM_64
 CuratedPool_TM_50:
 	db 1, TM_50
 CuratedPool_TM_51:
@@ -369,3 +375,9 @@ CuratedPool_TM_62:
 	db 2, TM_54, TM_62
 CuratedPool_TM_63:
 	db 1, TM_63
+CuratedPool_TM_64:
+	db 5, TM_08, TM_10, TM_37, TM_49, TM_64
+CuratedPool_TM_65:
+	db 2, TM_21, TM_65
+CuratedPool_TM_66:
+	db 1, TM_66

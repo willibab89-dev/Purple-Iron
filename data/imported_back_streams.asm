@@ -202,3 +202,5 @@ CustomBackStreams:
 	dbw BANK(MareepPicBack), MareepPicBack
 	dbw BANK(FlaaffyPicBack), FlaaffyPicBack
 	dbw BANK(AmpharosPicBack), AmpharosPicBack
+	dbw BANK(GarmicPicBack), GarmicPicBack
+	dbw BANK(FangrirPicBack), FangrirPicBack

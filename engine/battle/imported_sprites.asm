@@ -76,6 +76,10 @@ RouteImportedSprite:
 	jr z, .moreSpecies
 	cp AMPHAROS
 	jr z, .moreSpecies
+	cp GARMIC
+	jr z, .moreSpecies
+	cp FANGRIR
+	jr z, .moreSpecies
 	jr .oldSpecies
 .moreSpecies
 	ld a, BANK(MareepPicFront)

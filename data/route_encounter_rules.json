@@ -296,5 +296,17 @@
     ],
     "level": 8,
     "percent": 3
+  },
+  {
+    "species": "GARMIC",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "SEAFOAM_ISLANDS_2",
+      "SEAFOAM_ISLANDS_3"
+    ],
+    "level": 24,
+    "percent": 5
   }
 ]

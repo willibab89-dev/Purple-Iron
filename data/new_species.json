@@ -1646,5 +1646,105 @@
         "THUNDER"
       ]
     ]
+  },
+  {
+    "name": "garmic",
+    "symbol": "GARMIC",
+    "index": 204,
+    "dex": 197,
+    "stats": [
+      40,
+      35,
+      45,
+      65,
+      60
+    ],
+    "types": [
+      "ICE",
+      "ICE"
+    ],
+    "catch": 190,
+    "xp": 65,
+    "start": [
+      "SCRATCH",
+      "DEFENSE_CURL"
+    ],
+    "learn": [
+      [
+        7,
+        "MIMIC"
+      ],
+      [
+        10,
+        "ICY_WIND"
+      ],
+      [
+        14,
+        "QUICK_ATTACK"
+      ],
+      [
+        18,
+        "BITE"
+      ],
+      [
+        22,
+        "SCREECH"
+      ],
+      [
+        26,
+        "FURY_SWIPES"
+      ]
+    ]
+  },
+  {
+    "name": "fangrir",
+    "symbol": "FANGRIR",
+    "index": 205,
+    "dex": 198,
+    "stats": [
+      100,
+      95,
+      73,
+      90,
+      67
+    ],
+    "types": [
+      "ICE",
+      "ICE"
+    ],
+    "catch": 45,
+    "xp": 185,
+    "start": [
+      "SCRATCH",
+      "DEFENSE_CURL",
+      "ICY_WIND",
+      "QUICK_ATTACK"
+    ],
+    "learn": [
+      [
+        30,
+        "HYPER_FANG"
+      ],
+      [
+        34,
+        "ICE_PUNCH"
+      ],
+      [
+        39,
+        "SLASH"
+      ],
+      [
+        44,
+        "GLARE"
+      ],
+      [
+        51,
+        "THRASH"
+      ],
+      [
+        57,
+        "BLIZZARD"
+      ]
+    ]
   }
 ]

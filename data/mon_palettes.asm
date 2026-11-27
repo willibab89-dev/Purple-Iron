@@ -197,3 +197,5 @@ MonsterPalettes:
 	db PAL_YELLOWMON ; mareep
 	db PAL_YELLOWMON ; flaaffy
 	db PAL_YELLOWMON ; ampharos
+	db PAL_BLUEMON ; garmic
+	db PAL_BLUEMON ; fangrir

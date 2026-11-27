@@ -203,3 +203,5 @@ CryData:
 	db $00, $80, $40 ; mareep
 	db $00, $80, $40 ; flaaffy
 	db $00, $80, $40 ; ampharos
+	db $15, $00, $80 ; garmic
+	db $15, $00, $80 ; fangrir
