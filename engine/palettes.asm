@@ -632,6 +632,7 @@ SendSGBPackets:
  call InitGBCPalettes
  pop hl
  call InitGBCPalettes
+ callab RefreshEXPBarPalette
  ld a, [rLCDC]
  and rLCDC_ENABLE_MASK
  ret z
@@ -930,7 +931,14 @@ index = 0
 index = index + 1
 	ENDR
 	call TransferBGPPals	;Transfer wBGPPalsBuffer contents to rBGPD
-	ret
+ jpab RefreshEXPBarPalette
+
+; DE points to the selected 1C base palette. Update GBC BG palette 4.
+TransferEXPBarPalette:
+ xor a
+ call DMGPalToGBCPal
+ ld a, 4
+ jp TransferCurBGPData
 
 _UpdateGBCPal_OBP::
 ; d then c = CONVERT_OBP0 or CONVERT_OBP1

@@ -56,7 +56,12 @@ DisplayTitleScreen:
 	ld a, BANK(PokemonLogoGraphics)
 	call FarCopyData2          ; second chunk
 	ld hl, Version_GFX
-	ld de, vChars2 + $600 - (Version_GFXEnd - Version_GFX - $50)
+IF DEF(_RED)
+ ; Eleven 1bpp tiles become eleven 2bpp tiles at $5f..$69.
+ ld de, vChars2 + $5f0
+ELSE
+ ld de, vChars2 + $600 - (Version_GFXEnd - Version_GFX - $50)
+ENDC
 	ld bc, Version_GFXEnd - Version_GFX
 	ld a, BANK(Version_GFX)
 	call FarCopyDataDouble
@@ -427,14 +432,26 @@ INCLUDE "data/title_mons.asm"
 
 ; prints version text (red, blue)
 PrintGameVersionOnTitleScreen:
-	coord hl, 7, 8
-	ld de, VersionOnTitleScreenText
-	jp PlaceString
+IF DEF(_RED)
+ coord hl, 4, 8
+ELSE
+ coord hl, 7, 8
+ENDC
+ ld de, VersionOnTitleScreenText
+ ; These are raw title-screen tile IDs; $5f is also a text command, so
+ ; copy them directly instead of passing them through PlaceString.
+.copyVersionTiles
+ ld a, [de]
+ inc de
+ cp "@"
+ ret z
+ ld [hli], a
+ jr .copyVersionTiles
 
 ; these point to special tiles specifically loaded for that purpose and are not usual text
 VersionOnTitleScreenText:
 IF DEF(_RED)
-	db $60,$61,$7F,$65,$66,$67,$68,$69,"@" ; "Red Version"
+ db $5f,$60,$61,$62,$63,$64,$7f,$65,$66,$67,$68,$69,"@" ; Kantwo Version
 ENDC
 IF DEF(_BLUE)
 	db $61,$62,$63,$64,$65,$66,$67,$68,"@" ; "Blue Version"

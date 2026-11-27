@@ -211,7 +211,15 @@ INCLUDE "engine/battle/get_trainer_name.asm"
 INCLUDE "engine/random.asm"
 
 ;joenote - adding exp bar
-EXPBarGraphics:  INCBIN "gfx/exp_bar.2bpp"
+; Retain the progress graphics and add a one-pixel divider above each tile.
+EXPBarGraphics:
+exp_tile = 0
+ REPT 9
+  INCBIN "gfx/exp_bar.2bpp", exp_tile * $10, 4
+  db $ff, $ff
+  INCBIN "gfx/exp_bar.2bpp", exp_tile * $10 + 6, 10
+exp_tile = exp_tile + 1
+ ENDR
 EXPBarGraphicsEnd:
 
 SECTION "NPC Sprites 2", ROMX, BANK[NPC_SPRITES_2]
@@ -1894,7 +1902,14 @@ INCLUDE "engine/battle/decrement_pp.asm"
 
 Version_GFX:
 IF DEF(_RED)
-	INCBIN "gfx/red/redgreenversion.1bpp" ; 10 tiles
+ ; Six font tiles spell Kantwo; keep the original five Version tiles.
+ INCBIN "gfx/font.1bpp", $0a * 8, 8 ; K
+ INCBIN "gfx/font.1bpp", $20 * 8, 8 ; a
+ INCBIN "gfx/font.1bpp", $2d * 8, 8 ; n
+ INCBIN "gfx/font.1bpp", $33 * 8, 8 ; t
+ INCBIN "gfx/font.1bpp", $36 * 8, 8 ; w
+ INCBIN "gfx/font.1bpp", $2e * 8, 8 ; o
+ INCBIN "gfx/red/redgreenversion.1bpp", 5 * 8, 5 * 8 ; Version
 ENDC
 IF DEF(_BLUE)
 	INCBIN "gfx/blue/blueversion.1bpp" ; 8 tiles

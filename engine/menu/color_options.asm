@@ -462,3 +462,12 @@ GetGBCBasePalAddressBanked:
  pop hl
  ret
 
+
+; The dedicated EXP palette uses a blue shade in the default GBC scheme.
+; The existing resolver maps it to monochrome, green or custom palettes when
+; a global color scheme is active, including during background fades.
+RefreshEXPBarPalette:
+ ld a, PAL_TOWNMAP
+ ld [wGBCPal], a
+ call GetGBCBasePalAddressBanked
+ jpab TransferEXPBarPalette
