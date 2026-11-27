@@ -256,10 +256,21 @@
       0
     ],
     "maps": [
+      "ROUTE_3"
+    ],
+    "level": 8,
+    "percent": 2
+  },
+  {
+    "species": "URSEAR",
+    "kinds": [
+      0
+    ],
+    "maps": [
       "MANSION_1",
       "MANSION_2"
     ],
-    "level": 30,
+    "level": 34,
     "percent": 5
   }
 ]
