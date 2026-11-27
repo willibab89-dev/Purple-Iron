@@ -1,6 +1,6 @@
 # Abilities: starters and early Bug lines
 
-Implemented for 166 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
+Implemented for 172 species, with five equally likely slots per species. The saved slot stays the same on evolution; the ability comes from the evolved species' corresponding slot. Existing saves and the fixed party/box record sizes remain compatible. Unique variants do not inherit these pools automatically.
 
 | Species | Slot 1 | Slot 2 | Slot 3 | Slot 4 | Slot 5 |
 |---|---|---|---|---|---|
@@ -117,6 +117,12 @@ Implemented for 166 species, with five equally likely slots per species. The sav
 | Fighting Geodude | Shadow Boxing | Shadow Boxing | Shadow Boxing | Shadow Boxing | Shadow Boxing |
 | Rock Kakuna | Spiked Shell | Shed Skin | Heavyweight | Sturdy | Poison Point |
 | Big Tentacool | Gigantism | Gigantism | Gigantism | Gigantism | Gigantism |
+| Brock's Onix | Indomitable | Indomitable | Indomitable | Indomitable | Indomitable |
+| Giovanni's Nidoking | Sinister | Sinister | Sinister | Sinister | Sinister |
+| Koga's Grimer | Recovery | Recovery | Recovery | Recovery | Recovery |
+| Erika's Tangela | Sharp Vines | Sharp Vines | Sharp Vines | Sharp Vines | Sharp Vines |
+| Erika's Venusaur | Big Bloom | Big Bloom | Big Bloom | Big Bloom | Big Bloom |
+| Surge's Raichu | Discipline | Discipline | Discipline | Discipline | Discipline |
 
 Vine Guard replaces the former Thick Vines in slot 5. Existing Bulbasaur-family Pokémon with that slot receive Vine Guard.
 
@@ -278,7 +284,7 @@ Rattata-family effects: Scavenger restores 1/4 maximum HP after a direct move KO
 
 ## Storage
 
-Ability descriptions remain in bank $3f; pool IDs and Resourceful PP routines use bank $35, leaving room for additional descriptions. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged. Rollout, Slowpoke and Deep Sleep mechanics reserve transient bytes at the bottom of the stack allocation, leaving 173 stack bytes with the same stack top.
+Ability descriptions through ID 321 use bank $3f; descriptions from ID 322 use bank $39. Pool IDs and Resourceful PP routines use bank $35. Pool lookup uses a 16-bit offset, so it can address more than 255 ability slots. The saved ability slot and Pokémon record sizes are unchanged. Rollout, Slowpoke and Deep Sleep mechanics reserve transient bytes at the bottom of the stack allocation, leaving 173 stack bytes with the same stack top.
 
 ## Validation
 
@@ -286,7 +292,7 @@ Both ROMs are built and checked with `tools/test_early_abilities.py` and the exi
 
 ## Extended ability IDs
 
-Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 157 extended IDs remain available. Legacy IDs 252–254 are also available.
+Saved Pokémon continue to store only their existing one-to-five ability slot. The normal ability pool stores IDs 1–254 directly; 255 is an escape marker. For an extended slot, `AbilityExtendedPoolIds` maps its pool and slot to an extension byte from 1–255, representing IDs 256–510. Tangela’s Thick Vines uses extended ID 256 as an end-to-end check; 151 extended IDs remain available. Legacy IDs 252–254 are also available.
 
 At battle entry, each side receives an extension byte in transient WRAM. `AbilityGet` returns the escape marker and sets `wAbilityResolvedExtended` for the selected side; it clears that scratch value for ordinary or suppressed abilities. An extended ability’s battle hook must check both the marker and the extension byte immediately after the lookup. `AbilityDrawDescriptionBanked` maps the extension to the matching pointer beginning at index 256; add description pointers in ID order when adding future extended abilities. Switching and Neutralizing Gas retain the side-local identity, while active-ability replacement takes precedence.
 
@@ -343,3 +349,5 @@ Mewtwo: Dominance prevents opponents from lowering its stat stages or inflicting
 Mew: Ancestor grants the ordinary 1.5× same-type attack bonus to damaging moves of every type. A move that already matches Mew’s type receives the bonus once, and fixed-damage moves retain their normal behavior. All five slots use Ancestor, Mew’s sole specified ability.
 
 Added-species details: Merciless guarantees critical hits against poisoned targets, subject to critical immunity and ordinary fixed-damage exceptions. Barbed Shell damages contact attackers by 1/8 maximum HP. Trickster boosts damage by 25% against confused targets; Shadow Ambush boosts Ghost damage by 30% against full-HP targets. Clay Armor halves Water damage and raises Attack two stages after a Water hit. Tectonic Wrath boosts Ground damage by 50%. Tyranitar's Terrifying lowers opposing Defense on each entry; Aerodactyl's remains once per battle. Pupitar and Rock Kakuna use contact-triggered Spiked Shell; Rock Kakuna's Sturdy activates once per battle and its Poison Point has a 20% contact chance. Shadow Boxing chooses Speed or Evasion equally at random after each punching move. Gigantism doubles Big Tentacool's maximum HP, subject to the game's 999 HP cap. The four unique variants with only one specified ability repeat it in all five slots until further abilities are specified.
+
+Gym variants: Indomitable halves the first direct super-effective hit once per battle, preserving normal protection against Substitute hits. Sinister boosts physical damage against poisoned targets by 25%. Recovery restores 1/8 maximum HP at round end while the living opponent is poisoned. Sharp Vines adds 25 percentage points to critical-hit chance, capped at the engine maximum. Big Bloom restores 1/8 maximum HP each time the holder executes a Grass-type move. Discipline prevents major status, confusion and flinching; it also prevents self-inflicted major status such as Rest. Each variant has its named ability in all five slots.

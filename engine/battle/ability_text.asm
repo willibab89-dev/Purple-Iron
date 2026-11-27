@@ -6,6 +6,8 @@ AbilityDrawDescriptionBanked:
 	cp ABILITY_EXTENDED
 	jr nz, .ordinary
 	ld a, [wAbilityResolvedExtended]
+	cp AB_CONSERVATIVE - ABILITY_EXTENDED
+	jp nc, .extra
 	and a
 	jr z, .none
 	dec a
@@ -27,6 +29,8 @@ AbilityDrawDescriptionBanked:
 	ld e, a
 	coord hl, 2, 4
 	jp PlaceString
+.extra
+	jpab AbilityDrawExtraDescription
 
 AbilityTextPointers:
 	dw AbilityNone, AbilityPoisonLeaf, AbilityChlorophyll, AbilityOvergrowth, AbilityPhotosynthesisText, AbilityVineGuard
@@ -125,10 +129,6 @@ AbilityTextPointers:
 	dw AbilityText314, AbilityText315, AbilityText316
 	dw AbilityText317, AbilityText318
 	dw AbilityText319, AbilityText320, AbilityText321
-	dw AbilityText322, AbilityText323, AbilityText324, AbilityText325, AbilityText326
-	dw AbilityText327, AbilityText328, AbilityText329, AbilityText330
-	dw AbilityText331, AbilityText332, AbilityText333, AbilityText334, AbilityText335
-	dw AbilityText336, AbilityText337, AbilityText338, AbilityText339, AbilityText340, AbilityText341, AbilityText342, AbilityText343, AbilityText344, AbilityText345, AbilityText346, AbilityText347, AbilityText348, AbilityText349, AbilityText350, AbilityText351, AbilityText352, AbilityText353
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -543,35 +543,3 @@ AbilityText318: db "VOLT ABSORB",$4e,"Electric hits heal",$4e,"1/4 maximum HP.@"
 AbilityText319: db "HEAT WAVE",$4e,"Foe loses 1/16 HP",$4e,"unless Fire type.@"
 AbilityText320: db "MAGMA COAT",$4e,"Super-effective",$4e,"damage x0.75.@"
 AbilityText321: db "FLUFFY",$4e,"Physical x0.7;",$4e,"Fire damage x2.@"
-AbilityText322: db "CONSERVATIVE",$4e,"Moves: 25% chance",$4e,"to save PP.@"
-AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
-AbilityText324: db "ANTIVIRUS",$4e,"Immune to major",$4e,"status conditions.@"
-AbilityText325: db "OVERCLOCK",$4e,"Normal move: Speed",$4e,"+1 once per battle.@"
-AbilityText326: db "DOWNLOAD",$4e,"Entry: Attack or",$4e,"Special +1.@"
-AbilityText327: db "ANCIENT POWER",$4e,"Hits: 10% all stats",$4e,"+1 once per battle.@"
-AbilityText328: db "MIND'S EYE",$4e,"Ignores foe evasion;",$4e,"hits Ghosts.@"
-AbilityText329: db "EXECUTIONER",$4e,"Physical x1.2 vs",$4e,"foes below half HP.@"
-AbilityText330: db "TERRIFYING",$4e,"Entry: foe Defense",$4e,"-1 once per battle.@"
-AbilityText331: db "HEAVY SLEEPER",$4e,"Asleep: heal 1/16",$4e,"HP each turn.@"
-AbilityText332: db "SLEEPWALKER",$4e,"Acts asleep; deals",$4e,"half damage.@"
-AbilityText333: db "ABSOLUTE ZERO",$4e,"Ice attacks ignore",$4e,"Ice resistance.@"
-AbilityText334: db "LIGHTNING SPEED",$4e,"Electric moves",$4e,"gain priority +1.@"
-AbilityText335: db "INTENSE FLAMES",$4e,"Damaging hits burn",$4e,"the target.@"
-AbilityText336: db "MYSTIC SCALES",$4e,"Special damage",$4e,"received x0.8.@"
-AbilityText337: db "SERPENT GRACE",$4e,"Dragon move: Evasion",$4e,"+1 once per battle.@"
-AbilityText338: db "MARVEL SCALE",$4e,"Status: Defense +1",$4e,"until cured.@"
-AbilityText339: db "MULTISCALE",$4e,"At full HP:",$4e,"damage x0.5.@"
-AbilityText340: db "INNER FOCUS",$4e,"Prevents flinching",$4e,"and confusion.@"
-AbilityText341: db "DOMINANCE",$4e,"Foe cannot lower",$4e,"stats or add status.@"
-AbilityText342: db "ANCESTOR",$4e,"All move types get",$4e,"same-type bonus.@"
-AbilityText343: db "MERCILESS",$4e,"Critical hits vs",$4e,"poisoned targets.@"
-AbilityText344: db "BARBED SHELL",$4e,"Contact hurts foe",$4e,"for 1/8 max HP.@"
-AbilityText345: db "TRICKSTER",$4e,"Damage x1.25 vs",$4e,"confused foes.@"
-AbilityText346: db "SHADOW AMBUSH",$4e,"Ghost x1.3 vs foe",$4e,"at full HP.@"
-AbilityText347: db "CLAY ARMOR",$4e,"Water damage x0.5;",$4e,"Water hit: Atk +2.@"
-AbilityText348: db "TECTONIC WRATH",$4e,"Ground damage x1.5.@"
-AbilityText349: db "POISON POINT",$4e,"Contact: 20% chance",$4e,"to poison foe.@"
-AbilityText350: db "SHADOW BOXING",$4e,"Punch: Evasion or",$4e,"Speed +1 at random.@"
-AbilityText351: db "GIGANTISM",$4e,"Maximum HP x2.@"
-AbilityText352: db "TERRIFYING",$4e,"Entry: foe Defense",$4e,"-1.@"
-AbilityText353: db "SPIKED SHELL",$4e,"Contact hurts foe",$4e,"for 1/16 max HP.@"

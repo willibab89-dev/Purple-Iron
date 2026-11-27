@@ -2189,6 +2189,7 @@ INCLUDE "data/new_species_pics.asm"
 INCLUDE "engine/battle/abilities.asm"
 INCLUDE "engine/battle/ability_resourceful.asm"
 INCLUDE "engine/battle/ability_text.asm"
+INCLUDE "engine/battle/ability_extra_text.asm"
 INCLUDE "engine/battle/ability_ooze.asm"
 INCLUDE "engine/battle/battle_intro_silhouettes.asm"
 

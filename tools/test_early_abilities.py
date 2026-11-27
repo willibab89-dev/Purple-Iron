@@ -214,7 +214,13 @@ def validate(version):
                'TYRANITAR':['EARTH_EATER','BATTLE_ARMOR','TECTONIC_WRATH','RAMPAGE','TYRANITAR_TERRIFYING'],
                'UNIQUE_KAKUNA_ROCK_TYPE':['CONTACT_SPIKED_SHELL','SHED_SKIN','HEAVYWEIGHT','ONIX_STURDY','ROCK_POISON_POINT'],
                'UNIQUE_GEODUDE_FIGHTING':['SHADOW_BOXING']*5,
-               'UNIQUE_TENTACOOL_BIG':['GIGANTISM']*5}
+               'UNIQUE_TENTACOOL_BIG':['GIGANTISM']*5,
+               'UNIQUE_ONIX_BROCK':['INDOMITABLE']*5,
+               'UNIQUE_NIDOKING_UNIQUE':['SINISTER']*5,
+               'UNIQUE_GRIMER_POISON':['RECOVERY']*5,
+               'UNIQUE_TANGELA_ERIKA':['SHARP_VINES']*5,
+               'UNIQUE_VENUSAUR_ERIKA':['BIG_BLOOM']*5,
+               'UNIQUE_RAICHU_UNIQUE':['DISCIPLINE']*5}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO'),(('DRAGONAIR',),'DRATINI'),(('TOXAPEX',),'MAREANIE'),(('CLAYDOL',),'BALTOY')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1375,6 +1381,38 @@ def validate(version):
             init(turn);move(turn,'CONFUSE_RAY');aid(1-turn,'DOMINANCE');call('AbilitySteadfastDirectCheck');assert get('wAbilityCheckResult')==0,(turn,'confusion allowed')
             ap,tp=init(turn);aid(1-turn,'DOMINANCE');aid(turn,'NEUTRALIZING_GAS');put('wCustomSide',1-turn);put('wCustomStat',0);put('wCustomDelta',255);call('CustomChangeStage');assert get(target+'MonAttackMod')==6,(turn,'suppressed drop')
             ap,tp=init(turn);aid(1-turn,'DOMINANCE');aid(turn,'NEUTRALIZING_GAS');put('wCustomSide',1-turn);put('wCustomDelta',8);call('UtilityInflictStatus');assert get(tp+'Status')==8,(turn,'suppressed status')
+        # Six custom Gym miniboss abilities, for either battle side.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for mult,sub,hp,damage,want in [(20,0,160,100,50),(40,0,160,100,50),(10,0,160,100,100),(20,1,160,100,100),(20,0,0,100,100),(20,0,160,1,1),(20,0,160,0,0)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'INDOMITABLE');put('wDamageMultipliers',mult);put('wCustomTargetHadSub',sub);word(tp+'HP',hp);word('wDamage',damage);put('wAbilityHit',32);call('AbilityFixedDamageModifiers');assert readword('wDamage')==want,(turn,mult,sub,hp,damage,'indomitable',readword('wDamage'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'INDOMITABLE');put('wDamageMultipliers',20);word('wDamage',100);put('wAbilityHit',32);call('AbilityFixedDamageModifiers');assert readword('wDamage')==50
+            put('wAbilitySide',1-turn);call('AbilityEntry');word('wDamage',100);put('wAbilityHit',32);call('AbilityFixedDamageModifiers');assert readword('wDamage')==100,(turn,'indomitable spent across switches')
+            init(turn);move(turn,'TACKLE');aid(1-turn,'INDOMITABLE');aid(turn,'NEUTRALIZING_GAS');put('wDamageMultipliers',20);word('wDamage',100);put('wAbilityHit',32);call('AbilityFixedDamageModifiers');assert readword('wDamage')==100,(turn,'indomitable suppressed')
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'INDOMITABLE');put('wDamageMultipliers',20);word('wDamage',65535);put('wCriticalHitOrOHKO',2);put('wAbilityHit',32);call('AbilityFixedDamageModifiers');assert readword('wDamage')==80 and get('wCriticalHitOrOHKO')==0,(turn,'indomitable OHKO')
+            for attack,status,damage,want in [('TACKLE',8,100,125),('TACKLE',0,100,100),('EMBER',8,100,100),('TACKLE',8,0,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'SINISTER');put(tp+'Status',status);word('wDamage',damage);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,status,'sinister',readword('wDamage'))
+            ap,tp=init(turn);move(turn,'SEISMIC_TOSS');aid(turn,'SINISTER');put(tp+'Status',8);put('wUnusedC000',16);word('wDamage',100);call('AbilityFixedDamageModifiers');assert readword('wDamage')==125,(turn,'sinister fixed')
+            for own,opponent,status,rounddone,want in [(80,160,8,0,100),(80,160,0,0,80),(0,160,8,0,0),(150,160,8,0,160),(80,0,8,0,80),(80,160,8,1,80)]:
+                ap,tp=init(turn);aid(turn,'RECOVERY');word(ap+'HP',own);word(tp+'HP',opponent);put(tp+'Status',status);put('wResidualRoundDone',rounddone);call('AbilityEndRound');assert readword(ap+'HP')==want,(turn,own,opponent,status,rounddone,'recovery',readword(ap+'HP'))
+            for chance,want in [(0,64),(100,164),(191,255),(255,255)]:
+                init(turn);aid(turn,'SHARP_VINES');put('wNatureResult',chance);call('AbilityRuthless');assert get('wNatureResult')==want,(turn,chance,'sharp vines',get('wNatureResult'))
+            init(turn);aid(turn,'SHARP_VINES');aid(1-turn,'NEUTRALIZING_GAS');put('wNatureResult',100);call('AbilityRuthless');assert get('wNatureResult')==100,(turn,'sharp vines suppressed')
+            init(turn);move(turn,'TACKLE');aid(turn,'SHARP_VINES');rng(40);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==1,(turn,'sharp vines live crit')
+            for attack,used,hp,want in [('VINE_WHIP',1,80,100),('GROWTH',1,80,100),('TACKLE',1,80,80),('VINE_WHIP',0,80,80),('GROWTH',1,0,0),('GROWTH',1,150,160)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'BIG_BLOOM');word(ap+'HP',hp);put('wAbilityHit',8 if used else 0);call('AbilitySandAfterAction');assert readword(ap+'HP')==want,(turn,attack,used,hp,'big bloom',readword(ap+'HP'))
+            ap,tp=init(turn);move(turn,'GROWTH');aid(turn,'BIG_BLOOM');word(ap+'HP',80);put('wAbilityHit',8);call('AbilitySandAfterAction');call('AbilitySandAfterAction');assert readword(ap+'HP')==120,(turn,'big bloom every use')
+            for status in (8,16,32,64):
+                ap,tp=init(turn);aid(1-turn,'DISCIPLINE');put('wCustomSide',1-turn);put('wCustomDelta',status);call('UtilityInflictStatus');assert get(tp+'Status')==0,(turn,status,'discipline')
+            init(turn);aid(turn,'DISCIPLINE');put(actor+'BattleStatus1',0x88);call('AbilitySteadfastActor');assert get(actor+'BattleStatus1')&0x88==0,(turn,'discipline volatile')
+            init(turn);move(turn,'CONFUSE_RAY');aid(1-turn,'DISCIPLINE');call('AbilitySteadfastDirectCheck');assert get('wAbilityCheckResult')==1,(turn,'discipline confusion')
+            for attack in ('HEADBUTT','PSYBEAM'):
+                init(turn);move(turn,attack);aid(1-turn,'DISCIPLINE');call('AbilityEffectGate');assert get('wAbilityCheckResult')==1,(turn,attack,'discipline secondary')
+            init(turn);move(turn,'PSYCHIC_M');aid(turn,'CONFOUNDING');aid(1-turn,'DISCIPLINE');rng(0);call('AbilityAfterHit');assert not(get(target+'BattleStatus1')&128),(turn,'discipline ability confusion')
+            ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'DISCIPLINE');aid(1-turn,'EFFECT_SPORE');rng(0,2);call('AbilityAfterHit');assert get(ap+'Status')==0,(turn,'discipline effect spore sleep')
+            ap,tp=init(turn);aid(1-turn,'DISCIPLINE');aid(turn,'NEUTRALIZING_GAS');put('wCustomSide',1-turn);put('wCustomDelta',8);call('UtilityInflictStatus');assert get(tp+'Status')==8,(turn,'discipline suppressed')
+        for species,name in [('UNIQUE_ONIX_BROCK','INDOMITABLE'),('UNIQUE_NIDOKING_UNIQUE','SINISTER'),('UNIQUE_GRIMER_POISON','RECOVERY'),('UNIQUE_TANGELA_ERIKA','SHARP VINES'),('UNIQUE_VENUSAUR_ERIKA','BIG BLOOM'),('UNIQUE_RAICHU_UNIQUE','DISCIPLINE')]:
+            metadata('wPartyMon1',species,1,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));game.memory[0xff40]=0;call('AbilityDrawDescription',A=255);expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name);assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(species,name,'description')
         # Dratini line: reductions, temporary status Defense, and move trigger.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -2146,6 +2184,16 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('WATER_GUN',turn,target_types=('ROCK','GROUND'),random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('WATER_GUN',turn,target='INDOMITABLE',target_types=('ROCK','GROUND'),random_value=100);assert 160-readword(tp+'HP')==max(1,normal//2),(turn,'live indomitable',normal,readword(tp+'HP'))
+            ap,tp=execute('TACKLE',turn,status=8,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='SINISTER',status=8,random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live sinister',normal,readword(tp+'HP'))
+            ap,tp=execute('REST',turn,actor='DISCIPLINE',actor_hp=80,random_value=100);assert get(ap+'Status')==0 and readword(ap+'HP')==80,(turn,'discipline rest')
+            for attack in ('SLEEP_POWDER','POISONPOWDER','THUNDER_WAVE','WILL_O_WISP','FLASH_FREEZE'):
+                ap,tp=execute(attack,turn,target='DISCIPLINE',random_value=100);assert get(tp+'Status')==0,(turn,attack,'live discipline')
+            ap,tp=execute('CONFUSE_RAY',turn,target='DISCIPLINE',random_value=100);assert not(get('w'+('Player' if turn else 'Enemy')+'BattleStatus1')&128),(turn,'live discipline confusion')
+            ap,tp=execute('TACKLE',turn,actor='DISCIPLINE',target='FLAME_BODY',random_value=0);assert get(ap+'Status')==0,(turn,'live discipline reactive')
+            ap,tp=execute('VINE_WHIP',turn,actor='BIG_BLOOM',actor_hp=80,random_value=100);assert readword(ap+'HP')==100,(turn,'live big bloom',readword(ap+'HP'))
             ap,tp=execute('TACKLE',turn,actor='MERCILESS',status=8,random_value=200);assert get('wCriticalHitOrOHKO')==1 and readword(tp+'HP')<160,(turn,'live merciless',get('wCriticalHitOrOHKO'))
             ap,tp=execute('TACKLE',turn,target='BARBED_SHELL',actor_hp=80,random_value=100);assert readword(ap+'HP')==60,(turn,'live barbed shell',readword(ap+'HP'))
             ap,tp=execute('WATER_GUN',turn,target='CLAY_ARMOR',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==9,(turn,'live clay armor')
@@ -2551,7 +2599,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 166 species / 830 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 172 species / 860 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

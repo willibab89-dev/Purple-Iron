@@ -8,14 +8,14 @@ Compared the user-provided `Pasted text.txt` (SHA-256 `ffe58718e00c5239eebe74f1c
 
 ### Ability pools added since this review
 
-The planned ability pools are now assigned and tested for Mareanie, Toxapex, Miltank, Sableye, Baltoy, Claydol, Larvitar, Pupitar, Tyranitar, Unique Blastoise, Erika's Ivysaur, Fighting Geodude, Rock Kakuna and Big Tentacool. Fighting Geodude's Shadow Boxing randomly raises Evasion or Speed after each punch, as clarified by the user. For the four unique variants with only one named ability, all five slots currently give that ability. Their remaining slots can be redesigned if more abilities are specified.
+The planned ability pools are now assigned and tested for Mareanie, Toxapex, Miltank, Sableye, Baltoy, Claydol, Larvitar, Pupitar, Tyranitar, Unique Blastoise, Erika's Ivysaur, Fighting Geodude, Rock Kakuna and Big Tentacool. Fighting Geodude's Shadow Boxing randomly raises Evasion or Speed after each punch, as clarified by the user. Brock's Onix, Giovanni's Nidoking, Koga's Grimer, Erika's Tangela and Venusaur, and Surge's Raichu have since received the user-specified Indomitable, Sinister, Recovery, Sharp Vines, Big Bloom and Discipline respectively. For the four unique variants with only one named ability, all five slots currently give that ability. Their remaining slots can be redesigned if more abilities are specified.
 
 ### Pokémon still without ability pools
 
-Seventeen of the 183 species have no pool, and the design document does not specify abilities for them:
+Eleven of the 183 species have no pool, and the design document does not specify abilities for them:
 
 - Dittwo.
-- Unique Bulbasaur, Unique Chansey, Unique Charmander, Happy Ditto, Fighting Goldeen, Koga's Grimer, Unique Marowak, Giovanni's Nidoking, the second Unique Nidoking, Unique Nidoran♂, Unique Omanyte, Brock's Onix, Surge's Raichu, Unique Squirtle, Erika's Tangela and Erika's Venusaur.
+- Unique Bulbasaur, Unique Chansey, Unique Charmander, Happy Ditto, Fighting Goldeen, Unique Marowak, the second Unique Nidoking, Unique Nidoran♂, Unique Omanyte and Unique Squirtle.
 
 These variants do not automatically inherit their ordinary counterparts' pools. Their ability lists remain to be designed or explicitly chosen.
 
@@ -75,7 +75,7 @@ The move **Fortify** is also not present under that name. An ability named Forti
 
 ## Already present, subject to detailed verification
 
-- Ability pools for the original 151, Crobat and the 14 additional species listed above, with five slots each; the five slots repeat the sole specified ability for Articuno, Zapdos, Moltres, Mewtwo and Mew. See [EARLY-SPECIES-ABILITIES.md](EARLY-SPECIES-ABILITIES.md). This establishes registration and prior tests, not a fresh line-by-line audit of all design wording.
+- Ability pools for the original 151, Crobat and the 20 additional species listed above, with five slots each; the five slots repeat the sole specified ability for Articuno, Zapdos, Moltres, Mewtwo and Mew. See [EARLY-SPECIES-ABILITIES.md](EARLY-SPECIES-ABILITIES.md). This establishes registration and prior tests, not a fresh line-by-line audit of all design wording.
 - The 21 unique variants and 11 additional species are in the 183-species build, including Crobat. Their presence does not imply their requested ability pools are present.
 - Broad move overhaul and the ten listed extra TMs, route encounter redesign, regular-trainer review, Gym and League changes/rematches, curated item pools, and 196-nature system. See the corresponding move-patch, encounter, trainer, loot and nature documents in this directory.
 - Badge boosts at 5%, Ice resistance to Ground, Poison no longer super-effective against Bug, the listed original-species type changes, faster walking, and the stated paralysis/poison/freeze changes. See [BADGE-BOOSTS.md](BADGE-BOOSTS.md), [TYPE-CHART-CHANGES.md](TYPE-CHART-CHANGES.md), [TYPE-CHANGES.md](TYPE-CHANGES.md), and [STATUS-AND-WALKING-CHANGES.md](STATUS-AND-WALKING-CHANGES.md).

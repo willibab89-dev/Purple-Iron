@@ -2255,6 +2255,36 @@ AbilityExtendedPoolIds:
  db 113, 3, AB_GIGANTISM - ABILITY_EXTENDED
  db 113, 4, AB_GIGANTISM - ABILITY_EXTENDED
  db 113, 5, AB_GIGANTISM - ABILITY_EXTENDED
+ db 114, 1, AB_INDOMITABLE - ABILITY_EXTENDED
+ db 114, 2, AB_INDOMITABLE - ABILITY_EXTENDED
+ db 114, 3, AB_INDOMITABLE - ABILITY_EXTENDED
+ db 114, 4, AB_INDOMITABLE - ABILITY_EXTENDED
+ db 114, 5, AB_INDOMITABLE - ABILITY_EXTENDED
+ db 115, 1, AB_SINISTER - ABILITY_EXTENDED
+ db 115, 2, AB_SINISTER - ABILITY_EXTENDED
+ db 115, 3, AB_SINISTER - ABILITY_EXTENDED
+ db 115, 4, AB_SINISTER - ABILITY_EXTENDED
+ db 115, 5, AB_SINISTER - ABILITY_EXTENDED
+ db 116, 1, AB_RECOVERY - ABILITY_EXTENDED
+ db 116, 2, AB_RECOVERY - ABILITY_EXTENDED
+ db 116, 3, AB_RECOVERY - ABILITY_EXTENDED
+ db 116, 4, AB_RECOVERY - ABILITY_EXTENDED
+ db 116, 5, AB_RECOVERY - ABILITY_EXTENDED
+ db 117, 1, AB_SHARP_VINES - ABILITY_EXTENDED
+ db 117, 2, AB_SHARP_VINES - ABILITY_EXTENDED
+ db 117, 3, AB_SHARP_VINES - ABILITY_EXTENDED
+ db 117, 4, AB_SHARP_VINES - ABILITY_EXTENDED
+ db 117, 5, AB_SHARP_VINES - ABILITY_EXTENDED
+ db 118, 1, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 118, 2, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 118, 3, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 118, 4, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 118, 5, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 119, 1, AB_DISCIPLINE - ABILITY_EXTENDED
+ db 119, 2, AB_DISCIPLINE - ABILITY_EXTENDED
+ db 119, 3, AB_DISCIPLINE - ABILITY_EXTENDED
+ db 119, 4, AB_DISCIPLINE - ABILITY_EXTENDED
+ db 119, 5, AB_DISCIPLINE - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2585,6 +2615,12 @@ AbilitySpeciesPools:
 	db UNIQUE_KAKUNA_ROCK_TYPE, 111
 	db UNIQUE_GEODUDE_FIGHTING, 112
 	db UNIQUE_TENTACOOL_BIG, 113
+	db UNIQUE_ONIX_BROCK, 114
+	db UNIQUE_NIDOKING_UNIQUE, 115
+	db UNIQUE_GRIMER_POISON, 116
+	db UNIQUE_TANGELA_ERIKA, 117
+	db UNIQUE_VENUSAUR_ERIKA, 118
+	db UNIQUE_RAICHU_UNIQUE, 119
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -2694,7 +2730,10 @@ AbilityPorygonEntry:
  callab AbilityGetSideForDitto
  ld a, [wAbilityResolvedExtended]
  cp AB_ANTIVIRUS - ABILITY_EXTENDED
+ jr z, .cureStatus
+ cp AB_DISCIPLINE - ABILITY_EXTENDED
  ret nz
+.cureStatus
  ld hl, wBattleMonStatus
  ld de, wPlayerBattleStatus3
  ld a, [wAbilitySide]
@@ -2881,6 +2920,8 @@ AbilityAntivirusOpponentResolved:
 AbilityAntivirusResolved:
  ld a, [wAbilityResolvedExtended]
  cp AB_ANTIVIRUS - ABILITY_EXTENDED
+ jr z, AbilityAntivirusBlock
+ cp AB_DISCIPLINE - ABILITY_EXTENDED
  ret nz
 AbilityAntivirusBlock:
  ld a, 1
@@ -3573,6 +3614,8 @@ AbilitySteadfastActorBanked:
  ld a, [wAbilityResolvedExtended]
  cp AB_INNER_FOCUS - ABILITY_EXTENDED
  jr z, .immune
+ cp AB_DISCIPLINE - ABILITY_EXTENDED
+ jr z, .immune
  cp AB_UNSTOPPABLE - ABILITY_EXTENDED
  ret nz
  ld hl, wPlayerBattleStatus1
@@ -3898,6 +3941,155 @@ AbilityShadowBoxingAfterAction:
  ld [wCustomChanged], a
  jpab CustomChangeStage
 
+; Onix reduces only the first direct super-effective hit per battle.
+AbilityIndomitableIncoming:
+ ld a, [wAbilityHit]
+ bit 5, a
+ ret z
+ ld a, [wCustomTargetHadSub]
+ and a
+ ret nz
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld a, [wDamageMultipliers]
+ and $7f
+ cp 11
+ ret c
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_INDOMITABLE - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ ld a, [wCriticalHitOrOHKO]
+ cp 2
+ jr nz, .scale
+ xor a
+ ld [wCriticalHitOrOHKO], a
+ callab AbilityHP
+ ld a, [hli]
+ ld [wDamage], a
+ ld a, [hl]
+ ld [wDamage + 1], a
+.scale
+ ld hl, wDamage
+ srl [hl]
+ inc hl
+ rr [hl]
+ ld a, [hld]
+ or [hl]
+ ret nz
+ inc hl
+ inc [hl]
+ ret
+
+; Nidoking's bonus applies to physical damage against poisoned targets.
+AbilitySinisterDamage:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+AbilitySinisterFixedDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SINISTER - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ and a
+ ld hl, wPlayerMoveType
+ jr z, .type
+ ld hl, wEnemyMoveType
+.type
+ ld a, [hl]
+ cp FIRE
+ ret nc
+ callab AbilityTargetStatus
+ bit PSN, [hl]
+ ret z
+ ld c, 125
+ jp AbilityFluffyFixedDamage.scale
+
+; Poisoned living foe enables 1/8 healing at round end.
+AbilityRecoveryBoth:
+ xor a
+ ld [wAbilitySide], a
+ call .one
+ ld a, 1
+ ld [wAbilitySide], a
+.one
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_RECOVERY - ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ jr z, .restore
+ inc hl
+ inc hl
+ bit PSN, [hl]
+ jr z, .restore
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ jr AbilityBossHealEighth
+.restore
+ ld a, [wAbilitySide]
+ xor 1
+ ld [wAbilitySide], a
+ ret
+
+; Each executed Grass-type move heals the living holder.
+AbilityBigBloomAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_BIG_BLOOM - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ and a
+ ld hl, wPlayerMoveType
+ jr z, .type
+ ld hl, wEnemyMoveType
+.type
+ ld a, [hl]
+ cp GRASS
+ ret nz
+AbilityBossHealEighth:
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ ld a, 3
+ ld [wCustomDelta], a
+ ld a, 1
+ ld [wCustomChance], a
+ jpab ResidualFraction
+
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -4013,5 +4205,12 @@ AbilityPoolIds:
 	db AB_LEVITATE, AB_CURSED_BODY, ABILITY_EXTENDED, AB_IMMUNITY, ABILITY_EXTENDED
 	db AB_EARTH_EATER, AB_BATTLE_ARMOR, ABILITY_EXTENDED, AB_RAMPAGE, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_SHED_SKIN, AB_HEAVYWEIGHT, AB_ONIX_STURDY, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED

@@ -517,6 +517,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	callab AbilitySinisterDamage
 	callab AbilityAddedSpeciesDamage
 	callab AbilityDragonScalesDamage
 	callab AbilitySleepwalkerDamage
@@ -1099,6 +1100,7 @@ AbilityModifyDamage:
 AbilityFixedDamageModifiers:
 	call AbilityExistingFixedDamageModifiers
 	call AbilityParentalOverride
+	callab AbilityIndomitableIncoming
 	jp AbilityIncomingDamage
 AbilityExistingFixedDamageModifiers:
 	; A missed Jump Kick causes crash damage to its user.
@@ -1144,6 +1146,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	callab AbilitySinisterFixedDamage
 	callab AbilityAddedSpeciesFixedDamage
 	callab AbilityDragonScalesFixedDamage
 	callab AbilitySleepwalkerFixedDamage
@@ -1524,6 +1527,7 @@ AbilityAttempt:
 
 ; Ground/Normal abilities trigger only when a move was actually executed.
 AbilitySandAfterAction:
+	callab AbilityBigBloomAfterAction
 	callab AbilityShadowBoxingAfterAction
 	callab AbilitySerpentGraceAfterAction
 	callab AbilityQuickLearnerAfterAction
@@ -1941,6 +1945,8 @@ AbilityConfounding:
  jr nz, .confusionLegacy
  ld a, [wAbilityResolvedExtended]
  cp AB_INNER_FOCUS - ABILITY_EXTENDED
+ ret z
+ cp AB_DISCIPLINE - ABILITY_EXTENDED
  ret z
  jr .confusionTargetReady
 .confusionLegacy
@@ -3599,10 +3605,13 @@ AbilityRuthless:
 	cp ABILITY_EXTENDED
 	jr nz, .legacy
 	ld a, [wAbilityResolvedExtended]
+	cp AB_SHARP_VINES - ABILITY_EXTENDED
+	jr z, .flat25
 	cp AB_ROYAL_HORN - ABILITY_EXTENDED
 	ret nz
 	call AbilityRoyalHornMove
 	ret nc
+.flat25
 	ld a, [wNatureResult]
 	add 64 ; 25 percentage points in the 256-value threshold
 	jr nc, .store
@@ -3696,6 +3705,8 @@ AbilityEffectGate:
 	jr nz, .ordinaryTarget
 	ld a, [wAbilityResolvedExtended]
 	cp AB_INNER_FOCUS - ABILITY_EXTENDED
+	jp z, .steadfast
+	cp AB_DISCIPLINE - ABILITY_EXTENDED
 	jp z, .steadfast
 	cp AB_UNSTOPPABLE - ABILITY_EXTENDED
 	jr nz, .ordinaryTargetRestore
@@ -4346,6 +4357,8 @@ AbilitySteadfastCheck:
  jr nz, .ordinary
  ld a, [wAbilityResolvedExtended]
  cp AB_INNER_FOCUS - ABILITY_EXTENDED
+ jr z, .immune
+ cp AB_DISCIPLINE - ABILITY_EXTENDED
  jr z, .immune
  ret
 .ordinary
