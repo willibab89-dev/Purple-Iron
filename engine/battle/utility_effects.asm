@@ -812,6 +812,7 @@ UtilityHealBell:
 	ld a, 1
 	ld [wCustomChance], a
 	call UtilityHealBellParty
+	abilitycall AbilityCaregiverAfterHealBell
 	callab DrawHUDsAndHPBars
 	ld hl, UtilityHealBellText
 	jp PrintText

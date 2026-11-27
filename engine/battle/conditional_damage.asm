@@ -1783,7 +1783,20 @@ AbilityDittoAfterTransform:
  cp AB_PERFECT_COPY - ABILITY_EXTENDED
  jr z, .eligible
  cp AB_SHAPESHIFTER - ABILITY_EXTENDED
+ jr z, .eligible
+ cp AB_HAPPY_RETURN - ABILITY_EXTENDED
  ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [de]
+ cp [hl]
+ jr nz, .eligible
+ inc de
+ inc hl
+ ld a, [de]
+ cp [hl]
+ ret z
 .eligible
  ld a, [H_WHOSETURN]
  ld [wAbilitySide], a
@@ -1798,6 +1811,8 @@ AbilityDittoAfterTransform:
  callab AbilityActor
  ld a, [wAbilityResolvedExtended]
  cp AB_PERFECT_COPY - ABILITY_EXTENDED
+ jp z, .heal
+ cp AB_HAPPY_RETURN - ABILITY_EXTENDED
  jp z, .heal
  jpab AbilityRaiseSpeed
 .heal
@@ -2285,6 +2300,61 @@ AbilityExtendedPoolIds:
  db 119, 3, AB_DISCIPLINE - ABILITY_EXTENDED
  db 119, 4, AB_DISCIPLINE - ABILITY_EXTENDED
  db 119, 5, AB_DISCIPLINE - ABILITY_EXTENDED
+ db 120, 1, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 120, 2, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 120, 3, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 120, 4, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 120, 5, AB_BIG_BLOOM - ABILITY_EXTENDED
+ db 121, 1, AB_HAPPY_RETURN - ABILITY_EXTENDED
+ db 121, 2, AB_HAPPY_RETURN - ABILITY_EXTENDED
+ db 121, 3, AB_HAPPY_RETURN - ABILITY_EXTENDED
+ db 121, 4, AB_HAPPY_RETURN - ABILITY_EXTENDED
+ db 121, 5, AB_HAPPY_RETURN - ABILITY_EXTENDED
+ db 122, 1, AB_DUELIST - ABILITY_EXTENDED
+ db 122, 2, AB_DUELIST - ABILITY_EXTENDED
+ db 122, 3, AB_DUELIST - ABILITY_EXTENDED
+ db 122, 4, AB_DUELIST - ABILITY_EXTENDED
+ db 122, 5, AB_DUELIST - ABILITY_EXTENDED
+ db 123, 1, AB_SHELL_REFLEX - ABILITY_EXTENDED
+ db 123, 2, AB_SHELL_REFLEX - ABILITY_EXTENDED
+ db 123, 3, AB_SHELL_REFLEX - ABILITY_EXTENDED
+ db 123, 4, AB_SHELL_REFLEX - ABILITY_EXTENDED
+ db 123, 5, AB_SHELL_REFLEX - ABILITY_EXTENDED
+ db 124, 1, AB_EFFICIENT - ABILITY_EXTENDED
+ db 124, 2, AB_EFFICIENT - ABILITY_EXTENDED
+ db 124, 3, AB_EFFICIENT - ABILITY_EXTENDED
+ db 124, 4, AB_EFFICIENT - ABILITY_EXTENDED
+ db 124, 5, AB_EFFICIENT - ABILITY_EXTENDED
+ db 125, 1, AB_KINDLING - ABILITY_EXTENDED
+ db 125, 2, AB_KINDLING - ABILITY_EXTENDED
+ db 125, 3, AB_KINDLING - ABILITY_EXTENDED
+ db 125, 4, AB_KINDLING - ABILITY_EXTENDED
+ db 125, 5, AB_KINDLING - ABILITY_EXTENDED
+ db 126, 1, AB_ANCIENT_MALICE - ABILITY_EXTENDED
+ db 126, 2, AB_ANCIENT_MALICE - ABILITY_EXTENDED
+ db 126, 3, AB_ANCIENT_MALICE - ABILITY_EXTENDED
+ db 126, 4, AB_ANCIENT_MALICE - ABILITY_EXTENDED
+ db 126, 5, AB_ANCIENT_MALICE - ABILITY_EXTENDED
+ db 127, 1, AB_TOXIC_PURSUIT - ABILITY_EXTENDED
+ db 127, 2, AB_TOXIC_PURSUIT - ABILITY_EXTENDED
+ db 127, 3, AB_TOXIC_PURSUIT - ABILITY_EXTENDED
+ db 127, 4, AB_TOXIC_PURSUIT - ABILITY_EXTENDED
+ db 127, 5, AB_TOXIC_PURSUIT - ABILITY_EXTENDED
+ db 128, 1, AB_CAREGIVER - ABILITY_EXTENDED
+ db 128, 2, AB_CAREGIVER - ABILITY_EXTENDED
+ db 128, 3, AB_CAREGIVER - ABILITY_EXTENDED
+ db 128, 4, AB_CAREGIVER - ABILITY_EXTENDED
+ db 128, 5, AB_CAREGIVER - ABILITY_EXTENDED
+ db 129, 1, AB_BORROWED_STRENGTH - ABILITY_EXTENDED
+ db 129, 2, AB_BORROWED_STRENGTH - ABILITY_EXTENDED
+ db 129, 3, AB_BORROWED_STRENGTH - ABILITY_EXTENDED
+ db 129, 4, AB_BORROWED_STRENGTH - ABILITY_EXTENDED
+ db 129, 5, AB_BORROWED_STRENGTH - ABILITY_EXTENDED
+ db 130, 1, AB_HORN_SPECIALIST - ABILITY_EXTENDED
+ db 130, 2, AB_HORN_SPECIALIST - ABILITY_EXTENDED
+ db 130, 3, AB_HORN_SPECIALIST - ABILITY_EXTENDED
+ db 130, 4, AB_HORN_SPECIALIST - ABILITY_EXTENDED
+ db 130, 5, AB_HORN_SPECIALIST - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2621,6 +2691,17 @@ AbilitySpeciesPools:
 	db UNIQUE_TANGELA_ERIKA, 117
 	db UNIQUE_VENUSAUR_ERIKA, 118
 	db UNIQUE_RAICHU_UNIQUE, 119
+	db UNIQUE_BULBASAUR_UNIQUE, 120
+	db UNIQUE_DITTO_HAPPY, 121
+	db UNIQUE_MAROWAK_UNIQUE, 122
+	db UNIQUE_SQUIRTLE_UNIQUE, 123
+	db UNIQUE_NIDORANM_UNIQUE, 124
+	db UNIQUE_CHARMANDER_UNIQUE, 125
+	db UNIQUE_OMANYTE_UNIQUE, 126
+	db UNIQUE_NIDOKING_UNIQUE2, 127
+	db UNIQUE_CHANSEY_UNIQUE, 128
+	db DITTWO, 129
+	db UNIQUE_GOLDEEN_FIGHTING, 130
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -2836,7 +2917,32 @@ AbilityConservativeMaybe:
  callab AbilityActor
  ld a, [wAbilityResolvedExtended]
  cp AB_CONSERVATIVE - ABILITY_EXTENDED
+ jr z, .conservative
+ cp AB_EFFICIENT - ABILITY_EXTENDED
  ret nz
+ callab AbilityMove
+ ld a, [hl]
+ cp BIDE
+ jr z, .efficientDamaging
+ inc hl
+ inc hl
+ ld a, [hl]
+ and a
+ ret z
+.efficientDamaging
+ ld hl, wParentalState
+ set 5, [hl]
+.retryEfficient
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ cp 200
+ jr nc, .retryEfficient
+ cp 40
+ ret nc
+ ld hl, wParentalState
+ set 4, [hl]
+ ret
+.conservative
  ld hl, wParentalState
  set 5, [hl]
  callab CustomRandomInBattleBank
@@ -3834,6 +3940,8 @@ AbilityAddedSpeciesFixedDamage:
  jr z, .shadow
  cp AB_TECTONIC_WRATH - ABILITY_EXTENDED
  jr z, .ground
+ cp AB_KINDLING - ABILITY_EXTENDED
+ jr z, .kindling
  callab AbilityTarget
  ld a, [wAbilityResolvedExtended]
  cp AB_CLAY_ARMOR - ABILITY_EXTENDED
@@ -3842,6 +3950,18 @@ AbilityAddedSpeciesFixedDamage:
  cp WATER
  ret nz
  ld c, 50
+ jp AbilityFluffyFixedDamage.scale
+.kindling
+ call .moveType
+ cp FIRE
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityRolloutSidePointer
+ ld a, [hl]
+ and a
+ ret z
+ ld c, 130
  jp AbilityFluffyFixedDamage.scale
 .trickster
  call ConditionalTargetStatus1
@@ -4090,6 +4210,374 @@ AbilityBossHealEighth:
  ld [wCustomChance], a
  jpab ResidualFraction
 
+; Once-per-battle stage changes on qualifying damaging hits.
+AbilityDuelistOnHit:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DUELIST - ABILITY_EXTENDED
+ ret nz
+ callab AbilityMove
+ inc hl
+ inc hl
+ inc hl
+ ld a, [hl]
+ cp FIGHTING
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ ld a, 1 ; Defense
+ jr AbilityOneHitStage
+
+AbilityShellReflexOnHit:
+ ld a, [wAbilityMoveType]
+ cp FIRE
+ ret nc
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SHELL_REFLEX - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ ld a, 2 ; Speed
+AbilityOneHitStage:
+ push af
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ jr nz, .used
+ set 2, [hl]
+ pop af
+ ld [wCustomStat], a
+ ld a, [wAbilitySide]
+ ld [wCustomSide], a
+ ld a, 1
+ ld [wCustomDelta], a
+ xor a
+ ld [wCustomChanged], a
+ jpab CustomChangeStage
+.used
+ pop af
+ ret
+
+AbilityKindlingAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_KINDLING - ABILITY_EXTENDED
+ ret nz
+ callab AbilityMove
+ inc hl
+ inc hl
+ ld a, [hli]
+ and a
+ ret z
+ ld a, [hl]
+ cp NORMAL
+ jr z, .arm
+ cp FIRE
+ ret nz
+ xor a
+ jr .store
+.arm
+ ld a, 1
+.store
+ push af
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityRolloutSidePointer
+ pop af
+ ld [hl], a
+ ret
+
+AbilityAncientMaliceOnHit:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ANCIENT_MALICE - ABILITY_EXTENDED
+ ret nz
+.retry
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ cp 200
+ jr nc, .retry
+ cp 20
+ ret nc
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wCustomSide], a
+ jpab CustomConfuse
+
+AbilityNewAfterAction:
+ call AbilityKindlingAfterAction
+ jp AbilityBigBloomAfterAction
+AbilityNewActorHit:
+ call AbilityDuelistOnHit
+ jp AbilityAncientPowerOnHit
+AbilityNewTargetHit:
+ call AbilityClayArmorOnHit
+ jp AbilityShellReflexOnHit
+AbilityNewSecondaryHit:
+ call AbilityAncientMaliceOnHit
+ jp AbilityIntenseFlamesOnHit
+
+AbilityUniquePriority:
+ ld a, [wAbilityResolvedExtended]
+ cp AB_LIGHTNING_SPEED - ABILITY_EXTENDED
+ jp z, AbilityLightningSpeedMove
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wAbilityResolvedExtended]
+ cp AB_TOXIC_PURSUIT - ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityTemp + 1]
+ cp BIDE
+ jr z, .checkPoison
+ and a
+ ret z
+ cp MAX_MOVE_ID + 1
+ ret nc
+ dec a
+ ld l, a
+ ld h, 0
+ add hl, hl
+ ld d, h
+ ld e, l
+ add hl, hl
+ add hl, de
+ ld de, Moves + 2
+ add hl, de
+ ld de, wAbilityCheckResult
+ ld bc, 1
+ ld a, BANK(Moves)
+ call FarCopyData
+ ld a, [wAbilityCheckResult]
+ and a
+ jr z, .poison
+ xor a
+ ld [wAbilityCheckResult], a
+ jr .checkPoison
+.poison
+ xor a
+ ld [wAbilityCheckResult], a
+ ret
+.checkPoison
+ ld hl, wEnemyMonStatus
+ ld a, [wAbilitySide]
+ and a
+ jr z, .status
+ ld hl, wBattleMonStatus
+.status
+ bit PSN, [hl]
+ ret z
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+; Heal Bell has succeeded. Heal the active holder and each living reserve.
+AbilityCaregiverAfterHealBell:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_CAREGIVER - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ call AbilityBossHealEighth
+ ld a, [H_WHOSETURN]
+ and a
+ jr nz, .enemy
+ ld hl, wPartyMon1HP
+ ld a, [wPlayerMonNumber]
+ ld [wCustomStat], a
+ ld a, [wPartyCount]
+ jr .count
+.enemy
+ ld a, [wIsInBattle]
+ cp 2
+ ret nz
+ ld hl, wEnemyMon1HP
+ ld a, [wEnemyMonPartyPos]
+ ld [wCustomStat], a
+ ld a, [wEnemyPartyCount]
+.count
+ cp 7
+ jr c, .bounded
+ ld a, 6
+.bounded
+ and a
+ ret z
+ ld b, a
+ ld c, 0
+.loop
+ ld a, [wCustomStat]
+ cp c
+ jr z, .next
+ push bc
+ push hl
+ ld a, [hli]
+ ld b, a
+ ld a, [hl]
+ ld c, a
+ or b
+ jr z, .noHeal
+ dec hl
+ ld de, wPartyMon1MaxHP - wPartyMon1HP
+ add hl, de
+ ld a, [hli]
+ ld d, a
+ ld e, [hl]
+ push de
+ srl d
+ rr e
+ srl d
+ rr e
+ srl d
+ rr e
+ ld a, d
+ or e
+ jr nz, .fraction
+ inc e
+.fraction
+ ld h, b
+ ld l, c
+ add hl, de
+ pop de
+ jr c, .maximum
+ ld a, h
+ cp d
+ jr c, .write
+ jr nz, .maximum
+ ld a, l
+ cp e
+ jr c, .write
+.maximum
+ ld h, d
+ ld l, e
+.write
+ ld d, h
+ ld e, l
+ pop hl
+ ld a, d
+ ld [hli], a
+ ld [hl], e
+ dec hl
+ pop bc
+ jr .next
+.noHeal
+ pop hl
+ pop bc
+.next
+ push bc
+ ld bc, wPartyMon2 - wPartyMon1
+ add hl, bc
+ pop bc
+ inc c
+ dec b
+ jr nz, .loop
+ ret
+
+; Remember the slot replaced by a successful Duplicate until switching.
+AbilityBorrowedRecord:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_BORROWED_STRENGTH - ABILITY_EXTENDED
+ ret nz
+ callab AbilityMove
+ ld a, [hl]
+ cp DUPLICATE
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ and a
+ ld a, [wPlayerMoveListIndex]
+ jr z, .slot
+ ld a, [wEnemyMoveListIndex]
+.slot
+ inc a
+ push af
+ callab AbilityRolloutSidePointer
+ pop af
+ ld [hl], a
+ ret
+
+AbilityMultiAfterHit:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_BORROWED_STRENGTH - ABILITY_EXTENDED
+ jp nz, .ordinary
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ and a
+ ld a, [wPlayerMoveListIndex]
+ jr z, .slot
+ ld a, [wEnemyMoveListIndex]
+.slot
+ inc a
+ push af
+ callab AbilityRolloutSidePointer
+ pop af
+ cp [hl]
+ ret nz
+ ld hl, wParentalState
+ set 3, [hl] ; existing extra-hit engine uses half damage for this bit
+ jpab AbilityParentalAfterHit.eligible
+.ordinary
+ jpab AbilityParentalAfterHit
+
+AbilityHornSpecialistCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_HORN_SPECIALIST - ABILITY_EXTENDED
+ ret nz
+ callab AbilityMove
+ ld a, [hl]
+ jr AbilityHornSpecialistMove
+
+AbilityHornSpecialistAICheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wUnusedC000]
+ bit 3, a
+ ld a, 1
+ jr z, .side
+ xor a
+.side
+ ld [wAbilitySide], a
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_HORN_SPECIALIST - ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilitySide]
+ and a
+ ld a, [wPlayerMoveNum]
+ jr z, AbilityHornSpecialistMove
+ ld a, [wEnemyMoveNum]
+AbilityHornSpecialistMove:
+ cp HORN_ATTACK
+ jr z, .yes
+ cp PIERCE
+ jr z, .yes
+ cp HORN_DRILL
+ ret nz
+.yes
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
 	db AB_POISON_LEAF, AB_CHLOROPHYLL, AB_OVERGROWTH, AB_PHOTOSYNTHESIS, AB_VINE_GUARD
@@ -4208,6 +4696,17 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED

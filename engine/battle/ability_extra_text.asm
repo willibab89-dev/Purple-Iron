@@ -4,7 +4,7 @@ SECTION "Expanded ability descriptions", ROMX, BANK[$39]
 AbilityDrawExtraDescription:
  ld a, [wAbilityResolvedExtended]
  sub AB_CONSERVATIVE - ABILITY_EXTENDED
- cp 38
+ cp 48
  jr nc, .none
  ld c, a
  ld b, 0
@@ -32,7 +32,9 @@ AbilityExtraTextPointers:
 	dw AbilityText346, AbilityText347, AbilityText348, AbilityText349
 	dw AbilityText350, AbilityText351, AbilityText352, AbilityText353
 	dw AbilityText354, AbilityText355, AbilityText356, AbilityText357
-	dw AbilityText358, AbilityText359
+	dw AbilityText358, AbilityText359, AbilityText360, AbilityText361
+	dw AbilityText362, AbilityText363, AbilityText364, AbilityText365
+	dw AbilityText366, AbilityText367, AbilityText368, AbilityText369
 AbilityExtraNone: db "NO ABILITY@"
 AbilityText322: db "CONSERVATIVE",$4e,"Moves: 25% chance",$4e,"to save PP.@"
 AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
@@ -72,3 +74,14 @@ AbilityText356: db "RECOVERY",$4e,"Heal 1/8 HP while",$4e,"foe is poisoned.@"
 AbilityText357: db "SHARP VINES",$4e,"Critical chance",$4e,"+25 points.@"
 AbilityText358: db "BIG BLOOM",$4e,"Grass move: heal",$4e,"1/8 maximum HP.@"
 AbilityText359: db "DISCIPLINE",$4e,"Immune to status,",$4e,"confusion, flinch.@"
+
+AbilityText360: db "HAPPY RETURN",$4e,"Transform: heal",$4e,"1/4 HP once.@"
+AbilityText361: db "DUELIST",$4e,"Fighting hit: Def",$4e,"+1 once per battle.@"
+AbilityText362: db "SHELL REFLEX",$4e,"Physical hit: Speed",$4e,"+1 once per battle.@"
+AbilityText363: db "EFFICIENT",$4e,"Damage moves: 20%",$4e,"chance to save PP.@"
+AbilityText364: db "KINDLING",$4e,"Normal move powers",$4e,"next Fire move.@"
+AbilityText365: db "ANCIENT MALICE",$4e,"Hits: 10% chance",$4e,"to confuse foe.@"
+AbilityText366: db "TOXIC PURSUIT",$4e,"Damage moves first",$4e,"vs poisoned foes.@"
+AbilityText367: db "CAREGIVER",$4e,"Heal Bell heals team",$4e,"1/8 HP once.@"
+AbilityText368: db "BORROWED STRENGTH",$4e,"Duplicate moves hit",$4e,"again for half.@"
+AbilityText369: db "HORN SPECIALIST",$4e,"Horn moves: Fighting",$4e,"bonus; Normal chart.@"

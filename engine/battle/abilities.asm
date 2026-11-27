@@ -468,7 +468,7 @@ AbilityAfterHit:
 	push de
 	push hl
 	call AbilityHitEvents
-	call AbilityParentalAfterHit
+	callab AbilityMultiAfterHit
 	pop hl
 	pop de
 	pop bc

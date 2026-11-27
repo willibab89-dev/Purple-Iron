@@ -5041,7 +5041,17 @@ AdjustDamageForMoveType:
 	ld a, [wEnemyMoveType]
 	ld [wMoveType], a
 .next
+	abilitycall AbilityHornSpecialistCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .normalStabType
+	xor a ; Normal type chart for these moves
+	ld [wMoveType], a
+	ld a, FIGHTING ; Fighting type determines the same-type bonus
+	jr .compareStab
+.normalStabType
 	ld a, [wMoveType]
+.compareStab
 	cp b ; does the move type match type 1 of the attacker?
 	jr z, .sameTypeAttackBonus
 	cp c ; does the move type match type 2 of the attacker?
@@ -5204,7 +5214,7 @@ AIGetTypeEffectiveness:
 	inc hl
 	ld c, [hl]                 ; c = type 2 of enemy's pokemon
 	ld hl, TypeEffects
-	jr .loop
+	jr .hornCheck
 .enemyMove
 	ld a, [wEnemyMoveType]
 	ld d, a                    ; d = type of enemy move
@@ -5213,6 +5223,12 @@ AIGetTypeEffectiveness:
 	inc hl
 	ld c, [hl]                 ; c = type 2 of player's pokemon
 	ld hl, TypeEffects
+.hornCheck
+	abilitycall AbilityHornSpecialistAICheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .loop
+	ld d, NORMAL
 .loop
 	ld a, [hli]
 	cp $ff
@@ -8479,7 +8495,7 @@ MimicEffect:
 	call MoveHitTest
 	ld a, [wMoveMissed]
 	and a
-	jr nz, .mimicMissed
+	jp nz, .mimicMissed
 	ld a, [H_WHOSETURN]
 	and a
 	ld hl, wBattleMonMoves
@@ -8492,7 +8508,7 @@ MimicEffect:
 	ld a, [wEnemyBattleStatus1]
 .enemyTurn
 	bit INVULNERABLE, a
-	jr nz, .mimicMissed
+	jp nz, .mimicMissed
 .getRandomMove
 	push hl
 	call BattleRandom
@@ -8516,7 +8532,7 @@ MimicEffect:
 .letPlayerChooseMove
 	ld a, [wEnemyBattleStatus1]
 	bit INVULNERABLE, a
-	jr nz, .mimicMissed
+	jp nz, .mimicMissed
 	ld a, [wCurrentMenuItem]
 	push af
 	ld a, $1
@@ -8537,6 +8553,7 @@ MimicEffect:
 	add hl, bc
 	ld a, d
 	ld [hl], a
+	abilitycall AbilityBorrowedRecord
 	ld [wd11e], a
 	call GetMoveName
 	call PlayCurrentMoveAnimation

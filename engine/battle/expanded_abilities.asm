@@ -1527,7 +1527,7 @@ AbilityAttempt:
 
 ; Ground/Normal abilities trigger only when a move was actually executed.
 AbilitySandAfterAction:
-	callab AbilityBigBloomAfterAction
+	callab AbilityNewAfterAction
 	callab AbilityShadowBoxingAfterAction
 	callab AbilitySerpentGraceAfterAction
 	callab AbilityQuickLearnerAfterAction
@@ -1765,7 +1765,7 @@ AbilityHitEvents:
 	call AbilityOvercharge
 	call AbilityTastyLeek
 	call AbilityRampage
-	callab AbilityAncientPowerOnHit
+	callab AbilityNewActorHit
 	ld a, [wCustomTargetHadSub]
 	and a
 	ret nz
@@ -1801,7 +1801,7 @@ AbilityHitEvents:
 	or [hl]
 	ret z
 	call AbilityLowHPBoth
-	callab AbilityClayArmorOnHit
+	callab AbilityNewTargetHit
 	ld hl, wAbilityHit
 	bit 1, [hl]
 	ret nz
@@ -1809,7 +1809,7 @@ AbilityHitEvents:
 	call AbilityTarget
 	cp AB_SHIELD_DUST
 	ret z
-	callab AbilityIntenseFlamesOnHit
+	callab AbilityNewSecondaryHit
 	call AbilityActor
 	cp AB_REPULSIVE
 	jr nz, .leaf
@@ -4026,10 +4026,7 @@ AbilityPriorityOne:
 .wings
 	cp ABILITY_EXTENDED
 	jr nz, .galeWings
-	ld a, [wAbilityResolvedExtended]
-	cp AB_LIGHTNING_SPEED - ABILITY_EXTENDED
-	jr nz, .plain
-	callab AbilityLightningSpeedMove
+	callab AbilityUniquePriority
 	ld a, [wAbilityCheckResult]
 	and a
 	jr z, .plain

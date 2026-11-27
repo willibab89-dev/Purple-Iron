@@ -101,6 +101,49 @@ def validate(version):
                 assert [get(actor+'Mon'+n+'Mod') for n in ('Attack','Defense','Speed','Special')]==[want]*4,(turn,value,sub)
                 put('wAbilityHit',0);rng(0);call('AbilityAfterHit');assert get(actor+'MonAttackMod')==(8 if want==7 else want),(turn,'once')
             init(turn);aid(turn,'ANCIENT_POWER');aid(1-turn,'NEUTRALIZING_GAS');rng(0);call('AbilityAfterHit');assert get(actor+'MonAttackMod')==7
+        # Unique species: effects trigger on both sides and respect one-use flags.
+        for turn in (0, 1):
+            actor = 'w' + ('Enemy' if turn else 'Player')
+            target = 'w' + ('Player' if turn else 'Enemy')
+            ap, tp = init(turn); aid(turn, 'HAPPY_RETURN'); word(ap+'HP', 80)
+            call('AbilityDittoAfterTransform'); assert readword(ap+'HP') == 120
+            call('AbilityDittoAfterTransform'); assert readword(ap+'HP') == 120
+            ap, tp = init(turn); aid(turn, 'HAPPY_RETURN'); call('AbilityDittoAfterTransform')
+            word(ap+'HP', 80); call('AbilityDittoAfterTransform'); assert readword(ap+'HP') == 120
+            ap, tp = init(turn); aid(turn, 'CAREGIVER'); word(ap+'HP', 80)
+            party = 'wEnemyMon' if turn else 'wPartyMon'
+            put('wEnemyPartyCount' if turn else 'wPartyCount', 3)
+            word(party+'2HP', 100); word(party+'2MaxHP', 160)
+            word(party+'3HP', 0); word(party+'3MaxHP', 160)
+            call('AbilityCaregiverAfterHealBell')
+            assert (readword(ap+'HP'),readword(party+'2HP'),readword(party+'3HP')) == (100,120,0)
+            call('AbilityCaregiverAfterHealBell'); assert readword(party+'2HP') == 120
+            init(turn); aid(turn, 'DUELIST'); move(turn, 'KARATE_CHOP'); call('AbilityAfterHit')
+            assert get(actor+'MonDefenseMod') == 8
+            call('AbilityAfterHit'); assert get(actor+'MonDefenseMod') == 8
+            init(turn); aid(1-turn, 'SHELL_REFLEX'); move(turn, 'TACKLE'); call('AbilityAfterHit')
+            assert get(target+'MonSpeedMod') == 8
+            call('AbilityAfterHit'); assert get(target+'MonSpeedMod') == 8
+            init(turn); aid(turn, 'KINDLING'); move(turn, 'TACKLE'); put('wAbilityHit',8); call('AbilitySandAfterAction')
+            move(turn, 'EMBER'); word('wDamage',100); call('AbilityAddedSpeciesDamage'); assert readword('wDamage') == 130
+            call('AbilitySandAfterAction'); word('wDamage',100); call('AbilityAddedSpeciesDamage'); assert readword('wDamage') == 100
+            for attack in ('HORN_ATTACK','PIERCE','HORN_DRILL'):
+                for defense, expected in (('NORMAL',150),('ROCK',75),('GHOST',0)):
+                    ap,tp=init(turn); aid(turn,'HORN_SPECIALIST'); move(turn,attack)
+                    put(ap+'Type1',TYPES['FIGHTING']); put(ap+'Type2',TYPES['FIGHTING'])
+                    put(tp+'Type1',TYPES[defense]); put(tp+'Type2',TYPES[defense]); word('wDamage',100)
+                    call('AdjustDamageForMoveType'); assert readword('wDamage')==expected,(turn,attack,defense,readword('wDamage'))
+            init(turn); aid(turn, 'BORROWED_STRENGTH'); move(turn, 'DUPLICATE'); call('AbilityBorrowedRecord')
+            move(turn, 'TACKLE'); call('AbilityAfterHit'); assert get(actor+'NumAttacksLeft') == 2
+            put(actor+'NumAttacksLeft', 1); word('wDamage', 100); call('AbilityParentalOverride'); assert readword('wDamage') == 20
+            init(turn); aid(turn, 'BORROWED_STRENGTH'); move(turn, 'TACKLE'); call('AbilityAfterHit'); assert get(actor+'NumAttacksLeft') != 2
+            for attack, roll, saves in (('TACKLE',39,True),('TACKLE',40,False),('GROWL',0,False),('BIDE',0,True)):
+                init(turn); aid(turn,'EFFICIENT'); move(turn,attack); rng(roll); call('AbilityConservativeMaybe')
+                assert bool(get('wParentalState') & 16) == saves,(turn,attack,roll)
+            init(turn); aid(turn, 'TOXIC_PURSUIT'); move(turn, 'TACKLE'); put(tp+'Status',8); put('wAbilitySide',turn); call('AbilityPriorityOne'); assert game.register_file.A == 1
+            move(turn, 'GROWL'); put('wAbilitySide',turn); call('AbilityPriorityOne'); assert game.register_file.A == 0, (turn,game.register_file.A,get('wAbilityCheckResult'))
+            init(turn); aid(turn, 'ANCIENT_MALICE'); move(turn, 'TACKLE'); rng(0); call('AbilityAfterHit')
+            assert get(target+'BattleStatus1') & (1 << 7)
         # All five evolution slots, including noncontiguous ability IDs.
         pools={'BULBASAUR':['POISON_LEAF','CHLOROPHYLL','OVERGROWTH','PHOTOSYNTHESIS','VINE_GUARD'],
                'CHARMANDER':['BLAZE','COMBUSTION','WILDFIRE','HOT_TEMPER','CONFIDENT'],
@@ -220,7 +263,19 @@ def validate(version):
                'UNIQUE_GRIMER_POISON':['RECOVERY']*5,
                'UNIQUE_TANGELA_ERIKA':['SHARP_VINES']*5,
                'UNIQUE_VENUSAUR_ERIKA':['BIG_BLOOM']*5,
-               'UNIQUE_RAICHU_UNIQUE':['DISCIPLINE']*5}
+               'UNIQUE_RAICHU_UNIQUE':['DISCIPLINE']*5,
+               'UNIQUE_BULBASAUR_UNIQUE':['BIG_BLOOM']*5,
+               'UNIQUE_DITTO_HAPPY':['HAPPY_RETURN']*5,
+               'UNIQUE_MAROWAK_UNIQUE':['DUELIST']*5,
+               'UNIQUE_SQUIRTLE_UNIQUE':['SHELL_REFLEX']*5,
+               'UNIQUE_NIDORANM_UNIQUE':['EFFICIENT']*5,
+               'UNIQUE_CHARMANDER_UNIQUE':['KINDLING']*5,
+               'UNIQUE_OMANYTE_UNIQUE':['ANCIENT_MALICE']*5,
+               'UNIQUE_NIDOKING_UNIQUE2':['TOXIC_PURSUIT']*5,
+               'UNIQUE_CHANSEY_UNIQUE':['CAREGIVER']*5,
+               'DITTWO':['BORROWED_STRENGTH']*5,
+               'UNIQUE_GOLDEEN_FIGHTING':['HORN_SPECIALIST']*5,
+               }
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO'),(('DRAGONAIR',),'DRATINI'),(('TOXAPEX',),'MAREANIE'),(('CLAYDOL',),'BALTOY')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -2599,7 +2654,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 172 species / 860 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 183 species / 915 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
