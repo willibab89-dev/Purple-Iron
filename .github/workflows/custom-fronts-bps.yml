@@ -66,6 +66,7 @@ jobs:
           python3 tools/test_new_tms.py
           python3 tools/test_shock_fang.py
           python3 tools/test_new_requested_moves.py
+          python3 tools/test_bulldoze.py
           python3 tools/test_backs_and_species.py
           python3 tools/test_moonlight.py
           python3 tools/test_wake_up_slap.py

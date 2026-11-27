@@ -54,6 +54,10 @@ RouteImportedSprite:
 	jr z, .newSpecies
 	cp STRAIGAR
 	jr z, .newSpecies
+	cp PHANPY
+	jr z, .newSpecies
+	cp DONPHAN
+	jr z, .newSpecies
 	jr .oldSpecies
 .newSpecies
 	ld a, BANK(MareaniePicFront)

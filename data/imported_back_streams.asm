@@ -191,3 +191,5 @@ CustomBackStreams:
 	dbw BANK(ImportedBackVictreebel), ImportedBackVictreebel
 	dbw BANK(TykerPicBack), TykerPicBack
 	dbw BANK(StraigarPicBack), StraigarPicBack
+	dbw BANK(PhanpyPicBack), PhanpyPicBack
+	dbw BANK(DonphanPicBack), DonphanPicBack

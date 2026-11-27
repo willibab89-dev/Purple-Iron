@@ -270,6 +270,7 @@ MoveAnimationMap:
 	db TAKE_DOWN ; HEAD_SMASH
 	db BARRIER ; COTTON_GUARD
 	db LEER ; MEAN_LOOK
+	db EARTHQUAKE ; BULLDOZE
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

@@ -191,3 +191,5 @@ MonsterNames:
 	db "VICTREEBEL"
 	db "TYKER@@@@@"
 	db "STRAIGAR@@"
+	db "PHANPY@@@@"
+	db "DONPHAN@@@"

@@ -243,3 +243,4 @@ AbilityMoveMetadata:
 	db 67 ; HEAD_SMASH
 	db 64 ; COTTON_GUARD
 	db 64 ; MEAN_LOOK
+	db 73 ; BULLDOZE

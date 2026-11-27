@@ -1,0 +1,26 @@
+db DEX_PHANPY
+db 90
+db 60
+db 60
+db 40
+db 40
+db GROUND
+db GROUND
+db 190
+db 66
+INCBIN "pic/new_species/phanpy.pic",0,1
+dw PhanpyPicFront
+dw PhanpyPicBack
+db TACKLE
+db DEFENSE_CURL
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 10
+ tmlearn 0
+ tmlearn 28
+ tmlearn 34
+ tmlearn 44,48
+ tmlearn 50
+db 0

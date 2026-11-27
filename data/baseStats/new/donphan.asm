@@ -1,0 +1,26 @@
+db DEX_DONPHAN
+db 90
+db 120
+db 120
+db 60
+db 60
+db GROUND
+db GROUND
+db 60
+db 175
+INCBIN "pic/new_species/donphan.pic",0,1
+dw DonphanPicFront
+dw DonphanPicBack
+db TACKLE
+db DEFENSE_CURL
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 10
+ tmlearn 18,20
+ tmlearn 26,28
+ tmlearn 34
+ tmlearn 44,48
+ tmlearn 50
+db 0

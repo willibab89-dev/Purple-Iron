@@ -194,6 +194,8 @@ EvosMovesPointerTable:
 	dw VictreebelEvosMoves
 	dw TykerEvosMoves
 	dw StraigarEvosMoves
+	dw PhanpyEvosMoves
+	dw DonphanEvosMoves
 
 RhydonEvosMoves:
 ; Evolutions
@@ -2871,4 +2873,30 @@ StraigarEvosMoves:
  db 37, CRUNCH
  db 43, SHARPEN
  db 48, SHOCK_FANG
+ db 0
+
+PhanpyEvosMoves:
+ db EV_LEVEL, 25, DONPHAN
+ db 0
+ db 7, SAND_ATTACK
+ db 12, ROCK_THROW
+ db 16, BULLDOZE
+ db 20, DOUBLE_EDGE
+ db 24, ROCK_TOMB
+ db 30, DIG
+ db 36, ROCK_SLIDE
+ db 43, EARTHQUAKE
+ db 0
+
+DonphanEvosMoves:
+ db 0
+ db 11, SAND_ATTACK
+ db 16, ROCK_THROW
+ db 20, BULLDOZE
+ db 24, DOUBLE_EDGE
+ db 28, ROCK_TOMB
+ db 34, DIG
+ db 40, ROCK_SLIDE
+ db 47, EARTHQUAKE
+ db 54, HEAD_SMASH
  db 0

@@ -112,3 +112,17 @@ _StraigarDexEntry::
  text "Its powerful fangs"
  next "crackle with energy."
  dex
+
+PhanpyPicFront:: INCBIN "pic/new_species/phanpy.pic"
+PhanpyPicBack:: INCBIN "pic/new_species/phanpy_b.pic"
+_PhanpyDexEntry::
+ text "It travels across"
+ next "rocky terrain."
+ dex
+
+DonphanPicFront:: INCBIN "pic/new_species/donphan.pic"
+DonphanPicBack:: INCBIN "pic/new_species/donphan_b.pic"
+_DonphanDexEntry::
+ text "It travels across"
+ next "rocky terrain."
+ dex

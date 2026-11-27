@@ -38,8 +38,8 @@ def validate(version):
         assert hashlib.sha256((ROOT/entry['source']).read_bytes()).hexdigest()==entry['sha256']
         assert Image.open(ROOT/entry['png']).size==(56,56)
     assert len(rom)==1024*1024
-    headers=data('BaseStats',185*28);order=data('PokedexOrder',192)
-    assert sorted(n for n in order if n)==list(range(1,186))
+    headers=data('BaseStats',187*28);order=data('PokedexOrder',194)
+    assert sorted(n for n in order if n)==list(range(1,188))
     assert (183+7)//8==23
     assert addr('wPokedexSeen')-addr('wPokedexOwned')==25
     for i,old in enumerate(PLAN['previous_headers']):
@@ -147,7 +147,7 @@ def validate(version):
         assert get('wPokedexOwned',25)==snapshot
         stride=addr('wPartyMon2')-addr('wPartyMon1')
         assert game.memory[addr('wPartyMon1')]==NEW[-1]['index']
-        for name,level,target in [('Tyker',40,192),('Baltoy',36,146),('Larvitar',30,161),('Pupitar',55,162),('Golbat',40,156)]:
+        for name,level,target in [('Phanpy',25,194),('Tyker',40,192),('Baltoy',36,146),('Larvitar',30,161),('Pupitar',55,162),('Golbat',40,156)]:
             assert data(name+'EvosMoves',4)==bytes([1,level,target,0])
         for name,d in TUNING.items():
             index=order.index(d['dex'])+1
@@ -158,7 +158,11 @@ def validate(version):
                 if move not in known:known=(known+[move])[-4:]
             expected=[MOVES[move] for move in known]+[0]*(4-len(known))
             assert get('wPartyMon1Moves',4)==bytes(expected),name
-            assert get('wPartyMon1PP',4)==bytes(data('Moves',max(MOVES.values())*6)[(move-1)*6+5] if move else 0 for move in expected),name
+            expected_pp=[data('Moves',max(MOVES.values())*6)[(move-1)*6+5] if move else 0 for move in expected]
+            # Resourceful legitimately grants newly created Meowth/Persian +5 PP.
+            if name in ('meowth','persian') and game.memory[addr('wPartyMon1')+5]&0xe0 == 3<<5:
+                expected_pp=[min(63,pp+5) if pp else 0 for pp in expected_pp]
+            assert get('wPartyMon1PP',4)==bytes(expected_pp),name
             b,pointer=syms[d['title']+'EvosMoves']
             pos=pointer
             while game.memory[b,pos]:pos+=1
@@ -174,7 +178,7 @@ def validate(version):
             for name,rate in expected.items():
                 if name in counts:assert counts[name]==rate,(mapname,kind,name)
             if 'UNIQUE_OMANYTE_UNIQUE' in counts:assert counts['UNIQUE_OMANYTE_UNIQUE']==1
-        print(f'{version}: 185 back-loader paths/pixel comparisons; thirteen species/party/gender/evolution/save flags; old stats and encounter shares passed')
+        print(f'{version}: 187 back-loader paths/pixel comparisons; fifteen species/party/gender/evolution/save flags; old stats and encounter shares passed')
     finally:game.stop(save=False)
 
 

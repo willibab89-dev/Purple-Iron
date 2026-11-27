@@ -97,7 +97,7 @@ def validate(version):
         for item,internal,move in ((114,69,'HEAD_SMASH'),(115,70,'MAGICAL_LEAF'),(116,71,'MEAN_LOOK')):
             put('wcf91',item);call('DecodeMachineItem');assert get('wd11e')==internal
             call('TMToMove');assert get('wd11e')==MOVES[move]
-        for mon,move,expected in ((34,'HEAD_SMASH',True),(153,'MAGICAL_LEAF',True),(36,'HEAD_SMASH',False)):
+        for mon,move,expected in ((34,'HEAD_SMASH',True),(194,'HEAD_SMASH',True),(193,'HEAD_SMASH',False),(153,'MAGICAL_LEAF',True),(36,'HEAD_SMASH',False)):
             put('wcf91',mon);put('wMoveNum',MOVES[move]);call('CanLearnTM');assert bool(game.register_file.C)==expected,(mon,move)
         print(f'{version}: new move effects, recoil, accuracy, stat caps and TM mappings passed')
     finally:game.stop(save=False)

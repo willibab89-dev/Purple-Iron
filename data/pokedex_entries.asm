@@ -191,6 +191,8 @@ PokedexEntryPointers:
 	dw VictreebelDexEntry
 	dw TykerDexEntry
 	dw StraigarDexEntry
+	dw PhanpyDexEntry
+	dw DonphanDexEntry
 
 ; string: species name
 ; height in feet, inches
@@ -1349,4 +1351,18 @@ StraigarDexEntry:
  db 5, 0
  dw 1500
  TX_FAR _StraigarDexEntry
+ db "@"
+
+PhanpyDexEntry:
+ db "LONG NOSE@"
+ db 3, 0
+ dw 900
+ TX_FAR _PhanpyDexEntry
+ db "@"
+
+DonphanDexEntry:
+ db "ARMOR@"
+ db 3, 0
+ dw 900
+ TX_FAR _DonphanDexEntry
  db "@"

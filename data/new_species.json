@@ -1007,5 +1007,123 @@
         "SHOCK_FANG"
       ]
     ]
+  },
+  {
+    "name": "phanpy",
+    "symbol": "PHANPY",
+    "index": 193,
+    "dex": 186,
+    "stats": [
+      90,
+      60,
+      60,
+      40,
+      40
+    ],
+    "types": [
+      "GROUND",
+      "GROUND"
+    ],
+    "catch": 190,
+    "xp": 66,
+    "start": [
+      "TACKLE",
+      "DEFENSE_CURL"
+    ],
+    "learn": [
+      [
+        7,
+        "SAND_ATTACK"
+      ],
+      [
+        12,
+        "ROCK_THROW"
+      ],
+      [
+        16,
+        "BULLDOZE"
+      ],
+      [
+        20,
+        "DOUBLE_EDGE"
+      ],
+      [
+        24,
+        "ROCK_TOMB"
+      ],
+      [
+        30,
+        "DIG"
+      ],
+      [
+        36,
+        "ROCK_SLIDE"
+      ],
+      [
+        43,
+        "EARTHQUAKE"
+      ]
+    ]
+  },
+  {
+    "name": "donphan",
+    "symbol": "DONPHAN",
+    "index": 194,
+    "dex": 187,
+    "stats": [
+      90,
+      120,
+      120,
+      60,
+      60
+    ],
+    "types": [
+      "GROUND",
+      "GROUND"
+    ],
+    "catch": 60,
+    "xp": 175,
+    "start": [
+      "TACKLE",
+      "DEFENSE_CURL"
+    ],
+    "learn": [
+      [
+        11,
+        "SAND_ATTACK"
+      ],
+      [
+        16,
+        "ROCK_THROW"
+      ],
+      [
+        20,
+        "BULLDOZE"
+      ],
+      [
+        24,
+        "DOUBLE_EDGE"
+      ],
+      [
+        28,
+        "ROCK_TOMB"
+      ],
+      [
+        34,
+        "DIG"
+      ],
+      [
+        40,
+        "ROCK_SLIDE"
+      ],
+      [
+        47,
+        "EARTHQUAKE"
+      ],
+      [
+        54,
+        "HEAD_SMASH"
+      ]
+    ]
   }
 ]

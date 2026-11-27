@@ -192,3 +192,5 @@ const_value = 1
 	const VICTREEBEL   ; $BE
 	const TYKER
 	const STRAIGAR
+	const PHANPY
+	const DONPHAN

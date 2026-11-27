@@ -237,5 +237,17 @@
     ],
     "level": 20,
     "percent": 5
+  },
+  {
+    "species": "PHANPY",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_9",
+      "ROCK_TUNNEL_1"
+    ],
+    "level": 18,
+    "percent": 5
   }
 ]

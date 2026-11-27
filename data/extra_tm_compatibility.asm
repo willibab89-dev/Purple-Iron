@@ -184,4 +184,6 @@ ExtraTMCompatibilityTable:
 	db $40, $00 ; 183: tyranitar
 	db $22, $00 ; 184: tyker
 	db $22, $80 ; 185: straigar
+	db $60, $00 ; 186: phanpy
+	db $60, $20 ; 187: donphan
 ExtraTMCompatibilityTableEnd:

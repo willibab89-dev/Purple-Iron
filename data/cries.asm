@@ -192,3 +192,5 @@ CryData:
 	db $25, $66, $CC; Victreebel
 	db $1F, $20, $40 ; Tyker
 	db $15, $00, $80 ; Straigar
+	db $0B, $40, $40 ; Phanpy
+	db $0B, $00, $80 ; Donphan

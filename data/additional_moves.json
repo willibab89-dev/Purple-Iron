@@ -262,5 +262,16 @@
     "accuracy": 100,
     "pp": 15,
     "animation": "LEER"
+  },
+  {
+    "id": 244,
+    "symbol": "BULLDOZE",
+    "name": "BULLDOZE",
+    "effect": "ATTACK_AND_STAT_EFFECT",
+    "power": 60,
+    "type": "GROUND",
+    "accuracy": 100,
+    "pp": 15,
+    "animation": "EARTHQUAKE"
   }
 ]
