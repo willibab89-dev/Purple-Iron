@@ -2226,6 +2226,11 @@ AbilityExtendedPoolIds:
  db 100, 3, AB_DOMINANCE - ABILITY_EXTENDED
  db 100, 4, AB_DOMINANCE - ABILITY_EXTENDED
  db 100, 5, AB_DOMINANCE - ABILITY_EXTENDED
+ db 101, 1, AB_ANCESTOR - ABILITY_EXTENDED
+ db 101, 2, AB_ANCESTOR - ABILITY_EXTENDED
+ db 101, 3, AB_ANCESTOR - ABILITY_EXTENDED
+ db 101, 4, AB_ANCESTOR - ABILITY_EXTENDED
+ db 101, 5, AB_ANCESTOR - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2541,6 +2546,7 @@ AbilitySpeciesPools:
 	db DRAGONAIR, 98
 	db DRAGONITE, 99
 	db MEWTWO, 100
+	db MEW, 101
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3567,4 +3573,16 @@ AbilityBlockReactiveStatDrop:
  ret nz
  ld a, [wAbilityResolvedExtended]
  cp AB_DOMINANCE - ABILITY_EXTENDED
+ ret
+
+; Treat nonmatching move types as matching for the ordinary STAB calculation.
+AbilityAncestorCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_ANCESTOR - ABILITY_EXTENDED
+ ret nz
+ ld a, 1
+ ld [wAbilityCheckResult], a
  ret

@@ -5046,7 +5046,10 @@ AdjustDamageForMoveType:
 	jr z, .sameTypeAttackBonus
 	cp c ; does the move type match type 2 of the attacker?
 	jr z, .sameTypeAttackBonus
-	jr .skipSameTypeAttackBonus
+	abilitycall AbilityAncestorCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .skipSameTypeAttackBonus
 .sameTypeAttackBonus
 ; if the move type matches one of the attacker's types
 	ld hl, wDamage + 1

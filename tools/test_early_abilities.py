@@ -201,7 +201,8 @@ def validate(version):
                'MOLTRES':['INTENSE_FLAMES']*5,
                'DRATINI':['SHED_SKIN','MYSTIC_SCALES','SERPENT_GRACE','MARVEL_SCALE','WATER_VEIL'],
                'DRAGONITE':['MULTISCALE','MYSTIC_SCALES','INNER_FOCUS','MARVEL_SCALE','WATER_VEIL'],
-               'MEWTWO':['DOMINANCE']*5}
+               'MEWTWO':['DOMINANCE']*5,
+               'MEW':['ANCESTOR']*5}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO'),(('DRAGONAIR',),'DRATINI')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1293,6 +1294,14 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Ancestor applies the ordinary same-type bonus exactly once.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player')
+            for attack,t1,t2,want in [('NORMAL','NORMAL','NORMAL',150),('FIRE','NORMAL','NORMAL',150),('PSYCHIC','NORMAL','NORMAL',150),('FIRE','GRASS','GRASS',300),('PSYCHIC','PSYCHIC','PSYCHIC',75),('NORMAL','GHOST','GHOST',0),('ICE','WATER','GRASS',150)]:
+                ap,tp=init(turn);aid(turn,'ANCESTOR');put(ap+'Type1',TYPES['PSYCHIC']);put(ap+'Type2',TYPES['PSYCHIC']);put(tp+'Type1',TYPES[t1]);put(tp+'Type2',TYPES[t2]);put(actor+'MoveType',TYPES[attack]);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==want,(turn,attack,t1,t2,readword('wDamage'));assert bool(get('wDamageMultipliers')&128),(turn,attack,'stab flag')
+            for attack,want in [('NORMAL',100),('PSYCHIC',150)]:
+                ap,tp=init(turn);aid(turn,'ANCESTOR');aid(1-turn,'NEUTRALIZING_GAS');put(ap+'Type1',TYPES['PSYCHIC']);put(ap+'Type2',TYPES['PSYCHIC']);put(actor+'MoveType',TYPES[attack]);word('wDamage',100);call('AdjustDamageForMoveType');assert readword('wDamage')==want,(turn,attack,'suppressed',readword('wDamage'))
+            ap,tp=init(turn);aid(turn,'ANCESTOR');put(ap+'Type1',TYPES['PSYCHIC']);put(ap+'Type2',TYPES['PSYCHIC']);put(actor+'MoveType',TYPES['NORMAL']);word('wDamage',1);call('AdjustDamageForMoveType');assert readword('wDamage')==1,(turn,'rounding')
         # Dominance blocks opponents, but permits self-inflicted effects.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -2084,6 +2093,10 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('EMBER',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('EMBER',turn,actor='ANCESTOR',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live ancestor',normal,readword(tp+'HP'))
+            ap,tp=execute('SONICBOOM',turn,random_value=100);normal=160-readword(tp+'HP')
+            ap,tp=execute('SONICBOOM',turn,actor='ANCESTOR',random_value=100);assert 160-readword(tp+'HP')==normal==20,(turn,'fixed damage',normal,readword(tp+'HP'))
             for attack in ('SLEEP_POWDER','POISONPOWDER','THUNDER_WAVE','WILL_O_WISP','FLASH_FREEZE'):
                 ap,tp=execute(attack,turn,target='DOMINANCE',random_value=100);assert get(tp+'Status')==0,(turn,attack,'live dominance status')
             for attack in ('FLAMETHROWER','ICE_BEAM','THUNDERSHOCK'):
@@ -2481,7 +2494,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 151 species / 755 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 152 species / 760 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
