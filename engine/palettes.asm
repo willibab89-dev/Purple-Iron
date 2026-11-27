@@ -639,10 +639,30 @@ SendSGBPackets:
 	call Delay3
 	ret
 .notGBC
+ ; PAL_SET packets use the extra monochrome/green SGB palette slots.
+ ld a, [wColorScheme]
+ cp $a1
+ jr nz, .checkGreen
+ ld hl, ColorSchemeGraySGB
+ jr .sendSGB
+.checkGreen
+ cp $a3
+ jr nz, .sendSGB
+ ld hl, ColorSchemeGreenSGB
+.sendSGB
 	push de
 	call SendSGBPacket
 	pop hl
 	jp SendSGBPacket
+
+ColorSchemeGraySGB:
+ db $51
+ dw $28, $28, $28, $28
+ ds 7
+ColorSchemeGreenSGB:
+ db $51
+ dw $29, $29, $29, $29
+ ds 7
 
 InitGBCPalettes:	;gbcnote - updating this to work with the Yellow code
 	ld a, [hl]
@@ -688,25 +708,52 @@ index = index + 1
 	ENDR
 	ret
 
-GetGBCBasePalAddress:: ;gbcnote - new function
-; Input: a = palette ID
-; Output: de = palette address
-	push hl
-	ld l, a
-	xor a
-	ld h, a
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	ld de, GBCBasePalettes
-	add hl, de
-	ld a, l
-	ld e, a
-	ld a, h
-	ld d, a
-	pop hl
-	ret
-	
+GetGBCBasePalAddress::
+; The saved setting selects a source palette; the original index is retained
+; for the per-scene Super Game Boy palettes and the normal default.
+ push hl
+ ld l, a
+ ld h, 0
+ add hl, hl
+ add hl, hl
+ add hl, hl
+ ld de, GBCBasePalettes
+ ld a, [wColorScheme]
+ and $fc
+ cp $a0
+ jr nz, .indexed
+ ld a, [wColorScheme]
+ and 3
+ jr z, .indexed
+ cp 2
+ jr z, .super
+ cp 1
+ ld de, ColorSchemeGray
+ jr z, .fixed
+ ld de, ColorSchemeGreen
+.fixed
+ pop hl
+ ret
+.super
+ ld de, SuperPalettes
+.indexed
+ add hl, de
+ ld d, h
+ ld e, l
+ pop hl
+ ret
+
+ColorSchemeGray:
+ RGB 31, 31, 31
+ RGB 21, 21, 21
+ RGB 10, 10, 10
+ RGB 0, 0, 0
+ColorSchemeGreen:
+ RGB 24, 30, 16
+ RGB 16, 24, 10
+ RGB 8, 16, 6
+ RGB 2, 7, 3
+
 DMGPalToGBCPal::	;gbcnote - new function
 ; Populate wGBCPal with colors from a base palette, selected using one of the
 ; DMG palette registers.

@@ -2439,7 +2439,8 @@ wOptions:: ; d355
 wObtainedBadges:: ; d356
 	flag_array 8
 
-	ds 1
+; Reserved save byte: $a0 | scheme (old saves without the marker use default).
+wColorScheme:: ds 1
 
 wLetterPrintingDelayFlags:: ; d358
 ; bit 0: If 0, limit the delay to 1 frame. Note that this has no effect if

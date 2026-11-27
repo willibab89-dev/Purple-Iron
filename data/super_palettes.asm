@@ -264,3 +264,13 @@ ENDC
 	RGB 16, 16, 16
 	RGB 31, 25,  9
 	RGB  6,  6,  6
+
+; Dedicated monochrome and classic green palettes for SGB color options.
+	RGB 31, 31, 31
+	RGB 21, 21, 21
+	RGB 10, 10, 10
+	RGB 0, 0, 0
+	RGB 24, 30, 16
+	RGB 16, 24, 10
+	RGB 8, 16, 6
+	RGB 2, 7, 3

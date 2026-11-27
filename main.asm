@@ -2228,3 +2228,5 @@ SECTION "Earth Eater hit hook", ROM0
 EarthEaterHitHook:
  abilitycall AbilityEarthEaterOnHit
  ret
+
+INCLUDE "engine/menu/color_options.asm"
