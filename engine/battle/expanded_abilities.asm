@@ -517,6 +517,7 @@ AbilityScaleDamage:
 	ret
 
 AbilityModifyDamage:
+	callab AbilityAddedSpeciesDamage
 	callab AbilityDragonScalesDamage
 	callab AbilitySleepwalkerDamage
 	callab AbilityFluffyDamage
@@ -1143,6 +1144,7 @@ AbilityExistingFixedDamageModifiers:
 	ld hl, wAbilityHit
 	set 3, [hl]
 .fixedActor
+	callab AbilityAddedSpeciesFixedDamage
 	callab AbilityDragonScalesFixedDamage
 	callab AbilitySleepwalkerFixedDamage
 	callab AbilityFluffyFixedDamage
@@ -1522,6 +1524,7 @@ AbilityAttempt:
 
 ; Ground/Normal abilities trigger only when a move was actually executed.
 AbilitySandAfterAction:
+	callab AbilityShadowBoxingAfterAction
 	callab AbilitySerpentGraceAfterAction
 	callab AbilityQuickLearnerAfterAction
 	call AbilitySapSipperStatus
@@ -1794,6 +1797,7 @@ AbilityHitEvents:
 	or [hl]
 	ret z
 	call AbilityLowHPBoth
+	callab AbilityClayArmorOnHit
 	ld hl, wAbilityHit
 	bit 1, [hl]
 	ret nz
@@ -2959,91 +2963,14 @@ AbilityRampageText:
 	prompt
 
 AbilitySpinyArmor:
-	call AbilityActor
-	cp AB_MAGIC_GUARD
-	ret z
-	call AbilityTarget
-	cp AB_SPINY_ARMOR
-	jr z, .physical
-	cp AB_SPIKED_SHELL
-	jr z, .physical
-	cp ABILITY_EXTENDED
-	ret nz
-	ld a, [wAbilityResolvedExtended]
-	cp AB_SPIKY_FUR - ABILITY_EXTENDED
-	ret nz
-.physical
-	ld a, [wAbilityMoveType]
-	cp FIRE
-	ret nc
-	ld a, [H_WHOSETURN]
-	ld [wAbilitySide], a
-	call AbilityHP
-	ld a, [hli]
-	or [hl]
-	ret z
-	dec hl
-	push hl
-	ld a, [de]
-	ld b, a
-	inc de
-	ld a, [de]
-	ld c, a
-	rept 4
-	srl b
-	rr c
-	endr
-	ld a, b
-	or c
-	jr nz, .amount
-	inc c
-.amount
-	pop hl
-	ld a, [hli]
-	ld d, a
-	ld a, [hl]
-	sub c
-	ld e, a
-	ld a, d
-	sbc b
-	jr nc, .store
-	xor a
-	ld e, a
-.store
-	ld [hl], e
-	dec hl
-	ld [hl], a
-	ld a, [wAbilitySide]
-	ld [wCustomSide], a
-	callab UtilitySyncParty
-	callab DrawHUDsAndHPBars
-	call AbilityTarget
-	cp ABILITY_EXTENDED
-	jr nz, .standardText
-	ld a, [wAbilityResolvedExtended]
-	cp AB_SPIKY_FUR - ABILITY_EXTENDED
-	jp z, AbilitySpikyFurMessage
-	call AbilityTarget
-.standardText
-	cp AB_SPIKED_SHELL
-	ld hl, AbilitySpinyArmorText
-	jr nz, .print
-	ld hl, AbilitySpikedShellText
-.print
-	jp PrintText
+ jpab AbilitySpinyArmorBanked
 
-AbilitySpikyFurMessage:
- jpab AbilitySpikyFurMessageBanked
-
-AbilitySpikedShellText:
-	text "Hurt by"
-	line "SPIKED SHELL!"
-	prompt
-
-AbilitySpinyArmorText:
-	text "Hurt by"
-	line "SPINY ARMOR!"
-	prompt
+AbilityActorContactResult:
+ call AbilityMove
+ ld a, [hl]
+ call AbilityMoveFlags
+ ld [wAbilityCheckResult], a
+ ret
 
 ; A successful critical hit, including against a Substitute, triggers once.
 AbilityOvercharge:
@@ -3327,9 +3254,17 @@ AbilityGetTargetReactions:
 	cp AB_POISON_POINT
 	jr z, .poison
 	cp AB_TOXIC_SHELL
+	jr z, .poison
+	cp ABILITY_EXTENDED
 	ret nz
+	ld a, [wAbilityResolvedExtended]
+	cp AB_ROCK_POISON_POINT - ABILITY_EXTENDED
+	ret nz
+	ld b, 20
+	jr .poisonRoll
 .poison
 	ld b, 25
+.poisonRoll
 	call AbilityRoll
 	ret nc
 .inflictReactivePoison
@@ -4150,6 +4085,15 @@ AbilityAncientHP:
 	cp e
 	jr nz, .stored
 	ld a, [wActiveAbilities]
+	cp ABILITY_EXTENDED
+	jr nz, .ordinaryHPAbility
+	ld a, [wActiveAbilityExtended]
+	cp AB_GIGANTISM - ABILITY_EXTENDED
+	ret nz
+	ld a, 200
+	ld [wAbilityTemp + 1], a
+	jr .boost
+.ordinaryHPAbility
 	cp AB_BOTTOMLESS_STOMACH
 	jr z, .boost
 	cp AB_ANCIENT
@@ -4175,6 +4119,17 @@ AbilityAncientHP:
 	rlca
 	and 7
 .slot
+	ld c, a
+	ld a, b
+	and a
+	jr nz, .singleSlot
+	ld a, c
+	dec a
+	cp 5
+	ret nc ; valid slots 1 through 5 all use Gigantism
+	jr .boost
+.singleSlot
+	ld a, c
 	cp b
 	ret nz
 .boost
@@ -4197,6 +4152,8 @@ AbilityAncientHP:
 	ret
 ; A = species; Z and B = its HP-boosting slot, or NZ if unsupported.
 AbilityHPScalingFamily:
+ cp UNIQUE_TENTACOOL_BIG
+ jr z, .gigantism
  cp LICKITUNG
  jr z, .bottomless
  cp ONIX
@@ -4208,6 +4165,12 @@ AbilityHPScalingFamily:
  call AbilitySquirtleFamily
  ret nz
  ld b, 3
+ xor a
+ ret
+.gigantism
+ ld a, 200
+ ld [wAbilityTemp + 1], a
+ ld b, 0
  xor a
  ret
 .blubber

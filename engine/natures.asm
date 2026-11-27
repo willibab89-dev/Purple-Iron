@@ -221,6 +221,14 @@ NatureCriticalHitTest:
 .allowed
 	xor a
 	ld [wCriticalHitOrOHKO], a
+	abilitycall AbilityMercilessCheck
+	ld a, [wAbilityCheckResult]
+	and a
+	jr z, .conditional
+	ld a, 1
+	ld [wCriticalHitOrOHKO], a
+	ret
+.conditional
 	callab ConditionalCriticalCheck
 	jr nc, .ordinary
 	ld a, 1

@@ -202,8 +202,20 @@ def validate(version):
                'DRATINI':['SHED_SKIN','MYSTIC_SCALES','SERPENT_GRACE','MARVEL_SCALE','WATER_VEIL'],
                'DRAGONITE':['MULTISCALE','MYSTIC_SCALES','INNER_FOCUS','MARVEL_SCALE','WATER_VEIL'],
                'MEWTWO':['DOMINANCE']*5,
-               'MEW':['ANCESTOR']*5}
-        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO'),(('DRAGONAIR',),'DRATINI')]:
+               'MEW':['ANCESTOR']*5,
+               'MAREANIE':['REGENERATOR','MERCILESS','CORROSIVE_VENOM','SNIPER','BARBED_SHELL'],
+               'MILTANK':['THICK_FAT','SAP_SIPPER','ROLLOUT','SCRAPPY','SERENE_GRACE'],
+               'LARVITAR':['EARTH_EATER','BATTLE_ARMOR','AFTERSHOCK','SHORT_TEMPER','UNDERDOG'],
+               'PUPITAR':['EARTH_EATER','SHELL_ARMOR','EARTHSHAKER','DEFIANT','CONTACT_SPIKED_SHELL'],
+               'UNIQUE_BLASTOISE_UNIQUE':['WATER_PRESSURE']*5,
+               'UNIQUE_IVYSAUR_ERIKA':['VINE_GUARD']*5,
+               'SABLEYE':['PRANKSTER','MIRROR_ARMOR','TRICKSTER','CURSED_BODY','SHADOW_AMBUSH'],
+               'BALTOY':['LEVITATE','CURSED_BODY','MINDS_EYE','IMMUNITY','CLAY_ARMOR'],
+               'TYRANITAR':['EARTH_EATER','BATTLE_ARMOR','TECTONIC_WRATH','RAMPAGE','TYRANITAR_TERRIFYING'],
+               'UNIQUE_KAKUNA_ROCK_TYPE':['CONTACT_SPIKED_SHELL','SHED_SKIN','HEAVYWEIGHT','ONIX_STURDY','ROCK_POISON_POINT'],
+               'UNIQUE_GEODUDE_FIGHTING':['SHADOW_BOXING']*5,
+               'UNIQUE_TENTACOOL_BIG':['GIGANTISM']*5}
+        for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO'),(('DRAGONAIR',),'DRATINI'),(('TOXAPEX',),'MAREANIE'),(('CLAYDOL',),'BALTOY')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
             for slot,name in enumerate(pool,1):
@@ -1294,6 +1306,47 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        for turn in (0,1):
+            target='w'+('Player' if turn else 'Enemy')
+            for ability_name,attack,confused,hp,want in [('TRICKSTER','TACKLE',1,160,125),('TRICKSTER','TACKLE',0,160,100),('SHADOW_AMBUSH','LICK',0,160,130),('SHADOW_AMBUSH','LICK',0,159,100),('TECTONIC_WRATH','EARTHQUAKE',0,160,150),('TECTONIC_WRATH','TACKLE',0,160,100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,ability_name);put(target+'BattleStatus1',128 if confused else 0);word(tp+'HP',hp);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,ability_name,attack,readword('wDamage'))
+            for attack,want in [('WATER_GUN',50),('TACKLE',100)]:
+                init(turn);move(turn,attack);aid(1-turn,'CLAY_ARMOR');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,attack,'clay armor')
+            for attack,sub,hp,want in [('WATER_GUN',0,160,9),('TACKLE',0,160,7),('WATER_GUN',1,160,7),('WATER_GUN',0,0,7)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'CLAY_ARMOR');put('wCustomTargetHadSub',sub);word(tp+'HP',hp);call('AbilityAfterHit');assert get(target+'MonAttackMod')==want,(turn,attack,sub,hp,'clay armor',get(target+'MonAttackMod'))
+        for turn in (0,1):
+            for attack,roll,want in [('TACKLE',39,8),('TACKLE',40,0),('EARTHQUAKE',0,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'ROCK_POISON_POINT');rng(roll);call('AbilityAfterHit');assert get(ap+'Status')==want,(turn,attack,roll,'rock poison point')
+        for turn in (0,1):
+            target='w'+('Player' if turn else 'Enemy')
+            init(turn);aid(turn,'TYRANITAR_TERRIFYING');put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get(target+'MonDefenseMod')==6
+            put('wAbilitySide',turn);call('AbilityEntry');call('AbilityEntrySpeed');assert get(target+'MonDefenseMod')==5,(turn,'tyranitar repeated entry')
+            for attack,want in [('TACKLE',150),('EARTHQUAKE',160)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'CONTACT_SPIKED_SHELL');call('AbilityAfterHit');assert readword(ap+'HP')==want,(turn,attack,'contact spiked shell')
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player')
+            for attack,used,roll,speed,evasion in [('MEGA_PUNCH',1,0,8,7),('MEGA_PUNCH',1,1,7,8),('TACKLE',1,0,7,7),('MEGA_PUNCH',0,0,7,7)]:
+                init(turn);move(turn,attack);aid(turn,'SHADOW_BOXING');put('wAbilityHit',8 if used else 0);rng(roll);call('AbilitySandAfterAction');assert (get(actor+'MonSpeedMod'),get(actor+'MonEvasionMod'))==(speed,evasion),(turn,attack,used,roll)
+        # Gigantism applies to all five saved slots and does not compound on reload.
+        bank,address=syms['AbilityHPScalingFamily'];original=bytes(game.memory[bank,address:address+4])
+        for slot in range(1,6):
+            root='wPartyMon1';init();game.memory[addr(root):addr(root)+44]=[0]*44;metadata(root,'UNIQUE_TENTACOOL_BIG',slot,0);put(root+'Level',50);word(root+'HP',100);word(root+'MaxHP',100);word('wNatureMonPtr',addr(root))
+            game.memory[bank,address:address+4]=[0x3e,1,0xb7,0xc9];call('NatureMigrateOne');baseline=readword(root+'MaxHP')
+            game.memory[bank,address:address+4]=original;call('NatureMigrateOne');expected=min(999,baseline*2);assert readword(root+'MaxHP')==expected,(slot,'gigantism',baseline,readword(root+'MaxHP'));word(root+'HP',expected-20);call('NatureMigrateOne');assert readword(root+'MaxHP')==expected and readword(root+'HP')==expected-20,(slot,'gigantism reload')
+        for slot in (1,5):
+            maxima=[]
+            for enabled in (False,True):
+                init();put('wEnemyMonSpecies2',ids['UNIQUE_TENTACOOL_BIG']);put('wCurEnemyLVL',50);put('wIsInBattle',1);put('wNatureMode',2);put('wNatureEnemySlot',slot);game.memory[addr('wNatureIDs')+1]=0;game.memory[addr('wNatureStatSources')+1]=0;rng(0)
+                if not enabled:game.memory[bank,address:address+4]=[0x3e,1,0xb7,0xc9]
+                call('LoadEnemyMonData');maxima.append(readword('wEnemyMonMaxHP'));game.memory[bank,address:address+4]=original
+            assert maxima[1]==min(999,maxima[0]*2),(slot,'enemy gigantism',maxima)
+        # Mareanie line: poison-dependent guaranteed criticals and contact recoil.
+        for turn in (0,1):
+            for status,guard,want in [(8,None,1),(0,None,0),(8,'SHELL_ARMOR',0),(8,'NEUTRALIZING_GAS',0)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'MERCILESS');aid(1-turn,guard);put(tp+'Status',status);rng(255);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==want,(turn,status,guard,get('wCriticalHitOrOHKO'))
+            init(turn);move(turn,'SONICBOOM');aid(turn,'MERCILESS');put(('wBattleMon' if turn else 'wEnemyMon')+'Status',8);rng(255);call('NatureCriticalHitTest');assert get('wCriticalHitOrOHKO')==0,(turn,'fixed')
+            for attack,sub,protect,hp,want in [('TACKLE',0,None,160,140),('EARTHQUAKE',0,None,160,160),('TACKLE',1,None,160,160),('TACKLE',0,'MAGIC_GUARD',160,160),('TACKLE',0,None,0,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'BARBED_SHELL');aid(turn,protect);word(ap+'HP',hp);put('wCustomTargetHadSub',sub);call('AbilityAfterHit');assert readword(ap+'HP')==want,(turn,attack,sub,protect,hp,readword(ap+'HP'))
         # Ancestor applies the ordinary same-type bonus exactly once.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player')
@@ -2093,6 +2146,10 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,actor='MERCILESS',status=8,random_value=200);assert get('wCriticalHitOrOHKO')==1 and readword(tp+'HP')<160,(turn,'live merciless',get('wCriticalHitOrOHKO'))
+            ap,tp=execute('TACKLE',turn,target='BARBED_SHELL',actor_hp=80,random_value=100);assert readword(ap+'HP')==60,(turn,'live barbed shell',readword(ap+'HP'))
+            ap,tp=execute('WATER_GUN',turn,target='CLAY_ARMOR',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==9,(turn,'live clay armor')
+            ap,tp=execute('MEGA_PUNCH',turn,actor='SHADOW_BOXING',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonSpeedMod')==8,(turn,'live shadow boxing')
             ap,tp=execute('EMBER',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('EMBER',turn,actor='ANCESTOR',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live ancestor',normal,readword(tp+'HP'))
             ap,tp=execute('SONICBOOM',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -2494,7 +2551,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 152 species / 760 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 166 species / 830 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

@@ -6,34 +6,18 @@ Compared the user-provided `Pasted text.txt` (SHA-256 `ffe58718e00c5239eebe74f1c
 
 ## Still to implement
 
-### Abilities for existing added Pokémon
+### Ability pools added since this review
 
-All 151 original species plus Crobat have registered ability pools. The following ten added species do not. The designs name five abilities for nine of them; the Dittwo section is blank. Existing mechanics listed below still need to be assigned to the appropriate species and tested in their new contexts. Some identically named abilities may need different implementations if their wording differs.
+The planned ability pools are now assigned and tested for Mareanie, Toxapex, Miltank, Sableye, Baltoy, Claydol, Larvitar, Pupitar, Tyranitar, Unique Blastoise, Erika's Ivysaur, Fighting Geodude, Rock Kakuna and Big Tentacool. Fighting Geodude's Shadow Boxing randomly raises Evasion or Speed after each punch, as clarified by the user. For the four unique variants with only one named ability, all five slots currently give that ability. Their remaining slots can be redesigned if more abilities are specified.
 
-| Species | Proposed abilities | Current status |
-| --- | --- | --- |
-| Mareanie / Toxapex | Regenerator, Merciless, Corrosive Venom, Sniper, Barbed Shell | Neither has a pool. Regenerator, Corrosive Venom and Sniper exist; Merciless and Barbed Shell need implementation. |
-| Miltank | Thick Fat, Sap Sipper, Rollout, Scrappy, Serene Grace | No pool. Mechanics with these names exist; verify each against the design, particularly Rollout's stacking and reset rules. |
-| Sableye | Prankster, Mirror Armor, Trickster, Cursed Body, Shadow Ambush | No pool. Prankster, Mirror Armor and Cursed Body exist; Trickster and Shadow Ambush need implementation. |
-| Baltoy / Claydol | Levitate, Cursed Body, Mind's Eye, Immunity, Clay Armor | Neither has a pool. The first four mechanics exist; Clay Armor needs implementation. |
-| Larvitar | Earth Eater, Battle Armor, Aftershock, Short Temper, Underdog | No pool. Mechanics with these names exist; verify their exact wording and behavior. |
-| Pupitar | Earth Eater, Shell Armor, Earthshaker, Defiant, Spiked Shell | No pool. Mechanics with these names exist; verify their exact wording and behavior. |
-| Tyranitar | Earth Eater, Battle Armor, Tectonic Wrath, Rampage, Terrifying | No pool. Tectonic Wrath needs implementation; other named mechanics exist, but verify Terrifying's once-per-battle behavior and Rampage's recoil against this entry. |
-| Dittwo | Not specified | No pool. Need the desired ability list. |
+### Pokémon still without ability pools
 
-Mareanie/Toxapex, Miltank, Sableye, Baltoy/Claydol and the Larvitar line also have proposed stats, moves or TMs in the document. Compare those against the later documented redesigns before changing them; see “Conflicts” below.
+Seventeen of the 183 species have no pool, and the design document does not specify abilities for them:
 
-### Unique-variant abilities
+- Dittwo.
+- Unique Bulbasaur, Unique Chansey, Unique Charmander, Happy Ditto, Fighting Goldeen, Koga's Grimer, Unique Marowak, Giovanni's Nidoking, the second Unique Nidoking, Unique Nidoran♂, Unique Omanyte, Brock's Onix, Surge's Raichu, Unique Squirtle, Erika's Tangela and Erika's Venusaur.
 
-All 21 unique variants are separate species and currently have no ability pools. The source supplies these partial designs:
-
-- **Unique Blastoise:** Water Pressure; four other slots unspecified.
-- **Fighting Geodude:** Shadow Boxing (raises Evasion or Speed after a punching move); exact choice/probability and other slots need specification.
-- **Erika's Ivysaur:** Vine Guard; four other slots unspecified.
-- **Rock Kakuna:** Spiked Shell, Shed Skin, Heavyweight, Sturdy and Poison Point. The proposed Poison Point specifies 20% on contact; compare that with the existing ordinary Poison Point before reusing it.
-- **Big Tentacool:** Gigantism (double maximum HP); four other slots unspecified. Existing HP-boosting abilities do not automatically implement this exact effect.
-
-The remaining 16 variants have no ability list in this document: Unique Bulbasaur, Unique Chansey, Unique Charmander, Happy Ditto, Fighting Goldeen, Koga's Grimer, Unique Marowak, Giovanni's Nidoking, the second Unique Nidoking, Unique Nidoran♂, Unique Omanyte, Brock's Onix, Surge's Raichu, Unique Squirtle, Erika's Tangela and Erika's Venusaur. Assigning their ordinary counterparts' pools would be a design decision, not current behavior.
+These variants do not automatically inherit their ordinary counterparts' pools. Their ability lists remain to be designed or explicitly chosen.
 
 ### Proposed species not in the current roster
 
@@ -81,17 +65,17 @@ The move **Fortify** is also not present under that name. An ability named Forti
 - **Dragon Dance:** The top of the document asks for +2 Speed; its later move-change list specifies +1 Attack/+1 Speed, which is what the current compound-move table implements. Pick the intended version.
 - **Swords Dance and Barrier:** The new requests add −1 Defense to Swords Dance and −1 Special to Barrier; their current move records use the ordinary +2 Attack and +2 Defense effects respectively. Confirm the new penalties. Rock Polish already uses +2 Speed.
 - **Drill Peck PP:** The design and historical move documentation say 15 PP, but the current move table says 20 PP. Its defense-stage effect is separately documented as implemented. Check whether the PP change was intentional before changing it.
-- **Rock Kakuna:** The design asks for Bug/Rock and 75/45/120/20/60 stats. The documented later redesign uses pure Rock and 65/45/120/20/50, with a different learnset and TMs. Its proposed five abilities are still unassigned.
-- **Larvitar line:** The design specifies Rock Larvitar/Pupitar and Rock/Dragon Tyranitar with new stats/learnsets; the later redesign documents Rock/Ground earlier forms and different stats/learnsets. Confirm whether this document supersedes that redesign. Their abilities are still unassigned either way.
-- **Baltoy/Claydol:** Both exist, but the proposed stats and learnsets differ from the documented later redesign; the design also asks for Levitate while that redesign explicitly excluded it. Their ability pools remain unassigned.
+- **Rock Kakuna:** The design asks for Bug/Rock and 75/45/120/20/60 stats. The documented later redesign uses pure Rock and 65/45/120/20/50, with a different learnset and TMs. Its proposed five abilities are now assigned.
+- **Larvitar line:** The design specifies Rock Larvitar/Pupitar and Rock/Dragon Tyranitar with new stats/learnsets; the later redesign documents Rock/Ground earlier forms and different stats/learnsets. Confirm whether this document supersedes that redesign. Their requested ability pools are now assigned; their proposed stats and learnsets still need a decision.
+- **Baltoy/Claydol:** Both exist, but the proposed stats and learnsets differ from the documented later redesign; the design also asks for Levitate while that redesign explicitly excluded it. Their requested ability pools are now assigned.
 - **Mareanie/Toxapex and Miltank:** The requested Pin Missile, Rock Throw, Rolling Kick, Bulldoze and Protect additions need review against the later documented learnset/TM removals and role decisions.
-- **Unique Blastoise, Brock's Onix, Surge's Raichu and Big Tentacool:** Compare the proposed stat/move changes with their existing independently reviewed variants before changing them. Gigantism is not yet assigned.
-- **Terrifying:** Aerodactyl currently lowers the opponent's Defense once per battle. Tyranitar's entry omits a once-per-battle limit, while Fangrir's entry says Attack instead of Defense. Confirm whether they are distinct abilities despite sharing a name.
+- **Unique Blastoise, Brock's Onix, Surge's Raichu and Big Tentacool:** Compare the proposed stat/move changes with their existing independently reviewed variants before changing them. Gigantism is now assigned.
+- **Terrifying:** Aerodactyl currently lowers the opponent's Defense once per battle. Tyranitar now lowers Defense on each entry, while Fangrir's proposed version says Attack instead of Defense. Confirm Fangrir's intended rules when adding it.
 - **Other same-name abilities:** Treat names as hints, not proof of identical behavior; the document has differences such as contact versus physical triggers and different percentages. Match each species' exact wording during implementation.
 
 ## Already present, subject to detailed verification
 
-- Ability pools for the original 151 and Crobat, with five slots each; the five slots repeat the sole specified ability for Articuno, Zapdos, Moltres, Mewtwo and Mew. See [EARLY-SPECIES-ABILITIES.md](EARLY-SPECIES-ABILITIES.md). This establishes registration and prior tests, not a fresh line-by-line audit of all design wording.
+- Ability pools for the original 151, Crobat and the 14 additional species listed above, with five slots each; the five slots repeat the sole specified ability for Articuno, Zapdos, Moltres, Mewtwo and Mew. See [EARLY-SPECIES-ABILITIES.md](EARLY-SPECIES-ABILITIES.md). This establishes registration and prior tests, not a fresh line-by-line audit of all design wording.
 - The 21 unique variants and 11 additional species are in the 183-species build, including Crobat. Their presence does not imply their requested ability pools are present.
 - Broad move overhaul and the ten listed extra TMs, route encounter redesign, regular-trainer review, Gym and League changes/rematches, curated item pools, and 196-nature system. See the corresponding move-patch, encounter, trainer, loot and nature documents in this directory.
 - Badge boosts at 5%, Ice resistance to Ground, Poison no longer super-effective against Bug, the listed original-species type changes, faster walking, and the stated paralysis/poison/freeze changes. See [BADGE-BOOSTS.md](BADGE-BOOSTS.md), [TYPE-CHART-CHANGES.md](TYPE-CHART-CHANGES.md), [TYPE-CHANGES.md](TYPE-CHANGES.md), and [STATUS-AND-WALKING-CHANGES.md](STATUS-AND-WALKING-CHANGES.md).
