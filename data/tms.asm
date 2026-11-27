@@ -69,4 +69,7 @@ ExtraTechnicalMachines:
 	db LEECH_LIFE
 	db POISON_TAIL
 	db AGILITY
+	db HEAD_SMASH
+	db MAGICAL_LEAF
+	db MEAN_LOOK
 TechnicalMachinesEnd:

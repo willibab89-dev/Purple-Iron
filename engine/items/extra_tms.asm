@@ -4,8 +4,18 @@ SECTION "Additional TM support", ROMX, BANK[$34]
 ; Carry distinguishes HM boot text. New items use ordinary TM text/consumption.
 DecodeMachineItem:
 	ld a, [wcf91]
+	cp TM_64
+	jr c, .firstBlock
+	cp TM_66 + 1
+	jr nc, .legacy
+	sub TM_64
+	add 69
+	ld [wd11e], a
+	and a
+	ret
+.firstBlock
 	sub FIRST_EXTRA_TM
-	cp NUM_EXTRA_TMS
+	cp 13
 	jr nc, .legacy
 	add 56
 	ld [wd11e], a
@@ -88,7 +98,7 @@ ExtraTMCompatibility:
 ExtraTMMoves:
 	db ROOST,FACADE,BRINE,VENOSHOCK,AERIAL_ACE
 	db BULK_UP,ROCK_TOMB,WILL_O_WISP,SCALD,CURSE
-	db LEECH_LIFE,POISON_TAIL,AGILITY
+	db LEECH_LIFE,POISON_TAIL,AGILITY,HEAD_SMASH,MAGICAL_LEAF,MEAN_LOOK
 INCLUDE "data/extra_tm_compatibility.asm"
 
 INCLUDE "text/tmhm_names.asm"

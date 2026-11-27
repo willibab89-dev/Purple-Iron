@@ -264,6 +264,12 @@ MoveAnimationMap:
 	db GROWL ; CHARM
 	db HARDEN ; COCOON
 	db BITE ; SHOCK_FANG
+	db RAZOR_LEAF ; MAGICAL_LEAF
+	db TWINEEDLE ; LAST_STING
+	db STUN_SPORE ; COTTON_SPORE
+	db TAKE_DOWN ; HEAD_SMASH
+	db BARRIER ; COTTON_GUARD
+	db LEER ; MEAN_LOOK
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

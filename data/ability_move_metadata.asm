@@ -237,3 +237,9 @@ AbilityMoveMetadata:
 	db 0 ; CHARM
 	db 64 ; COCOON
 	db 3 ; SHOCK_FANG
+	db 65 ; MAGICAL_LEAF
+	db 65 ; LAST_STING
+	db 32 ; COTTON_SPORE
+	db 67 ; HEAD_SMASH
+	db 64 ; COTTON_GUARD
+	db 64 ; MEAN_LOOK

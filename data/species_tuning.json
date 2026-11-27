@@ -1100,6 +1100,10 @@
       [
         40,
         "AMBUSH"
+      ],
+      [
+        65,
+        "LAST_STING"
       ]
     ],
     "remove": [

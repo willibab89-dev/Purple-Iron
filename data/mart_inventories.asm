@@ -8,7 +8,7 @@ ViridianCashierText::
 
 ; Pewter
 PewterCashierText::
-	TX_MART POKE_BALL, POTION, ESCAPE_ROPE, ANTIDOTE, BURN_HEAL, AWAKENING, PARLYZ_HEAL, ETHER, TM_42, TM_57
+	TX_MART POKE_BALL, POTION, ESCAPE_ROPE, ANTIDOTE, BURN_HEAL, AWAKENING, PARLYZ_HEAL, ETHER, TM_42, TM_57, TM_66
 
 ; Cerulean
 CeruleanCashierText::
@@ -31,7 +31,7 @@ CeladonMart2Clerk1Text::
 
 ; Celadon Dept. Store 2F (2)
 CeladonMart2Clerk2Text::
-	TX_MART TM_32, TM_33, TM_02, TM_07, TM_23, TM_01, TM_05, TM_09, TM_17, TM_55
+	TX_MART TM_32, TM_33, TM_02, TM_07, TM_23, TM_01, TM_05, TM_09, TM_17, TM_55, TM_64, TM_65
 
 ; Celadon Dept. Store 4F
 CeladonMart4ClerkText::

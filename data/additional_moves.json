@@ -185,5 +185,82 @@
     "accuracy": 100,
     "pp": 15,
     "animation": "HARDEN"
+  },
+  {
+    "id": 237,
+    "symbol": "SHOCK_FANG",
+    "name": "SHOCK FANG",
+    "effect": "NO_ADDITIONAL_EFFECT",
+    "power": 65,
+    "type": "ELECTRIC",
+    "accuracy": 95,
+    "pp": 15,
+    "animation": "BITE"
+  },
+  {
+    "id": 238,
+    "symbol": "MAGICAL_LEAF",
+    "name": "MAGICAL LEAF",
+    "effect": "SWIFT_EFFECT",
+    "power": 60,
+    "type": "GRASS",
+    "accuracy": 100,
+    "pp": 15,
+    "animation": "RAZOR_LEAF"
+  },
+  {
+    "id": 239,
+    "symbol": "LAST_STING",
+    "name": "LAST STING",
+    "effect": "EXPLODE_EFFECT",
+    "power": 200,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 5,
+    "animation": "TWINEEDLE"
+  },
+  {
+    "id": 240,
+    "symbol": "COTTON_SPORE",
+    "name": "COTTON SPORE",
+    "effect": "SPEED_DOWN2_EFFECT",
+    "power": 0,
+    "type": "GRASS",
+    "accuracy": 85,
+    "pp": 10,
+    "animation": "STUN_SPORE"
+  },
+  {
+    "id": 241,
+    "symbol": "HEAD_SMASH",
+    "name": "HEAD SMASH",
+    "effect": "RECOIL_EFFECT",
+    "power": 100,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "TAKE_DOWN"
+  },
+  {
+    "id": 242,
+    "symbol": "COTTON_GUARD",
+    "name": "COTTON GUARD",
+    "effect": "DEFENSE_UP2_EFFECT",
+    "power": 0,
+    "type": "GRASS",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "BARRIER"
+  },
+  {
+    "id": 243,
+    "symbol": "MEAN_LOOK",
+    "name": "MEAN LOOK",
+    "effect": "UTILITY_STATUS_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 15,
+    "animation": "LEER"
   }
 ]

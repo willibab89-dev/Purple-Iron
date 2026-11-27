@@ -218,6 +218,8 @@ UtilityBreakScreens:
 
 UtilityStatusEffect:
 	call UtilityLoadMove
+	cp MEAN_LOOK
+	jp z, UtilityMeanLook
 	cp HEAL_BELL
 	jp z, UtilityHealBell
 	cp CAUTERIZE
@@ -248,6 +250,29 @@ UtilityStatusEffect:
 	and a
 	jp z, CustomFailed
 	ret
+
+; The trap belongs to the current pair of battlers and clears when either leaves.
+UtilityMeanLook:
+ call CustomSetTarget
+ call CaptureCustomTargetSubstitute
+ ld a, [wCustomTargetHadSub]
+ and a
+ jp nz, CustomFailed
+ callab MoveHitTest
+ ld a, [wMoveMissed]
+ and a
+ jp nz, CustomFailed
+ call CustomSetTarget
+ call ResidualState
+ set 4, [hl]
+ callab PlayCurrentMoveAnimation
+ call CustomSetTarget
+ ld a, 2 ; Speed
+ ld [wCustomStat], a
+ ld a, -1
+ ld [wCustomDelta], a
+ call CustomChangeStage
+ ret
 
 UtilityCoil:
 	call CustomSetActor

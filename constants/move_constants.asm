@@ -298,6 +298,12 @@ const_value = 166
 
 	const COCOON
 	const SHOCK_FANG
+	const MAGICAL_LEAF
+	const LAST_STING
+	const COTTON_SPORE
+	const HEAD_SMASH
+	const COTTON_GUARD
+	const MEAN_LOOK
 
 MAX_MOVE_ID EQU const_value + -1
 NUM_ATTACKS EQU MAX_MOVE_ID + -1 ; selectable moves, excluding Struggle

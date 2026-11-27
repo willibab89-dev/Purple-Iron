@@ -1502,7 +1502,7 @@ def validate(version):
             actor='w'+('Enemy' if turn else 'Player')
             for attack,want in [('THUNDERSHOCK',1),('THUNDER_WAVE',1),('THUNDERCLAP',2),('TACKLE',0),('QUICK_ATTACK',1),('GROWL',0)]:
                 init(turn);move(turn,attack);aid(turn,'LIGHTNING_SPEED');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==want,(turn,attack,game.register_file.A)
-            for invalid in (0,238,255):
+            for invalid in (0,244,255):
                 init(turn);aid(turn,'LIGHTNING_SPEED');put(actor+'SelectedMove',invalid);put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,invalid)
             init(turn);move(turn,'THUNDER_WAVE');aid(turn,'LIGHTNING_SPEED');aid(1-turn,'NEUTRALIZING_GAS');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,'suppressed')
             init(turn);move(turn,'THUNDERCLAP');move(1-turn,'QUICK_ATTACK');aid(turn,'LIGHTNING_SPEED');call('AbilityPriority');assert get('wAbilityCheckResult')==(2 if turn else 1),(turn,'stacking order')
@@ -2160,7 +2160,7 @@ def validate(version):
             init();move(0,'AMBUSH');move(1,'QUICK_ATTACK');word('wEnemyMonHP',hp)
             if quick:aid(0,'QUICK_REFLEXES')
             call('AbilityPriority');assert get('wAbilityCheckResult')==want,('Ambush priority',hp,quick)
-        for invalid in (0,238,255):
+        for invalid in (0,244,255):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0

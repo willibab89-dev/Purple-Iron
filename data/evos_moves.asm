@@ -1585,6 +1585,7 @@ BeedrillEvosMoves:
 	db 28, AGILITY
 	db 34, PIERCE
 	db 40, AMBUSH
+	db 65, LAST_STING
 	db 0
 
 MissingNo73EvosMoves:

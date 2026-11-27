@@ -30,7 +30,11 @@ ResidualClearSide:
 	ld [hli], a
 	dec b
 	jr nz, .clear
-	; Either participant leaving releases both directions of Wrap.
+	; Either participant leaving releases Mean Look and both directions of Wrap.
+	ld hl, wPlayerResidual
+	res 4, [hl]
+	ld hl, wEnemyResidual
+	res 4, [hl]
 	ld [wPlayerResidual + 2], a
 	ld [wEnemyResidual + 2], a
 	ret
@@ -49,7 +53,7 @@ ResidualSwitchBlocked:
 	ld [wCustomSide], a
 	call ResidualState
 	ld a, [hli]
-	and 1
+	and (1 << 0) | (1 << 4)
 	ret nz
 	inc hl
 	ld a, [hl]

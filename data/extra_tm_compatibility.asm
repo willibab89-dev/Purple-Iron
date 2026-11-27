@@ -1,7 +1,7 @@
 ExtraTMCompatibilityTable:
-	db $08, $00 ; 1: bulbasaur
-	db $08, $00 ; 2: ivysaur
-	db $08, $00 ; 3: venusaur
+	db $08, $40 ; 1: bulbasaur
+	db $08, $40 ; 2: ivysaur
+	db $08, $40 ; 3: venusaur
 	db $00, $00 ; 4: charmander
 	db $00, $00 ; 5: charmeleon
 	db $10, $00 ; 6: charizard
@@ -22,7 +22,7 @@ ExtraTMCompatibilityTable:
 	db $12, $10 ; 21: spearow
 	db $12, $10 ; 22: fearow
 	db $08, $0c ; 23: ekans
-	db $08, $0c ; 24: arbok
+	db $08, $8c ; 24: arbok
 	db $02, $10 ; 25: pikachu
 	db $02, $10 ; 26: raichu
 	db $50, $00 ; 27: sandshrew
@@ -41,9 +41,9 @@ ExtraTMCompatibilityTable:
 	db $02, $00 ; 40: wigglytuff
 	db $18, $04 ; 41: zubat
 	db $18, $04 ; 42: golbat
-	db $08, $00 ; 43: oddish
-	db $08, $00 ; 44: gloom
-	db $08, $00 ; 45: vileplume
+	db $08, $40 ; 43: oddish
+	db $08, $40 ; 44: gloom
+	db $08, $40 ; 45: vileplume
 	db $08, $04 ; 46: paras
 	db $08, $06 ; 47: parasect
 	db $08, $00 ; 48: venonat
@@ -57,7 +57,7 @@ ExtraTMCompatibilityTable:
 	db $22, $00 ; 56: mankey
 	db $22, $00 ; 57: primeape
 	db $02, $10 ; 58: growlithe
-	db $02, $10 ; 59: arcanine
+	db $02, $30 ; 59: arcanine
 	db $04, $01 ; 60: poliwag
 	db $06, $01 ; 61: poliwhirl
 	db $26, $01 ; 62: poliwrath
@@ -67,9 +67,9 @@ ExtraTMCompatibilityTable:
 	db $62, $00 ; 66: machop
 	db $62, $00 ; 67: machoke
 	db $62, $00 ; 68: machamp
-	db $08, $08 ; 69: bellsprout
-	db $08, $08 ; 70: weepinbell
-	db $08, $08 ; 71: victreebel
+	db $08, $48 ; 69: bellsprout
+	db $08, $48 ; 70: weepinbell
+	db $08, $48 ; 71: victreebel
 	db $0c, $00 ; 72: tentacool
 	db $0c, $00 ; 73: tentacruel
 	db $40, $00 ; 74: geodude
@@ -91,9 +91,9 @@ ExtraTMCompatibilityTable:
 	db $04, $00 ; 90: shellder
 	db $04, $00 ; 91: cloyster
 	db $88, $02 ; 92: gastly
-	db $88, $02 ; 93: haunter
-	db $88, $02 ; 94: gengar
-	db $40, $00 ; 95: onix
+	db $88, $82 ; 93: haunter
+	db $88, $82 ; 94: gengar
+	db $40, $20 ; 95: onix
 	db $00, $02 ; 96: drowzee
 	db $00, $02 ; 97: hypno
 	db $06, $00 ; 98: krabby
@@ -109,11 +109,11 @@ ExtraTMCompatibilityTable:
 	db $02, $00 ; 108: lickitung
 	db $88, $00 ; 109: koffing
 	db $88, $00 ; 110: weezing
-	db $40, $00 ; 111: rhyhorn
-	db $60, $00 ; 112: rhydon
+	db $40, $20 ; 111: rhyhorn
+	db $60, $20 ; 112: rhydon
 	db $00, $00 ; 113: chansey
 	db $00, $00 ; 114: tangela
-	db $02, $00 ; 115: kangaskhan
+	db $02, $20 ; 115: kangaskhan
 	db $04, $10 ; 116: horsea
 	db $04, $10 ; 117: seadra
 	db $06, $10 ; 118: goldeen
@@ -126,7 +126,7 @@ ExtraTMCompatibilityTable:
 	db $02, $00 ; 125: electabuzz
 	db $02, $00 ; 126: magmar
 	db $62, $00 ; 127: pinsir
-	db $02, $00 ; 128: tauros
+	db $02, $20 ; 128: tauros
 	db $00, $00 ; 129: magikarp
 	db $04, $00 ; 130: gyarados
 	db $04, $00 ; 131: lapras
@@ -140,7 +140,7 @@ ExtraTMCompatibilityTable:
 	db $44, $00 ; 139: omastar
 	db $44, $00 ; 140: kabuto
 	db $54, $00 ; 141: kabutops
-	db $52, $00 ; 142: aerodactyl
+	db $52, $20 ; 142: aerodactyl
 	db $02, $00 ; 143: snorlax
 	db $11, $00 ; 144: articuno
 	db $11, $00 ; 145: zapdos
@@ -174,7 +174,7 @@ ExtraTMCompatibilityTable:
 	db $0c, $01 ; 173: mareanie
 	db $0c, $01 ; 174: toxapex
 	db $02, $00 ; 175: miltank
-	db $82, $02 ; 176: sableye
+	db $82, $82 ; 176: sableye
 	db $40, $02 ; 177: baltoy
 	db $40, $02 ; 178: claydol
 	db $18, $04 ; 179: crobat
@@ -183,5 +183,5 @@ ExtraTMCompatibilityTable:
 	db $40, $00 ; 182: pupitar
 	db $40, $00 ; 183: tyranitar
 	db $22, $00 ; 184: tyker
-	db $22, $00 ; 185: straigar
+	db $22, $80 ; 185: straigar
 ExtraTMCompatibilityTableEnd:

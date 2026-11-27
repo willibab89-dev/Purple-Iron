@@ -1569,7 +1569,10 @@ TryRunningFromBattle:
 	jp z, .canEscape
 	ld a, [wIsInBattle]
 	dec a
-	jr nz, .trainerBattle ; jump if it's a trainer battle
+	jp nz, .trainerBattle ; jump if it's a trainer battle
+	ld a, [wPlayerResidual]
+	bit 4, a
+	jp nz, .meanLookBlocksEscape
 	ld a, [wAbilityCheckResult]
 	cp AB_RUN_AWAY
 	jp z, .canEscape
@@ -1636,6 +1639,7 @@ TryRunningFromBattle:
 	jr nc, .canEscape ; if the random value was less than or equal to the quotient
 	                  ; plus 30 times the number of attempts, the player can escape
 ; can't escape
+.meanLookBlocksEscape
 	ld a, $1
 	ld [wActionResultOrTookBattleTurn], a ; you lose your turn when you can't escape
 	ld hl, CantEscapeText
@@ -4386,6 +4390,15 @@ CalculateDamage:
 ; EXPLODE_EFFECT halves defense.
 	cp EXPLODE_EFFECT
 	jr nz, .ok
+	ld a, [H_WHOSETURN]
+	and a
+	ld a, [wPlayerMoveNum]
+	jr z, .explosionMove
+	ld a, [wEnemyMoveNum]
+.explosionMove
+	cp LAST_STING
+	ld a, EXPLODE_EFFECT
+	jr z, .ok
 	srl c
 	jr nz, .ok
 	inc c ; ...with a minimum value of 1 (used as a divisor later on)
@@ -5237,7 +5250,19 @@ MoveHitTest:
 .swiftCheck
 	ld a, [de]
 	cp SWIFT_EFFECT
-	ret z ; Swift never misses (interestingly, Azure Heights lists this is a myth, but it appears to be true)
+	jr nz, .notSwiftEffect
+	ld a, [H_WHOSETURN]
+	and a
+	ld a, [wPlayerMoveNum]
+	jr z, .alwaysHitMove
+	ld a, [wEnemyMoveNum]
+.alwaysHitMove
+	cp MAGICAL_LEAF
+	ret nz ; preserve Swift behavior
+	bit INVULNERABLE, [hl]
+	jp nz, .moveMissed
+	ret
+.notSwiftEffect
 	call CheckTargetSubstitute ; substitute check (note that this overwrites a)
 	jr z, .checkForDigOrFlyStatus
 ; this code is buggy. it's supposed to prevent HP draining moves from working on substitutes.
@@ -7508,6 +7533,19 @@ StatModifierUpEffect:
 	jr nc, .ok
 	ld b, a
 .ok
+	ld a, [H_WHOSETURN]
+	and a
+	ld a, [wPlayerMoveNum]
+	jr z, .cottonGuardCheck
+	ld a, [wEnemyMoveNum]
+.cottonGuardCheck
+	cp COTTON_GUARD
+	jr nz, .ordinaryRaise
+	ld a, b
+	cp 13
+	jr nc, .ordinaryRaise
+	inc b
+.ordinaryRaise
 	call SimpleLegacyUpHook
 	jp c, PrintNothingHappenedText
 	ld a, c

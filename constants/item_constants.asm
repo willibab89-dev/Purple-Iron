@@ -119,10 +119,13 @@ SAFARI_ROCK           EQU $16 ; overload
 	const ABILITY_CAPSULE ; $6F
 	const NATURE_CAPSULE  ; $70
 	const FIRST_AID       ; $71
+	const TM_64          ; $72
+	const TM_65          ; $73
+	const TM_66          ; $74
 
 FIRST_EXTRA_TM EQU TM_51
 LAST_EXTRA_TM EQU TM_63
-NUM_EXTRA_TMS EQU LAST_EXTRA_TM - FIRST_EXTRA_TM + 1
+NUM_EXTRA_TMS EQU 16
 
 const_value = $C4
 

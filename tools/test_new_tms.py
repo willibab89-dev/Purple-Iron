@@ -107,6 +107,8 @@ def validate(version):
     for label, stock in re.findall(r'(\w+)::\n\s*TX_MART ([^\n]+)', oldshops):
         old = [x.strip() for x in stock.split(',')]
         new = [f'TM_{d["number"]}' for d in PLAN['new_tms'] if d['shop'] == label]
+        if label == 'CeladonMart2Clerk2Text': new += ['TM_64', 'TM_65']
+        if label == 'PewterCashierText': new += ['TM_66']
         if label == 'CeladonMart3ClerkText': new += ['ABILITY_CAPSULE', 'NATURE_CAPSULE', 'FIRST_AID']
         raw = data(label, 2 + len(old) + len(new) + 1)
         assert raw[0] == 254 and raw[1] == len(old) + len(new) <= 14, label
@@ -258,6 +260,20 @@ def validate(version):
             assert game.memory[addr('wBagItems') + i * 2 + 1] == 1
             put('wIsInBattle', 0)
             selection['species'] = order.index(151) + 1
+        # The later TMs use item IDs after the three supply items. Exercise
+        # actual teaching and consumption rather than just their bit masks.
+        for item, move, dex in ((114, 'HEAD_SMASH', 95), (115, 'MAGICAL_LEAF', 1), (116, 'MEAN_LOOK', 24)):
+            index = order.index(dex) + 1
+            put('wNumBagItems', 1)
+            game.memory[addr('wBagItems'):addr('wBagItems') + 3] = [item, 1, 255]
+            put('wPartyCount', 1); put('wPartySpecies', index)
+            game.memory[addr('wPartyMon1Moves'):addr('wPartyMon1Moves') + 4] = [0] * 4
+            game.memory[addr('wPartyMon1PP'):addr('wPartyMon1PP') + 4] = [0] * 4
+            selection.update(species=index, calls=0, cancel_after=99)
+            put('wcf91', item); put('wWhichPokemon', 0); put('wCurrentMenuItem', 0)
+            call('UseItem_')
+            assert get('wPartyMon1Moves') == MOVES[move], (item, move)
+            assert get('wNumBagItems') == 0, item
         print(f'{version}: {len(PLAN['entries']) * len(PLAN['new_tms'])} eligibility cases; all 68 machine mappings; new names/prices/key flags; shop limits; bag saves; thirteen real teaching/consumption and refusal paths passed')
     finally:
         game.stop(save=False)

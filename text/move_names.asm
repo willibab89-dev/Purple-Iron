@@ -237,4 +237,10 @@ MoveNames::
 	db "CHARM@"
 	db "COCOON@"
 	db "SHOCK FANG@"
+	db "MAGICAL LEAF@"
+	db "LAST STING@"
+	db "COTTON SPORE@"
+	db "HEAD SMASH@"
+	db "COTTON GUARD@"
+	db "MEAN LOOK@"
 MoveNamesEnd:

@@ -12,6 +12,27 @@ RecoilEffect_:
 	ld hl, wEnemyMonMaxHP
 .recoilEffect
 	ld d, a
+	cp HEAD_SMASH
+	jr nz, .standardRecoil
+	push hl
+	xor a
+	ld [H_DIVIDEND], a
+	ld [H_DIVIDEND + 1], a
+	ld a, [wDamage]
+	ld [H_DIVIDEND + 2], a
+	ld a, [wDamage + 1]
+	ld [H_DIVIDEND + 3], a
+	ld a, 3
+	ld [H_DIVISOR], a
+	ld b, 4
+	call Divide
+	ld a, [H_QUOTIENT + 2]
+	ld b, a
+	ld a, [H_QUOTIENT + 3]
+	ld c, a
+	pop hl
+	jr .gotRecoilDamage
+.standardRecoil
 	ld a, [wDamage]
 	ld b, a
 	ld a, [wDamage + 1]

@@ -113,3 +113,6 @@ ItemNames:
 	db "ABILITY CAP@"
 	db "NATURE CAP@"
 	db "FIRST AID@"
+	db "TM64 HEADSM@"
+	db "TM65 MAGLEF@"
+	db "TM66 MEANLK@"

@@ -138,27 +138,30 @@
       "name": "bulbasaur",
       "source": "bulbasaur",
       "tms": [
-        54
+        54,
+        65
       ],
-      "mask": 8
+      "mask": 16392
     },
     {
       "dex": 2,
       "name": "ivysaur",
       "source": "ivysaur",
       "tms": [
-        54
+        54,
+        65
       ],
-      "mask": 8
+      "mask": 16392
     },
     {
       "dex": 3,
       "name": "venusaur",
       "source": "venusaur",
       "tms": [
-        54
+        54,
+        65
       ],
-      "mask": 8
+      "mask": 16392
     },
     {
       "dex": 4,
@@ -357,9 +360,10 @@
       "tms": [
         54,
         61,
-        62
+        62,
+        66
       ],
-      "mask": 3080
+      "mask": 35848
     },
     {
       "dex": 25,
@@ -543,27 +547,30 @@
       "name": "oddish",
       "source": "oddish",
       "tms": [
-        54
+        54,
+        65
       ],
-      "mask": 8
+      "mask": 16392
     },
     {
       "dex": 44,
       "name": "gloom",
       "source": "gloom",
       "tms": [
-        54
+        54,
+        65
       ],
-      "mask": 8
+      "mask": 16392
     },
     {
       "dex": 45,
       "name": "vileplume",
       "source": "vileplume",
       "tms": [
-        54
+        54,
+        65
       ],
-      "mask": 8
+      "mask": 16392
     },
     {
       "dex": 46,
@@ -698,9 +705,10 @@
       "source": "arcanine",
       "tms": [
         52,
-        63
+        63,
+        64
       ],
-      "mask": 4098
+      "mask": 12290
     },
     {
       "dex": 60,
@@ -795,9 +803,10 @@
       "source": "bellsprout",
       "tms": [
         54,
-        62
+        62,
+        65
       ],
-      "mask": 2056
+      "mask": 18440
     },
     {
       "dex": 70,
@@ -805,9 +814,10 @@
       "source": "weepinbell",
       "tms": [
         54,
-        62
+        62,
+        65
       ],
-      "mask": 2056
+      "mask": 18440
     },
     {
       "dex": 71,
@@ -815,9 +825,10 @@
       "source": "victreebel",
       "tms": [
         54,
-        62
+        62,
+        65
       ],
-      "mask": 2056
+      "mask": 18440
     },
     {
       "dex": 72,
@@ -1024,9 +1035,10 @@
       "tms": [
         54,
         58,
-        60
+        60,
+        66
       ],
-      "mask": 648
+      "mask": 33416
     },
     {
       "dex": 94,
@@ -1035,18 +1047,20 @@
       "tms": [
         54,
         58,
-        60
+        60,
+        66
       ],
-      "mask": 648
+      "mask": 33416
     },
     {
       "dex": 95,
       "name": "onix",
       "source": "onix",
       "tms": [
-        57
+        57,
+        64
       ],
-      "mask": 64
+      "mask": 8256
     },
     {
       "dex": 96,
@@ -1189,9 +1203,10 @@
       "name": "rhyhorn",
       "source": "rhyhorn",
       "tms": [
-        57
+        57,
+        64
       ],
-      "mask": 64
+      "mask": 8256
     },
     {
       "dex": 112,
@@ -1199,9 +1214,10 @@
       "source": "rhydon",
       "tms": [
         56,
-        57
+        57,
+        64
       ],
-      "mask": 96
+      "mask": 8288
     },
     {
       "dex": 113,
@@ -1222,9 +1238,10 @@
       "name": "kangaskhan",
       "source": "kangaskhan",
       "tms": [
-        52
+        52,
+        64
       ],
-      "mask": 2
+      "mask": 8194
     },
     {
       "dex": 116,
@@ -1340,9 +1357,10 @@
       "name": "tauros",
       "source": "tauros",
       "tms": [
-        52
+        52,
+        64
       ],
-      "mask": 2
+      "mask": 8194
     },
     {
       "dex": 129,
@@ -1472,9 +1490,10 @@
       "tms": [
         52,
         55,
-        57
+        57,
+        64
       ],
-      "mask": 82
+      "mask": 8274
     },
     {
       "dex": 143,
@@ -1800,9 +1819,10 @@
       "tms": [
         52,
         58,
-        60
+        60,
+        66
       ],
-      "mask": 642
+      "mask": 33410
     },
     {
       "dex": 177,

@@ -131,6 +131,9 @@ ItemUsePtrTable:
 	dw ItemUseCuratedSupply ; ABILITY_CAPSULE
 	dw ItemUseCuratedSupply ; NATURE_CAPSULE
 	dw ItemUseCuratedSupply ; FIRST_AID
+	dw ItemUseTMHM ; TM_64
+	dw ItemUseTMHM ; TM_65
+	dw ItemUseTMHM ; TM_66
 
 ItemUseCuratedSupply:
 	jpab UseCuratedSupplyItem
