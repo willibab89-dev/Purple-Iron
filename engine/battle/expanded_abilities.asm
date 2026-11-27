@@ -174,6 +174,12 @@ AbilityIntimidate:
 	call AbilityGet
 	cp AB_CLEAR_BODY
 	jr z, .restoreSide
+	cp ABILITY_EXTENDED
+	jr nz, .targetAllowed
+	ld a, [wAbilityResolvedExtended]
+	cp AB_DOMINANCE - ABILITY_EXTENDED
+	jr z, .restoreSide
+.targetAllowed
 	ld a, [wAbilitySide]
 	xor 1
 	call AbilityGet
@@ -225,6 +231,8 @@ AbilityKeenEyeCustom:
  ld a, [wAbilityResolvedExtended]
  cp AB_UNSTOPPABLE - ABILITY_EXTENDED
  jr z, .attackGuard
+ cp AB_DOMINANCE - ABILITY_EXTENDED
+ jr z, .opponent
  call AbilityGetCustomSide
  jr .otherAbility
 .attackGuard
@@ -282,6 +290,8 @@ AbilityKeenEyeTarget::
  ld a, [wAbilityResolvedExtended]
  cp AB_UNSTOPPABLE - ABILITY_EXTENDED
  jr z, .attackGuard
+ cp AB_DOMINANCE - ABILITY_EXTENDED
+ jr z, .block
  call AbilityTarget
  jr .otherAbility
 .attackGuard
@@ -2731,7 +2741,7 @@ AbilityEffectSpore:
 	ld [H_WHOSETURN], a
 	ret
 .sleep
-	callab AbilityAntivirusActor
+	callab AbilityAntivirusReactiveActor
 	ld a, [wAbilityCheckResult]
 	and a
 	ret nz
@@ -3300,8 +3310,7 @@ AbilityGetTargetReactions:
 	ld b, 25
 	call AbilityRoll
 	ret nc
-	call AbilityActor
-	cp AB_CLEAR_BODY
+	callab AbilityBlockReactiveStatDrop
 	ret z
 	ld a, [H_WHOSETURN]
 	ld [wAbilitySide], a
@@ -4954,8 +4963,7 @@ AbilityStickyTrap:
  cp AB_STICKY_BODY
  ret nz
 .sticky
- call AbilityActor
- cp AB_CLEAR_BODY
+ callab AbilityBlockReactiveStatDrop
  ret z
  ld a, [H_WHOSETURN]
  ld [wAbilitySide], a
@@ -6380,8 +6388,7 @@ AbilityGhostReaction:
  cp AB_CURSED_TOUCH
  jr z, .curse
  ; Gas Body applies to all physical attacks, including ranged ones.
- call AbilityActor
- cp AB_CLEAR_BODY
+ callab AbilityBlockReactiveStatDrop
  ret z
  ld b, 30
  call AbilityRoll

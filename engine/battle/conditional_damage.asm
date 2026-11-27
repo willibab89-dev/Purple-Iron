@@ -2221,6 +2221,11 @@ AbilityExtendedPoolIds:
  db 99, 2, AB_MYSTIC_SCALES - ABILITY_EXTENDED
  db 99, 3, AB_INNER_FOCUS - ABILITY_EXTENDED
  db 99, 4, AB_MARVEL_SCALE - ABILITY_EXTENDED
+ db 100, 1, AB_DOMINANCE - ABILITY_EXTENDED
+ db 100, 2, AB_DOMINANCE - ABILITY_EXTENDED
+ db 100, 3, AB_DOMINANCE - ABILITY_EXTENDED
+ db 100, 4, AB_DOMINANCE - ABILITY_EXTENDED
+ db 100, 5, AB_DOMINANCE - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2535,6 +2540,7 @@ AbilitySpeciesPools:
 	db DRATINI, 98
 	db DRAGONAIR, 98
 	db DRAGONITE, 99
+	db MEWTWO, 100
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -2799,20 +2805,40 @@ AbilityAntivirusTarget:
  xor a
  ld [wAbilityCheckResult], a
  callab AbilityTarget
- jr AbilityAntivirusResolved
+ jr AbilityAntivirusOpponentResolved
 AbilityAntivirusActor:
  xor a
  ld [wAbilityCheckResult], a
  callab AbilityActor
  jr AbilityAntivirusResolved
+; Reactive effects originate from the opponent even though their victim acted.
+AbilityAntivirusReactiveActor:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityActor
+ jr AbilityAntivirusOpponentResolved
 AbilityAntivirusCustom:
  xor a
  ld [wAbilityCheckResult], a
  callab AbilityGetCustomSide
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DOMINANCE - ABILITY_EXTENDED
+ jr nz, AbilityAntivirusResolved
+ ld a, [wCustomSide]
+ ld b, a
+ ld a, [H_WHOSETURN]
+ cp b
+ ret z ; self-inflicted status is allowed
+ jr AbilityAntivirusBlock
+AbilityAntivirusOpponentResolved:
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DOMINANCE - ABILITY_EXTENDED
+ jr z, AbilityAntivirusBlock
 AbilityAntivirusResolved:
  ld a, [wAbilityResolvedExtended]
  cp AB_ANTIVIRUS - ABILITY_EXTENDED
  ret nz
+AbilityAntivirusBlock:
  ld a, 1
  ld [wAbilityCheckResult], a
  ret
@@ -3087,6 +3113,12 @@ AbilityTerrifying:
  ld a, [wAbilityCheckResult]
  cp AB_CLEAR_BODY
  jr z, .restore
+ cp ABILITY_EXTENDED
+ jr nz, .defense
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DOMINANCE - ABILITY_EXTENDED
+ jr z, .restore
+.defense
  ld a, 1 ; Defense
  ld [wCustomStat], a
  ld a, -1
@@ -3523,4 +3555,16 @@ AbilitySteadfastActorBanked:
 .clear
  res CONFUSED, [hl]
  res FLINCHED, [hl]
+ ret
+
+; Actor's stat is being lowered by a defender's contact ability.
+AbilityBlockReactiveStatDrop:
+ callab AbilityActorResult
+ ld a, [wAbilityCheckResult]
+ cp AB_CLEAR_BODY
+ ret z
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_DOMINANCE - ABILITY_EXTENDED
  ret

@@ -128,7 +128,7 @@ AbilityTextPointers:
 	dw AbilityText322, AbilityText323, AbilityText324, AbilityText325, AbilityText326
 	dw AbilityText327, AbilityText328, AbilityText329, AbilityText330
 	dw AbilityText331, AbilityText332, AbilityText333, AbilityText334, AbilityText335
-	dw AbilityText336, AbilityText337, AbilityText338, AbilityText339, AbilityText340
+	dw AbilityText336, AbilityText337, AbilityText338, AbilityText339, AbilityText340, AbilityText341
 AbilityNone:
 	db "NO ABILITY",$4e,"No ability pool",$4e,"for this species.@"
 AbilityPoisonLeaf:
@@ -562,6 +562,7 @@ AbilityText337: db "SERPENT GRACE",$4e,"Dragon move: Evasion",$4e,"+1 once per b
 AbilityText338: db "MARVEL SCALE",$4e,"Status: Defense +1",$4e,"until cured.@"
 AbilityText339: db "MULTISCALE",$4e,"At full HP:",$4e,"damage x0.5.@"
 AbilityText340: db "INNER FOCUS",$4e,"Prevents flinching",$4e,"and confusion.@"
+AbilityText341: db "DOMINANCE",$4e,"Foe cannot lower",$4e,"stats or add status.@"
 
 ; Five byte-sized slots per pool, read across banks.
 AbilityPoolIds:
@@ -664,3 +665,4 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db AB_SHED_SKIN, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_WATER_VEIL
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_WATER_VEIL
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED

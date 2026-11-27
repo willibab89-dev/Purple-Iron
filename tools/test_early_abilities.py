@@ -200,7 +200,8 @@ def validate(version):
                'ZAPDOS':['LIGHTNING_SPEED']*5,
                'MOLTRES':['INTENSE_FLAMES']*5,
                'DRATINI':['SHED_SKIN','MYSTIC_SCALES','SERPENT_GRACE','MARVEL_SCALE','WATER_VEIL'],
-               'DRAGONITE':['MULTISCALE','MYSTIC_SCALES','INNER_FOCUS','MARVEL_SCALE','WATER_VEIL']}
+               'DRAGONITE':['MULTISCALE','MYSTIC_SCALES','INNER_FOCUS','MARVEL_SCALE','WATER_VEIL'],
+               'MEWTWO':['DOMINANCE']*5}
         for stages,root in [(('IVYSAUR','VENUSAUR'),'BULBASAUR'),(('CHARMELEON','CHARIZARD'),'CHARMANDER'),(('WARTORTLE','BLASTOISE'),'SQUIRTLE'),(('PIDGEOTTO','PIDGEOT'),'PIDGEY'),(('RATICATE',),'RATTATA'),(('FEAROW',),'SPEAROW'),(('ARBOK',),'EKANS'),(('RAICHU',),'PIKACHU'),(('NIDORINA','NIDOQUEEN'),'NIDORAN_F'),(('NIDORINO','NIDOKING'),'NIDORAN_M'),(('CLEFABLE',),'CLEFAIRY'),(('NINETALES',),'VULPIX'),(('WIGGLYTUFF',),'JIGGLYPUFF'),(('GOLBAT','CROBAT'),'ZUBAT'),(('VILEPLUME',),'ODDISH'),(('VENOMOTH',),'VENONAT'),(('DUGTRIO',),'DIGLETT'),(('PERSIAN',),'MEOWTH'),(('PRIMEAPE',),'MANKEY'),(('POLIWHIRL',),'POLIWAG'),(('ALAKAZAM',),'KADABRA'),(('MACHOKE',),'MACHOP'),(('WEEPINBELL','VICTREEBEL'),'BELLSPROUT'),(('TENTACRUEL',),'TENTACOOL'),(('GOLEM',),'GRAVELER'),(('RAPIDASH',),'PONYTA'),(('SLOWBRO',),'SLOWPOKE'),(('MAGNETON',),'MAGNEMITE'),(('DEWGONG',),'SEEL'),(('MUK',),'GRIMER'),(('CLOYSTER',),'SHELLDER'),(('GENGAR',),'HAUNTER'),(('HYPNO',),'DROWZEE'),(('KINGLER',),'KRABBY'),(('ELECTRODE',),'VOLTORB'),(('WEEZING',),'KOFFING'),(('RHYDON',),'RHYHORN'),(('SEADRA',),'HORSEA'),(('SEAKING',),'GOLDEEN'),(('STARMIE',),'STARYU'),(('OMASTAR',),'OMANYTE'),(('KABUTOPS',),'KABUTO'),(('DRAGONAIR',),'DRATINI')]:
             for s in stages:pools[s]=pools[root]
         for species,pool in pools.items():
@@ -1292,6 +1293,26 @@ def validate(version):
                 word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,'chain',want,readword('wDamage'));call('AbilityRolloutAfterAction')
             move(turn,'TACKLE');call('AbilityRolloutAfterAction');move(turn,'THUNDERBOLT');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
             call('AbilityRolloutAfterAction');put('wMoveMissed',1);call('AbilityRolloutAfterAction');put('wMoveMissed',0);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100
+        # Dominance blocks opponents, but permits self-inflicted effects.
+        for turn in (0,1):
+            actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
+            for stat in range(6):
+                init(turn);aid(1-turn,'DOMINANCE');put('wCustomSide',1-turn);put('wCustomStat',stat);put('wCustomDelta',255);call('CustomChangeStage');assert get(target+'Mon'+('Attack','Defense','Speed','Special','Accuracy','Evasion')[stat]+'Mod')==7,(turn,stat,'opponent drop')
+                init(turn);aid(1-turn,'DOMINANCE');put('wCustomStat',stat);call('AbilityKeenEyeTarget');assert get('wAbilityCheckResult')==1,(turn,stat,'legacy drop')
+                init(turn);aid(turn,'DOMINANCE');put('wCustomSide',turn);put('wCustomStat',stat);put('wCustomDelta',255);call('CustomChangeStage');assert get(actor+'Mon'+('Attack','Defense','Speed','Special','Accuracy','Evasion')[stat]+'Mod')==6,(turn,stat,'self drop')
+            for status in (8,16,32,64):
+                ap,tp=init(turn);aid(1-turn,'DOMINANCE');put('wCustomSide',1-turn);put('wCustomDelta',status);call('UtilityInflictStatus');assert get(tp+'Status')==0,(turn,status,'opponent status')
+                ap,tp=init(turn);aid(turn,'DOMINANCE');put('wCustomSide',turn);put('wCustomDelta',status);call('UtilityInflictStatus');assert get(ap+'Status')==status,(turn,status,'self status')
+            for reactive,stat in [('DUST_CLOUD','Accuracy'),('STICKY_TRAP','Speed'),('STICKY_BODY','Speed'),('GAS_BODY','Accuracy')]:
+                init(turn);move(turn,'TACKLE');aid(turn,'DOMINANCE');aid(1-turn,reactive);rng(0);call('AbilityAfterHit');assert get(actor+'Mon'+stat+'Mod')==7,(turn,reactive,'reactive drop')
+            for holder,stat in [('INTIMIDATE','Speed'),('GROWL_INTIMIDATE','Speed'),('TERRIFYING','Defense')]:
+                init(turn);aid(turn,'DOMINANCE');aid(1-turn,holder);put('wAbilitySide',1-turn);call('AbilityEntrySpeed');assert get(actor+'Mon'+stat+'Mod')==7,(turn,holder,'entry drop')
+            for reactive,rolls in [('FLAME_BODY',(0,)),('STATIC',(0,)),('POISON_POINT',(0,)),('EFFECT_SPORE',(0,2))]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(turn,'DOMINANCE');aid(1-turn,reactive);rng(*rolls);call('AbilityAfterHit');assert get(ap+'Status')==0,(turn,reactive,'reactive status',get(ap+'Status'))
+            ap,tp=init(turn);aid(turn,'DOMINANCE');put(ap+'Status',8);put('wAbilitySide',turn);call('AbilityEntrySpeed');assert get(ap+'Status')==8,(turn,'preexisting status')
+            init(turn);move(turn,'CONFUSE_RAY');aid(1-turn,'DOMINANCE');call('AbilitySteadfastDirectCheck');assert get('wAbilityCheckResult')==0,(turn,'confusion allowed')
+            ap,tp=init(turn);aid(1-turn,'DOMINANCE');aid(turn,'NEUTRALIZING_GAS');put('wCustomSide',1-turn);put('wCustomStat',0);put('wCustomDelta',255);call('CustomChangeStage');assert get(target+'MonAttackMod')==6,(turn,'suppressed drop')
+            ap,tp=init(turn);aid(1-turn,'DOMINANCE');aid(turn,'NEUTRALIZING_GAS');put('wCustomSide',1-turn);put('wCustomDelta',8);call('UtilityInflictStatus');assert get(tp+'Status')==8,(turn,'suppressed status')
         # Dratini line: reductions, temporary status Defense, and move trigger.
         for turn in (0,1):
             actor='w'+('Enemy' if turn else 'Player');target='w'+('Player' if turn else 'Enemy')
@@ -2063,6 +2084,15 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            for attack in ('SLEEP_POWDER','POISONPOWDER','THUNDER_WAVE','WILL_O_WISP','FLASH_FREEZE'):
+                ap,tp=execute(attack,turn,target='DOMINANCE',random_value=100);assert get(tp+'Status')==0,(turn,attack,'live dominance status')
+            for attack in ('FLAMETHROWER','ICE_BEAM','THUNDERSHOCK'):
+                ap,tp=execute(attack,turn,target='DOMINANCE',random_value=0);assert get(tp+'Status')==0 and readword(tp+'HP')<160,(turn,attack,'live dominance secondary')
+            ap,tp=execute('TACKLE',turn,actor='INTENSE_FLAMES',target='DOMINANCE',random_value=100);assert get(tp+'Status')==0 and readword(tp+'HP')<160,(turn,'intense flames')
+            ap,tp=execute('GROWL',turn,target='DOMINANCE',random_value=100);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7,(turn,'live dominance stat')
+            ap,tp=execute('FURY_ATTACK',turn,actor='DOMINANCE',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==6,(turn,'live self drop')
+            ap,tp=execute('REST',turn,actor='DOMINANCE',actor_hp=80,random_value=100);assert get(ap+'Status')&7 and readword(ap+'HP')==160,(turn,'live self rest',get(ap+'Status'),readword(ap+'HP'))
+            ap,tp=execute('TACKLE',turn,actor='DOMINANCE',target='FLAME_BODY',random_value=0);assert get(ap+'Status')==0,(turn,'live reactive status')
             ap,tp=execute('EMBER',turn,random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('EMBER',turn,target='MYSTIC_SCALES',random_value=100);assert 160-readword(tp+'HP')<normal,(turn,'live mystic scales')
             ap,tp=execute('TACKLE',turn,random_value=100);normal=160-readword(tp+'HP')
@@ -2451,7 +2481,7 @@ def validate(version):
         metadata('wPartyMon2','CATERPIE',4);put('wWhichPokemon',1);put('wPlayerMonNumber',0)
         game.memory[addr('wAbilityFlags')]=8;game.memory[addr('wAbilityFlags')+1]=8
         call('AbilityLoadPlayer');assert game.memory[addr('wAbilityFlags')]==8 and game.memory[addr('wAbilityFlags')+1]==0
-        print(f'{version}: all 150 species / 750 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
+        print(f'{version}: all 151 species / 755 slots, damage/contact/status/crit/priority/accuracy/threshold/KO/healing effects, exact proc odds and Ancient/capsule HP scaling passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':
