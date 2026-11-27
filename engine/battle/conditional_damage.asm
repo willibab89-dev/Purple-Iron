@@ -2141,6 +2141,108 @@ AbilityFindExtendedPool:
  ld [wAbilityResolvedExtended], a
  ret
 
+AbilityBearBlaze:
+ ld a, [wUnusedC000]
+ bit 4, a
+ ret nz
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_BEAR_BLAZE - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ and a
+ ld a, [wPlayerMoveType]
+ jr z, .fireType
+ ld a, [wEnemyMoveType]
+.fireType
+ cp FIRE
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityBelowThird
+ jr c, .boost
+ ret nz
+.boost
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ ld c, a
+ srl b
+ rr c
+ ld a, [wDamage + 1]
+ add c
+ ld [wDamage + 1], a
+ ld a, [wDamage]
+ adc b
+ jr nc, .writeHigh
+ ld a, $ff
+ ld [wDamage + 1], a
+.writeHigh
+ ld [wDamage], a
+ ret
+
+
+AbilityBearRage:
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityHalfHPSide
+ jr c, .eligible
+ ret nz
+.eligible
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ jpab AbilityRaiseAttack
+
+
+AbilityMaternalRage:
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityHalfHPSide
+ ret nc
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ jpab AbilityRaiseAttack
+
+
+AbilitySoothingVoice:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ callab AbilityActorResult
+ ld a, [wAbilityCheckResult]
+ cp AB_SOOTHING_VOICE
+ ret nz
+ callab AbilityMove
+ ld a, [hl]
+ callab AbilityMoveFlagsResult
+ ld a, [wAbilityCheckResult]
+ bit 4, a
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ jpab AbilityHealEighthSide
+
 AbilityExtendedPoolIds:
  db 70, 4, AB_THICK_VINES - ABILITY_EXTENDED
  db 71, 1, AB_PARENTAL_BOND - ABILITY_EXTENDED
@@ -2368,6 +2470,11 @@ AbilityExtendedPoolIds:
  db 130, 4, AB_HORN_SPECIALIST - ABILITY_EXTENDED
  db 130, 5, AB_HORN_SPECIALIST - ABILITY_EXTENDED
  db 131, 5, AB_SAVAGE_JAWS - ABILITY_EXTENDED
+ db 133, 1, AB_BEAR_RAGE - ABILITY_EXTENDED
+ db 133, 2, AB_BEAR_BLAZE - ABILITY_EXTENDED
+ db 133, 3, AB_BEAR_FLAME_BODY - ABILITY_EXTENDED
+ db 133, 4, AB_FURNACE - ABILITY_EXTENDED
+ db 133, 5, AB_HEAVY_SLEEPER - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2719,6 +2826,9 @@ AbilitySpeciesPools:
 	db STRAIGAR, 131
 	db PHANPY, 132
 	db DONPHAN, 132
+	db EMBEAR, 133
+	db URSEAR, 133
+	db VOLKUMA, 133
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -4732,3 +4842,4 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db AB_STAMINA, AB_THICK_FAT, AB_STATIC, AB_SCRAPPY, ABILITY_EXTENDED
 	db AB_STURDY, AB_ROLLOUT, AB_EARTHSHAKER, AB_HEAVYWEIGHT, AB_MOMENTUM
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED

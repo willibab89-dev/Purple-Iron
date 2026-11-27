@@ -508,6 +508,22 @@ AbilityFlagsPointer:
 	add hl, bc
 	ret
 
+AbilityMoveFlagsResult:
+ call AbilityMove
+ ld a, [hl]
+ call AbilityMoveFlags
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityHealEighthSide:
+ call AbilityHP
+ ld a, 3
+ jp AbilityHealFractionFromHL
+
+AbilityHalfHPSide:
+ call AbilityHP
+ jp AbilityHalfHP
+
 AbilityRaiseStage:
 	ld [wCustomStat], a
 	ld a, [wAbilitySide]

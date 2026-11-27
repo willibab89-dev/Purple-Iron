@@ -1,0 +1,26 @@
+db DEX_VOLKUMA
+db 110
+db 115
+db 90
+db 55
+db 75
+db FIRE
+db FIRE
+db 45
+db 200
+INCBIN "pic/new_species/volkuma.pic",0,1
+dw VolkumaPicFront
+dw VolkumaPicBack
+db TACKLE
+db GROWL
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 9
+ tmlearn 18,20
+ tmlearn 26
+ tmlearn 34,38
+ tmlearn 44
+ tmlearn 50
+db 0

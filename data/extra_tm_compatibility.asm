@@ -186,4 +186,7 @@ ExtraTMCompatibilityTable:
 	db $22, $80 ; 185: straigar
 	db $60, $00 ; 186: phanpy
 	db $60, $20 ; 187: donphan
+	db $a2, $00 ; 188: embear
+	db $a2, $00 ; 189: ursear
+	db $a2, $00 ; 190: volkuma
 ExtraTMCompatibilityTableEnd:

@@ -188,3 +188,6 @@ MonsterPalettes:
 	db PAL_YELLOWMON ; STRAIGAR
 	db PAL_BROWNMON ; PHANPY
 	db PAL_BROWNMON ; DONPHAN
+	db PAL_REDMON ; embear
+	db PAL_REDMON ; ursear
+	db PAL_REDMON ; volkuma

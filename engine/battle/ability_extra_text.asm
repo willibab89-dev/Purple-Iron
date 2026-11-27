@@ -4,7 +4,7 @@ SECTION "Expanded ability descriptions", ROMX, BANK[$39]
 AbilityDrawExtraDescription:
  ld a, [wAbilityResolvedExtended]
  sub AB_CONSERVATIVE - ABILITY_EXTENDED
- cp 48
+ cp 52
  jr nc, .none
  ld c, a
  ld b, 0
@@ -35,6 +35,7 @@ AbilityExtraTextPointers:
 	dw AbilityText358, AbilityText359, AbilityText360, AbilityText361
 	dw AbilityText362, AbilityText363, AbilityText364, AbilityText365
 	dw AbilityText366, AbilityText367, AbilityText368, AbilityText369
+	dw AbilityText370, AbilityText371, AbilityText372, AbilityText373
 AbilityExtraNone: db "NO ABILITY@"
 AbilityText322: db "CONSERVATIVE",$4e,"Moves: 25% chance",$4e,"to save PP.@"
 AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
@@ -85,3 +86,8 @@ AbilityText366: db "TOXIC PURSUIT",$4e,"Damage moves first",$4e,"vs poisoned foe
 AbilityText367: db "CAREGIVER",$4e,"Heal Bell heals team",$4e,"1/8 HP once.@"
 AbilityText368: db "BORROWED STRENGTH",$4e,"Duplicate moves hit",$4e,"again for half.@"
 AbilityText369: db "HORN SPECIALIST",$4e,"Horn moves: Fighting",$4e,"bonus; Normal chart.@"
+
+AbilityText370: db "BEAR RAGE",$4e,"Half HP: Attack +1",$4e,"once per battle.@"
+AbilityText371: db "FURNACE",$4e,"Physical hit:",$4e,"Special +1.@"
+AbilityText372: db "FLAME BODY",$4e,"Contact: 20% burn",$4e,"the attacker.@"
+AbilityText373: db "BLAZE",$4e,"Low HP: Fire moves",$4e,"deal x1.5 damage.@"

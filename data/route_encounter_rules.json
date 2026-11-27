@@ -249,5 +249,17 @@
     ],
     "level": 18,
     "percent": 5
+  },
+  {
+    "species": "EMBEAR",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "MANSION_1",
+      "MANSION_2"
+    ],
+    "level": 30,
+    "percent": 5
   }
 ]

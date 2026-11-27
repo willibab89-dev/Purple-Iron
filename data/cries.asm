@@ -194,3 +194,6 @@ CryData:
 	db $15, $00, $80 ; Straigar
 	db $0B, $40, $40 ; Phanpy
 	db $0B, $00, $80 ; Donphan
+	db $15, $00, $80 ; embear
+	db $15, $00, $80 ; ursear
+	db $15, $00, $80 ; volkuma

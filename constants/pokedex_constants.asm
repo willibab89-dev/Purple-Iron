@@ -190,7 +190,10 @@ const_value = 1
 	const DEX_STRAIGAR
 	const DEX_PHANPY
 	const DEX_DONPHAN
+	const DEX_EMBEAR
+	const DEX_URSEAR
+	const DEX_VOLKUMA
 
 ; Space for the next 16 species plus one spare dex entry.
 POKEDEX_CAPACITY EQU 200
-NUM_POKEMON    EQU 187
+NUM_POKEMON    EQU 190

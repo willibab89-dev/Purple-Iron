@@ -196,6 +196,9 @@ EvosMovesPointerTable:
 	dw StraigarEvosMoves
 	dw PhanpyEvosMoves
 	dw DonphanEvosMoves
+	dw EmbearEvosMoves
+	dw UrsearEvosMoves
+	dw VolkumaEvosMoves
 
 RhydonEvosMoves:
 ; Evolutions
@@ -2899,4 +2902,47 @@ DonphanEvosMoves:
  db 40, ROCK_SLIDE
  db 47, EARTHQUAKE
  db 54, HEAD_SMASH
+ db 0
+
+EmbearEvosMoves:
+ db EV_LEVEL, 24, URSEAR
+ db 0
+ db 6, EMBER
+ db 11, RAGE
+ db 16, FLAME_CHARGE
+ db 21, REST
+ db 26, INCINERATE
+ db 32, SLASH
+ db 38, FLAMETHROWER
+ db 44, BODY_SLAM
+ db 50, THRASH
+ db 0
+
+UrsearEvosMoves:
+ db EV_LEVEL, 40, VOLKUMA
+ db 0
+ db 8, EMBER
+ db 13, RAGE
+ db 18, FLAME_CHARGE
+ db 23, REST
+ db 28, INCINERATE
+ db 34, SLASH
+ db 40, FLAMETHROWER
+ db 46, BODY_SLAM
+ db 52, THRASH
+ db 59, FIRE_BLAST
+ db 0
+
+VolkumaEvosMoves:
+ db 0
+ db 10, EMBER
+ db 15, RAGE
+ db 20, FLAME_CHARGE
+ db 25, REST
+ db 30, INCINERATE
+ db 36, SLASH
+ db 42, FLAMETHROWER
+ db 48, BODY_SLAM
+ db 54, THRASH
+ db 61, FIRE_BLAST
  db 0

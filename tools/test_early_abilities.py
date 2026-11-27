@@ -248,6 +248,9 @@ def validate(version):
                'MEW':['ANCESTOR']*5,
                'MAREANIE':['REGENERATOR','MERCILESS','CORROSIVE_VENOM','SNIPER','BARBED_SHELL'],
                'MILTANK':['THICK_FAT','SAP_SIPPER','ROLLOUT','SCRAPPY','SERENE_GRACE'],
+               'EMBEAR':['BEAR_RAGE','BEAR_BLAZE','BEAR_FLAME_BODY','FURNACE','HEAVY_SLEEPER'],
+               'URSEAR':['BEAR_RAGE','BEAR_BLAZE','BEAR_FLAME_BODY','FURNACE','HEAVY_SLEEPER'],
+               'VOLKUMA':['BEAR_RAGE','BEAR_BLAZE','BEAR_FLAME_BODY','FURNACE','HEAVY_SLEEPER'],
                'PHANPY':['STURDY','ROLLOUT','EARTHSHAKER','HEAVYWEIGHT','MOMENTUM'],
                'DONPHAN':['STURDY','ROLLOUT','EARTHSHAKER','HEAVYWEIGHT','MOMENTUM'],
                'TYKER':['STAMINA','THICK_FAT','STATIC','SCRAPPY','SAVAGE_JAWS'],
@@ -1021,6 +1024,22 @@ def validate(version):
             game.memory[slot]=200;move(turn,'EARTHQUAKE');word('wDamage',999);call('AbilityModifyDamage');assert readword('wDamage')==20979,(turn,'rollout 16bit',readword('wDamage'))
             game.memory[slot]=10;word('wDamage',50000);call('AbilityModifyDamage');assert readword('wDamage')==65535,(turn,'rollout cap')
             game.memory[slot]=4;put('wAbilitySide',turn);call('AbilityEntry');assert game.memory[slot]==0
+        # Fire-bear abilities: threshold boundaries, repeated physical reactions,
+        # contact rather than physical type, and exact low-HP Fire damage.
+        for turn in (0,1):
+            for hp,want in [(81,7),(80,8),(79,8),(0,7)]:
+                ap,tp=init(turn);aid(turn,'BEAR_RAGE');word(ap+'HP',hp);put('wAbilitySide',turn);call('AbilityLowHP')
+                mod='w'+('Enemy' if turn else 'Player')+'MonAttackMod'
+                assert get(mod)==want,(turn,hp,'bear rage',get(mod));call('AbilityLowHP');assert get(mod)==want
+            for attack,want in [('TACKLE',8),('EARTHQUAKE',8),('EMBER',7)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'FURNACE');rng(255);call('AbilityAfterHit')
+                mod='w'+('Player' if turn else 'Enemy')+'MonSpecialMod';assert get(mod)==want,(turn,attack,'furnace',get(mod))
+            for attack,roll,want in [('TACKLE',0,16),('TACKLE',39,16),('TACKLE',40,0),('EARTHQUAKE',0,0),('FIRE_PUNCH',0,16),('EMBER',0,0)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'BEAR_FLAME_BODY');rng(roll);call('AbilityAfterHit')
+                assert get(ap+'Status')==want,(turn,attack,roll,'bear flame body',get(ap+'Status'))
+            for hp,attack,want in [(0,'EMBER',100),(51,'EMBER',150),(50,'EMBER',150),(49,'EMBER',150),(52,'EMBER',150),(54,'EMBER',100),(50,'TACKLE',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'BEAR_BLAZE');word(ap+'MaxHP',159);word(ap+'HP',hp);word('wDamage',100);call('AbilityModifyDamage')
+                assert readword('wDamage')==want,(turn,hp,attack,'bear blaze',readword('wDamage'))
         # Ponyta family: reactive burn, opposing stat changes, speed and hit reactions.
         for turn in (0,1):
             for attack,roll,sub,actor_ability,actor_fire,want in [('TACKLE',0,0,None,False,16),('TACKLE',39,0,None,False,16),('TACKLE',40,0,None,False,0),('EARTHQUAKE',0,0,None,False,16),('FLAMETHROWER',0,0,None,False,0),('TACKLE',0,1,None,False,0),('TACKLE',0,0,'WATER_VEIL',False,0),('TACKLE',0,0,None,True,0)]:
@@ -2004,6 +2023,11 @@ def validate(version):
             ap,tp=init(turn);move(turn,'DOUBLESLAP');aid(turn,'PARENTAL_BOND');call('AbilityAfterHit');call('AbilityMultiHitEffect');prefix='w'+('Enemy' if turn else 'Player');put(prefix+'NumAttacksLeft',1);call('AbilityAfterHit');assert get(prefix+'NumAttacksLeft')==2 and get(prefix+'NumHits')==3,(turn,'parental multihit count',get(prefix+'NumHits'))
             ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'PARENTAL_BOND');word('wDamage',100);call('AbilityAfterHit');assert get('wParentalState')==3 and readword('wParentalFirstDamage')==100
             put('w'+('Enemy' if turn else 'Player')+'NumAttacksLeft',1);word('wDamage',200);call('AbilityParentalOverride');assert readword('wDamage')==25,(turn,'parental damage')
+        for slot,name in [(1,'BEAR RAGE'),(2,'BLAZE'),(3,'FLAME BODY'),(4,'FURNACE'),(5,'HEAVY SLEEPER')]:
+            metadata('wPartyMon1','EMBEAR',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255)
+            expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name)
+            assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         # Each extended slot has its own correct in-game description.
         for slot,name in [(1,'PARENTAL BOND'),(3,'HEAVY HITTER'),(4,'EARLY BIRD'),(5,'MATERNAL RAGE')]:
             metadata('wPartyMon1','KANGASKHAN',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255

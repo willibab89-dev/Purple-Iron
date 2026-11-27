@@ -126,3 +126,24 @@ _DonphanDexEntry::
  text "It travels across"
  next "rocky terrain."
  dex
+
+EmbearPicFront:: INCBIN "pic/new_species/embear.pic"
+EmbearPicBack:: INCBIN "pic/new_species/embear_b.pic"
+_EmbearDexEntry::
+ text "Its fiery body"
+ next "keeps it warm."
+ dex
+
+UrsearPicFront:: INCBIN "pic/new_species/ursear.pic"
+UrsearPicBack:: INCBIN "pic/new_species/ursear_b.pic"
+_UrsearDexEntry::
+ text "Its fiery body"
+ next "keeps it warm."
+ dex
+
+VolkumaPicFront:: INCBIN "pic/new_species/volkuma.pic"
+VolkumaPicBack:: INCBIN "pic/new_species/volkuma_b.pic"
+_VolkumaDexEntry::
+ text "Its fiery body"
+ next "keeps it warm."
+ dex

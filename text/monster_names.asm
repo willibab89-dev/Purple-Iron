@@ -193,3 +193,6 @@ MonsterNames:
 	db "STRAIGAR@@"
 	db "PHANPY@@@@"
 	db "DONPHAN@@@"
+	db "EMBEAR@@@@"
+	db "URSEAR@@@@"
+	db "VOLKUMA@@@"

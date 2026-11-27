@@ -193,3 +193,6 @@ CustomBackStreams:
 	dbw BANK(StraigarPicBack), StraigarPicBack
 	dbw BANK(PhanpyPicBack), PhanpyPicBack
 	dbw BANK(DonphanPicBack), DonphanPicBack
+	dbw BANK(EmbearPicBack), EmbearPicBack
+	dbw BANK(UrsearPicBack), UrsearPicBack
+	dbw BANK(VolkumaPicBack), VolkumaPicBack

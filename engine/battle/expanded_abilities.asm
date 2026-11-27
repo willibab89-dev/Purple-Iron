@@ -546,6 +546,7 @@ AbilityModifyDamage:
 	call AbilityFarfetchDamage
 	call AbilityMagnetDamage
 	call AbilityPatientDamage
+	callab AbilityBearBlaze
 	ld a, [wUnusedC000]
 	bit 4, a
 	ret nz ; fixed damage ignores ordinary damage modifiers
@@ -2809,28 +2810,6 @@ AbilityRubberSkinCheck:
 	ld [wAbilityCheckResult], a
 	ret
 
-AbilitySoothingVoice:
-	ld a, [wAbilityHit]
-	bit 3, a
-	ret z
-	call AbilityActor
-	cp AB_SOOTHING_VOICE
-	ret nz
-	call AbilityMove
-	ld a, [hl]
-	call AbilityMoveFlags
-	bit 4, a
-	ret z
-	ld a, [H_WHOSETURN]
-	ld [wAbilitySide], a
-	call AbilityHP
-	ld a, [hli]
-	or [hl]
-	ret z
-	dec hl
-	ld a, 3
-	jp AbilityHealFractionFromHL
-
 AbilityFoxfire:
 	call AbilityActor
 	cp AB_FOXFIRE
@@ -3027,6 +3006,8 @@ AbilityGetTargetReactions:
 	cp ABILITY_EXTENDED
 	jr nz, .normalReaction
 	ld a, [wAbilityResolvedExtended]
+	cp AB_FURNACE - ABILITY_EXTENDED
+	jp z, .furnace
 	cp AB_ANGER_POINT - ABILITY_EXTENDED
 	jp z, .angerPoint
 	cp AB_SAP_SIPPER - ABILITY_EXTENDED
@@ -3045,6 +3026,13 @@ AbilityGetTargetReactions:
 	jp nz, .contact
 	set 2, [hl]
 	xor a
+	call AbilityRaiseStage
+	jp .contact
+.furnace
+	ld a, [wAbilityMoveType]
+	cp FIRE
+	jp nc, .contact
+	ld a, 3
 	call AbilityRaiseStage
 	jp .contact
 .angerPoint
@@ -3300,8 +3288,13 @@ AbilityLowHP:
 	cp ABILITY_EXTENDED
 	jr nz, .legacy
 	ld a, [wAbilityResolvedExtended]
+	cp AB_BEAR_RAGE - ABILITY_EXTENDED
+	jr nz, .notBearRage
+	jpab AbilityBearRage
+.notBearRage
 	cp AB_MATERNAL_RAGE - ABILITY_EXTENDED
-	jp z, AbilityMaternalRage
+	ret nz
+	jpab AbilityMaternalRage
 	ret
 .legacy
 	cp AB_SECOND_WIND
@@ -5399,10 +5392,20 @@ AbilityFlameBody:
  cp ABILITY_EXTENDED
  ret nz
  ld a, [wAbilityResolvedExtended]
+ cp AB_BEAR_FLAME_BODY - ABILITY_EXTENDED
+ jr z, .bearContact
  cp AB_MAGMAR_FLAME_BODY - ABILITY_EXTENDED
  ret nz
  ld b, 25
  jr .physical
+.bearContact
+ call AbilityMove
+ ld a, [hl]
+ call AbilityMoveFlags
+ bit 1, a
+ ret z
+ ld b, 20
+ jr .attackerAlive
 .ordinary
  ld b, 20
 .physical
@@ -5410,6 +5413,9 @@ AbilityFlameBody:
  ld a, [wAbilityMoveType]
  cp FIRE
  jr nc, .noPhysical
+ pop bc
+.attackerAlive
+ push bc
  ld a, [H_WHOSETURN]
  ld [wAbilitySide], a
  call AbilityHP
@@ -7608,21 +7614,6 @@ AbilityHeavyHitterFixedDamage:
  ret z
  ld c, 120
  jp AbilityScaleDamage
-
-AbilityMaternalRage:
- call AbilityHP
- ld a, [hli]
- or [hl]
- ret z
- dec hl
- call AbilityHalfHP
- ret nc
- call AbilityFlagsPointer
- bit 2, [hl]
- ret nz
- set 2, [hl]
- xor a
- jp AbilityRaiseStage
 
 ; Counting down twice per attempted action halves sleep duration, rounding up.
 AbilityEarlyBirdBeforeAction:

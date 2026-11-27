@@ -1125,5 +1125,196 @@
         "HEAD_SMASH"
       ]
     ]
+  },
+  {
+    "name": "embear",
+    "symbol": "EMBEAR",
+    "index": 195,
+    "dex": 188,
+    "stats": [
+      60,
+      65,
+      50,
+      40,
+      45
+    ],
+    "types": [
+      "FIRE",
+      "FIRE"
+    ],
+    "catch": 190,
+    "xp": 65,
+    "start": [
+      "TACKLE",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        6,
+        "EMBER"
+      ],
+      [
+        11,
+        "RAGE"
+      ],
+      [
+        16,
+        "FLAME_CHARGE"
+      ],
+      [
+        21,
+        "REST"
+      ],
+      [
+        26,
+        "INCINERATE"
+      ],
+      [
+        32,
+        "SLASH"
+      ],
+      [
+        38,
+        "FLAMETHROWER"
+      ],
+      [
+        44,
+        "BODY_SLAM"
+      ],
+      [
+        50,
+        "THRASH"
+      ]
+    ]
+  },
+  {
+    "name": "ursear",
+    "symbol": "URSEAR",
+    "index": 196,
+    "dex": 189,
+    "stats": [
+      85,
+      90,
+      75,
+      45,
+      65
+    ],
+    "types": [
+      "FIRE",
+      "FIRE"
+    ],
+    "catch": 100,
+    "xp": 130,
+    "start": [
+      "TACKLE",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        8,
+        "EMBER"
+      ],
+      [
+        13,
+        "RAGE"
+      ],
+      [
+        18,
+        "FLAME_CHARGE"
+      ],
+      [
+        23,
+        "REST"
+      ],
+      [
+        28,
+        "INCINERATE"
+      ],
+      [
+        34,
+        "SLASH"
+      ],
+      [
+        40,
+        "FLAMETHROWER"
+      ],
+      [
+        46,
+        "BODY_SLAM"
+      ],
+      [
+        52,
+        "THRASH"
+      ],
+      [
+        59,
+        "FIRE_BLAST"
+      ]
+    ]
+  },
+  {
+    "name": "volkuma",
+    "symbol": "VOLKUMA",
+    "index": 197,
+    "dex": 190,
+    "stats": [
+      110,
+      115,
+      90,
+      55,
+      75
+    ],
+    "types": [
+      "FIRE",
+      "FIRE"
+    ],
+    "catch": 45,
+    "xp": 200,
+    "start": [
+      "TACKLE",
+      "GROWL"
+    ],
+    "learn": [
+      [
+        10,
+        "EMBER"
+      ],
+      [
+        15,
+        "RAGE"
+      ],
+      [
+        20,
+        "FLAME_CHARGE"
+      ],
+      [
+        25,
+        "REST"
+      ],
+      [
+        30,
+        "INCINERATE"
+      ],
+      [
+        36,
+        "SLASH"
+      ],
+      [
+        42,
+        "FLAMETHROWER"
+      ],
+      [
+        48,
+        "BODY_SLAM"
+      ],
+      [
+        54,
+        "THRASH"
+      ],
+      [
+        61,
+        "FIRE_BLAST"
+      ]
+    ]
   }
 ]

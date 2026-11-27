@@ -1,0 +1,26 @@
+db DEX_URSEAR
+db 85
+db 90
+db 75
+db 45
+db 65
+db FIRE
+db FIRE
+db 100
+db 130
+INCBIN "pic/new_species/ursear.pic",0,1
+dw UrsearPicFront
+dw UrsearPicBack
+db TACKLE
+db GROWL
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 9
+ tmlearn 18,20
+ tmlearn 0
+ tmlearn 34,38
+ tmlearn 44
+ tmlearn 50
+db 0

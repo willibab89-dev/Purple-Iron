@@ -1,0 +1,26 @@
+db DEX_EMBEAR
+db 60
+db 65
+db 50
+db 40
+db 45
+db FIRE
+db FIRE
+db 190
+db 65
+INCBIN "pic/new_species/embear.pic",0,1
+dw EmbearPicFront
+dw EmbearPicBack
+db TACKLE
+db GROWL
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 9
+ tmlearn 20
+ tmlearn 0
+ tmlearn 34
+ tmlearn 44
+ tmlearn 50
+db 0

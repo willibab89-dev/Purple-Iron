@@ -194,3 +194,6 @@ const_value = 1
 	const STRAIGAR
 	const PHANPY
 	const DONPHAN
+	const EMBEAR
+	const URSEAR
+	const VOLKUMA

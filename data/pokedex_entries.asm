@@ -193,6 +193,9 @@ PokedexEntryPointers:
 	dw StraigarDexEntry
 	dw PhanpyDexEntry
 	dw DonphanDexEntry
+	dw EmbearDexEntry
+	dw UrsearDexEntry
+	dw VolkumaDexEntry
 
 ; string: species name
 ; height in feet, inches
@@ -1365,4 +1368,25 @@ DonphanDexEntry:
  db 3, 0
  dw 900
  TX_FAR _DonphanDexEntry
+ db "@"
+
+EmbearDexEntry:
+ db "FIRE BEAR@"
+ db 3, 0
+ dw 900
+ TX_FAR _EmbearDexEntry
+ db "@"
+
+UrsearDexEntry:
+ db "FIRE BEAR@"
+ db 3, 0
+ dw 900
+ TX_FAR _UrsearDexEntry
+ db "@"
+
+VolkumaDexEntry:
+ db "FIRE BEAR@"
+ db 3, 0
+ dw 900
+ TX_FAR _VolkumaDexEntry
  db "@"
