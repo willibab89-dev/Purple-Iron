@@ -41,7 +41,7 @@ def validate(version):
     headers=data('BaseStats',183*28);order=data('PokedexOrder',190)
     assert sorted(n for n in order if n)==list(range(1,184))
     assert (183+7)//8==23
-    assert addr('wPokedexSeen')-addr('wPokedexOwned')==23
+    assert addr('wPokedexSeen')-addr('wPokedexOwned')==25
     for i,old in enumerate(PLAN['previous_headers']):
         before=bytes.fromhex(old);now=headers[i*28:(i+1)*28]
         if i+1 in TYPE_CHANGES:

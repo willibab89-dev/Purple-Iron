@@ -60,10 +60,7 @@ LoadSAV0:
 	ld de, wPlayerName
 	ld bc, NAME_LENGTH
 	call CopyData
-	ld hl, sMainData
-	ld de, wMainDataStart
-	ld bc, wMainDataEnd - wMainDataStart
-	call CopyData
+	callab LoadExpandedMainData
 	ld hl, wCurMapTileset
 	set 7, [hl]
 	ld hl, sSpriteData
@@ -116,10 +113,7 @@ LoadSAV2:
 	ld de, wPartyDataStart
 	ld bc, wPartyDataEnd - wPartyDataStart
 	call CopyData
-	ld hl, sMainData
-	ld de, wPokedexOwned
-	ld bc, wPokedexSeenEnd - wPokedexOwned
-	call CopyData
+	callab LoadExpandedPokedex
 	and a
 	jp SAVGoodChecksum
 
@@ -206,10 +200,7 @@ SaveSAVtoSRAM0:
 	ld de, sPlayerName
 	ld bc, NAME_LENGTH
 	call CopyData
-	ld hl, wMainDataStart
-	ld de, sMainData
-	ld bc, wMainDataEnd - wMainDataStart
-	call CopyData
+	callab SaveExpandedMainData
 	ld hl, wSpriteDataStart
 	ld de, sSpriteData
 	ld bc, wSpriteDataEnd - wSpriteDataStart
@@ -259,10 +250,7 @@ SaveSAVtoSRAM2:
 	ld de, sPartyData
 	ld bc, wPartyDataEnd - wPartyDataStart
 	call CopyData
-	ld hl, wPokedexOwned ; pokédex only
-	ld de, sMainData
-	ld bc, wPokedexSeenEnd - wPokedexOwned
-	call CopyData
+	callab SaveExpandedPokedex
 	ld hl, sPlayerName
 	ld bc, sMainDataCheckSum - sPlayerName
 	call SAVCheckSum
@@ -620,7 +608,7 @@ SAVCheckRandomID:
 	ld a, [sMainDataCheckSum]
 	cp c
 	jr nz, .next
-	ld hl, sMainData + (wPlayerID - wMainDataStart) ; player ID
+	ld hl, sMainData + (wPlayerID - wMainDataStart) - 4 ; legacy player ID offset
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a

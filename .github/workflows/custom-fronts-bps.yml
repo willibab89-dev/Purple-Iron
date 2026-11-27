@@ -50,6 +50,7 @@ jobs:
         run: |
           python3 -m pip install pyboy==2.9.0 Pillow==11.3.0
           python3 tools/test_unique_species.py
+          python3 tools/test_pokedex_capacity.py
           python3 tools/test_critical_hits.py
           python3 tools/test_freeze.py
           python3 tools/test_move_patch_1.py

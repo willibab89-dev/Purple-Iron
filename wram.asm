@@ -2402,11 +2402,11 @@ wPartyDataEnd::
 wMainDataStart::
 
 wPokedexOwned:: ; d2f7
-	flag_array NUM_POKEMON
+	flag_array POKEDEX_CAPACITY
 wPokedexOwnedEnd::
 
 wPokedexSeen:: ; d30a
-	flag_array NUM_POKEMON
+	flag_array POKEDEX_CAPACITY
 wPokedexSeenEnd::
 
 
@@ -3289,7 +3289,8 @@ wCurMapScript:: ; da39
 ; mostly copied from map-specific map script pointer and written back later
 	ds 1
 
-	ds 7
+; Four of the former seven unused bytes accommodate the expanded dex fields.
+wPokedexExtensionPadding:: ds 3
 
 wPlayTimeHours:: ; da41
 	ds 1
