@@ -45,7 +45,7 @@ def validate(version):
         assert text(3,11,2).strip()=='20' and text(6,11,2).strip()=='42', (version,'PP Up',text(1,11,9))
         put('wBattleMonPP',20)
         species=constants(ROOT/'constants/pokemon_constants.asm')
-        put('wPartyMon1Species',species['MEOWTH']); put('wPartyMon1Type1',3 << 5); put('wPartyMon1Type2',224)
+        put('wPartyMon1Species',species['MEOWTH']); put('wPartyMon1Type1',3 << 5); put('wPartyMon1Type2',192)
         call('PrintMenuItem'); assert text(6,11,2).strip()=='40', (version,'Resourceful',text(1,11,9))
         put('wPartyMon1Species',species['PIDGEY'])
         abilities=dict((n,int(v)) for n,v in re.findall(r'^AB_(\w+) EQU (\d+)',(ROOT/'constants/ability_constants.asm').read_text(),re.M))

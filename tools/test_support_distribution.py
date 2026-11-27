@@ -54,6 +54,8 @@ def validate(version):
             call('LearnMoveFromLevelUp')
             assert get('wPartyMon1Moves', 4)[1] == MOVES[move], (dex, level, move)
             expected_pp = {'CHARM':20,'ICE_PUNCH':15,'HEAL_BELL':5,'SNARL':15}[move]
+            if dex == 53 and get('wPartyMon1Type1')[0] >> 5 == 3:
+                expected_pp += 5  # Persian's Resourceful ability.
             assert get('wPartyMon1PP', 4)[1] == expected_pp, (dex, level, move)
         assert MOVES['CHARM'] not in relearn(133,39)
         assert MOVES['CHARM'] in relearn(133,40)

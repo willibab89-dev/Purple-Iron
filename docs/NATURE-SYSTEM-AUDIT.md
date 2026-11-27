@@ -1,5 +1,7 @@
 # Nature system repository audit
 
+Historical audit: the 196-nature design described below was superseded by the redesign in [NATURE-SYSTEM.md](NATURE-SYSTEM.md).
+
 Branch: `unique-species`, starting from `2504e8e`. This audit concerns the cumulative Shin-based game, not upstream vanilla Red/Blue.
 
 ## Storage and generation

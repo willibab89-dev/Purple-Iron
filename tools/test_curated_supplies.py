@@ -50,7 +50,7 @@ def validate(version):
     patch('Random',[0xc9]);b,a=syms['Random'];game.hook_register(b,a,on_rng,state)
     def source(label):word('wNatureInputHL',addr(label))
     def stored(label,id,slot=1,t1=0,t2=0):
-        put(label+'Species',ids['BULBASAUR']);put(label+'Type1',t1|(slot<<5));put(label+'Type2',t2|224);put(label+'CatchRate',id)
+        put(label+'Species',ids['BULBASAUR']);put(label+'Type1',t1|(slot<<5));put(label+'Type2',t2|192);put(label+'CatchRate',id)
     def inspect(label):
         source(label);call('NatureEnsureMon');return get('wNatureID'),get('wNatureSlot')
     def item_constants():
@@ -71,7 +71,7 @@ def validate(version):
     def initmon(index,species='BULBASAUR',nature=0,slot=1,hp=100,maximum=100):
         label='wPartyMon'+str(index+1)
         game.memory[addr(label):addr(label)+44]=[0]*44
-        put(label+'Species',ids[species]);put(label+'Type1',slot<<5);put(label+'Type2',224);put(label+'CatchRate',nature)
+        put(label+'Species',ids[species]);put(label+'Type1',slot<<5);put(label+'Type2',192);put(label+'CatchRate',nature)
         put(label+'Level',40);put(label+'DVs',0xaa);game.memory[addr(label+'DVs')+1]=0xbb
         word(label+'HP',hp);word(label+'MaxHP',maximum)
         put(label+'Status',8);put(label+'Moves',MOVES['TACKLE']);put(label+'PP',12)
@@ -120,16 +120,23 @@ def validate(version):
                 call('UseItem_');assert quantity()==2 and raw(label)==before and get('wActionResultOrTookBattleTurn')==0
         select.update(cancel=False,mon=1)
         # Every nature change uses native stat recalculation and preserves missing HP.
-        for old,new,hp in [(0,1,75),(1,0,75),(0,195,0),(195,0,1),(7,33,1)]:
+        roll_ids=[i for i in range(7,56) if i%7]+[56]
+        for old,new,hp in [(8,9,75),(9,8,75),(8,56,0),(195,8,1),(15,33,1)]:
             initmon(0);label=initmon(1,nature=old,slot=4,hp=100,maximum=100)
             word('wNatureMonPtr',addr(label));put('wNatureMode',0);call('NatureMigrateOne')
             maximum=readword(label+'MaxHP');word(label+'HP',min(hp,maximum));missing=maximum-min(hp,maximum);before=raw(label)
-            bag(items['NATURE_CAPSULE']);rng(old,new);call('UseItem_')
+            bag(items['NATURE_CAPSULE']);rng(roll_ids.index(old) if old in roll_ids else roll_ids.index(new),roll_ids.index(new));call('UseItem_')
             assert quantity()==1 and get(label+'CatchRate')==new and get(label+'Type1')>>5==4
             assert readword(label+'HP')==(max(1,readword(label+'MaxHP')-missing) if hp else 0)
             after=raw(label);assert after[3:7]==before[3:7] and after[8:34]==before[8:34]
             # Re-running native migration must reproduce the same recalculated stats.
             expected=after[34:44];word('wNatureMonPtr',addr(label));call('NatureMigrateOne');assert raw(label)[34:44]==expected
+        # A migrated legacy ID can share an effect with a rollable ID. The
+        # capsule must reject that duplicate effect and roll again.
+        old=0; same=next(i for i in roll_ids if table[i]==table[old]); new=next(i for i in roll_ids if table[i]!=table[old])
+        initmon(0); label=initmon(1,nature=old,slot=4,hp=100,maximum=100)
+        bag(items['NATURE_CAPSULE']); rng(roll_ids.index(same),roll_ids.index(new)); call('UseItem_')
+        assert get(label+'CatchRate')==new and quantity()==1 and state['index']==2
         # Party-wide heal, odd maxima, cap, 16-bit HP, status unchanged, no revival.
         put('wPartyCount',6)
         for i,(hp,maximum) in enumerate([(1,101),(90,101),(0,101),(200,600),(999,999),(1,1)]):initmon(i,hp=hp,maximum=maximum)

@@ -12,12 +12,25 @@ NatureInputDE:
 	ld a, [wNatureInputDE + 1]
 	ld l, a
 	ret
+; Rejection sampling chooses the 42 non-HP pairs and neutral uniformly.
+; The original IDs of the 42 unchanged single-stat natures remain stable.
 NatureRoll:
-	call Random
-	cp NUM_NATURES
-	jr nc, NatureRoll
-	ld [wNatureID], a
-	ret
+ call Random
+ cp NATURE_ROLL_LIMIT ; five complete sets of 43 choices
+ jr nc, NatureRoll
+.modulo
+ cp NUM_NATURE_CHOICES
+ jr c, .index
+ sub NUM_NATURE_CHOICES
+ jr .modulo
+.index
+ ld l, a
+ ld h, 0
+ ld de, NatureRollIds
+ add hl, de
+ ld a, [hl]
+ ld [wNatureID], a
+ ret
 NatureRollSlot:
 	call Random
 	cp 255
@@ -32,8 +45,8 @@ NatureRollSlot:
 	ld [wNatureSlot], a
 	ret
 
-; Versioned stored prefix: Type1 high bits = slot; Type2 high bits = E0;
-; CatchRate = nature. Legacy type bytes cannot have the marker.
+; Stored prefix: Type1 high bits = slot; Type2 high bits = C0;
+; CatchRate = nature. E0 marks the previous nature format.
 NatureEnsureMon:
 	call NatureInputHL
 	jp NatureEnsureAtHL
@@ -44,7 +57,11 @@ NatureEnsureAtHL:
 	ld a, [hli]
 	and NATURE_FORMAT_MASK
 	cp NATURE_FORMAT_TAG
-	jr nz, .legacy
+	jr z, .current
+ cp NATURE_OLD_FORMAT_TAG
+ jr z, .oldTagged
+ jr .legacy
+.current
 	ld a, [hl]
 	cp NUM_NATURES
 	jr nc, .legacy
@@ -66,6 +83,25 @@ NatureEnsureAtHL:
 .repairSlot
 	call NatureRollSlot
 	jr .write
+.oldTagged
+ ; Keep the existing nature ID and ability slot; write the new marker.
+ ld a, [hl]
+ cp NUM_NATURES
+ jr nc, .newSlot
+ ld [wNatureID], a
+ dec hl
+ dec hl
+ ld a, [hl]
+ rlca
+ rlca
+ rlca
+ and 7
+ ld [wNatureSlot], a
+ and a
+ jr z, .repairSlot
+ cp 6
+ jr nc, .repairSlot
+ jr .write
 .legacy
 	ld a, [hl]
 	cp $f9
@@ -408,8 +444,8 @@ NatureResolveStatID:
 	ld de, -10 ; stat-exp base (species+16) -> Type2 marker (species+6)
 	add hl, de
 	ld a, [hli]
-	and $e0
-	cp $e0
+	and NATURE_FORMAT_MASK
+	cp NATURE_FORMAT_TAG
 	jr nz, .none
 	ld a, [hl]
 	jr .finish
@@ -437,7 +473,51 @@ NatureApplyStat:
 	dec a
 	cp 5
 	ret nc
+ and a
+ jr nz, .normalRatio
+ ; Old-format boxed records still need their original HP multiplier until
+ ; their saved HP has been converted. Active battlers use cached stats.
+ ld a, [wNatureID]
+ cp $ff
+ jr nz, .normalHP
+ call NatureInputHL
+ ; Battle stat buffers have no stored Type2 marker before them.
+ ld de, wBattleMonHP
+ ld a, h
+ cp d
+ jr nz, .legacyEnemyCheck
+ ld a, l
+ cp e
+ jr z, .normalHP
+.legacyEnemyCheck
+ ld de, wEnemyMonHP
+ ld a, h
+ cp d
+ jr nz, .legacyStored
+ ld a, l
+ cp e
+ jr z, .normalHP
+.legacyStored
+ ld de, -10
+ add hl, de
+ ld a, [hli]
+ and NATURE_FORMAT_MASK
+ cp NATURE_OLD_FORMAT_TAG
+ jr nz, .normalHP
+ ld a, [hl]
+ cp NUM_NATURES
+ jr nc, .normalHP
+ ld l, a
+ ld h, 0
+ ld de, NatureLegacyHPRatios
+ add hl, de
+ ld a, [hl]
+ jr .gotRatio
+.normalHP
+ xor a
+.normalRatio
 	call NatureGetRatio
+.gotRatio
 	cp 100
 	ret z
 	ld [H_MULTIPLIER], a
@@ -470,7 +550,7 @@ NatureApplyStat:
 	ld [H_QUOTIENT + 3], a
 	ret
 
-; Convert only unversioned party records when an old save is loaded. Boxes
+; Convert old-format and unversioned party records on save load. Boxes
 ; migrate on access, before any prefix copies; daycare is migrated in WRAM.
 NatureMigrateParty:
 	ld a, [wSaveFileStatus]
@@ -494,8 +574,8 @@ NatureMigrateParty:
 	ld de, 6
 	add hl, de
 	ld a, [hl]
-	and $e0
-	cp $e0
+	and NATURE_FORMAT_MASK
+	cp NATURE_FORMAT_TAG
 	jr z, .next
 	call NatureMigrateOne
 .next
@@ -613,8 +693,8 @@ NaturePrepareOldBoxAtHL:
 	ld de, 6
 	add hl, de
 	ld a, [hl]
-	and $e0
-	cp $e0
+	and NATURE_FORMAT_MASK
+	cp NATURE_FORMAT_TAG
 	pop hl
 	jp z, NatureEnsureAtHL
 	ld a, h
@@ -869,6 +949,12 @@ NaturePrintMask:
 	ld l, c
 	ld [hl], " "
 	inc hl
+ ld a, [wNatureTemp]
+ and a
+ jr nz, .hasAttributes
+ ld de, NatureNone
+ jp PlaceString
+.hasAttributes
 	ld a, h
 	ld [wNatureOldMax], a
 	ld a, l
@@ -929,6 +1015,8 @@ NatureLowers:
 	db "Lowers@"
 NatureAnd:
 	db "and@"
+NatureNone:
+ db "NONE@"
 NatureStrengthText:
 	db "10 percent each@"
 NatureCloseHelp:
@@ -959,12 +1047,38 @@ NatureCapsuleApply::
 	ld a, [wNatureID]
 	ld [wNatureResult], a
 .roll
-	call NatureRoll
-	ld b, a
-	ld a, [wNatureResult]
-	cp b
-	jr z, .roll
-	call NatureCapsuleLoadRoot
+ call NatureRoll
+ ; Legacy IDs may map to the same new nature. Reject identical effects,
+ ; not just identical IDs, so a capsule always changes the nature.
+ ld a, [wNatureResult]
+ add a
+ ld l, a
+ ld h, 0
+ jr nc, .oldOffset
+ inc h
+.oldOffset
+ ld de, NatureDefinitions
+ add hl, de
+ ld a, [hli]
+ ld b, a
+ ld c, [hl]
+ ld a, [wNatureID]
+ add a
+ ld l, a
+ ld h, 0
+ jr nc, .newOffset
+ inc h
+.newOffset
+ ld de, NatureDefinitions
+ add hl, de
+ ld a, [hli]
+ cp b
+ jr nz, .different
+ ld a, [hl]
+ cp c
+ jr z, .roll
+.different
+ call NatureCapsuleLoadRoot
 	call NatureWriteAtHL
 	jp NatureMigrateOne
 

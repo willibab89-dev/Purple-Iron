@@ -48,7 +48,7 @@ def validate(version):
     patch('Random',[0xc9]);b,a=syms['Random'];game.hook_register(b,a,on_rng,state)
     def source(label):word('wNatureInputHL',addr(label))
     def stored(label,id,slot=1,t1=0,t2=0):
-        put(label+'Species',ids['BULBASAUR']);put(label+'Type1',t1|(slot<<5));put(label+'Type2',t2|224);put(label+'CatchRate',id)
+        put(label+'Species',ids['BULBASAUR']);put(label+'Type1',t1|(slot<<5));put(label+'Type2',t2|192);put(label+'CatchRate',id)
     def inspect(label):
         source(label);call('NatureEnsureMon');return get('wNatureID'),get('wNatureSlot')
     try:

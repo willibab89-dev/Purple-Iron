@@ -3,7 +3,7 @@
 from collections import Counter
 from pathlib import Path
 from pyboy import PyBoy
-from generate_natures import definitions,render,ROOT,ATTRIBUTES
+from generate_natures import definitions,legacy_definitions,render,ROOT,ATTRIBUTES
 import os
 from test_unique_species import symbols,TYPES
 from test_move_patch_3 import constants,MOVES
@@ -48,12 +48,16 @@ def validate(version):
     patch('Random',[0xc9]);b,a=syms['Random'];game.hook_register(b,a,on_rng,state)
     def source(label):word('wNatureInputHL',addr(label))
     def stored(label,id,slot=1,t1=0,t2=0):
-        put(label+'Species',ids['BULBASAUR']);put(label+'Type1',t1|(slot<<5));put(label+'Type2',t2|224);put(label+'CatchRate',id)
+        put(label+'Species',ids['BULBASAUR']);put(label+'Type1',t1|(slot<<5));put(label+'Type2',t2|192);put(label+'CatchRate',id)
     def inspect(label):
         source(label);call('NatureEnsureMon');return get('wNatureID'),get('wNatureSlot')
     try:
-        for n in range(196):rng(n);call('NatureRoll');assert get('wNatureID')==n
-        rng(196,255,37);call('NatureRoll');assert get('wNatureID')==37 and state['index']==3
+        roll_ids=[i for i in range(7,56) if i%7]+[56]
+        counts=Counter()
+        for n in range(215):
+            rng(n);call('NatureRoll');value=get('wNatureID');assert value==roll_ids[n%43];counts[value]+=1
+        assert len(counts)==43 and set(counts.values())=={5}
+        rng(215,255,37);call('NatureRoll');assert get('wNatureID')==roll_ids[37] and state['index']==3
         for id in range(196):
             for slot in range(1,6):
                 stored('wPartyMon1',id,slot,22,3);rng(100)
@@ -61,29 +65,29 @@ def validate(version):
                 assert get('wPartyMon1Type1')&31==22 and get('wPartyMon1Type2')&31==3
                 assert state['index']==0
         for slot in range(1,6):
-            put('wPartyMon1Type1',22);put('wPartyMon1Type2',3);put('wPartyMon1CatchRate',248+slot);rng(42)
-            assert inspect('wPartyMon1')==(42,slot)
+            put('wPartyMon1Type1',22);put('wPartyMon1Type2',3);put('wPartyMon1CatchRate',248+slot);rng(0)
+            assert inspect('wPartyMon1')==(8,slot)
         # A legacy catch rate within 0..195 must never be accepted as a nature.
-        put('wPartyMon1Type1',22);put('wPartyMon1Type2',3);put('wPartyMon1CatchRate',45);rng(4,87)
-        assert inspect('wPartyMon1')==(87,5)
+        put('wPartyMon1Type1',22);put('wPartyMon1Type2',3);put('wPartyMon1CatchRate',45);rng(4,0)
+        assert inspect('wPartyMon1')==(8,5)
         # Generic box/daycare/party copy prefixes retain both IDs.
         stored('wPartyMon1',195,4,22,3)
         prefix=bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+33])
         for label in ('wBoxMon1','wDayCareMon','wPartyMon2'):
             game.memory[addr(label):addr(label)+33]=prefix;assert inspect(label)==(195,4)
         # Real gift creation assigns both fields before stats are generated.
-        put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0);put('wCurEnemyLVL',5);put('wcf91',ids['BULBASAUR']);rng(2,91)
-        call('AddPartyMon');assert inspect('wPartyMon1')==(91,3)
+        put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0);put('wCurEnemyLVL',5);put('wcf91',ids['BULBASAUR']);rng(2,0)
+        call('AddPartyMon');assert inspect('wPartyMon1')==(8,3)
         put('wWhichPokemon',0);put('wPlayerMonNumber',0);put('wBattleMonSpecies2',ids['BULBASAUR']);put('wLinkState',0)
         call('LoadBattleMonFromParty');assert get('wBattleMonType1')==22 and get('wBattleMonType2')==3
-        assert get('wActiveAbilities')==3 and get('wNatureIDs')==91
+        assert get('wActiveAbilities')==3 and get('wNatureIDs')==8
         # NPC trade constructor uses AddPartyMon; OT/nickname do not encode nature.
         put('wPartyCount',0);put('wcf91',ids['CHARMANDER']);rng(4,73);call('AddPartyMon')
-        assert inspect('wPartyMon1')==(73,5)
+        assert inspect('wPartyMon1')==(roll_ids[73%43],5)
         # Trainer parties and switches resolve the same stored nature each time.
         from test_reviewed_trainers import TRAINERS
         put('wIsInBattle',2);put('wTrainerClass',TRAINERS['SONY1']);put('wTrainerNo',3);rng(1,31)
-        call('ReadTrainer');nature,slot=inspect('wEnemyMon1');assert nature==31 and slot==2
+        call('ReadTrainer');nature,slot=inspect('wEnemyMon1');assert nature==roll_ids[31] and slot==2
         for _ in range(2):
             put('wWhichPokemon',0);put('wEnemyMonPartyPos',0);put('wEnemyMonSpecies2',ids['CHARMANDER']);put('wCurEnemyLVL',5)
             for n in ('wEnemyBattleStatus3','wFontLoaded','wOptions'):put(n,0)
@@ -121,7 +125,7 @@ def validate(version):
             put('wPartyMon1Type1',22);put('wPartyMon1Type2',3);put('wPartyMon1CatchRate',45)
             put('wPartyMon1Level',50);word('wPartyMon1MaxHP',baseline[0]);word('wPartyMon1HP',hp)
             put('wPartyCount',1);put('wSaveFileStatus',2);put('wDayCareInUse',0);rng(2,0)
-            call('NatureMigrateParty');newmax=baseline[0]*110//100
+            call('NatureMigrateParty');newmax=baseline[0]
             assert readword('wPartyMon1MaxHP')==newmax
             assert readword('wPartyMon1HP')==(0 if hp==0 else max(1,newmax-(baseline[0]-hp)))
             before=bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+44]);i=state['index']
@@ -131,17 +135,54 @@ def validate(version):
             prefix=bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+33])
             game.memory[addr('wBoxMon1'):addr('wBoxMon1')+33]=prefix
             put('wBoxMon1Type1',22);put('wBoxMon1Type2',3);put('wBoxMon1CatchRate',45);put('wBoxMon1BoxLevel',50);word('wBoxMon1HP',hp)
-            source('wBoxMon1');rng(0,7);call('NaturePrepareOldBox');newmax=baseline[0]*90//100
-            assert inspect('wBoxMon1')==(7,1)
+            source('wBoxMon1');rng(0,0);call('NaturePrepareOldBox');newmax=baseline[0]
+            assert inspect('wBoxMon1')==(8,1)
             assert readword('wBoxMon1HP')==(0 if hp==0 else max(1,newmax-(baseline[0]-hp)))
         # Save-load daycare migration must convert HP before setting its marker.
         for hp in (0,baseline[0]):
             prefix=bytes(game.memory[addr('wBoxMon1'):addr('wBoxMon1')+33])
             game.memory[addr('wDayCareMon'):addr('wDayCareMon')+33]=prefix
             put('wDayCareMonType1',22);put('wDayCareMonType2',3);put('wDayCareMonCatchRate',45);word('wDayCareMonHP',hp)
-            put('wPartyCount',0);put('wDayCareInUse',1);put('wSaveFileStatus',2);rng(0,7)
-            call('NatureMigrateParty');assert inspect('wDayCareMon')==(7,1)
-            assert readword('wDayCareMonHP')==(0 if hp==0 else baseline[0]*90//100)
+            put('wPartyCount',0);put('wDayCareInUse',1);put('wSaveFileStatus',2);rng(0,0)
+            call('NatureMigrateParty');assert inspect('wDayCareMon')==(8,1)
+            assert readword('wDayCareMonHP')==(0 if hp==0 else baseline[0])
+        # Existing nature-format records keep IDs/slots and receive new stats.
+        legacy=legacy_definitions()
+        for old_id in range(196):
+            for slot in range(1,6):
+                stored('wPartyMon1',old_id,slot,22,3)
+                put('wPartyMon1Type2',3|224);rng(0)
+                assert inspect('wPartyMon1')==(old_id,slot)
+                assert get('wPartyMon1Type2')&224==192 and state['index']==0
+        for old_id in (0,7,56,57,100,195):
+            up,down=legacy[old_id]
+            oldmax=baseline[0]*(110 if up&1 else 90 if down&1 else 100)//100
+            for hp in (0,1,max(1,oldmax-5),oldmax):
+                stored('wPartyMon1',old_id,4,22,3);put('wPartyMon1Type2',3|224)
+                put('wPartyMon1Level',50);word('wPartyMon1MaxHP',oldmax);word('wPartyMon1HP',hp)
+                put('wPartyCount',1);put('wSaveFileStatus',2);put('wDayCareInUse',0)
+                call('NatureMigrateParty')
+                assert inspect('wPartyMon1')==(old_id,4) and readword('wPartyMon1MaxHP')==baseline[0]
+                assert readword('wPartyMon1HP')==(0 if hp==0 else max(1,baseline[0]-(oldmax-hp))),('old party',old_id,hp)
+                prefix=bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+33])
+                game.memory[addr('wBoxMon1'):addr('wBoxMon1')+33]=prefix
+                put('wBoxMon1Type2',3|224);put('wBoxMon1BoxLevel',50);word('wBoxMon1HP',hp)
+                source('wBoxMon1');call('NaturePrepareOldBox')
+                assert inspect('wBoxMon1')==(old_id,4)
+                assert readword('wBoxMon1HP')==(0 if hp==0 else max(1,baseline[0]-(oldmax-hp))),('old box',old_id,hp,readword('wBoxMon1HP'))
+        # An old boxed Squirtle with Ancient must apply the old HP nature
+        # before its HP ability when reconstructing the pre-migration maximum.
+        put('wd0b5',ids['SQUIRTLE']);call('GetMonHeader');put('wCurEnemyLVL',50)
+        stored('wPartyMon1',0,3,21,21);put('wPartyMon1Species',ids['SQUIRTLE'])
+        put('wPartyMon1Level',50);newmax=stats()[0]
+        put('wPartyMon1Type2',21|224);oldmax=stats()[0]
+        assert oldmax>newmax
+        prefix=bytes(game.memory[addr('wPartyMon1'):addr('wPartyMon1')+33])
+        game.memory[addr('wBoxMon1'):addr('wBoxMon1')+33]=prefix
+        put('wBoxMon1BoxLevel',50);word('wBoxMon1HP',oldmax-5)
+        source('wBoxMon1');call('NaturePrepareOldBox')
+        assert readword('wBoxMon1HP')==newmax-5 and inspect('wBoxMon1')==(0,3)
+        put('wd0b5',ids['BULBASAUR']);call('GetMonHeader')
         # Accuracy/Evasion are a single multiplicative ratio on the wide chance.
         def ratio(id,attr):
             up,down=table[id];return 110 if up&(1<<attr) else 90 if down&(1<<attr) else 100
@@ -210,8 +251,8 @@ def validate(version):
             stored('wPartyMon2',id,4,22,3);ui['key']=(1,2,4)[id%3]
             before=bytes(game.memory[addr('wTileMap'):addr('wTileMap')+360]);call('PartyNaturePanel')
             frame=frames[-1];pos=[ATTRIBUTES[i] for i in range(8) if up&(1<<i)];neg=[ATTRIBUTES[i] for i in range(8) if down&(1<<i)]
-            assert decode(frame[6*20+2:6*20+19])=='Raises '+pos[0],id
-            assert decode(frame[10*20+2:10*20+19])=='Lowers '+neg[0],id
+            assert decode(frame[6*20+2:6*20+19])=='Raises '+(pos[0] if pos else 'NONE'),id
+            assert decode(frame[10*20+2:10*20+19])=='Lowers '+(neg[0] if neg else 'NONE'),id
             assert decode(frame[8*20+2:8*20+19])==('and '+pos[1] if len(pos)==2 else ''),id
             assert decode(frame[12*20+2:12*20+19])==('and '+neg[1] if len(neg)==2 else ''),id
             assert get('wWhichPokemon')==1 and get('wPartyMon2CatchRate')==id
@@ -257,7 +298,7 @@ def validate(version):
         assert inspect('wPartyMon1')==second and inspect('wPartyMon2')==first
         # Wild capture reload must not reroll an existing nature or ability slot.
         put('wNatureMode',0);put('wIsInBattle',1);rng(2,87);call('NatureInitializeEnemy')
-        wild=(game.memory[addr('wNatureIDs')+1],get('wNatureEnemySlot'));assert wild==(87,3)
+        wild=(game.memory[addr('wNatureIDs')+1],get('wNatureEnemySlot'));assert wild==(roll_ids[87%43],3)
         rng(4,99);call('NatureInitializeEnemy');assert state['index']==0
         assert (game.memory[addr('wNatureIDs')+1],get('wNatureEnemySlot'))==wild
         # Evolution's type refresh preserves both metadata fields.
@@ -308,7 +349,7 @@ def validate(version):
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2');put('wPartyMon1CatchRate',0)
         call('LoadSAV0');call('LoadSAV2');assert inspect('wPartyMon1')==(194,2)
         assert addr('wPartyMon2')-addr('wPartyMon1')==44 and addr('wBoxMon2')-addr('wBoxMon1')==33
-        print(f'{version}: 196 balanced definitions, 980 ID/slot combinations, multiplicative stats/probabilities, migration/HP, gifts/capture/PC/daycare/swaps/evolution/trade/healing/Transform, 196 descriptions, link guards and saves passed')
+        print(f'{version}: 43 rollable natures, 196 compatible IDs and 980 ID/slot combinations, multiplicative stats/probabilities, migration/HP, gifts/capture/PC/daycare/swaps/evolution/trade/healing/Transform, 196 compatible descriptions, link guards and saves passed')
     finally:game.stop(save=False)
 
 if __name__=='__main__':

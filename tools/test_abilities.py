@@ -187,7 +187,7 @@ def validate(version):
         assert get('wActionResultOrTookBattleTurn')==0
         game.hook_deregister(b,a)
         # Outside battle, inspect the selected party member rather than the active one.
-        put('wWhichPokemon',1);put('wPartyMon2Species',ids['CHARMANDER']);put('wPartyMon2Type1',160);put('wPartyMon2Type2',224);put('wPartyMon2CatchRate',195)
+        put('wWhichPokemon',1);put('wPartyMon2Species',ids['CHARMANDER']);put('wPartyMon2Type1',160);put('wPartyMon2Type2',192);put('wPartyMon2CatchRate',195)
         def encoded(text):return bytes(0x80+ord(c)-ord('A') for c in text)+bytes([0x50])
         nick=encoded('CHARMANDER')
         game.memory[addr('wPartyMonNicks')+11:addr('wPartyMonNicks')+11+len(nick)]=nick
@@ -260,7 +260,7 @@ def validate(version):
             seen.clear();choice['index']=count+4;call('StartMenu_Pokemon');assert not seen
         game.hook_deregister(b,a);game.hook_deregister(mb,ma)
         # Ordinary save routines retain the tag without changing party layouts.
-        put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1Type1',160);put('wPartyMon1Type2',224);put('wPartyMon1CatchRate',195)
+        put('wPartyMon1Species',ids['BULBASAUR']);put('wPartyMon1Type1',160);put('wPartyMon1Type2',192);put('wPartyMon1CatchRate',195)
         call('SaveSAVtoSRAM0');call('SaveSAVtoSRAM2');put('wPartyMon1CatchRate',45)
         call('LoadSAV0');call('LoadSAV2');assert get('wPartyMon1CatchRate')==195 and get('wPartyMon1Type1')>>5==5
         assert addr('wPartyMon2')-addr('wPartyMon1')==44

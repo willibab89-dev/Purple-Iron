@@ -73,7 +73,7 @@ def validate(version):
         put(prefix+'MoveListIndex',0)
     def source(root):word('wNatureInputHL',addr(root))
     def metadata(root,species,slot,nature=0):
-        put(root+'Species',ids[species]);put(root+'Type1',slot<<5);put(root+'Type2',224);put(root+'CatchRate',nature)
+        put(root+'Species',ids[species]);put(root+'Type1',slot<<5);put(root+'Type2',192);put(root+'CatchRate',nature)
     try:
         assert (ROOT/'data/ability_move_metadata.asm').read_text()==render()
         for name in SOUND:
