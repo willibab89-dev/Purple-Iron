@@ -1,0 +1,26 @@
+db DEX_HOPPIP
+db 35
+db 35
+db 40
+db 60
+db 55
+db GRASS
+db FLYING
+db 200
+db 74
+INCBIN "pic/new_species/hoppip.pic",0,1
+dw HoppipPicFront
+dw HoppipPicBack
+db TACKLE
+db SYNTHESIS
+db 0
+db 0
+db 0
+ tmlearn 6
+ tmlearn 0
+ tmlearn 21,22
+ tmlearn 32
+ tmlearn 0
+ tmlearn 0
+ tmlearn 50
+db 0

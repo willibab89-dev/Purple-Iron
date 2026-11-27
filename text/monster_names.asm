@@ -196,3 +196,6 @@ MonsterNames:
 	db "EMBEAR@@@@"
 	db "URSEAR@@@@"
 	db "VOLKUMA@@@"
+	db "HOPPIP@@@@"
+	db "SKIPLOOM@@"
+	db "JUMPLUFF@@"

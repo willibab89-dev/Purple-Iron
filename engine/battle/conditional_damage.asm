@@ -2243,6 +2243,141 @@ AbilitySoothingVoice:
  ret z
  jpab AbilityHealEighthSide
 
+AbilityBeforeStatusSnapshot:
+ ; Residual bit 5 records whether the actor already had a major status.
+ ld hl, wPlayerResidual
+ ld de, wBattleMonStatus
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .snapshot
+ ld hl, wEnemyResidual
+ ld de, wEnemyMonStatus
+.snapshot
+ res 5, [hl]
+ ld a, [de]
+ and a
+ jr z, .earlyBird
+ set 5, [hl]
+.earlyBird
+ callab AbilityActorResult
+ ld a, [wAbilityResolvedExtended]
+ cp AB_EARLY_BIRD - ABILITY_EXTENDED
+ ret nz
+ ld hl, wBattleMonStatus
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .status
+ ld hl, wEnemyMonStatus
+.status
+ ld a, [hl]
+ and SLP
+ cp 2
+ ret c
+ dec [hl]
+ ret
+
+AbilitySleepAndScatter:
+ abilitycall AbilitySleepAfterAction
+ call AbilitySporeScatter
+ ; A reactive ability may have inflicted a status on the original actor.
+ ld hl, wPlayerResidual
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .actorSnapshot
+ ld hl, wEnemyResidual
+.actorSnapshot
+ bit 5, [hl]
+ ret nz
+ ld a, [wAbilityOldStatus]
+ push af
+ ld a, [H_WHOSETURN]
+ push af
+ xor 1
+ ld [H_WHOSETURN], a
+ xor a
+ ld [wAbilityOldStatus], a
+ call AbilitySporeScatter
+ pop af
+ ld [H_WHOSETURN], a
+ pop af
+ ld [wAbilityOldStatus], a
+ ret
+
+; Reflect a newly inflicted major status to the opposing battler.
+AbilitySporeScatter:
+ ld a, [wAbilityOldStatus]
+ and a
+ ret nz
+ callab AbilityTargetResult
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SPORE_SCATTER - ABILITY_EXTENDED
+ ret nz
+ ld hl, wEnemyMonStatus
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .targetStatus
+ ld hl, wBattleMonStatus
+.targetStatus
+ ld a, [hl]
+ and a
+ ret z
+ ld [wCustomDelta], a
+ ld a, [H_WHOSETURN]
+ ld [wCustomSide], a
+ ld hl, wBattleMonStatus
+ and a
+ jr z, .actorStatus
+ ld hl, wEnemyMonStatus
+.actorStatus
+ ld a, [hl]
+ and a
+ ret nz
+ push hl
+ dec hl
+ ld a, [hld]
+ or [hl]
+ pop hl
+ ret z
+ call AbilityAntivirusReactiveActor
+ ld a, [wAbilityCheckResult]
+ and a
+ ret nz
+ ld a, [wCustomDelta]
+ and SLP
+ jr nz, .sleep
+ ld a, [H_WHOSETURN]
+ push af
+ xor 1
+ ld [H_WHOSETURN], a
+ ld a, [wCustomDelta]
+ cp 1 << PSN
+ jr nz, .other
+ callab AbilityInflictOrdinaryStatus
+ jr .restoreTurn
+.other
+ callab UtilityInflictStatus
+.restoreTurn
+ pop af
+ ld [H_WHOSETURN], a
+ ret
+.sleep
+ ; Keep the same remaining sleep duration, interrupting recharge.
+ ld a, [wCustomDelta]
+ ld hl, wBattleMonStatus
+ ld de, wPlayerBattleStatus2
+ ld b, a
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .sleepStore
+ ld hl, wEnemyMonStatus
+ ld de, wEnemyBattleStatus2
+.sleepStore
+ ld [hl], b
+ ld a, [de]
+ res NEEDS_TO_RECHARGE, a
+ ld [de], a
+ jpab UtilitySyncParty
+
 AbilityExtendedPoolIds:
  db 70, 4, AB_THICK_VINES - ABILITY_EXTENDED
  db 71, 1, AB_PARENTAL_BOND - ABILITY_EXTENDED
@@ -2475,6 +2610,8 @@ AbilityExtendedPoolIds:
  db 133, 3, AB_BEAR_FLAME_BODY - ABILITY_EXTENDED
  db 133, 4, AB_FURNACE - ABILITY_EXTENDED
  db 133, 5, AB_HEAVY_SLEEPER - ABILITY_EXTENDED
+ db 134, 3, AB_SPORE_SCATTER - ABILITY_EXTENDED
+ db 134, 5, AB_LIGHTWEIGHT - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2829,6 +2966,9 @@ AbilitySpeciesPools:
 	db EMBEAR, 133
 	db URSEAR, 133
 	db VOLKUMA, 133
+	db HOPPIP, 134
+	db SKIPLOOM, 134
+	db JUMPLUFF, 134
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -4371,6 +4511,22 @@ AbilityShellReflexOnHit:
  xor 1
  ld [wAbilitySide], a
  ld a, 2 ; Speed
+ jp AbilityOneHitStage
+
+AbilityLightweightOnHit:
+ ld a, [wAbilityMoveType]
+ cp FIRE
+ ret nc
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_LIGHTWEIGHT - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ ld a, 5 ; Evasion
+ jp AbilityOneHitStage
+
 AbilityOneHitStage:
  push af
  callab AbilityFlagsPointer
@@ -4447,7 +4603,8 @@ AbilityNewActorHit:
  jp AbilityAncientPowerOnHit
 AbilityNewTargetHit:
  call AbilityClayArmorOnHit
- jp AbilityShellReflexOnHit
+ call AbilityShellReflexOnHit
+ jp AbilityLightweightOnHit
 AbilityNewSecondaryHit:
  call AbilityAncientMaliceOnHit
  jp AbilityIntenseFlamesOnHit
@@ -4843,3 +5000,4 @@ AbilityPoolIds:
 	db AB_STAMINA, AB_THICK_FAT, AB_STATIC, AB_SCRAPPY, ABILITY_EXTENDED
 	db AB_STURDY, AB_ROLLOUT, AB_EARTHSHAKER, AB_HEAVYWEIGHT, AB_MOMENTUM
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
+	db AB_POLLEN, AB_SHIELD_DUST, ABILITY_EXTENDED, AB_RUN_AWAY, ABILITY_EXTENDED

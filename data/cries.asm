@@ -197,3 +197,6 @@ CryData:
 	db $15, $00, $80 ; embear
 	db $15, $00, $80 ; ursear
 	db $15, $00, $80 ; volkuma
+	db $08, $dd, $01 ; hoppip
+	db $08, $dd, $01 ; skiploom
+	db $08, $dd, $01 ; jumpluff

@@ -196,6 +196,9 @@ PokedexEntryPointers:
 	dw EmbearDexEntry
 	dw UrsearDexEntry
 	dw VolkumaDexEntry
+	dw HoppipDexEntry
+	dw SkiploomDexEntry
+	dw JumpluffDexEntry
 
 ; string: species name
 ; height in feet, inches
@@ -1389,4 +1392,25 @@ VolkumaDexEntry:
  db 3, 0
  dw 900
  TX_FAR _VolkumaDexEntry
+ db "@"
+
+HoppipDexEntry:
+ db "COTTONWEED@"
+ db 2, 0
+ dw 30
+ TX_FAR _HoppipDexEntry
+ db "@"
+
+SkiploomDexEntry:
+ db "COTTONWEED@"
+ db 2, 0
+ dw 30
+ TX_FAR _SkiploomDexEntry
+ db "@"
+
+JumpluffDexEntry:
+ db "COTTONWEED@"
+ db 2, 0
+ dw 30
+ TX_FAR _JumpluffDexEntry
  db "@"

@@ -1,0 +1,26 @@
+db DEX_SKIPLOOM
+db 55
+db 45
+db 50
+db 80
+db 65
+db GRASS
+db FLYING
+db 120
+db 136
+INCBIN "pic/new_species/skiploom.pic",0,1
+dw SkiploomPicFront
+dw SkiploomPicBack
+db TACKLE
+db SYNTHESIS
+db 0
+db 0
+db 0
+ tmlearn 4,6
+ tmlearn 0
+ tmlearn 21,22
+ tmlearn 32
+ tmlearn 0
+ tmlearn 0
+ tmlearn 50
+db 0

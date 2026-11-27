@@ -189,4 +189,7 @@ ExtraTMCompatibilityTable:
 	db $a2, $00 ; 188: embear
 	db $a2, $00 ; 189: ursear
 	db $a2, $00 ; 190: volkuma
+	db $00, $40 ; 191: hoppip
+	db $00, $40 ; 192: skiploom
+	db $10, $40 ; 193: jumpluff
 ExtraTMCompatibilityTableEnd:

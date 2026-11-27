@@ -199,6 +199,9 @@ EvosMovesPointerTable:
 	dw EmbearEvosMoves
 	dw UrsearEvosMoves
 	dw VolkumaEvosMoves
+	dw HoppipEvosMoves
+	dw SkiploomEvosMoves
+	dw JumpluffEvosMoves
 
 RhydonEvosMoves:
 ; Evolutions
@@ -2945,4 +2948,40 @@ VolkumaEvosMoves:
  db 48, BODY_SLAM
  db 54, THRASH
  db 61, FIRE_BLAST
+ db 0
+
+HoppipEvosMoves:
+ db EV_LEVEL, 18, SKIPLOOM
+ db 0
+ db 5, POISONPOWDER
+ db 10, STUN_SPORE
+ db 13, SLEEP_POWDER
+ db 17, LEECH_SEED
+ db 20, COTTON_SPORE
+ db 25, MEGA_DRAIN
+ db 30, COTTON_GUARD
+ db 0
+
+SkiploomEvosMoves:
+ db EV_LEVEL, 27, JUMPLUFF
+ db 0
+ db 7, POISONPOWDER
+ db 12, STUN_SPORE
+ db 15, SLEEP_POWDER
+ db 19, LEECH_SEED
+ db 22, COTTON_SPORE
+ db 27, MEGA_DRAIN
+ db 32, COTTON_GUARD
+ db 0
+
+JumpluffEvosMoves:
+ db 0
+ db 9, POISONPOWDER
+ db 14, STUN_SPORE
+ db 17, SLEEP_POWDER
+ db 21, LEECH_SEED
+ db 24, COTTON_SPORE
+ db 29, MEGA_DRAIN
+ db 34, COTTON_GUARD
+ db 39, GIGA_DRAIN
  db 0

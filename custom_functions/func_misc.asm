@@ -234,6 +234,12 @@ DetermineMonGender:
 	jr z, .genderlessNew
 	cp DITTWO
 	jr z, .genderlessNew
+	cp HOPPIP
+	jr z, .newHalf
+	cp SKIPLOOM
+	jr z, .newHalf
+	cp JUMPLUFF
+	jr z, .newHalf
 	cp EMBEAR
 	jr z, .newHalf
 	cp URSEAR

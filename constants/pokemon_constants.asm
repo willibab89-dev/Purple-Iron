@@ -197,3 +197,6 @@ const_value = 1
 	const EMBEAR
 	const URSEAR
 	const VOLKUMA
+	const HOPPIP
+	const SKIPLOOM
+	const JUMPLUFF

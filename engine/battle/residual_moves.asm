@@ -1,7 +1,8 @@
 SECTION "Residual move effects", ROMX, BANK[$34]
 
 ; Five bytes per active side, in previously unallocated WRAM padding.
-; flags: bit 0 rooted, bit 1 cursed, bit 2 newly applied Wrap.
+; flags: bit 0 rooted, bit 1 cursed, bit 2 newly applied Wrap,
+; bit 3 entry attempt, bit 4 Mean Look, bit 5 actor had status before action.
 ResidualState:
 	ld hl, wPlayerResidual
 	ld a, [wCustomSide]

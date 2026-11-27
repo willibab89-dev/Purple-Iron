@@ -1316,5 +1316,168 @@
         "FIRE_BLAST"
       ]
     ]
+  },
+  {
+    "name": "hoppip",
+    "symbol": "HOPPIP",
+    "index": 198,
+    "dex": 191,
+    "stats": [
+      35,
+      35,
+      40,
+      60,
+      55
+    ],
+    "types": [
+      "GRASS",
+      "FLYING"
+    ],
+    "catch": 200,
+    "xp": 74,
+    "start": [
+      "TACKLE",
+      "SYNTHESIS"
+    ],
+    "learn": [
+      [
+        5,
+        "POISONPOWDER"
+      ],
+      [
+        10,
+        "STUN_SPORE"
+      ],
+      [
+        13,
+        "SLEEP_POWDER"
+      ],
+      [
+        17,
+        "LEECH_SEED"
+      ],
+      [
+        20,
+        "COTTON_SPORE"
+      ],
+      [
+        25,
+        "MEGA_DRAIN"
+      ],
+      [
+        30,
+        "COTTON_GUARD"
+      ]
+    ]
+  },
+  {
+    "name": "skiploom",
+    "symbol": "SKIPLOOM",
+    "index": 199,
+    "dex": 192,
+    "stats": [
+      55,
+      45,
+      50,
+      80,
+      65
+    ],
+    "types": [
+      "GRASS",
+      "FLYING"
+    ],
+    "catch": 120,
+    "xp": 136,
+    "start": [
+      "TACKLE",
+      "SYNTHESIS"
+    ],
+    "learn": [
+      [
+        7,
+        "POISONPOWDER"
+      ],
+      [
+        12,
+        "STUN_SPORE"
+      ],
+      [
+        15,
+        "SLEEP_POWDER"
+      ],
+      [
+        19,
+        "LEECH_SEED"
+      ],
+      [
+        22,
+        "COTTON_SPORE"
+      ],
+      [
+        27,
+        "MEGA_DRAIN"
+      ],
+      [
+        32,
+        "COTTON_GUARD"
+      ]
+    ]
+  },
+  {
+    "name": "jumpluff",
+    "symbol": "JUMPLUFF",
+    "index": 200,
+    "dex": 193,
+    "stats": [
+      75,
+      55,
+      70,
+      110,
+      85
+    ],
+    "types": [
+      "GRASS",
+      "FLYING"
+    ],
+    "catch": 45,
+    "xp": 176,
+    "start": [
+      "TACKLE",
+      "SYNTHESIS"
+    ],
+    "learn": [
+      [
+        9,
+        "POISONPOWDER"
+      ],
+      [
+        14,
+        "STUN_SPORE"
+      ],
+      [
+        17,
+        "SLEEP_POWDER"
+      ],
+      [
+        21,
+        "LEECH_SEED"
+      ],
+      [
+        24,
+        "COTTON_SPORE"
+      ],
+      [
+        29,
+        "MEGA_DRAIN"
+      ],
+      [
+        34,
+        "COTTON_GUARD"
+      ],
+      [
+        39,
+        "GIGA_DRAIN"
+      ]
+    ]
   }
 ]

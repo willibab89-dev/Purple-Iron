@@ -1,0 +1,26 @@
+db DEX_JUMPLUFF
+db 75
+db 55
+db 70
+db 110
+db 85
+db GRASS
+db FLYING
+db 45
+db 176
+INCBIN "pic/new_species/jumpluff.pic",0,1
+dw JumpluffPicFront
+dw JumpluffPicBack
+db TACKLE
+db SYNTHESIS
+db 0
+db 0
+db 0
+ tmlearn 4,6
+ tmlearn 0
+ tmlearn 21,22
+ tmlearn 32
+ tmlearn 33
+ tmlearn 0
+ tmlearn 50
+db 0

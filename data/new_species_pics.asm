@@ -147,3 +147,24 @@ _VolkumaDexEntry::
  text "Its fiery body"
  next "keeps it warm."
  dex
+
+HoppipPicFront:: INCBIN "pic/new_species/hoppip.pic"
+HoppipPicBack:: INCBIN "pic/new_species/hoppip_b.pic"
+_HoppipDexEntry::
+ text "It floats on"
+ next "the breeze."
+ dex
+
+SkiploomPicFront:: INCBIN "pic/new_species/skiploom.pic"
+SkiploomPicBack:: INCBIN "pic/new_species/skiploom_b.pic"
+_SkiploomDexEntry::
+ text "It floats on"
+ next "the breeze."
+ dex
+
+JumpluffPicFront:: INCBIN "pic/new_species/jumpluff.pic"
+JumpluffPicBack:: INCBIN "pic/new_species/jumpluff_b.pic"
+_JumpluffDexEntry::
+ text "It floats on"
+ next "the breeze."
+ dex

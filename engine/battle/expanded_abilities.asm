@@ -3295,7 +3295,6 @@ AbilityLowHP:
 	cp AB_MATERNAL_RAGE - ABILITY_EXTENDED
 	ret nz
 	jpab AbilityMaternalRage
-	ret
 .legacy
 	cp AB_SECOND_WIND
 	jp z, AbilitySecondWind
@@ -7617,21 +7616,7 @@ AbilityHeavyHitterFixedDamage:
 
 ; Counting down twice per attempted action halves sleep duration, rounding up.
 AbilityEarlyBirdBeforeAction:
- ld c, AB_EARLY_BIRD - ABILITY_EXTENDED
- call AbilityExtendedActorIs
- ret nc
- ld hl, wBattleMonStatus
- ld a, [H_WHOSETURN]
- and a
- jr z, .status
- ld hl, wEnemyMonStatus
-.status
- ld a, [hl]
- and SLP
- cp 2
- ret c
- dec [hl]
- ret
+ jpab AbilityBeforeStatusSnapshot
 
 ; Record the first hit and schedule one final strike after ordinary multi-hits.
 AbilityParentalAfterHit:

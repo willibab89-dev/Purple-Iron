@@ -248,6 +248,9 @@ def validate(version):
                'MEW':['ANCESTOR']*5,
                'MAREANIE':['REGENERATOR','MERCILESS','CORROSIVE_VENOM','SNIPER','BARBED_SHELL'],
                'MILTANK':['THICK_FAT','SAP_SIPPER','ROLLOUT','SCRAPPY','SERENE_GRACE'],
+               'HOPPIP':['POLLEN','SHIELD_DUST','SPORE_SCATTER','RUN_AWAY','LIGHTWEIGHT'],
+               'SKIPLOOM':['POLLEN','SHIELD_DUST','SPORE_SCATTER','RUN_AWAY','LIGHTWEIGHT'],
+               'JUMPLUFF':['POLLEN','SHIELD_DUST','SPORE_SCATTER','RUN_AWAY','LIGHTWEIGHT'],
                'EMBEAR':['BEAR_RAGE','BEAR_BLAZE','BEAR_FLAME_BODY','FURNACE','HEAVY_SLEEPER'],
                'URSEAR':['BEAR_RAGE','BEAR_BLAZE','BEAR_FLAME_BODY','FURNACE','HEAVY_SLEEPER'],
                'VOLKUMA':['BEAR_RAGE','BEAR_BLAZE','BEAR_FLAME_BODY','FURNACE','HEAVY_SLEEPER'],
@@ -1040,6 +1043,16 @@ def validate(version):
             for hp,attack,want in [(0,'EMBER',100),(51,'EMBER',150),(50,'EMBER',150),(49,'EMBER',150),(52,'EMBER',150),(54,'EMBER',100),(50,'TACKLE',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'BEAR_BLAZE');word(ap+'MaxHP',159);word(ap+'HP',hp);word('wDamage',100);call('AbilityModifyDamage')
                 assert readword('wDamage')==want,(turn,hp,attack,'bear blaze',readword('wDamage'))
+        for turn in (0,1):
+            for status in (1,3,8,16,32,64):
+                ap,tp=init(turn);aid(1-turn,'SPORE_SCATTER');put(tp+'Status',status);put('wAbilityOldStatus',0);call('AbilitySporeScatter')
+                assert get(ap+'Status')==status,(turn,status,'spore scatter',get(ap+'Status'))
+            for status,old,existing,protection,typ in [(8,8,0,None,None),(8,0,16,None,None),(8,0,0,'IMMUNITY',None),(16,0,0,'WATER_VEIL',None),(8,0,0,'DISCIPLINE',None),(16,0,0,None,'FIRE'),(32,0,0,None,'ICE'),(64,0,0,None,'ELECTRIC')]:
+                ap,tp=init(turn);aid(1-turn,'SPORE_SCATTER');aid(turn,protection);put(tp+'Status',status);put('wAbilityOldStatus',old);put(ap+'Status',existing)
+                if typ:put(ap+'Type1',TYPES[typ]);put(ap+'Type2',TYPES[typ])
+                call('AbilitySporeScatter');assert get(ap+'Status')==existing,(turn,status,old,existing,protection,typ,'spore scatter immunity',get(ap+'Status'))
+            for attack,want in [('TACKLE',8),('EMBER',7),('EARTHQUAKE',8)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'LIGHTWEIGHT');call('AbilityAfterHit');mod='w'+('Player' if turn else 'Enemy')+'MonEvasionMod';assert get(mod)==want,(turn,attack,'lightweight',get(mod));put('wAbilityHit',0);call('AbilityAfterHit');assert get(mod)==want
         # Ponyta family: reactive burn, opposing stat changes, speed and hit reactions.
         for turn in (0,1):
             for attack,roll,sub,actor_ability,actor_fire,want in [('TACKLE',0,0,None,False,16),('TACKLE',39,0,None,False,16),('TACKLE',40,0,None,False,0),('EARTHQUAKE',0,0,None,False,16),('FLAMETHROWER',0,0,None,False,0),('TACKLE',0,1,None,False,0),('TACKLE',0,0,'WATER_VEIL',False,0),('TACKLE',0,0,None,True,0)]:
@@ -2023,6 +2036,11 @@ def validate(version):
             ap,tp=init(turn);move(turn,'DOUBLESLAP');aid(turn,'PARENTAL_BOND');call('AbilityAfterHit');call('AbilityMultiHitEffect');prefix='w'+('Enemy' if turn else 'Player');put(prefix+'NumAttacksLeft',1);call('AbilityAfterHit');assert get(prefix+'NumAttacksLeft')==2 and get(prefix+'NumHits')==3,(turn,'parental multihit count',get(prefix+'NumHits'))
             ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'PARENTAL_BOND');word('wDamage',100);call('AbilityAfterHit');assert get('wParentalState')==3 and readword('wParentalFirstDamage')==100
             put('w'+('Enemy' if turn else 'Player')+'NumAttacksLeft',1);word('wDamage',200);call('AbilityParentalOverride');assert readword('wDamage')==25,(turn,'parental damage')
+        for slot,name in [(3,'SPORE SCATTER'),(5,'LIGHTWEIGHT')]:
+            metadata('wPartyMon1','HOPPIP',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255)
+            expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name)
+            assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         for slot,name in [(1,'BEAR RAGE'),(2,'BLAZE'),(3,'FLAME BODY'),(4,'FURNACE'),(5,'HEAVY SLEEPER')]:
             metadata('wPartyMon1','EMBEAR',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
             game.memory[0xff40]=0;call('AbilityDrawDescription',A=255)
@@ -2266,6 +2284,16 @@ def validate(version):
                 word('wCounterDamage',counter_damage);put('wCounterRecipient',turn)
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
+        for turn in (0,1):
+            for attack,status in [('POISONPOWDER',8),('STUN_SPORE',64),('WILL_O_WISP',16)]:
+                ap,tp=execute(attack,turn,target='SPORE_SCATTER',random_value=0)
+                assert get(tp+'Status')==status and get(ap+'Status')==status,(turn,attack,'live spore scatter',get(tp+'Status'),get(ap+'Status'))
+            ap,tp=execute('TACKLE',turn,actor='SPORE_SCATTER',target='FLAME_BODY',random_value=0)
+            assert get(ap+'Status')==16 and get(tp+'Status')==16,(turn,'reactive spore scatter',get(ap+'Status'),get(tp+'Status'))
+            ap,tp=execute('POISONPOWDER',turn,actor='IMMUNITY',target='SPORE_SCATTER',random_value=0)
+            assert get(tp+'Status')==8 and get(ap+'Status')==0,(turn,'spore scatter poison immunity')
+            ap,tp=execute('POISONPOWDER',turn,actor='DISCIPLINE',target='SPORE_SCATTER',random_value=0)
+            assert get(tp+'Status')==8 and get(ap+'Status')==0,(turn,'spore scatter status immunity')
         for turn in (0,1):
             ap,tp=execute('WATER_GUN',turn,target_types=('ROCK','GROUND'),random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('WATER_GUN',turn,target='INDOMITABLE',target_types=('ROCK','GROUND'),random_value=100);assert 160-readword(tp+'HP')==max(1,normal//2),(turn,'live indomitable',normal,readword(tp+'HP'))

@@ -191,3 +191,6 @@ MonsterPalettes:
 	db PAL_REDMON ; embear
 	db PAL_REDMON ; ursear
 	db PAL_REDMON ; volkuma
+	db PAL_GREENMON ; hoppip
+	db PAL_GREENMON ; skiploom
+	db PAL_GREENMON ; jumpluff

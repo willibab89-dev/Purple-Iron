@@ -64,6 +64,12 @@ RouteImportedSprite:
 	jr z, .newSpecies
 	cp VOLKUMA
 	jr z, .newSpecies
+	cp HOPPIP
+	jr z, .newSpecies
+	cp SKIPLOOM
+	jr z, .newSpecies
+	cp JUMPLUFF
+	jr z, .newSpecies
 	jr .oldSpecies
 .newSpecies
 	ld a, BANK(MareaniePicFront)

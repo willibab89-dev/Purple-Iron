@@ -536,7 +536,7 @@ AbilityRaiseStage:
 
 AbilityAfterAction:
 	abilitycall AbilityConservativeRefund
-	abilitycall AbilitySleepAfterAction
+	abilitycall AbilitySleepAndScatter
 	abilitycall AbilityMindGamesAfter
 	abilitycall AbilityPatientMarkAction
 	abilitycall AbilityInfiltratorRestore
