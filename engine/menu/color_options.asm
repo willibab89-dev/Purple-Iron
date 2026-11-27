@@ -154,21 +154,30 @@ DisplayOptionMenu:
  jp .loop
 .cursorInColor
  ld a, [wColorScheme]
- and $fc
+ and $f8
  cp $a0
  ld a, 0
  jr nz, .colorValue
  ld a, [wColorScheme]
- and 3
+ and 7
+ cp 7
+ jr c, .colorValue
+ xor a
 .colorValue
  bit 5, b
  jr z, .colorRight
+ and a
+ jr nz, .colorLeft
+ ld a, 7
+.colorLeft
  dec a
  jr .colorSave
 .colorRight
  inc a
+ cp 7
+ jr c, .colorSave
+ xor a
 .colorSave
- and 3
  or $a0
  ld [wColorScheme], a
  call PlaceColorScheme
@@ -241,22 +250,28 @@ BattleStyleOptionText:
 ColorSchemeText:
  db "COLOR: @"
 ColorSchemeNames:
- dw .default, .gray, .sgb, .green
+ dw .default, .gray, .sgb, .green, .night, .mononoke, .hollow
 .default db "DEFAULT     @"
 .gray db "BLACK/WHITE @"
 .sgb db "SUPER GB    @"
 .green db "GREEN       @"
+.night db "NIGHT       @"
+.mononoke db "MONONOKE    @"
+.hollow db "HOLLOW      @"
 PlaceColorScheme:
  coord hl, 1, 15
  ld de, ColorSchemeText
  call PlaceString
  ld a, [wColorScheme]
- and $fc
+ and $f8
  cp $a0
  ld a, 0
  jr nz, .index
  ld a, [wColorScheme]
- and 3
+ and 7
+ cp 7
+ jr c, .index
+ xor a
 .index
  add a
  ld e, a
@@ -400,4 +415,50 @@ TextSpeedOptionData:
 	db  1,1 ; Fast
 	db 7 ; default X coordinate (Medium)
 	db $ff ; terminator
+
+
+GetGBCBasePalAddressBanked:
+ ld a, [wGBCPal]
+ push hl
+ ld l, a
+ ld h, 0
+ add hl, hl
+ add hl, hl
+ add hl, hl
+ ld de, GBCBasePalettes
+ ld a, [wColorScheme]
+ and $f8
+ cp $a0
+ jr nz, .indexed
+ ld a, [wColorScheme]
+ and 7
+ jr z, .indexed
+ cp 7
+ jr z, .indexed
+ cp 2
+ jr z, .super
+ cp 1
+ ld de, ColorSchemeGray
+ jr z, .fixed
+ cp 3
+ ld de, ColorSchemeGreen
+ jr z, .fixed
+ cp 4
+ ld de, ColorSchemeNight
+ jr z, .fixed
+ cp 5
+ ld de, ColorSchemeMononoke
+ jr z, .fixed
+ ld de, ColorSchemeHollow
+.fixed
+ pop hl
+ ret
+.super
+ ld de, SuperPalettes
+.indexed
+ add hl, de
+ ld d, h
+ ld e, l
+ pop hl
+ ret
 

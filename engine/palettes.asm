@@ -628,41 +628,52 @@ SendSGBPackets:
 	ld a, [hGBC]	;gbcnote - replaced wGBC
 	and a
 	jr z, .notGBC
-	push de
-	call InitGBCPalettes
-	pop hl
-	;gbcnote - initialize the second pal packet in de (now in hl) then enable the lcd
-	call InitGBCPalettes
-	ld a, [rLCDC]
-	and rLCDC_ENABLE_MASK
-	ret z
-	call Delay3
-	ret
+ push de
+ call InitGBCPalettes
+ pop hl
+ call InitGBCPalettes
+ ld a, [rLCDC]
+ and rLCDC_ENABLE_MASK
+ ret z
+ call Delay3
+ ret
 .notGBC
- ; PAL_SET packets use the extra monochrome/green SGB palette slots.
+ ; Replace PAL_SET with a packet referencing the selected fixed palette.
  ld a, [wColorScheme]
  cp $a1
- jr nz, .checkGreen
- ld hl, ColorSchemeGraySGB
- jr .sendSGB
-.checkGreen
+ jr z, .gray
  cp $a3
- jr nz, .sendSGB
- ld hl, ColorSchemeGreenSGB
+ jr c, .sendSGB
+ cp $a7
+ jr nc, .sendSGB
+ sub $a3 - $29
+ jr .makePacket
+.gray
+ ld a, $28
+.makePacket
+ ld c, a
+ ld hl, wPalPacket
+ ld a, $51
+ ld [hli], a
+ ld b, 4
+.palLoop
+ ld a, c
+ ld [hli], a
+ xor a
+ ld [hli], a
+ dec b
+ jr nz, .palLoop
+ ld b, 7
+.padding
+ ld [hli], a
+ dec b
+ jr nz, .padding
+ ld hl, wPalPacket
 .sendSGB
-	push de
-	call SendSGBPacket
-	pop hl
-	jp SendSGBPacket
-
-ColorSchemeGraySGB:
- db $51
- dw $28, $28, $28, $28
- ds 7
-ColorSchemeGreenSGB:
- db $51
- dw $29, $29, $29, $29
- ds 7
+ push de
+ call SendSGBPacket
+ pop hl
+ jp SendSGBPacket
 
 InitGBCPalettes:	;gbcnote - updating this to work with the Yellow code
 	ld a, [hl]
@@ -709,38 +720,12 @@ index = index + 1
 	ret
 
 GetGBCBasePalAddress::
-; The saved setting selects a source palette; the original index is retained
-; for the per-scene Super Game Boy palettes and the normal default.
+ ld [wGBCPal], a ; scratch before the converted palette is populated
+ push bc
  push hl
- ld l, a
- ld h, 0
- add hl, hl
- add hl, hl
- add hl, hl
- ld de, GBCBasePalettes
- ld a, [wColorScheme]
- and $fc
- cp $a0
- jr nz, .indexed
- ld a, [wColorScheme]
- and 3
- jr z, .indexed
- cp 2
- jr z, .super
- cp 1
- ld de, ColorSchemeGray
- jr z, .fixed
- ld de, ColorSchemeGreen
-.fixed
+ callab GetGBCBasePalAddressBanked
  pop hl
- ret
-.super
- ld de, SuperPalettes
-.indexed
- add hl, de
- ld d, h
- ld e, l
- pop hl
+ pop bc
  ret
 
 ColorSchemeGray:

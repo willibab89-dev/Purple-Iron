@@ -274,3 +274,20 @@ ENDC
 	RGB 16, 24, 10
 	RGB 8, 16, 6
 	RGB 2, 7, 3
+
+; Night, Mononoke, and Hollow palettes, rounded to 5-bit RGB.
+ColorSchemeNight:
+ RGB 30, 29, 22 ; #faf0b9
+ RGB 25, 19, 13 ; #cc9a6e
+ RGB 11, 10, 15 ; #594f7d
+ RGB 1, 1, 5 ; #0b0926
+ColorSchemeMononoke:
+ RGB 31, 31, 31 ; #ffffff
+ RGB 27, 22, 19 ; #dbb9a0
+ RGB 24, 8, 9 ; #c74148
+ RGB 0, 6, 9 ; #03324e
+ColorSchemeHollow:
+ RGB 30, 31, 30 ; #fafbf6
+ RGB 24, 22, 23 ; #c6b7be
+ RGB 10, 11, 14 ; #565a75
+ RGB 2, 2, 3 ; #0f0f1b
