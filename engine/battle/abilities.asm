@@ -612,7 +612,7 @@ AbilityEndRound:
 	ret nz
 	call AbilityNightmareBoth
 	callab AbilityHeavySleeperBoth
-	callab AbilityRecoveryBoth
+	callab AbilityRecoveryAndShed
 	callab AbilityHeatWaveBoth
 	call AbilityGasLeakBoth
 	xor a

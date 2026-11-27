@@ -194,3 +194,6 @@ MonsterPalettes:
 	db PAL_GREENMON ; hoppip
 	db PAL_GREENMON ; skiploom
 	db PAL_GREENMON ; jumpluff
+	db PAL_YELLOWMON ; mareep
+	db PAL_YELLOWMON ; flaaffy
+	db PAL_YELLOWMON ; ampharos

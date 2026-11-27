@@ -1,0 +1,26 @@
+db DEX_MAREEP
+db 55
+db 40
+db 40
+db 35
+db 60
+db ELECTRIC
+db ELECTRIC
+db 235
+db 59
+INCBIN "pic/new_species/mareep.pic",0,1
+dw MareepPicFront
+dw MareepPicBack
+db TACKLE
+db TAIL_WHIP
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 0
+ tmlearn 24
+ tmlearn 25
+ tmlearn 33,34
+ tmlearn 44,45
+ tmlearn 50
+db 0

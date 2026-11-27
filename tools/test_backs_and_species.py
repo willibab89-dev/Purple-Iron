@@ -38,8 +38,8 @@ def validate(version):
         assert hashlib.sha256((ROOT/entry['source']).read_bytes()).hexdigest()==entry['sha256']
         assert Image.open(ROOT/entry['png']).size==(56,56)
     assert len(rom)==1024*1024
-    headers=data('BaseStats',193*28);order=data('PokedexOrder',200)
-    assert sorted(n for n in order if n)==list(range(1,194))
+    headers=data('BaseStats',196*28);order=data('PokedexOrder',203)
+    assert sorted(n for n in order if n)==list(range(1,197))
     assert (183+7)//8==23
     assert addr('wPokedexSeen')-addr('wPokedexOwned')==25
     for i,old in enumerate(PLAN['previous_headers']):
@@ -147,7 +147,7 @@ def validate(version):
         assert get('wPokedexOwned',25)==snapshot
         stride=addr('wPartyMon2')-addr('wPartyMon1')
         assert game.memory[addr('wPartyMon1')]==NEW[-1]['index']
-        for name,level,target in [('Hoppip',18,199),('Skiploom',27,200),('Embear',24,196),('Ursear',40,197),('Phanpy',25,194),('Tyker',40,192),('Baltoy',36,146),('Larvitar',30,161),('Pupitar',55,162),('Golbat',40,156)]:
+        for name,level,target in [('Mareep',15,202),('Flaaffy',30,203),('Hoppip',18,199),('Skiploom',27,200),('Embear',24,196),('Ursear',40,197),('Phanpy',25,194),('Tyker',40,192),('Baltoy',36,146),('Larvitar',30,161),('Pupitar',55,162),('Golbat',40,156)]:
             assert data(name+'EvosMoves',4)==bytes([1,level,target,0])
         for name,d in TUNING.items():
             index=order.index(d['dex'])+1
@@ -178,7 +178,7 @@ def validate(version):
             for name,rate in expected.items():
                 if name in counts:assert counts[name]==rate,(mapname,kind,name)
             if 'UNIQUE_OMANYTE_UNIQUE' in counts:assert counts['UNIQUE_OMANYTE_UNIQUE']==1
-        print(f'{version}: 193 back-loader paths/pixel comparisons; twenty-one species/party/gender/evolution/save flags; old stats and encounter shares passed')
+        print(f'{version}: 196 back-loader paths/pixel comparisons; twenty-four species/party/gender/evolution/save flags; old stats and encounter shares passed')
     finally:game.stop(save=False)
 
 

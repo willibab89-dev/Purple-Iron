@@ -199,6 +199,9 @@ PokedexEntryPointers:
 	dw HoppipDexEntry
 	dw SkiploomDexEntry
 	dw JumpluffDexEntry
+	dw MareepDexEntry
+	dw FlaaffyDexEntry
+	dw AmpharosDexEntry
 
 ; string: species name
 ; height in feet, inches
@@ -1413,4 +1416,25 @@ JumpluffDexEntry:
  db 2, 0
  dw 30
  TX_FAR _JumpluffDexEntry
+ db "@"
+
+MareepDexEntry:
+ db "WOOL@"
+ db 3, 0
+ dw 650
+ TX_FAR _MareepDexEntry
+ db "@"
+
+FlaaffyDexEntry:
+ db "WOOL@"
+ db 3, 0
+ dw 650
+ TX_FAR _FlaaffyDexEntry
+ db "@"
+
+AmpharosDexEntry:
+ db "WOOL@"
+ db 3, 0
+ dw 650
+ TX_FAR _AmpharosDexEntry
  db "@"

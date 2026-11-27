@@ -1479,5 +1479,172 @@
         "GIGA_DRAIN"
       ]
     ]
+  },
+  {
+    "name": "mareep",
+    "symbol": "MAREEP",
+    "index": 201,
+    "dex": 194,
+    "stats": [
+      55,
+      40,
+      40,
+      35,
+      60
+    ],
+    "types": [
+      "ELECTRIC",
+      "ELECTRIC"
+    ],
+    "catch": 235,
+    "xp": 59,
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        7,
+        "THUNDERSHOCK"
+      ],
+      [
+        11,
+        "THUNDER_WAVE"
+      ],
+      [
+        15,
+        "CHARGE"
+      ],
+      [
+        25,
+        "SHOCK_WAVE"
+      ],
+      [
+        31,
+        "LIGHT_SCREEN"
+      ],
+      [
+        37,
+        "THUNDERBOLT"
+      ],
+      [
+        43,
+        "FOCUS_ENERGY"
+      ]
+    ]
+  },
+  {
+    "name": "flaaffy",
+    "symbol": "FLAAFFY",
+    "index": 202,
+    "dex": 195,
+    "stats": [
+      70,
+      55,
+      55,
+      45,
+      80
+    ],
+    "types": [
+      "ELECTRIC",
+      "ELECTRIC"
+    ],
+    "catch": 120,
+    "xp": 117,
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        9,
+        "THUNDERSHOCK"
+      ],
+      [
+        13,
+        "THUNDER_WAVE"
+      ],
+      [
+        17,
+        "CHARGE"
+      ],
+      [
+        27,
+        "SHOCK_WAVE"
+      ],
+      [
+        33,
+        "LIGHT_SCREEN"
+      ],
+      [
+        39,
+        "THUNDERBOLT"
+      ],
+      [
+        45,
+        "FOCUS_ENERGY"
+      ],
+      [
+        52,
+        "THUNDER"
+      ]
+    ]
+  },
+  {
+    "name": "ampharos",
+    "symbol": "AMPHAROS",
+    "index": 203,
+    "dex": 196,
+    "stats": [
+      90,
+      75,
+      85,
+      55,
+      115
+    ],
+    "types": [
+      "ELECTRIC",
+      "ELECTRIC"
+    ],
+    "catch": 45,
+    "xp": 194,
+    "start": [
+      "TACKLE",
+      "TAIL_WHIP"
+    ],
+    "learn": [
+      [
+        11,
+        "THUNDERSHOCK"
+      ],
+      [
+        15,
+        "THUNDER_WAVE"
+      ],
+      [
+        19,
+        "CHARGE"
+      ],
+      [
+        29,
+        "SHOCK_WAVE"
+      ],
+      [
+        35,
+        "LIGHT_SCREEN"
+      ],
+      [
+        41,
+        "THUNDERBOLT"
+      ],
+      [
+        47,
+        "FOCUS_ENERGY"
+      ],
+      [
+        54,
+        "THUNDER"
+      ]
+    ]
   }
 ]

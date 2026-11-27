@@ -1,0 +1,26 @@
+db DEX_FLAAFFY
+db 70
+db 55
+db 55
+db 45
+db 80
+db ELECTRIC
+db ELECTRIC
+db 120
+db 117
+INCBIN "pic/new_species/flaaffy.pic",0,1
+dw FlaaffyPicFront
+dw FlaaffyPicBack
+db TACKLE
+db TAIL_WHIP
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 0
+ tmlearn 24
+ tmlearn 25
+ tmlearn 33,34
+ tmlearn 44,45
+ tmlearn 50
+db 0

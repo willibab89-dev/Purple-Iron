@@ -1,0 +1,26 @@
+db DEX_AMPHAROS
+db 90
+db 75
+db 85
+db 55
+db 115
+db ELECTRIC
+db ELECTRIC
+db 45
+db 194
+INCBIN "pic/new_species/ampharos.pic",0,1
+dw AmpharosPicFront
+dw AmpharosPicBack
+db TACKLE
+db TAIL_WHIP
+db 0
+db 0
+db 0
+ tmlearn 8
+ tmlearn 15
+ tmlearn 24
+ tmlearn 25
+ tmlearn 33,34
+ tmlearn 44,45
+ tmlearn 50
+db 0

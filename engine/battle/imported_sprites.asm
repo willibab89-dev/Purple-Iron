@@ -70,7 +70,16 @@ RouteImportedSprite:
 	jr z, .newSpecies
 	cp JUMPLUFF
 	jr z, .newSpecies
+	cp MAREEP
+	jr z, .moreSpecies
+	cp FLAAFFY
+	jr z, .moreSpecies
+	cp AMPHAROS
+	jr z, .moreSpecies
 	jr .oldSpecies
+.moreSpecies
+	ld a, BANK(MareepPicFront)
+	jp UncompressSpriteData
 .newSpecies
 	ld a, BANK(MareaniePicFront)
 	jp UncompressSpriteData

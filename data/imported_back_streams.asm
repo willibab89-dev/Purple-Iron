@@ -199,3 +199,6 @@ CustomBackStreams:
 	dbw BANK(HoppipPicBack), HoppipPicBack
 	dbw BANK(SkiploomPicBack), SkiploomPicBack
 	dbw BANK(JumpluffPicBack), JumpluffPicBack
+	dbw BANK(MareepPicBack), MareepPicBack
+	dbw BANK(FlaaffyPicBack), FlaaffyPicBack
+	dbw BANK(AmpharosPicBack), AmpharosPicBack

@@ -199,3 +199,6 @@ MonsterNames:
 	db "HOPPIP@@@@"
 	db "SKIPLOOM@@"
 	db "JUMPLUFF@@"
+	db "MAREEP@@@@"
+	db "FLAAFFY@@@"
+	db "AMPHAROS@@"

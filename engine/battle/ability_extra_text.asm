@@ -4,7 +4,7 @@ SECTION "Expanded ability descriptions", ROMX, BANK[$39]
 AbilityDrawExtraDescription:
  ld a, [wAbilityResolvedExtended]
  sub AB_CONSERVATIVE - ABILITY_EXTENDED
- cp 54
+ cp 59
  jr nc, .none
  ld c, a
  ld b, 0
@@ -36,7 +36,8 @@ AbilityExtraTextPointers:
 	dw AbilityText362, AbilityText363, AbilityText364, AbilityText365
 	dw AbilityText366, AbilityText367, AbilityText368, AbilityText369
 	dw AbilityText370, AbilityText371, AbilityText372, AbilityText373
-	dw AbilityText374, AbilityText375
+	dw AbilityText374, AbilityText375, AbilityText376, AbilityText377
+	dw AbilityText378, AbilityText379, AbilityText380
 AbilityExtraNone: db "NO ABILITY@"
 AbilityText322: db "CONSERVATIVE",$4e,"Moves: 25% chance",$4e,"to save PP.@"
 AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
@@ -95,3 +96,9 @@ AbilityText373: db "BLAZE",$4e,"Low HP: Fire moves",$4e,"deal x1.5 damage.@"
 
 AbilityText374: db "SPORE SCATTER",$4e,"Status received:",$4e,"also status foe.@"
 AbilityText375: db "LIGHTWEIGHT",$4e,"Physical hit: Evasion",$4e,"+1 once per battle.@"
+
+AbilityText376: db "WOOL COAT",$4e,"Physical damage",$4e,"received x0.8.@"
+AbilityText377: db "WOOL COAT",$4e,"Physical x0.75;",$4e,"Fire damage x1.5.@"
+AbilityText378: db "SHED WOOL",$4e,"Half HP: heal 1/5",$4e,"once per battle.@"
+AbilityText379: db "CHARGE UP",$4e,"Hit: next Electric",$4e,"attack damage x1.3.@"
+AbilityText380: db "STATIC",$4e,"Contact: 20% chance",$4e,"to paralyze foe.@"

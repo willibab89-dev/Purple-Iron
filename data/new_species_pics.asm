@@ -168,3 +168,25 @@ _JumpluffDexEntry::
  text "It floats on"
  next "the breeze."
  dex
+
+SECTION "More species graphics and text", ROMX, BANK[$3C]
+MareepPicFront:: INCBIN "pic/new_species/mareep.pic"
+MareepPicBack:: INCBIN "pic/new_species/mareep_b.pic"
+_MareepDexEntry::
+ text "It stores power"
+ next "in its soft wool."
+ dex
+
+FlaaffyPicFront:: INCBIN "pic/new_species/flaaffy.pic"
+FlaaffyPicBack:: INCBIN "pic/new_species/flaaffy_b.pic"
+_FlaaffyDexEntry::
+ text "It stores power"
+ next "in its soft wool."
+ dex
+
+AmpharosPicFront:: INCBIN "pic/new_species/ampharos.pic"
+AmpharosPicBack:: INCBIN "pic/new_species/ampharos_b.pic"
+_AmpharosDexEntry::
+ text "It stores power"
+ next "in its soft wool."
+ dex

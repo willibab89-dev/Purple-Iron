@@ -192,4 +192,7 @@ ExtraTMCompatibilityTable:
 	db $00, $40 ; 191: hoppip
 	db $00, $40 ; 192: skiploom
 	db $10, $40 ; 193: jumpluff
+	db $00, $10 ; 194: mareep
+	db $00, $10 ; 195: flaaffy
+	db $00, $10 ; 196: ampharos
 ExtraTMCompatibilityTableEnd:

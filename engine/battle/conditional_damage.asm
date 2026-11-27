@@ -2612,6 +2612,14 @@ AbilityExtendedPoolIds:
  db 133, 5, AB_HEAVY_SLEEPER - ABILITY_EXTENDED
  db 134, 3, AB_SPORE_SCATTER - ABILITY_EXTENDED
  db 134, 5, AB_LIGHTWEIGHT - ABILITY_EXTENDED
+ db 135, 1, AB_CONTACT_STATIC - ABILITY_EXTENDED
+ db 135, 2, AB_WOOL_COAT - ABILITY_EXTENDED
+ db 135, 3, AB_SHED_WOOL - ABILITY_EXTENDED
+ db 135, 5, AB_CHARGE_UP - ABILITY_EXTENDED
+ db 136, 1, AB_CONTACT_STATIC - ABILITY_EXTENDED
+ db 136, 2, AB_AMPHAROS_WOOL - ABILITY_EXTENDED
+ db 136, 3, AB_SHED_WOOL - ABILITY_EXTENDED
+ db 136, 5, AB_CHARGE_UP - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -2665,11 +2673,190 @@ AbilityHeatWaveBoth:
  ld [wCustomChance], a
  jpab ResidualFraction
 
+; New electric-family passives live in this bank to keep battle hooks small.
+AbilityRecoveryAndShed:
+ abilitycall AbilityRecoveryBoth
+ jp AbilityShedWoolBoth
+
+AbilityWoolCoatDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_WOOL_COAT - ABILITY_EXTENDED
+ jr z, .regular
+ cp AB_AMPHAROS_WOOL - ABILITY_EXTENDED
+ ret nz
+ ld hl, wPlayerMoveType
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .ampharosType
+ ld hl, wEnemyMoveType
+.ampharosType
+ ld a, [hl]
+ cp FIRE
+ jr z, .fire
+ ret nc
+ ld c, 75
+ jp AbilityFluffyFixedDamage.scale
+.fire
+ ld c, 150
+ jp AbilityFluffyFixedDamage.scale
+.regular
+ ld hl, wPlayerMoveType
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .regularType
+ ld hl, wEnemyMoveType
+.regularType
+ ld a, [hl]
+ cp FIRE
+ ret nc
+ ld c, 80
+ jp AbilityFluffyFixedDamage.scale
+
+AbilityChargeUpDamage:
+ ld a, [wDamage]
+ ld b, a
+ ld a, [wDamage + 1]
+ or b
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_CHARGE_UP - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ ld hl, wPlayerMoveType
+ and a
+ jr z, .type
+ ld hl, wEnemyMoveType
+.type
+ ld a, [hl]
+ cp ELECTRIC
+ ret nz
+ callab AbilityRolloutSidePointer
+ ld a, [hl]
+ and a
+ ret z
+ ld c, 130
+ jp AbilityFluffyFixedDamage.scale
+
+AbilityShedWoolOnHit:
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ jr AbilityShedWoolSide
+AbilityShedWoolBoth:
+ xor a
+ ld [wAbilitySide], a
+ call AbilityShedWoolSide
+ ld a, 1
+ ld [wAbilitySide], a
+AbilityShedWoolSide:
+ callab AbilityGetSideForDitto
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SHED_WOOL - ABILITY_EXTENDED
+ ret nz
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+ callab AbilityHalfHPSide
+ jr c, .below
+ ret nz
+.below
+ callab AbilityFlagsPointer
+ bit 2, [hl]
+ ret nz
+ set 2, [hl]
+ jpab AbilityHealFifth
+
+AbilityChargeUpOnHit:
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_CHARGE_UP - ABILITY_EXTENDED
+ ret nz
+ ld a, [H_WHOSETURN]
+ xor 1
+ ld [wAbilitySide], a
+ callab AbilityRolloutSidePointer
+ ld [hl], 1
+ ret
+
+AbilityChargeUpAfterAction:
+ ld a, [wAbilityHit]
+ bit 3, a
+ ret z
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_CHARGE_UP - ABILITY_EXTENDED
+ ret nz
+ ld hl, wPlayerMovePower
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ and a
+ jr z, .move
+ ld hl, wEnemyMovePower
+.move
+ ld a, [hli]
+ and a
+ ret z
+ ld a, [hl]
+ cp ELECTRIC
+ ret nz
+ callab AbilityRolloutSidePointer
+ ld [hl], 0
+ ret
+
+AbilityContactReactions:
+ abilitycall AbilityFlameBody
+ jp AbilityContactStaticOnHit
+
+AbilityContactStaticOnHit:
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_CONTACT_STATIC - ABILITY_EXTENDED
+ ret nz
+ callab AbilityMoveFlagsResult
+ ld a, [wAbilityCheckResult]
+ bit 1, a
+ ret z
+ ld a, [H_WHOSETURN]
+ ld [wAbilitySide], a
+ callab AbilityHP
+ ld a, [hli]
+ or [hl]
+ ret z
+.retry
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ cp 200
+ jr nc, .retry
+ cp 40
+ ret nc
+ ld a, [H_WHOSETURN]
+ push af
+ ld [wCustomSide], a
+ xor 1
+ ld [H_WHOSETURN], a
+ ld a, 1 << PAR
+ ld [wCustomDelta], a
+ callab UtilityInflictStatus
+ pop af
+ ld [H_WHOSETURN], a
+ ret
+
 AbilityFluffyDamage:
  ld a, [wUnusedC000]
  bit 4, a
  ret nz
 AbilityFluffyFixedDamage:
+ call AbilityWoolCoatDamage
+ call AbilityChargeUpDamage
  callab AbilityTarget
  ld a, [wAbilityResolvedExtended]
  cp AB_FLUFFY - ABILITY_EXTENDED
@@ -2969,6 +3156,9 @@ AbilitySpeciesPools:
 	db HOPPIP, 134
 	db SKIPLOOM, 134
 	db JUMPLUFF, 134
+	db MAREEP, 135
+	db FLAAFFY, 135
+	db AMPHAROS, 136
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -4597,14 +4787,18 @@ AbilityAncientMaliceOnHit:
 
 AbilityNewAfterAction:
  call AbilityKindlingAfterAction
- jp AbilityBigBloomAfterAction
+ call AbilityBigBloomAfterAction
+ call AbilityShedWoolBoth
+ jp AbilityChargeUpAfterAction
 AbilityNewActorHit:
  call AbilityDuelistOnHit
  jp AbilityAncientPowerOnHit
 AbilityNewTargetHit:
  call AbilityClayArmorOnHit
  call AbilityShellReflexOnHit
- jp AbilityLightweightOnHit
+ call AbilityLightweightOnHit
+ call AbilityShedWoolOnHit
+ jp AbilityChargeUpOnHit
 AbilityNewSecondaryHit:
  call AbilityAncientMaliceOnHit
  jp AbilityIntenseFlamesOnHit
@@ -5001,3 +5195,5 @@ AbilityPoolIds:
 	db AB_STURDY, AB_ROLLOUT, AB_EARTHSHAKER, AB_HEAVYWEIGHT, AB_MOMENTUM
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db AB_POLLEN, AB_SHIELD_DUST, ABILITY_EXTENDED, AB_RUN_AWAY, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_OVERCHARGE, ABILITY_EXTENDED
+	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_OVERCHARGE, ABILITY_EXTENDED

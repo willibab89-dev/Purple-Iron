@@ -200,3 +200,6 @@ CryData:
 	db $08, $dd, $01 ; hoppip
 	db $08, $dd, $01 ; skiploom
 	db $08, $dd, $01 ; jumpluff
+	db $00, $80, $40 ; mareep
+	db $00, $80, $40 ; flaaffy
+	db $00, $80, $40 ; ampharos

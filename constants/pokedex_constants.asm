@@ -196,7 +196,10 @@ const_value = 1
 	const DEX_HOPPIP
 	const DEX_SKIPLOOM
 	const DEX_JUMPLUFF
+	const DEX_MAREEP
+	const DEX_FLAAFFY
+	const DEX_AMPHAROS
 
 ; Space for the next 16 species plus one spare dex entry.
 POKEDEX_CAPACITY EQU 200
-NUM_POKEMON    EQU 193
+NUM_POKEMON    EQU 196

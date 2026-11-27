@@ -3161,7 +3161,7 @@ AbilityGetTargetReactions:
 	bit 2, [hl]
 	ret nz
 	set 2, [hl]
-	call AbilityFlameBody
+	callab AbilityContactReactions
 	call AbilityTarget
 	cp ABILITY_EXTENDED
 	jr nz, .ordinaryPoisonPoint

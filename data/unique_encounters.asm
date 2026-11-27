@@ -27,9 +27,12 @@ UniqueEncounterPools:
 	db 4, MEOWTH
 	db 4, MEOWTH
 	db 4, MEOWTH
-	db ROUTE_2, 0, 2
+	db ROUTE_2, 0, 5
 	db 5, PIKACHU
 	db 5, PIKACHU
+	db 8, MAREEP
+	db 8, MAREEP
+	db 8, MAREEP
 	db ROUTE_3, 0, 2
 	db 8, EMBEAR
 	db 8, EMBEAR
@@ -81,12 +84,15 @@ UniqueEncounterPools:
 	db 18, PHANPY
 	db 18, PHANPY
 	db 18, PHANPY
-	db ROUTE_10, 0, 5
+	db ROUTE_10, 0, 8
 	db 20, TYKER
 	db 20, TYKER
 	db 20, TYKER
 	db 20, TYKER
 	db 20, TYKER
+	db 8, MAREEP
+	db 8, MAREEP
+	db 8, MAREEP
 	db ROUTE_10, 2, 1
 	db 10, UNIQUE_GOLDEEN_FIGHTING
 	db ROUTE_11, 0, 2
@@ -349,6 +355,8 @@ UniqueEncounterLocations:
 	db ROUTE_1, ROUTE_5, ROUTE_7, ROUTE_8
 	db PIKACHU, 3
 	db POWER_PLANT, ROUTE_2, VIRIDIAN_FOREST
+	db MAREEP, 2
+	db ROUTE_10, ROUTE_2
 	db EMBEAR, 1
 	db ROUTE_3
 	db CLEFAIRY, 4
@@ -455,9 +463,12 @@ UniqueEncounterPools:
 	db 4, MEOWTH
 	db 4, MEOWTH
 	db 4, MEOWTH
-	db ROUTE_2, 0, 2
+	db ROUTE_2, 0, 5
 	db 5, PIKACHU
 	db 5, PIKACHU
+	db 8, MAREEP
+	db 8, MAREEP
+	db 8, MAREEP
 	db ROUTE_3, 0, 2
 	db 8, EMBEAR
 	db 8, EMBEAR
@@ -509,12 +520,15 @@ UniqueEncounterPools:
 	db 18, PHANPY
 	db 18, PHANPY
 	db 18, PHANPY
-	db ROUTE_10, 0, 5
+	db ROUTE_10, 0, 8
 	db 20, TYKER
 	db 20, TYKER
 	db 20, TYKER
 	db 20, TYKER
 	db 20, TYKER
+	db 8, MAREEP
+	db 8, MAREEP
+	db 8, MAREEP
 	db ROUTE_10, 2, 1
 	db 10, UNIQUE_GOLDEEN_FIGHTING
 	db ROUTE_11, 0, 2
@@ -776,6 +790,8 @@ UniqueEncounterLocations:
 	db ROUTE_1, ROUTE_5, ROUTE_6, ROUTE_7, ROUTE_8
 	db PIKACHU, 3
 	db POWER_PLANT, ROUTE_2, VIRIDIAN_FOREST
+	db MAREEP, 2
+	db ROUTE_10, ROUTE_2
 	db EMBEAR, 1
 	db ROUTE_3
 	db CLEFAIRY, 4

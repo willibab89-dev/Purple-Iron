@@ -284,5 +284,17 @@
     ],
     "level": 12,
     "percent": 5
+  },
+  {
+    "species": "MAREEP",
+    "kinds": [
+      0
+    ],
+    "maps": [
+      "ROUTE_2",
+      "ROUTE_10"
+    ],
+    "level": 8,
+    "percent": 3
   }
 ]

@@ -202,6 +202,9 @@ EvosMovesPointerTable:
 	dw HoppipEvosMoves
 	dw SkiploomEvosMoves
 	dw JumpluffEvosMoves
+	dw MareepEvosMoves
+	dw FlaaffyEvosMoves
+	dw AmpharosEvosMoves
 
 RhydonEvosMoves:
 ; Evolutions
@@ -2984,4 +2987,41 @@ JumpluffEvosMoves:
  db 29, MEGA_DRAIN
  db 34, COTTON_GUARD
  db 39, GIGA_DRAIN
+ db 0
+
+MareepEvosMoves:
+ db EV_LEVEL, 15, FLAAFFY
+ db 0
+ db 7, THUNDERSHOCK
+ db 11, THUNDER_WAVE
+ db 15, CHARGE
+ db 25, SHOCK_WAVE
+ db 31, LIGHT_SCREEN
+ db 37, THUNDERBOLT
+ db 43, FOCUS_ENERGY
+ db 0
+
+FlaaffyEvosMoves:
+ db EV_LEVEL, 30, AMPHAROS
+ db 0
+ db 9, THUNDERSHOCK
+ db 13, THUNDER_WAVE
+ db 17, CHARGE
+ db 27, SHOCK_WAVE
+ db 33, LIGHT_SCREEN
+ db 39, THUNDERBOLT
+ db 45, FOCUS_ENERGY
+ db 52, THUNDER
+ db 0
+
+AmpharosEvosMoves:
+ db 0
+ db 11, THUNDERSHOCK
+ db 15, THUNDER_WAVE
+ db 19, CHARGE
+ db 29, SHOCK_WAVE
+ db 35, LIGHT_SCREEN
+ db 41, THUNDERBOLT
+ db 47, FOCUS_ENERGY
+ db 54, THUNDER
  db 0

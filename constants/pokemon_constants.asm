@@ -200,3 +200,6 @@ const_value = 1
 	const HOPPIP
 	const SKIPLOOM
 	const JUMPLUFF
+	const MAREEP
+	const FLAAFFY
+	const AMPHAROS

@@ -248,6 +248,9 @@ def validate(version):
                'MEW':['ANCESTOR']*5,
                'MAREANIE':['REGENERATOR','MERCILESS','CORROSIVE_VENOM','SNIPER','BARBED_SHELL'],
                'MILTANK':['THICK_FAT','SAP_SIPPER','ROLLOUT','SCRAPPY','SERENE_GRACE'],
+               'MAREEP':['CONTACT_STATIC','WOOL_COAT','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
+               'FLAAFFY':['CONTACT_STATIC','WOOL_COAT','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
+               'AMPHAROS':['CONTACT_STATIC','AMPHAROS_WOOL','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
                'HOPPIP':['POLLEN','SHIELD_DUST','SPORE_SCATTER','RUN_AWAY','LIGHTWEIGHT'],
                'SKIPLOOM':['POLLEN','SHIELD_DUST','SPORE_SCATTER','RUN_AWAY','LIGHTWEIGHT'],
                'JUMPLUFF':['POLLEN','SHIELD_DUST','SPORE_SCATTER','RUN_AWAY','LIGHTWEIGHT'],
@@ -1053,6 +1056,23 @@ def validate(version):
                 call('AbilitySporeScatter');assert get(ap+'Status')==existing,(turn,status,old,existing,protection,typ,'spore scatter immunity',get(ap+'Status'))
             for attack,want in [('TACKLE',8),('EMBER',7),('EARTHQUAKE',8)]:
                 ap,tp=init(turn);move(turn,attack);aid(1-turn,'LIGHTWEIGHT');call('AbilityAfterHit');mod='w'+('Player' if turn else 'Enemy')+'MonEvasionMod';assert get(mod)==want,(turn,attack,'lightweight',get(mod));put('wAbilityHit',0);call('AbilityAfterHit');assert get(mod)==want
+        for turn in (0,1):
+            for ability_name,attack,expected in [('WOOL_COAT','TACKLE',80),('WOOL_COAT','EMBER',100),('AMPHAROS_WOOL','TACKLE',75),('AMPHAROS_WOOL','EMBER',150),('AMPHAROS_WOOL','WATER_GUN',100)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,ability_name);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==expected,(turn,ability_name,attack,readword('wDamage'))
+                word('wDamage',0);call('AbilityModifyDamage');assert readword('wDamage')==0
+            for hp,want in [(81,81),(80,112),(79,111),(0,0)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'SHED_WOOL');word(tp+'HP',hp);call('AbilityAfterHit');assert readword(tp+'HP')==want,(turn,hp,'shed wool',readword(tp+'HP'))
+                call('AbilityAfterHit');assert readword(tp+'HP')==want
+            ap,tp=init(turn);aid(turn,'SHED_WOOL');word(ap+'HP',80);call('AbilityEndRound');assert readword(ap+'HP')==112,(turn,'shed wool residual threshold')
+            call('AbilityEndRound');assert readword(ap+'HP')==112,(turn,'shed wool once')
+            for attack,roll,want in [('TACKLE',0,64),('TACKLE',39,64),('TACKLE',40,0),('EARTHQUAKE',0,0),('FIRE_PUNCH',0,64)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'CONTACT_STATIC');rng(roll);call('AbilityAfterHit');assert get(ap+'Status')==want,(turn,attack,roll,'contact static',get(ap+'Status'))
+            for target_hp,sub,want in [(0,0,64),(0,1,0),(160,1,0)]:
+                ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'CONTACT_STATIC');word(tp+'HP',target_hp);put('wCustomTargetHadSub',sub);rng(0);call('AbilityAfterHit')
+                assert get(ap+'Status')==want,(turn,target_hp,sub,'static on knockout',get(ap+'Status'))
+            ap,tp=init(turn);move(turn,'TACKLE');aid(1-turn,'CHARGE_UP');call('AbilityAfterHit')
+            game.memory[addr('turn')]=1-turn;move(1-turn,'THUNDERSHOCK');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==130,(turn,'charge up boost',readword('wDamage'))
+            put('wAbilityHit',8);call('AbilityNewAfterAction');word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==100,(turn,'charge up consumed')
         # Ponyta family: reactive burn, opposing stat changes, speed and hit reactions.
         for turn in (0,1):
             for attack,roll,sub,actor_ability,actor_fire,want in [('TACKLE',0,0,None,False,16),('TACKLE',39,0,None,False,16),('TACKLE',40,0,None,False,0),('EARTHQUAKE',0,0,None,False,16),('FLAMETHROWER',0,0,None,False,0),('TACKLE',0,1,None,False,0),('TACKLE',0,0,'WATER_VEIL',False,0),('TACKLE',0,0,None,True,0)]:
@@ -2036,6 +2056,11 @@ def validate(version):
             ap,tp=init(turn);move(turn,'DOUBLESLAP');aid(turn,'PARENTAL_BOND');call('AbilityAfterHit');call('AbilityMultiHitEffect');prefix='w'+('Enemy' if turn else 'Player');put(prefix+'NumAttacksLeft',1);call('AbilityAfterHit');assert get(prefix+'NumAttacksLeft')==2 and get(prefix+'NumHits')==3,(turn,'parental multihit count',get(prefix+'NumHits'))
             ap,tp=init(turn);move(turn,'EARTHQUAKE');aid(turn,'PARENTAL_BOND');word('wDamage',100);call('AbilityAfterHit');assert get('wParentalState')==3 and readword('wParentalFirstDamage')==100
             put('w'+('Enemy' if turn else 'Player')+'NumAttacksLeft',1);word('wDamage',200);call('AbilityParentalOverride');assert readword('wDamage')==25,(turn,'parental damage')
+        for slot,name in [(1,'STATIC'),(2,'WOOL COAT'),(3,'SHED WOOL'),(4,'OVERCHARGE'),(5,'CHARGE UP')]:
+            metadata('wPartyMon1','MAREEP',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'))
+            game.memory[0xff40]=0;call('AbilityDrawDescription',A=255 if slot!=4 else ab['OVERCHARGE'])
+            expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name)
+            assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         for slot,name in [(3,'SPORE SCATTER'),(5,'LIGHTWEIGHT')]:
             metadata('wPartyMon1','HOPPIP',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
             game.memory[0xff40]=0;call('AbilityDrawDescription',A=255)
