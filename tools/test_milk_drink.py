@@ -15,7 +15,7 @@ def validate(version):
     entry=next(x for x in json.loads((ROOT/'data/additional_moves.json').read_text()) if x['symbol']=='MILK_DRINK')
     assert entry['symbol']=='MILK_DRINK' and MOVES['MILK_DRINK']==231 and MOVES['STRUGGLE']==165
     assert data('Moves',6,230*6)==bytes([231,EFFECTS['HEAL_EFFECT'],0,TYPES['NORMAL'],255,10])
-    assert syms['BaseStats'][1]-addr('Moves')==max(MOVES.values())*6
+    assert addr('CryData')-addr('Moves')==max(MOVES.values())*6
     assert data('MoveAnimationMap',1,230)==bytes([MOVES['RECOVER']])
     game=PyBoy(str(ROOT/(version+'.gbc')),window='null',sound_emulated=False)
     game.set_emulation_speed(0);game.tick(90,False)

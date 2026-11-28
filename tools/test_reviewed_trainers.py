@@ -170,7 +170,7 @@ def validate(version):
         tms={d['dex']:d for d in tmplan['entries']}
         extraplan=json.loads((ROOT/'data/new_tms.json').read_text())
         extras={d['dex']:d for d in extraplan['entries']}
-        machines=data('TechnicalMachines')[:55+len(extraplan['new_tms'])]
+        machines=data('TechnicalMachines')[:55+max(n for entry in extras.values() for n in entry['tms'])-50]
         move_data=data('Moves')[:max(MOVES.values())*6]
         expected={(d['trainer'],d['number'],d['slot']):d for d in plan['changes']+plan['preserved']}
         rematch_moves=json.loads((ROOT/'data/rematch_moveset_review.json').read_text())['records']

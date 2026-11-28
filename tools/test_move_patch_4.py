@@ -63,7 +63,7 @@ def validate(version):
         assert nature['previous_legacy_damage_source_sha256']==PLAN['legacy_damage_source_sha256']
         # Check the original source apart from the two ability hooks.
         legacy=(ROOT/'engine/battle/legacy_damage_vars.asm').read_bytes()
-        for hook in (b'\tcall AdjustPiercingBeakDefense\n', b'\tcall StrongmanAttackPointer\n'):
+        for hook in (b'\tcall AdjustPiercingBeakDefense\n', b'\tcall StrongmanAttackPointer\n', b'\tcall AbilityHugePowerScale\n\tld a, h\n'):
             assert legacy.count(hook)==2
             legacy=legacy.replace(hook,b'')
         assert hashlib.sha256(legacy).hexdigest()==nature['legacy_damage_source_sha256']
