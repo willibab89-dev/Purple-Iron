@@ -93,6 +93,23 @@ def validate(version):
             actor,target,ap,tp=init('LAST_STING',turn)
             execute(turn)
             assert readword(ap+'HP')==0 and readword(tp+'HP')<200,(turn,'last sting',readword(ap+'HP'),readword(tp+'HP'))
+        for attack,boost_stat in (('SWORDS_DANCE','Attack'),('FORTIFY','Defense')):
+            for stage,want in ((12,0),(13,1)):
+                init(attack,1);put('wEnemyMon'+boost_stat+'Mod',stage);call('CustomAIStatusScore')
+                assert get('wCustomRandomValue')==want,(attack,stage,'AI setup choice')
+        for turn in (0,1):
+            actor='Enemy' if turn else 'Player';target='Player' if turn else 'Enemy'
+            for attack in (1,7,12,13):
+                for defense in (1,7,13):
+                    init('SWORDS_DANCE',turn);put('wActiveAbilities',0);game.memory[addr('wActiveAbilities')+1]=0
+                    put('w'+actor+'MonAttackMod',attack);put('w'+actor+'MonDefenseMod',defense)
+                    call('JumpMoveEffect')
+                    assert get('w'+actor+'MonAttackMod')==min(13,attack+2),(turn,attack,defense,'Swords Dance attack')
+                    assert get('w'+actor+'MonDefenseMod')==max(1,defense-1),(turn,attack,defense,'Swords Dance defense')
+                    assert get('w'+target+'MonDefenseMod')==7,(turn,'Swords Dance affects user')
+            init('SWORDS_DANCE',turn);put('wActiveAbilities',0);game.memory[addr('wActiveAbilities')+1]=0;execute(turn)
+            assert get('w'+actor+'MonAttackMod')==9 and get('w'+actor+'MonDefenseMod')==6,(turn,'live Swords Dance')
+            if turn==0:assert get('wBattleMonPP')==19 and get('wPartyMon1PP')==19,(turn,'Swords Dance PP')
         for turn in (0,1):
             actor='Enemy' if turn else 'Player'
             for defense in (1,7,12,13):

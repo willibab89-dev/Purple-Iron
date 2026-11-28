@@ -247,6 +247,7 @@ CustomStatusEffect:
 	ret
 
 CustomStatusTable:
+	db SWORDS_DANCE, 0, 2, 1, -1
 	db FORTIFY, 1, 2, 2, -1
 	db SHELL_SMASH, 0, 2, 2, 2
 	db QUIVER_DANCE, 3, 1, 2, 1
@@ -502,6 +503,17 @@ CustomAIStatusScore:
 	inc hl
 	call .canChange
 	ret c
+	; Do not use a self-targeting setup move just to lower the user's stat.
+	ld a, [wCustomSide]
+	and a
+	jr z, .second
+	push hl
+	inc hl
+	ld a, [hl]
+	pop hl
+	bit 7, a
+	jr nz, .useless
+.second
 	call .canChange
 	ret c
 .useless

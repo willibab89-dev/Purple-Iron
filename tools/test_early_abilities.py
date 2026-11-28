@@ -1157,8 +1157,8 @@ def validate(version):
             patches={}
             for n in ('PlayCurrentMoveAnimation','PrintStatText','DelayFrames'):
                 bank,address=syms[n];patches[n]=game.memory[bank,address];patch(n,[0xc9])
-            init(turn);move(turn,'SWORDS_DANCE');aid(1-turn,'COMPETITIVE');call('StatModifierUpEffect');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'legacy competitive')
-            init(turn);move(turn,'SWORDS_DANCE');aid(1-turn,'COMPETITIVE');put('w'+('Enemy' if turn else 'Player')+'MonAttackMod',13);call('StatModifierUpEffect');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7,(turn,'capped legacy competitive')
+            init(turn);move(turn,'SWORDS_DANCE');aid(1-turn,'COMPETITIVE');call('JumpMoveEffect');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'legacy competitive')
+            init(turn);move(turn,'SWORDS_DANCE');aid(1-turn,'COMPETITIVE');put('w'+('Enemy' if turn else 'Player')+'MonAttackMod',13);call('JumpMoveEffect');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7,(turn,'capped legacy competitive')
             init(turn);move(turn,'BULK_UP');aid(1-turn,'COMPETITIVE');call('_JumpMoveEffect');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'bulk up competitive')
             # Psych Up can raise several stages at once, but Competitive still triggers once.
             init(turn);move(turn,'PSYCH_UP');aid(1-turn,'COMPETITIVE');put('w'+('Player' if turn else 'Enemy')+'MonDefenseMod',9);put('w'+('Player' if turn else 'Enemy')+'MonSpeedMod',9);call('UtilityPsychUp');assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==8,(turn,'psych up competitive')
@@ -1177,8 +1177,9 @@ def validate(version):
                 assert get('wCustomDelta')==delta&255
             for attack,want in [('SWORDS_DANCE',11),('GROWL',5)]:
                 init(turn);move(turn,attack);side=turn if attack=='SWORDS_DANCE' else 1-turn;aid(side,'SIMPLE')
-                call('StatModifierUpEffect' if attack=='SWORDS_DANCE' else 'StatModifierDownEffect')
+                call('JumpMoveEffect' if attack=='SWORDS_DANCE' else 'StatModifierDownEffect')
                 assert get(('wEnemyMonAttackMod' if side else 'wPlayerMonAttackMod'))==want,(turn,attack,get(('wEnemyMonAttackMod' if side else 'wPlayerMonAttackMod')))
+                if attack=='SWORDS_DANCE':assert get(actor+'MonDefenseMod')==5,(turn,'Simple doubles Swords Dance defense drop')
             # Patient applies only after the opposing side has completed an action.
             for acted,want in [(0,100),(1<<turn,100),(1<<(1-turn),120)]:
                 init(turn);move(turn,'TACKLE');aid(turn,'PATIENT');put('wPatientActed',acted);word('wDamage',100);call('AbilityModifyDamage');assert readword('wDamage')==want,(turn,acted,readword('wDamage'))
@@ -2530,6 +2531,7 @@ def validate(version):
             ap,tp=execute('ICE_BEAM',turn,actor='ICE_QUEEN',random_value=100);assert 160-readword(tp+'HP')>normal,(turn,'live ice queen',normal,readword(tp+'HP'))
             ap,tp=execute('ICE_BEAM',turn,actor='SNOW_VEIL',random_value=100);assert get('w'+('Enemy' if turn else 'Player')+'MonEvasionMod')==8,(turn,'live snow veil')
             ap,tp=execute('SWORDS_DANCE',turn,target='COPYCAT',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==9,(turn,'live copycat',get('w'+('Player' if turn else 'Enemy')+'MonAttackMod'))
+            ap,tp=execute('SWORDS_DANCE',turn,actor='CLEAR_BODY',target='MIRROR_ARMOR',random_value=0);assert get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==6 and get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==7,(turn,'self-inflicted Swords Dance drop')
             ap,tp=execute('GROWL',turn,target='MIRROR_ARMOR',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==7 and get('w'+('Enemy' if turn else 'Player')+'MonAttackMod')==6,(turn,'live mirror armor')
             ap,tp=execute('SCREECH',turn,target='MIRROR_ARMOR',random_value=0);assert get('w'+('Player' if turn else 'Enemy')+'MonDefenseMod')==7 and get('w'+('Enemy' if turn else 'Player')+'MonDefenseMod')==5,(turn,'live mirror two-stage drop')
             ap,tp=execute('EMBER',turn,target_types=('NORMAL','NORMAL'),random_value=100);normal=160-readword(tp+'HP')
