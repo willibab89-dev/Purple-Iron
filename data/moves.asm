@@ -122,7 +122,7 @@ MoveEnd:
 	move CONFUSE_RAY,  CONFUSION_EFFECT,             0, GHOST,    95, 10
 	move WITHDRAW,     COMPOUND_STATUS_EFFECT,        0, WATER,   100, 40
 	move DEFENSE_CURL, DEFENSE_UP1_EFFECT,           0, NORMAL,   100, 40
-	move BARRIER,      DEFENSE_UP2_EFFECT,           0, PSYCHIC,  100, 30
+	move BARRIER,      COMPOUND_STATUS_EFFECT,           0, PSYCHIC,  100, 30
 	move LIGHT_SCREEN, LIGHT_SCREEN_EFFECT,          0, PSYCHIC,  100, 30
 	move HAZE,         HAZE_EFFECT,                  0, ICE,     100, 10
 	move REFLECT,      REFLECT_EFFECT,               0, PSYCHIC,  100, 20

@@ -2017,6 +2017,28 @@
         "accuracy": 100,
         "pp": 30
       }
+    },
+    {
+      "id": 112,
+      "symbol": "BARRIER",
+      "before": {
+        "id": 112,
+        "symbol": "BARRIER",
+        "effect": "DEFENSE_UP2_EFFECT",
+        "power": 0,
+        "type": "PSYCHIC",
+        "accuracy": 100,
+        "pp": 30
+      },
+      "after": {
+        "id": 112,
+        "symbol": "BARRIER",
+        "effect": "COMPOUND_STATUS_EFFECT",
+        "power": 0,
+        "type": "PSYCHIC",
+        "accuracy": 100,
+        "pp": 30
+      }
     }
   ],
   "implemented_existing": [

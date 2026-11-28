@@ -99,6 +99,22 @@ def validate(version):
                 assert get('wCustomRandomValue')==want,(attack,stage,'AI setup choice')
         for turn in (0,1):
             actor='Enemy' if turn else 'Player';target='Player' if turn else 'Enemy'
+            for defense in (1,7,12,13):
+                for special in (1,7,13):
+                    init('BARRIER',turn);put('wActiveAbilities',0);game.memory[addr('wActiveAbilities')+1]=0
+                    put('w'+actor+'MonDefenseMod',defense);put('w'+actor+'MonSpecialMod',special)
+                    call('JumpMoveEffect')
+                    assert get('w'+actor+'MonDefenseMod')==min(13,defense+2),(turn,defense,special,'Barrier defense')
+                    assert get('w'+actor+'MonSpecialMod')==max(1,special-1),(turn,defense,special,'Barrier special')
+                    assert get('w'+target+'MonSpecialMod')==7,(turn,'Barrier affects user')
+            init('BARRIER',turn);put('wActiveAbilities',0);game.memory[addr('wActiveAbilities')+1]=0;execute(turn)
+            assert get('w'+actor+'MonDefenseMod')==9 and get('w'+actor+'MonSpecialMod')==6,(turn,'live Barrier')
+            if turn==0:assert get('wBattleMonPP')==19 and get('wPartyMon1PP')==19,(turn,'Barrier PP')
+        for stage,want in ((12,0),(13,1)):
+            init('BARRIER',1);put('wEnemyMonDefenseMod',stage);call('CustomAIStatusScore')
+            assert get('wCustomRandomValue')==want,(stage,'AI Barrier choice')
+        for turn in (0,1):
+            actor='Enemy' if turn else 'Player';target='Player' if turn else 'Enemy'
             for attack in (1,7,12,13):
                 for defense in (1,7,13):
                     init('SWORDS_DANCE',turn);put('wActiveAbilities',0);game.memory[addr('wActiveAbilities')+1]=0

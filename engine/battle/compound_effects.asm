@@ -247,6 +247,7 @@ CustomStatusEffect:
 	ret
 
 CustomStatusTable:
+	db BARRIER, 1, 2, 3, -1
 	db SWORDS_DANCE, 0, 2, 1, -1
 	db FORTIFY, 1, 2, 2, -1
 	db SHELL_SMASH, 0, 2, 2, 2
