@@ -72,4 +72,5 @@ ExtraTechnicalMachines:
 	db HEAD_SMASH
 	db MAGICAL_LEAF
 	db MEAN_LOOK
+	db ICE_PUNCH
 TechnicalMachinesEnd:

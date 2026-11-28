@@ -94,10 +94,10 @@ def validate(version):
             execute(turn)
             assert readword(ap+'HP')==0 and readword(tp+'HP')<200,(turn,'last sting',readword(ap+'HP'),readword(tp+'HP'))
         # The item IDs are separate from the earlier contiguous TM block.
-        for item,internal,move in ((114,69,'HEAD_SMASH'),(115,70,'MAGICAL_LEAF'),(116,71,'MEAN_LOOK')):
+        for item,internal,move in ((114,69,'HEAD_SMASH'),(115,70,'MAGICAL_LEAF'),(116,71,'MEAN_LOOK'),(117,72,'ICE_PUNCH')):
             put('wcf91',item);call('DecodeMachineItem');assert get('wd11e')==internal
             call('TMToMove');assert get('wd11e')==MOVES[move]
-        for mon,move,expected in ((206,'MEAN_LOOK',True),(34,'HEAD_SMASH',True),(194,'HEAD_SMASH',True),(193,'HEAD_SMASH',False),(153,'MAGICAL_LEAF',True),(198,'MAGICAL_LEAF',True),(199,'MAGICAL_LEAF',True),(200,'MAGICAL_LEAF',True),(36,'HEAD_SMASH',False)):
+        for mon,move,expected in ((205,'ICE_PUNCH',True),(204,'ICE_PUNCH',False),(206,'MEAN_LOOK',True),(34,'HEAD_SMASH',True),(194,'HEAD_SMASH',True),(193,'HEAD_SMASH',False),(153,'MAGICAL_LEAF',True),(198,'MAGICAL_LEAF',True),(199,'MAGICAL_LEAF',True),(200,'MAGICAL_LEAF',True),(36,'HEAD_SMASH',False)):
             put('wcf91',mon);put('wMoveNum',MOVES[move]);call('CanLearnTM');assert bool(game.register_file.C)==expected,(mon,move)
         print(f'{version}: new move effects, recoil, accuracy, stat caps and TM mappings passed')
     finally:game.stop(save=False)

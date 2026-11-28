@@ -5,6 +5,7 @@ from collections import defaultdict
 import csv
 import html
 import io
+import json
 import re
 import subprocess
 
@@ -29,16 +30,17 @@ def load(version):
     assert data('MoveNames',len(expected))==expected,'compiled move names differ from source'
     def move(n):assert 1<=n<=len(names),n;return names[n-1].title()
     titles={int(r['dex']):r['name'] for r in csv.DictReader((ROOT/'docs/POKEMON-AVAILABILITY.csv').open())}
+    titles.update({d['dex']:d['name'].title() for d in json.loads((ROOT/'data/new_species.json').read_text()) if d['dex'] not in titles})
     types={int(v,16):k.title() for k,v in re.findall(r'^(\w+)\s+EQU \$([\da-fA-F]+)',(ROOT/'constants/type_constants.asm').read_text(),re.M)}
-    order=data('PokedexOrder',190)
-    assert sorted(n for n in order if n)==list(range(1,184))==sorted(titles)
-    machines=list(data('TechnicalMachines',68));extra=data('ExtraTMCompatibilityTable',366)
+    order=data('PokedexOrder',206)
+    assert sorted(n for n in order if n)==list(range(1,200))==sorted(titles)
+    machines=list(data('TechnicalMachines',72));extra=data('ExtraTMCompatibilityTable',597)
     records=[]
-    for dex in range(1,184):
+    for dex in range(1,200):
         internal=order.index(dex)+1
-        base=data('BaseStats',183*28)[(dex-1)*28:dex*28]
+        base=data('BaseStats',199*28)[(dex-1)*28:dex*28]
         assert base[0]==dex
-        ptr=int.from_bytes(data('EvosMovesPointerTable',380)[(internal-1)*2:internal*2],'little')
+        ptr=int.from_bytes(data('EvosMovesPointerTable',412)[(internal-1)*2:internal*2],'little')
         bank=syms['EvosMovesPointerTable'][0];offset=bank*16384+ptr-16384
         evolutions=[]
         while rom[offset]:
@@ -52,9 +54,9 @@ def load(version):
             learn.append((level,m));offset+=2
         assert learn==sorted(learn,key=lambda x:x[0]),dex
         start=[m for m in base[15:19] if m]
-        legacy=int.from_bytes(base[20:27],'little');new=int.from_bytes(extra[(dex-1)*2:dex*2],'little')
+        legacy=int.from_bytes(base[20:27],'little');new=int.from_bytes(extra[(dex-1)*3:dex*3],'little')
         tm=[(i+1,machines[i]) for i in range(50) if legacy&(1<<i)]
-        tm += [(i+51,machines[i+55]) for i in range(13) if new&(1<<i)]
+        tm += [(i+51,machines[i+55]) for i in range(17) if new&(1<<i)]
         hm=[(i+1,machines[i+50]) for i in range(5) if legacy&(1<<(i+50))]
         for m in start+[m for _,m in learn+tm+hm]:move(m)
         records.append(dict(dex=dex,name=titles[dex],types=list(dict.fromkeys(types[t] for t in base[6:8])),start=start,learn=learn,tm=tm,hm=hm,evolutions=evolutions))
@@ -82,9 +84,9 @@ def load(version):
         r['inherited']={m:sources for m,sources in sorted(inherited.items(),key=lambda x:move(x[0]))}
     return records,{i+1:move(i+1) for i in range(len(names))}
 
-INTRO='''All 183 species, including the 21 unique variants and 11 additional species. Extracted from the compiled game tables, verified identical between Red and Blue. Names use the in-game move names, including renamed moves such as Twister, Chomp and Shell Smash.
+INTRO='''All 199 species, including unique variants and additional species. Extracted from the compiled game tables, verified identical between Red and Blue. Names use the in-game move names, including renamed moves such as Twister, Chomp and Shell Smash.
 
-Starting moves are the species’ base moves, not four automatic grants on evolution. Level-up entries are shown exactly as stored, including repeated starting moves and multiple moves at one level. TM01–TM63 and HM01–HM05 list that species’ own compatibility. A Pokémon has only four moves at once.
+Starting moves are the species’ base moves, not four automatic grants on evolution. Level-up entries are shown exactly as stored, including repeated starting moves and multiple moves at one level. TM01–TM67 and HM01–HM05 list that species’ own compatibility. A Pokémon has only four moves at once.
 
 “Retained from earlier stages” lists additional moves absent from the current species’ own starting, level-up and machine lists. Learn these before evolving and keep them. Delaying evolution may be necessary. This is especially relevant to Eevee’s level-40 Charm: its evolutions can retain it, but cannot relearn it directly. Starting moves and eligible level-up moves are handled by the move relearner for the current species; earlier-stage-only moves are not automatically added to that list.
 
@@ -140,4 +142,4 @@ if __name__=='__main__':
     revision=subprocess.check_output(['git','rev-parse','--short','HEAD'],cwd=ROOT,text=True).strip()
     for suffix,content in [('md',markdown(red,names,revision)),('csv',spreadsheet(red,names)),('html',webpage(red,names,revision))]:
         path=ROOT/'docs'/('ALL-POKEMON-MOVEPOOLS.'+suffix);path.write_text(content,encoding='utf-8-sig' if suffix=='csv' else 'utf-8');print(path.relative_to(ROOT),path.stat().st_size,'bytes')
-    print(f'Verified identical Red/Blue tables: {len(red)} species, {sum(len(r["learn"]) for r in red)} level-up entries, all 68 machine slots, and pre-evolution move sources.')
+    print(f'Verified identical Red/Blue tables: {len(red)} species, {sum(len(r["learn"]) for r in red)} level-up entries, all 72 machine slots, and pre-evolution move sources.')

@@ -1,201 +1,201 @@
 ExtraTMCompatibilityTable:
-	db $08, $40 ; 1: bulbasaur
-	db $08, $40 ; 2: ivysaur
-	db $08, $40 ; 3: venusaur
-	db $00, $00 ; 4: charmander
-	db $00, $00 ; 5: charmeleon
-	db $10, $00 ; 6: charizard
-	db $04, $01 ; 7: squirtle
-	db $04, $01 ; 8: wartortle
-	db $04, $01 ; 9: blastoise
-	db $00, $00 ; 10: caterpie
-	db $00, $00 ; 11: metapod
-	db $01, $10 ; 12: butterfree
-	db $08, $00 ; 13: weedle
-	db $08, $00 ; 14: kakuna
-	db $08, $18 ; 15: beedrill
-	db $11, $10 ; 16: pidgey
-	db $11, $10 ; 17: pidgeotto
-	db $11, $10 ; 18: pidgeot
-	db $02, $00 ; 19: rattata
-	db $02, $00 ; 20: raticate
-	db $12, $10 ; 21: spearow
-	db $12, $10 ; 22: fearow
-	db $08, $0c ; 23: ekans
-	db $08, $8c ; 24: arbok
-	db $02, $10 ; 25: pikachu
-	db $02, $10 ; 26: raichu
-	db $50, $00 ; 27: sandshrew
-	db $50, $00 ; 28: sandslash
-	db $08, $08 ; 29: nidoranf
-	db $08, $08 ; 30: nidorina
-	db $68, $08 ; 31: nidoqueen
-	db $08, $08 ; 32: nidoranm
-	db $08, $08 ; 33: nidorino
-	db $48, $08 ; 34: nidoking
-	db $00, $00 ; 35: clefairy
-	db $00, $00 ; 36: clefable
-	db $80, $02 ; 37: vulpix
-	db $80, $02 ; 38: ninetales
-	db $02, $00 ; 39: jigglypuff
-	db $02, $00 ; 40: wigglytuff
-	db $18, $04 ; 41: zubat
-	db $18, $04 ; 42: golbat
-	db $08, $40 ; 43: oddish
-	db $08, $40 ; 44: gloom
-	db $08, $40 ; 45: vileplume
-	db $08, $04 ; 46: paras
-	db $08, $06 ; 47: parasect
-	db $08, $00 ; 48: venonat
-	db $08, $00 ; 49: venomoth
-	db $40, $00 ; 50: diglett
-	db $40, $00 ; 51: dugtrio
-	db $12, $00 ; 52: meowth
-	db $12, $00 ; 53: persian
-	db $04, $01 ; 54: psyduck
-	db $04, $01 ; 55: golduck
-	db $22, $00 ; 56: mankey
-	db $22, $00 ; 57: primeape
-	db $02, $10 ; 58: growlithe
-	db $02, $30 ; 59: arcanine
-	db $04, $01 ; 60: poliwag
-	db $06, $01 ; 61: poliwhirl
-	db $26, $01 ; 62: poliwrath
-	db $00, $00 ; 63: abra
-	db $00, $00 ; 64: kadabra
-	db $00, $00 ; 65: alakazam
-	db $62, $00 ; 66: machop
-	db $62, $00 ; 67: machoke
-	db $62, $00 ; 68: machamp
-	db $08, $48 ; 69: bellsprout
-	db $08, $48 ; 70: weepinbell
-	db $08, $48 ; 71: victreebel
-	db $0c, $00 ; 72: tentacool
-	db $0c, $00 ; 73: tentacruel
-	db $40, $00 ; 74: geodude
-	db $40, $00 ; 75: graveler
-	db $40, $00 ; 76: golem
-	db $02, $10 ; 77: ponyta
-	db $02, $10 ; 78: rapidash
-	db $04, $00 ; 79: slowpoke
-	db $04, $00 ; 80: slowbro
-	db $00, $00 ; 81: magnemite
-	db $00, $00 ; 82: magneton
-	db $13, $10 ; 83: farfetchd
-	db $12, $10 ; 84: doduo
-	db $12, $10 ; 85: dodrio
-	db $04, $00 ; 86: seel
-	db $04, $00 ; 87: dewgong
-	db $08, $00 ; 88: grimer
-	db $08, $00 ; 89: muk
-	db $04, $00 ; 90: shellder
-	db $04, $00 ; 91: cloyster
-	db $88, $02 ; 92: gastly
-	db $88, $82 ; 93: haunter
-	db $88, $82 ; 94: gengar
-	db $40, $20 ; 95: onix
-	db $00, $02 ; 96: drowzee
-	db $00, $02 ; 97: hypno
-	db $06, $00 ; 98: krabby
-	db $06, $00 ; 99: kingler
-	db $00, $00 ; 100: voltorb
-	db $00, $00 ; 101: electrode
-	db $00, $00 ; 102: exeggcute
-	db $00, $00 ; 103: exeggutor
-	db $40, $02 ; 104: cubone
-	db $c0, $02 ; 105: marowak
-	db $02, $10 ; 106: hitmonlee
-	db $22, $00 ; 107: hitmonchan
-	db $02, $00 ; 108: lickitung
-	db $88, $00 ; 109: koffing
-	db $88, $00 ; 110: weezing
-	db $40, $20 ; 111: rhyhorn
-	db $60, $20 ; 112: rhydon
-	db $00, $00 ; 113: chansey
-	db $00, $00 ; 114: tangela
-	db $02, $20 ; 115: kangaskhan
-	db $04, $10 ; 116: horsea
-	db $04, $10 ; 117: seadra
-	db $06, $10 ; 118: goldeen
-	db $06, $10 ; 119: seaking
-	db $00, $00 ; 120: staryu
-	db $00, $00 ; 121: starmie
-	db $00, $00 ; 122: mrmime
-	db $12, $00 ; 123: scyther
-	db $00, $00 ; 124: jynx
-	db $02, $00 ; 125: electabuzz
-	db $02, $00 ; 126: magmar
-	db $62, $00 ; 127: pinsir
-	db $02, $20 ; 128: tauros
-	db $00, $00 ; 129: magikarp
-	db $04, $00 ; 130: gyarados
-	db $04, $00 ; 131: lapras
-	db $00, $00 ; 132: ditto
-	db $02, $00 ; 133: eevee
-	db $06, $01 ; 134: vaporeon
-	db $02, $00 ; 135: jolteon
-	db $02, $00 ; 136: flareon
-	db $02, $10 ; 137: porygon
-	db $44, $00 ; 138: omanyte
-	db $44, $00 ; 139: omastar
-	db $44, $00 ; 140: kabuto
-	db $54, $00 ; 141: kabutops
-	db $52, $20 ; 142: aerodactyl
-	db $02, $00 ; 143: snorlax
-	db $11, $00 ; 144: articuno
-	db $11, $00 ; 145: zapdos
-	db $91, $00 ; 146: moltres
-	db $00, $00 ; 147: dratini
-	db $00, $00 ; 148: dragonair
-	db $10, $00 ; 149: dragonite
-	db $00, $00 ; 150: mewtwo
-	db $ff, $1f ; 151: mew
-	db $04, $01 ; 152: blastoise_unique
-	db $08, $00 ; 153: bulbasaur_unique
-	db $00, $00 ; 154: chansey_unique
-	db $02, $00 ; 155: charmander_unique
-	db $00, $00 ; 156: ditto_happy
-	db $62, $00 ; 157: geodude_fighting
-	db $02, $10 ; 158: goldeen_fighting
-	db $08, $00 ; 159: grimer_poison
-	db $00, $00 ; 160: ivysaur_erika
-	db $40, $00 ; 161: kakuna_rock_type
-	db $42, $00 ; 162: marowak_unique
-	db $42, $08 ; 163: nidoking_unique
-	db $02, $18 ; 164: nidoking_unique2
-	db $08, $08 ; 165: nidoranm_unique
-	db $44, $00 ; 166: omanyte_unique
-	db $40, $00 ; 167: onix_brock
-	db $02, $00 ; 168: raichu_unique
-	db $02, $00 ; 169: squirtle_unique
-	db $00, $04 ; 170: tangela_erika
-	db $0c, $00 ; 171: tentacool_big
-	db $08, $00 ; 172: venusaur_erika
-	db $0c, $01 ; 173: mareanie
-	db $0c, $01 ; 174: toxapex
-	db $02, $00 ; 175: miltank
-	db $82, $82 ; 176: sableye
-	db $40, $02 ; 177: baltoy
-	db $40, $02 ; 178: claydol
-	db $18, $04 ; 179: crobat
-	db $00, $00 ; 180: dittwo
-	db $40, $00 ; 181: larvitar
-	db $40, $00 ; 182: pupitar
-	db $40, $00 ; 183: tyranitar
-	db $22, $00 ; 184: tyker
-	db $22, $80 ; 185: straigar
-	db $60, $00 ; 186: phanpy
-	db $60, $20 ; 187: donphan
-	db $a2, $00 ; 188: embear
-	db $a2, $00 ; 189: ursear
-	db $a2, $00 ; 190: volkuma
-	db $00, $40 ; 191: hoppip
-	db $00, $40 ; 192: skiploom
-	db $10, $40 ; 193: jumpluff
-	db $00, $10 ; 194: mareep
-	db $00, $10 ; 195: flaaffy
-	db $00, $10 ; 196: ampharos
-	db $00, $00 ; 197: garmic
-	db $00, $00 ; 198: fangrir
-	db $02, $80 ; 199: umbreon
+	db $08, $40, $00 ; 1: bulbasaur
+	db $08, $40, $00 ; 2: ivysaur
+	db $08, $40, $00 ; 3: venusaur
+	db $00, $00, $00 ; 4: charmander
+	db $00, $00, $00 ; 5: charmeleon
+	db $10, $00, $00 ; 6: charizard
+	db $04, $01, $00 ; 7: squirtle
+	db $04, $01, $00 ; 8: wartortle
+	db $04, $01, $00 ; 9: blastoise
+	db $00, $00, $00 ; 10: caterpie
+	db $00, $00, $00 ; 11: metapod
+	db $01, $10, $00 ; 12: butterfree
+	db $08, $00, $00 ; 13: weedle
+	db $08, $00, $00 ; 14: kakuna
+	db $08, $18, $00 ; 15: beedrill
+	db $11, $10, $00 ; 16: pidgey
+	db $11, $10, $00 ; 17: pidgeotto
+	db $11, $10, $00 ; 18: pidgeot
+	db $02, $00, $00 ; 19: rattata
+	db $02, $00, $00 ; 20: raticate
+	db $12, $10, $00 ; 21: spearow
+	db $12, $10, $00 ; 22: fearow
+	db $08, $0c, $00 ; 23: ekans
+	db $08, $8c, $00 ; 24: arbok
+	db $02, $10, $00 ; 25: pikachu
+	db $02, $10, $00 ; 26: raichu
+	db $50, $00, $00 ; 27: sandshrew
+	db $50, $00, $00 ; 28: sandslash
+	db $08, $08, $00 ; 29: nidoranf
+	db $08, $08, $00 ; 30: nidorina
+	db $68, $08, $00 ; 31: nidoqueen
+	db $08, $08, $00 ; 32: nidoranm
+	db $08, $08, $00 ; 33: nidorino
+	db $48, $08, $00 ; 34: nidoking
+	db $00, $00, $00 ; 35: clefairy
+	db $00, $00, $00 ; 36: clefable
+	db $80, $02, $00 ; 37: vulpix
+	db $80, $02, $00 ; 38: ninetales
+	db $02, $00, $00 ; 39: jigglypuff
+	db $02, $00, $00 ; 40: wigglytuff
+	db $18, $04, $00 ; 41: zubat
+	db $18, $04, $00 ; 42: golbat
+	db $08, $40, $00 ; 43: oddish
+	db $08, $40, $00 ; 44: gloom
+	db $08, $40, $00 ; 45: vileplume
+	db $08, $04, $00 ; 46: paras
+	db $08, $06, $00 ; 47: parasect
+	db $08, $00, $00 ; 48: venonat
+	db $08, $00, $00 ; 49: venomoth
+	db $40, $00, $00 ; 50: diglett
+	db $40, $00, $00 ; 51: dugtrio
+	db $12, $00, $00 ; 52: meowth
+	db $12, $00, $00 ; 53: persian
+	db $04, $01, $00 ; 54: psyduck
+	db $04, $01, $00 ; 55: golduck
+	db $22, $00, $00 ; 56: mankey
+	db $22, $00, $00 ; 57: primeape
+	db $02, $10, $00 ; 58: growlithe
+	db $02, $30, $00 ; 59: arcanine
+	db $04, $01, $00 ; 60: poliwag
+	db $06, $01, $00 ; 61: poliwhirl
+	db $26, $01, $00 ; 62: poliwrath
+	db $00, $00, $00 ; 63: abra
+	db $00, $00, $00 ; 64: kadabra
+	db $00, $00, $00 ; 65: alakazam
+	db $62, $00, $00 ; 66: machop
+	db $62, $00, $00 ; 67: machoke
+	db $62, $00, $00 ; 68: machamp
+	db $08, $48, $00 ; 69: bellsprout
+	db $08, $48, $00 ; 70: weepinbell
+	db $08, $48, $00 ; 71: victreebel
+	db $0c, $00, $00 ; 72: tentacool
+	db $0c, $00, $00 ; 73: tentacruel
+	db $40, $00, $00 ; 74: geodude
+	db $40, $00, $00 ; 75: graveler
+	db $40, $00, $00 ; 76: golem
+	db $02, $10, $00 ; 77: ponyta
+	db $02, $10, $00 ; 78: rapidash
+	db $04, $00, $00 ; 79: slowpoke
+	db $04, $00, $00 ; 80: slowbro
+	db $00, $00, $00 ; 81: magnemite
+	db $00, $00, $00 ; 82: magneton
+	db $13, $10, $00 ; 83: farfetchd
+	db $12, $10, $00 ; 84: doduo
+	db $12, $10, $00 ; 85: dodrio
+	db $04, $00, $00 ; 86: seel
+	db $04, $00, $00 ; 87: dewgong
+	db $08, $00, $00 ; 88: grimer
+	db $08, $00, $00 ; 89: muk
+	db $04, $00, $00 ; 90: shellder
+	db $04, $00, $00 ; 91: cloyster
+	db $88, $02, $00 ; 92: gastly
+	db $88, $82, $00 ; 93: haunter
+	db $88, $82, $00 ; 94: gengar
+	db $40, $20, $00 ; 95: onix
+	db $00, $02, $00 ; 96: drowzee
+	db $00, $02, $00 ; 97: hypno
+	db $06, $00, $00 ; 98: krabby
+	db $06, $00, $00 ; 99: kingler
+	db $00, $00, $00 ; 100: voltorb
+	db $00, $00, $00 ; 101: electrode
+	db $00, $00, $00 ; 102: exeggcute
+	db $00, $00, $00 ; 103: exeggutor
+	db $40, $02, $00 ; 104: cubone
+	db $c0, $02, $00 ; 105: marowak
+	db $02, $10, $00 ; 106: hitmonlee
+	db $22, $00, $00 ; 107: hitmonchan
+	db $02, $00, $00 ; 108: lickitung
+	db $88, $00, $00 ; 109: koffing
+	db $88, $00, $00 ; 110: weezing
+	db $40, $20, $00 ; 111: rhyhorn
+	db $60, $20, $00 ; 112: rhydon
+	db $00, $00, $00 ; 113: chansey
+	db $00, $00, $00 ; 114: tangela
+	db $02, $20, $00 ; 115: kangaskhan
+	db $04, $10, $00 ; 116: horsea
+	db $04, $10, $00 ; 117: seadra
+	db $06, $10, $00 ; 118: goldeen
+	db $06, $10, $00 ; 119: seaking
+	db $00, $00, $00 ; 120: staryu
+	db $00, $00, $00 ; 121: starmie
+	db $00, $00, $00 ; 122: mrmime
+	db $12, $00, $00 ; 123: scyther
+	db $00, $00, $00 ; 124: jynx
+	db $02, $00, $00 ; 125: electabuzz
+	db $02, $00, $00 ; 126: magmar
+	db $62, $00, $00 ; 127: pinsir
+	db $02, $20, $00 ; 128: tauros
+	db $00, $00, $00 ; 129: magikarp
+	db $04, $00, $00 ; 130: gyarados
+	db $04, $00, $00 ; 131: lapras
+	db $00, $00, $00 ; 132: ditto
+	db $02, $00, $00 ; 133: eevee
+	db $06, $01, $00 ; 134: vaporeon
+	db $02, $00, $00 ; 135: jolteon
+	db $02, $00, $00 ; 136: flareon
+	db $02, $10, $00 ; 137: porygon
+	db $44, $00, $00 ; 138: omanyte
+	db $44, $00, $00 ; 139: omastar
+	db $44, $00, $00 ; 140: kabuto
+	db $54, $00, $00 ; 141: kabutops
+	db $52, $20, $00 ; 142: aerodactyl
+	db $02, $00, $00 ; 143: snorlax
+	db $11, $00, $00 ; 144: articuno
+	db $11, $00, $00 ; 145: zapdos
+	db $91, $00, $00 ; 146: moltres
+	db $00, $00, $00 ; 147: dratini
+	db $00, $00, $00 ; 148: dragonair
+	db $10, $00, $00 ; 149: dragonite
+	db $00, $00, $00 ; 150: mewtwo
+	db $ff, $1f, $00 ; 151: mew
+	db $04, $01, $00 ; 152: blastoise_unique
+	db $08, $00, $00 ; 153: bulbasaur_unique
+	db $00, $00, $00 ; 154: chansey_unique
+	db $02, $00, $00 ; 155: charmander_unique
+	db $00, $00, $00 ; 156: ditto_happy
+	db $62, $00, $00 ; 157: geodude_fighting
+	db $02, $10, $00 ; 158: goldeen_fighting
+	db $08, $00, $00 ; 159: grimer_poison
+	db $00, $00, $00 ; 160: ivysaur_erika
+	db $40, $00, $00 ; 161: kakuna_rock_type
+	db $42, $00, $00 ; 162: marowak_unique
+	db $42, $08, $00 ; 163: nidoking_unique
+	db $02, $18, $00 ; 164: nidoking_unique2
+	db $08, $08, $00 ; 165: nidoranm_unique
+	db $44, $00, $00 ; 166: omanyte_unique
+	db $40, $00, $00 ; 167: onix_brock
+	db $02, $00, $00 ; 168: raichu_unique
+	db $02, $00, $00 ; 169: squirtle_unique
+	db $00, $04, $00 ; 170: tangela_erika
+	db $0c, $00, $00 ; 171: tentacool_big
+	db $08, $00, $00 ; 172: venusaur_erika
+	db $0c, $01, $00 ; 173: mareanie
+	db $0c, $01, $00 ; 174: toxapex
+	db $02, $00, $00 ; 175: miltank
+	db $82, $82, $00 ; 176: sableye
+	db $40, $02, $00 ; 177: baltoy
+	db $40, $02, $00 ; 178: claydol
+	db $18, $04, $00 ; 179: crobat
+	db $00, $00, $00 ; 180: dittwo
+	db $40, $00, $00 ; 181: larvitar
+	db $40, $00, $00 ; 182: pupitar
+	db $40, $00, $00 ; 183: tyranitar
+	db $22, $00, $00 ; 184: tyker
+	db $22, $80, $00 ; 185: straigar
+	db $60, $00, $00 ; 186: phanpy
+	db $60, $20, $00 ; 187: donphan
+	db $a2, $00, $00 ; 188: embear
+	db $a2, $00, $00 ; 189: ursear
+	db $a2, $00, $00 ; 190: volkuma
+	db $00, $40, $00 ; 191: hoppip
+	db $00, $40, $00 ; 192: skiploom
+	db $10, $40, $00 ; 193: jumpluff
+	db $00, $10, $00 ; 194: mareep
+	db $00, $10, $00 ; 195: flaaffy
+	db $00, $10, $00 ; 196: ampharos
+	db $00, $00, $00 ; 197: garmic
+	db $00, $00, $01 ; 198: fangrir
+	db $02, $80, $00 ; 199: umbreon
 ExtraTMCompatibilityTableEnd:

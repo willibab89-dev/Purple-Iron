@@ -40,8 +40,8 @@ def validate(version):
     for item,price in {11:200,12:200,18:600,19:200,59:600,60:750,61:1000}.items():
         oldprices[item]=price
     assert data('ItemPrices', (97 + len(PLAN['new_tms'])) * 3) == b''.join(bcd(n) for n in oldprices + [d['price'] for d in PLAN['new_tms']])
-    masks = b''.join(e['mask'].to_bytes(2, 'little') for e in PLAN['entries'])
-    assert data('ExtraTMCompatibilityTable', 2 * len(PLAN['entries'])) == masks
+    masks = b''.join(e['mask'].to_bytes(2, 'little') + bytes([int(e['name']=='fangrir')]) for e in PLAN['entries'])
+    assert data('ExtraTMCompatibilityTable', 3 * len(PLAN['entries'])) == masks
     byname = {e['name']: set(e['tms']) for e in PLAN['entries']}
     assert byname['mew'] == set(range(51, 64))
     for number,allowed in [(61,{'ekans','arbok','zubat','golbat','crobat','paras','parasect','tangela_erika','mew'}),(62,{'ekans','arbok','beedrill','nidoranf','nidorina','nidoqueen','nidoranm','nidorino','nidoking','bellsprout','weepinbell','victreebel','nidoking_unique','nidoking_unique2','nidoranm_unique','mew'}),(63,{'farfetchd','butterfree','beedrill','pidgey','pidgeotto','pidgeot','spearow','fearow','pikachu','raichu','growlithe','arcanine','ponyta','rapidash','doduo','dodrio','hitmonlee','horsea','seadra','goldeen','seaking','porygon','goldeen_fighting','nidoking_unique2','mew'})]:
@@ -107,7 +107,7 @@ def validate(version):
     for label, stock in re.findall(r'(\w+)::\n\s*TX_MART ([^\n]+)', oldshops):
         old = [x.strip() for x in stock.split(',')]
         new = [f'TM_{d["number"]}' for d in PLAN['new_tms'] if d['shop'] == label]
-        if label == 'CeladonMart2Clerk2Text': new += ['TM_64', 'TM_65']
+        if label == 'CeladonMart2Clerk2Text': new += ['TM_64', 'TM_65', 'TM_67']
         if label == 'PewterCashierText': new += ['TM_66']
         if label == 'CeladonMart3ClerkText': new += ['ABILITY_CAPSULE', 'NATURE_CAPSULE', 'FIRST_AID']
         raw = data(label, 2 + len(old) + len(new) + 1)
@@ -142,7 +142,7 @@ def validate(version):
         bank, a = syms[n]
         game.memory[bank, a:a + len(code)] = code
     try:
-        order = data('PokedexOrder', 190)
+        order = data('PokedexOrder', 206)
         for e in PLAN['entries']:
             index = order.index(e['dex']) + 1
             for d in PLAN['new_tms']:
@@ -262,7 +262,7 @@ def validate(version):
             selection['species'] = order.index(151) + 1
         # The later TMs use item IDs after the three supply items. Exercise
         # actual teaching and consumption rather than just their bit masks.
-        for item, move, dex in ((114, 'HEAD_SMASH', 95), (115, 'MAGICAL_LEAF', 1), (116, 'MEAN_LOOK', 24)):
+        for item, move, dex in ((114, 'HEAD_SMASH', 95), (115, 'MAGICAL_LEAF', 1), (116, 'MEAN_LOOK', 24), (117, 'ICE_PUNCH', 198)):
             index = order.index(dex) + 1
             put('wNumBagItems', 1)
             game.memory[addr('wBagItems'):addr('wBagItems') + 3] = [item, 1, 255]

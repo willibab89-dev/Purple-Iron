@@ -532,6 +532,7 @@ UsableItems_PartyMenu:
 	db TM_64
 	db TM_65
 	db TM_66
+	db TM_67
 	db $ff
 
 ; items which close the item menu when used

@@ -116,3 +116,4 @@ ItemNames:
 	db "TM64 HEADSM@"
 	db "TM65 MAGLEF@"
 	db "TM66 MEANLK@"
+	db "TM67 ICEPNCH@"

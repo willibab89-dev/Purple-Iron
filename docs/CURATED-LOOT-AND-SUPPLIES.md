@@ -59,7 +59,7 @@ TM replacements retain type, damaging/status role and comparable power (within 2
 | TM_10 (DOUBLE_EDGE) | TM_08 (BODY_SLAM), TM_10 (DOUBLE_EDGE), TM_37 (EGG_BOMB), TM_49 (TRI_ATTACK), TM_64 (HEAD_SMASH) |
 | TM_11 (BUBBLEBEAM) | TM_11 (BUBBLEBEAM), TM_12 (WATER_GUN), TM_53 (BRINE), TM_59 (SCALD) |
 | TM_12 (WATER_GUN) | TM_11 (BUBBLEBEAM), TM_12 (WATER_GUN), TM_53 (BRINE), TM_59 (SCALD) |
-| TM_13 (ICE_BEAM) | TM_13 (ICE_BEAM), TM_14 (BLIZZARD) |
+| TM_13 (ICE_BEAM) | TM_13 (ICE_BEAM), TM_14 (BLIZZARD), TM_67 (ICE_PUNCH) |
 | TM_14 (BLIZZARD) | TM_13 (ICE_BEAM), TM_14 (BLIZZARD) |
 | TM_15 (HYPER_BEAM) | TM_15 (HYPER_BEAM) |
 | TM_16 (PAY_DAY) | TM_09 (TAKE_DOWN), TM_16 (PAY_DAY), TM_39 (SWIFT), TM_52 (FACADE) |
@@ -113,6 +113,7 @@ TM replacements retain type, damaging/status role and comparable power (within 2
 | TM_64 (HEAD_SMASH) | TM_08 (BODY_SLAM), TM_10 (DOUBLE_EDGE), TM_37 (EGG_BOMB), TM_49 (TRI_ATTACK), TM_64 (HEAD_SMASH) |
 | TM_65 (MAGICAL_LEAF) | TM_21 (MEGA_DRAIN), TM_65 (MAGICAL_LEAF) |
 | TM_66 (MEAN_LOOK) | TM_66 (MEAN_LOOK) |
+| TM_67 (ICE_PUNCH) | TM_13 (ICE_BEAM), TM_67 (ICE_PUNCH) |
 
 ## Visible pickup sites
 

@@ -1,12 +1,12 @@
 # Every Pokémon’s movepool — Purple Iron
 
-Game snapshot: `095d1da` · 10 November 2026.
+Game snapshot: `e5bf3c2` · 10 November 2026.
 
 [Searchable/printable HTML](ALL-POKEMON-MOVEPOOLS.html) · [CSV spreadsheet](ALL-POKEMON-MOVEPOOLS.csv)
 
-All 183 species, including the 21 unique variants and 11 additional species. Extracted from the compiled game tables, verified identical between Red and Blue. Names use the in-game move names, including renamed moves such as Twister, Chomp and Shell Smash.
+All 199 species, including unique variants and additional species. Extracted from the compiled game tables, verified identical between Red and Blue. Names use the in-game move names, including renamed moves such as Twister, Chomp and Shell Smash.
 
-Starting moves are the species’ base moves, not four automatic grants on evolution. Level-up entries are shown exactly as stored, including repeated starting moves and multiple moves at one level. TM01–TM63 and HM01–HM05 list that species’ own compatibility. A Pokémon has only four moves at once.
+Starting moves are the species’ base moves, not four automatic grants on evolution. Level-up entries are shown exactly as stored, including repeated starting moves and multiple moves at one level. TM01–TM67 and HM01–HM05 list that species’ own compatibility. A Pokémon has only four moves at once.
 
 “Retained from earlier stages” lists additional moves absent from the current species’ own starting, level-up and machine lists. Learn these before evolving and keep them. Delaying evolution may be necessary. This is especially relevant to Eevee’s level-40 Charm: its evolutions can retain it, but cannot relearn it directly. Starting moves and eligible level-up moves are handled by the move relearner for the current species; earlier-stage-only moves are not automatically added to that list.
 
@@ -197,6 +197,22 @@ These are species learning pools. Moves copied temporarily with Mimic, Duplicate
 - [181 · Larvitar](#pokemon-181)
 - [182 · Pupitar](#pokemon-182)
 - [183 · Tyranitar](#pokemon-183)
+- [184 · Tyker](#pokemon-184)
+- [185 · Straigar](#pokemon-185)
+- [186 · Phanpy](#pokemon-186)
+- [187 · Donphan](#pokemon-187)
+- [188 · Embear](#pokemon-188)
+- [189 · Ursear](#pokemon-189)
+- [190 · Volkuma](#pokemon-190)
+- [191 · Hoppip](#pokemon-191)
+- [192 · Skiploom](#pokemon-192)
+- [193 · Jumpluff](#pokemon-193)
+- [194 · Mareep](#pokemon-194)
+- [195 · Flaaffy](#pokemon-195)
+- [196 · Ampharos](#pokemon-196)
+- [197 · Garmic](#pokemon-197)
+- [198 · Fangrir](#pokemon-198)
+- [199 · Umbreon](#pokemon-199)
 
 <a id="pokemon-001"></a>
 ## 001 · Bulbasaur
@@ -218,7 +234,7 @@ These are species learning pools. Moves copied temporarily with Mimic, Duplicate
 | 30 | Synthesis |
 | 43 | Solarbeam |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -246,7 +262,7 @@ None beyond the lists above.
 | 31 | Synthesis |
 | 49 | Solarbeam |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -276,7 +292,7 @@ None beyond the lists above.
 | 46 | Petal Dance |
 | 58 | Solarbeam |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM15 Hyper Beam; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM15 Hyper Beam; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -587,6 +603,7 @@ None beyond the lists above.
 | 28 | Agility |
 | 34 | Pierce |
 | 40 | Ambush |
+| 65 | Last Sting |
 
 **TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM32 Double Team; TM33 Reflect; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM54 Venoshock; TM62 Poison Tail; TM63 Agility
 
@@ -829,7 +846,7 @@ None beyond the lists above.
 | 47 | Screech |
 | 54 | Coil |
 
-**TM compatibility:** TM06 Toxic; TM08 Body Slam; TM20 Rage; TM21 Mega Drain; TM27 Fissure; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM54 Venoshock; TM61 Leech Life; TM62 Poison Tail
+**TM compatibility:** TM06 Toxic; TM08 Body Slam; TM20 Rage; TM21 Mega Drain; TM27 Fissure; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM54 Venoshock; TM61 Leech Life; TM62 Poison Tail; TM66 Mean Look
 
 **HM compatibility:** HM04 Strength
 
@@ -1364,7 +1381,7 @@ None beyond the lists above.
 | 37 | Petal Dance |
 | 43 | Solarbeam |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -1392,7 +1409,7 @@ None beyond the lists above.
 | 42 | Petal Dance |
 | 49 | Solarbeam |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -1420,7 +1437,7 @@ None beyond the lists above.
 | 42 | Petal Dance |
 | 54 | Solarbeam |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -1807,7 +1824,7 @@ None beyond the lists above.
 | 44 | Double-Edge |
 | 52 | Fire Blast |
 
-**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM15 Hyper Beam; TM23 Dragon Rage; TM28 Dig; TM30 Teleport; TM32 Double Team; TM33 Reflect; TM38 Fire Blast; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM52 Facade; TM63 Agility
+**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM15 Hyper Beam; TM23 Dragon Rage; TM28 Dig; TM30 Teleport; TM32 Double Team; TM33 Reflect; TM38 Fire Blast; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM52 Facade; TM63 Agility; TM64 Head Smash
 
 **HM compatibility:** None
 
@@ -2050,6 +2067,7 @@ None beyond the lists above.
 | 36 | Doubleslap |
 | 41 | Submission |
 | 49 | Triple Kick |
+| 50 | Barrage |
 | 56 | Pierce |
 | 63 | Mega Kick |
 
@@ -2080,7 +2098,7 @@ None beyond the lists above.
 | 31 | Razor Leaf |
 | 37 | Slam |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -2107,7 +2125,7 @@ None beyond the lists above.
 | 31 | Razor Leaf |
 | 37 | Slam |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -2137,7 +2155,7 @@ None beyond the lists above.
 | 49 | Chomp |
 | 55 | Vine Crush |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM10 Double-Edge; TM21 Mega Drain; TM22 Solarbeam; TM33 Reflect; TM44 Rest; TM54 Venoshock; TM62 Poison Tail; TM65 Magical Leaf
 
 **HM compatibility:** HM01 Cut
 
@@ -2732,7 +2750,7 @@ None beyond the lists above.
 | 36 | Curse |
 | 43 | Shadow Leech |
 
-**TM compatibility:** TM21 Mega Drain; TM24 Thunderbolt; TM25 Thunder; TM29 Psychic; TM31 Mimic; TM32 Double Team; TM42 Dream Eater; TM44 Rest; TM46 Psywave; TM50 Substitute; TM54 Venoshock; TM58 Will-O-Wisp; TM60 Curse
+**TM compatibility:** TM21 Mega Drain; TM24 Thunderbolt; TM25 Thunder; TM29 Psychic; TM31 Mimic; TM32 Double Team; TM42 Dream Eater; TM44 Rest; TM46 Psywave; TM50 Substitute; TM54 Venoshock; TM58 Will-O-Wisp; TM60 Curse; TM66 Mean Look
 
 **HM compatibility:** None
 
@@ -2759,7 +2777,7 @@ None beyond the lists above.
 | 43 | Shadow Leech |
 | 50 | Psychic |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM21 Mega Drain; TM24 Thunderbolt; TM25 Thunder; TM29 Psychic; TM31 Mimic; TM32 Double Team; TM35 Metronome; TM40 Skull Bash; TM42 Dream Eater; TM44 Rest; TM46 Psywave; TM50 Substitute; TM54 Venoshock; TM58 Will-O-Wisp; TM60 Curse
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM21 Mega Drain; TM24 Thunderbolt; TM25 Thunder; TM29 Psychic; TM31 Mimic; TM32 Double Team; TM35 Metronome; TM40 Skull Bash; TM42 Dream Eater; TM44 Rest; TM46 Psywave; TM50 Substitute; TM54 Venoshock; TM58 Will-O-Wisp; TM60 Curse; TM66 Mean Look
 
 **HM compatibility:** HM04 Strength
 
@@ -2786,7 +2804,7 @@ None beyond the lists above.
 | 46 | Stone Press |
 | 54 | Coil |
 
-**TM compatibility:** TM08 Body Slam; TM26 Earthquake; TM27 Fissure; TM28 Dig; TM34 Bide; TM36 Selfdestruct; TM40 Skull Bash; TM44 Rest; TM47 Explosion; TM48 Rock Slide; TM57 Rock Tomb
+**TM compatibility:** TM08 Body Slam; TM26 Earthquake; TM27 Fissure; TM28 Dig; TM34 Bide; TM36 Selfdestruct; TM40 Skull Bash; TM44 Rest; TM47 Explosion; TM48 Rock Slide; TM57 Rock Tomb; TM64 Head Smash
 
 **HM compatibility:** HM04 Strength
 
@@ -3212,7 +3230,7 @@ None beyond the lists above.
 | 33 | Pierce |
 | 41 | Earthquake |
 
-**TM compatibility:** TM07 Horn Drill; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM20 Rage; TM26 Earthquake; TM28 Dig; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM57 Rock Tomb
+**TM compatibility:** TM07 Horn Drill; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM20 Rage; TM26 Earthquake; TM28 Dig; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM57 Rock Tomb; TM64 Head Smash
 
 **HM compatibility:** HM04 Strength
 
@@ -3239,7 +3257,7 @@ None beyond the lists above.
 | 49 | Megahorn |
 | 57 | Horn Drill |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM07 Horn Drill; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM16 Pay Day; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM20 Rage; TM26 Earthquake; TM28 Dig; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM56 Bulk Up; TM57 Rock Tomb
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM07 Horn Drill; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM16 Pay Day; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM20 Rage; TM26 Earthquake; TM28 Dig; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM56 Bulk Up; TM57 Rock Tomb; TM64 Head Smash
 
 **HM compatibility:** HM04 Strength
 
@@ -3317,7 +3335,7 @@ None beyond the lists above.
 | 41 | Dizzy Punch |
 | 49 | Facade |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM24 Thunderbolt; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM52 Facade
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM24 Thunderbolt; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM52 Facade; TM64 Head Smash
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -3667,7 +3685,7 @@ None beyond the lists above.
 | 41 | Thrash |
 | 49 | Double-Edge |
 
-**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM20 Rage; TM26 Earthquake; TM32 Double Team; TM40 Skull Bash; TM44 Rest; TM52 Facade
+**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM20 Rage; TM26 Earthquake; TM32 Double Team; TM40 Skull Bash; TM44 Rest; TM52 Facade; TM64 Head Smash
 
 **HM compatibility:** HM04 Strength
 
@@ -3854,6 +3872,7 @@ None beyond the lists above.
 | 36 | Thunder Wave |
 | 43 | Shock Wave |
 | 50 | Thunder |
+| 55 | Shock Fang |
 
 **TM compatibility:** TM08 Body Slam; TM10 Double-Edge; TM24 Thunderbolt; TM25 Thunder; TM32 Double Team; TM33 Reflect; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM45 Thunder Wave; TM52 Facade
 
@@ -4050,7 +4069,7 @@ None beyond the lists above.
 | 49 | Stone Edge |
 | 57 | Sky Attack |
 
-**TM compatibility:** TM20 Rage; TM32 Double Team; TM33 Reflect; TM39 Swift; TM43 Sky Attack; TM44 Rest; TM48 Rock Slide; TM52 Facade; TM55 Aerial Ace; TM57 Rock Tomb
+**TM compatibility:** TM20 Rage; TM32 Double Team; TM33 Reflect; TM39 Swift; TM43 Sky Attack; TM44 Rest; TM48 Rock Slide; TM52 Facade; TM55 Aerial Ace; TM57 Rock Tomb; TM64 Head Smash
 
 **HM compatibility:** HM02 Fly
 
@@ -4944,7 +4963,7 @@ None beyond the lists above.
 | 40 | Recover |
 | 48 | Punishment |
 
-**TM compatibility:** TM28 Dig; TM31 Mimic; TM32 Double Team; TM39 Swift; TM44 Rest; TM50 Substitute; TM52 Facade; TM58 Will-O-Wisp; TM60 Curse
+**TM compatibility:** TM28 Dig; TM31 Mimic; TM32 Double Team; TM39 Swift; TM44 Rest; TM50 Substitute; TM52 Facade; TM58 Will-O-Wisp; TM60 Curse; TM66 Mean Look
 
 **HM compatibility:** HM04 Strength
 
@@ -5139,3 +5158,460 @@ None beyond the lists above.
 **Retained from earlier stages:**
 
 None beyond the lists above.
+
+<a id="pokemon-184"></a>
+## 184 · Tyker
+
+**Type:** Normal / Electric
+
+**Starting moves:** Scratch, Growl
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 6 | Thundershock |
+| 13 | Bite |
+| 18 | Quick Attack |
+| 23 | Thunder Wave |
+| 29 | Headbutt |
+| 33 | Crunch |
+| 39 | Body Slam |
+
+**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM18 Counter; TM20 Rage; TM24 Thunderbolt; TM34 Bide; TM44 Rest; TM45 Thunder Wave; TM50 Substitute; TM52 Facade; TM56 Bulk Up
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-185"></a>
+## 185 · Straigar
+
+**Type:** Normal / Electric
+
+**Starting moves:** Scratch, Growl, Thundershock, Roar
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 17 | Bite |
+| 22 | Quick Attack |
+| 27 | Thunder Wave |
+| 33 | Headbutt |
+| 37 | Crunch |
+| 43 | Sharpen |
+| 48 | Shock Fang |
+
+**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM17 Submission; TM18 Counter; TM20 Rage; TM24 Thunderbolt; TM34 Bide; TM44 Rest; TM45 Thunder Wave; TM50 Substitute; TM52 Facade; TM56 Bulk Up; TM66 Mean Look
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-186"></a>
+## 186 · Phanpy
+
+**Type:** Ground
+
+**Starting moves:** Tackle, Defense Curl
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 7 | Sand-Attack |
+| 12 | Rock Throw |
+| 16 | Bulldoze |
+| 20 | Double-Edge |
+| 24 | Rock Tomb |
+| 30 | Dig |
+| 36 | Rock Slide |
+| 43 | Earthquake |
+
+**TM compatibility:** TM08 Body Slam; TM10 Double-Edge; TM28 Dig; TM34 Bide; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM56 Bulk Up; TM57 Rock Tomb
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-187"></a>
+## 187 · Donphan
+
+**Type:** Ground
+
+**Starting moves:** Tackle, Defense Curl
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 11 | Sand-Attack |
+| 16 | Rock Throw |
+| 20 | Bulldoze |
+| 24 | Double-Edge |
+| 28 | Rock Tomb |
+| 34 | Dig |
+| 40 | Rock Slide |
+| 47 | Earthquake |
+| 54 | Head Smash |
+
+**TM compatibility:** TM08 Body Slam; TM10 Double-Edge; TM18 Counter; TM20 Rage; TM26 Earthquake; TM28 Dig; TM34 Bide; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM56 Bulk Up; TM57 Rock Tomb; TM64 Head Smash
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-188"></a>
+## 188 · Embear
+
+**Type:** Fire
+
+**Starting moves:** Tackle, Growl
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 6 | Ember |
+| 11 | Rage |
+| 16 | Flame Charge |
+| 21 | Rest |
+| 26 | Incinerate |
+| 32 | Slash |
+| 38 | Flamethrower |
+| 44 | Body Slam |
+| 50 | Thrash |
+
+**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM20 Rage; TM34 Bide; TM44 Rest; TM50 Substitute; TM52 Facade; TM56 Bulk Up; TM58 Will-O-Wisp
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-189"></a>
+## 189 · Ursear
+
+**Type:** Fire
+
+**Starting moves:** Tackle, Growl
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 8 | Ember |
+| 13 | Rage |
+| 18 | Flame Charge |
+| 23 | Rest |
+| 28 | Incinerate |
+| 34 | Slash |
+| 40 | Flamethrower |
+| 46 | Body Slam |
+| 52 | Thrash |
+| 59 | Fire Blast |
+
+**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM18 Counter; TM20 Rage; TM34 Bide; TM38 Fire Blast; TM44 Rest; TM50 Substitute; TM52 Facade; TM56 Bulk Up; TM58 Will-O-Wisp
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-190"></a>
+## 190 · Volkuma
+
+**Type:** Fire
+
+**Starting moves:** Tackle, Growl
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 10 | Ember |
+| 15 | Rage |
+| 20 | Flame Charge |
+| 25 | Rest |
+| 30 | Incinerate |
+| 36 | Slash |
+| 42 | Flamethrower |
+| 48 | Body Slam |
+| 54 | Thrash |
+| 61 | Fire Blast |
+
+**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM18 Counter; TM20 Rage; TM26 Earthquake; TM34 Bide; TM38 Fire Blast; TM44 Rest; TM50 Substitute; TM52 Facade; TM56 Bulk Up; TM58 Will-O-Wisp
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-191"></a>
+## 191 · Hoppip
+
+**Type:** Grass / Flying
+
+**Starting moves:** Tackle, Synthesis
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 5 | Poisonpowder |
+| 10 | Stun Spore |
+| 13 | Sleep Powder |
+| 17 | Leech Seed |
+| 20 | Cotton Spore |
+| 25 | Mega Drain |
+| 30 | Cotton Guard |
+
+**TM compatibility:** TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM32 Double Team; TM50 Substitute; TM65 Magical Leaf
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-192"></a>
+## 192 · Skiploom
+
+**Type:** Grass / Flying
+
+**Starting moves:** Tackle, Synthesis
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 7 | Poisonpowder |
+| 12 | Stun Spore |
+| 15 | Sleep Powder |
+| 19 | Leech Seed |
+| 22 | Cotton Spore |
+| 27 | Mega Drain |
+| 32 | Cotton Guard |
+
+**TM compatibility:** TM04 Whirlwind; TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM32 Double Team; TM50 Substitute; TM65 Magical Leaf
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-193"></a>
+## 193 · Jumpluff
+
+**Type:** Grass / Flying
+
+**Starting moves:** Tackle, Synthesis
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 9 | Poisonpowder |
+| 14 | Stun Spore |
+| 17 | Sleep Powder |
+| 21 | Leech Seed |
+| 24 | Cotton Spore |
+| 29 | Mega Drain |
+| 34 | Cotton Guard |
+| 39 | Giga Drain |
+
+**TM compatibility:** TM04 Whirlwind; TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM32 Double Team; TM33 Reflect; TM50 Substitute; TM55 Aerial Ace; TM65 Magical Leaf
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-194"></a>
+## 194 · Mareep
+
+**Type:** Electric
+
+**Starting moves:** Tackle, Tail Whip
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 7 | Thundershock |
+| 11 | Thunder Wave |
+| 15 | Charge |
+| 25 | Shock Wave |
+| 31 | Light Screen |
+| 37 | Thunderbolt |
+| 43 | Focus Energy |
+
+**TM compatibility:** TM08 Body Slam; TM24 Thunderbolt; TM25 Thunder; TM33 Reflect; TM34 Bide; TM44 Rest; TM45 Thunder Wave; TM50 Substitute; TM63 Agility
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-195"></a>
+## 195 · Flaaffy
+
+**Type:** Electric
+
+**Starting moves:** Tackle, Tail Whip
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 9 | Thundershock |
+| 13 | Thunder Wave |
+| 17 | Charge |
+| 27 | Shock Wave |
+| 33 | Light Screen |
+| 39 | Thunderbolt |
+| 45 | Focus Energy |
+| 52 | Thunder |
+
+**TM compatibility:** TM08 Body Slam; TM24 Thunderbolt; TM25 Thunder; TM33 Reflect; TM34 Bide; TM44 Rest; TM45 Thunder Wave; TM50 Substitute; TM63 Agility
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-196"></a>
+## 196 · Ampharos
+
+**Type:** Electric
+
+**Starting moves:** Tackle, Tail Whip
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 11 | Thundershock |
+| 15 | Thunder Wave |
+| 19 | Charge |
+| 29 | Shock Wave |
+| 35 | Light Screen |
+| 41 | Thunderbolt |
+| 47 | Focus Energy |
+| 54 | Thunder |
+
+**TM compatibility:** TM08 Body Slam; TM15 Hyper Beam; TM24 Thunderbolt; TM25 Thunder; TM33 Reflect; TM34 Bide; TM44 Rest; TM45 Thunder Wave; TM50 Substitute; TM63 Agility
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-197"></a>
+## 197 · Garmic
+
+**Type:** Ice
+
+**Starting moves:** Scratch, Defense Curl
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 7 | Mimic |
+| 10 | Icy Wind |
+| 14 | Quick Attack |
+| 18 | Bite |
+| 22 | Screech |
+| 26 | Fury Swipes |
+
+**TM compatibility:** None
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+None beyond the lists above.
+
+<a id="pokemon-198"></a>
+## 198 · Fangrir
+
+**Type:** Ice
+
+**Starting moves:** Scratch, Defense Curl, Icy Wind, Quick Attack
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 30 | Hyper Fang |
+| 34 | Ice Punch |
+| 39 | Slash |
+| 44 | Glare |
+| 51 | Thrash |
+| 57 | Blizzard |
+
+**TM compatibility:** TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM14 Blizzard; TM17 Submission; TM18 Counter; TM20 Rage; TM28 Dig; TM31 Mimic; TM32 Double Team; TM33 Reflect; TM34 Bide; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM67 Ice Punch
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+| Additional move | Learn before evolving |
+|---|---|
+| Bite | Garmic — Lv 18 |
+| Fury Swipes | Garmic — Lv 26 |
+| Screech | Garmic — Lv 22 |
+
+<a id="pokemon-199"></a>
+## 199 · Umbreon
+
+**Type:** Ghost
+
+**Starting moves:** Quick Attack, Sand-Attack, Tackle, Night Shade
+
+**Level-up moves**
+
+| Level | Move |
+|---:|---|
+| 27 | Bite |
+| 31 | Mean Look |
+| 37 | Curse |
+| 40 | Confuse Ray |
+| 42 | Punishment |
+| 44 | Moonlight |
+| 49 | Crunch |
+| 54 | Agility |
+
+**TM compatibility:** TM06 Toxic; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM18 Counter; TM20 Rage; TM31 Mimic; TM32 Double Team; TM34 Bide; TM39 Swift; TM50 Substitute; TM52 Facade; TM66 Mean Look
+
+**HM compatibility:** None
+
+**Retained from earlier stages:**
+
+| Additional move | Learn before evolving |
+|---|---|
+| Charm | Eevee — Lv 40 |
+| Dig | Eevee — TM28 |
+| Focus Energy | Eevee — Lv 29 |
+| Reflect | Eevee — TM33 |
+| Rest | Eevee — TM44 |
+| Skull Bash | Eevee — TM40 |
+| Tail Whip | Eevee — starting move |
