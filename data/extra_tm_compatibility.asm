@@ -5,14 +5,14 @@ ExtraTMCompatibilityTable:
 	db $00, $00, $00 ; 4: charmander
 	db $00, $00, $00 ; 5: charmeleon
 	db $10, $00, $00 ; 6: charizard
-	db $04, $01, $00 ; 7: squirtle
-	db $04, $01, $00 ; 8: wartortle
-	db $04, $01, $00 ; 9: blastoise
+	db $04, $01, $02 ; 7: squirtle
+	db $04, $01, $02 ; 8: wartortle
+	db $04, $01, $02 ; 9: blastoise
 	db $00, $00, $00 ; 10: caterpie
-	db $00, $00, $00 ; 11: metapod
+	db $00, $00, $02 ; 11: metapod
 	db $01, $10, $00 ; 12: butterfree
 	db $08, $00, $00 ; 13: weedle
-	db $08, $00, $00 ; 14: kakuna
+	db $08, $00, $02 ; 14: kakuna
 	db $08, $18, $00 ; 15: beedrill
 	db $11, $10, $00 ; 16: pidgey
 	db $11, $10, $00 ; 17: pidgeotto
@@ -22,11 +22,11 @@ ExtraTMCompatibilityTable:
 	db $12, $10, $00 ; 21: spearow
 	db $12, $10, $00 ; 22: fearow
 	db $08, $0c, $00 ; 23: ekans
-	db $08, $8c, $00 ; 24: arbok
+	db $08, $8c, $02 ; 24: arbok
 	db $02, $10, $00 ; 25: pikachu
 	db $02, $10, $00 ; 26: raichu
-	db $50, $00, $00 ; 27: sandshrew
-	db $50, $00, $00 ; 28: sandslash
+	db $50, $00, $02 ; 27: sandshrew
+	db $50, $00, $02 ; 28: sandslash
 	db $08, $08, $00 ; 29: nidoranf
 	db $08, $08, $00 ; 30: nidorina
 	db $68, $08, $00 ; 31: nidoqueen
@@ -45,7 +45,7 @@ ExtraTMCompatibilityTable:
 	db $08, $40, $00 ; 44: gloom
 	db $08, $40, $00 ; 45: vileplume
 	db $08, $04, $00 ; 46: paras
-	db $08, $06, $00 ; 47: parasect
+	db $08, $06, $02 ; 47: parasect
 	db $08, $00, $00 ; 48: venonat
 	db $08, $00, $00 ; 49: venomoth
 	db $40, $00, $00 ; 50: diglett
@@ -78,7 +78,7 @@ ExtraTMCompatibilityTable:
 	db $02, $10, $00 ; 77: ponyta
 	db $02, $10, $00 ; 78: rapidash
 	db $04, $00, $00 ; 79: slowpoke
-	db $04, $00, $00 ; 80: slowbro
+	db $04, $00, $02 ; 80: slowbro
 	db $00, $00, $00 ; 81: magnemite
 	db $00, $00, $00 ; 82: magneton
 	db $13, $10, $00 ; 83: farfetchd
@@ -87,9 +87,9 @@ ExtraTMCompatibilityTable:
 	db $04, $00, $00 ; 86: seel
 	db $04, $00, $00 ; 87: dewgong
 	db $08, $00, $00 ; 88: grimer
-	db $08, $00, $00 ; 89: muk
-	db $04, $00, $00 ; 90: shellder
-	db $04, $00, $00 ; 91: cloyster
+	db $08, $00, $02 ; 89: muk
+	db $04, $00, $02 ; 90: shellder
+	db $04, $00, $02 ; 91: cloyster
 	db $88, $02, $00 ; 92: gastly
 	db $88, $82, $00 ; 93: haunter
 	db $88, $82, $00 ; 94: gengar
@@ -103,24 +103,24 @@ ExtraTMCompatibilityTable:
 	db $00, $00, $00 ; 102: exeggcute
 	db $00, $00, $00 ; 103: exeggutor
 	db $40, $02, $00 ; 104: cubone
-	db $c0, $02, $00 ; 105: marowak
+	db $c0, $02, $02 ; 105: marowak
 	db $02, $10, $00 ; 106: hitmonlee
-	db $22, $00, $00 ; 107: hitmonchan
+	db $22, $00, $02 ; 107: hitmonchan
 	db $02, $00, $00 ; 108: lickitung
 	db $88, $00, $00 ; 109: koffing
 	db $88, $00, $00 ; 110: weezing
 	db $40, $20, $00 ; 111: rhyhorn
 	db $60, $20, $00 ; 112: rhydon
-	db $00, $00, $00 ; 113: chansey
-	db $00, $00, $00 ; 114: tangela
-	db $02, $20, $00 ; 115: kangaskhan
+	db $00, $00, $02 ; 113: chansey
+	db $00, $00, $02 ; 114: tangela
+	db $02, $20, $02 ; 115: kangaskhan
 	db $04, $10, $00 ; 116: horsea
 	db $04, $10, $00 ; 117: seadra
 	db $06, $10, $00 ; 118: goldeen
 	db $06, $10, $00 ; 119: seaking
 	db $00, $00, $00 ; 120: staryu
 	db $00, $00, $00 ; 121: starmie
-	db $00, $00, $00 ; 122: mrmime
+	db $00, $00, $02 ; 122: mrmime
 	db $12, $00, $00 ; 123: scyther
 	db $00, $00, $00 ; 124: jynx
 	db $02, $00, $00 ; 125: electabuzz
@@ -129,19 +129,19 @@ ExtraTMCompatibilityTable:
 	db $02, $20, $00 ; 128: tauros
 	db $00, $00, $00 ; 129: magikarp
 	db $04, $00, $00 ; 130: gyarados
-	db $04, $00, $00 ; 131: lapras
+	db $04, $00, $02 ; 131: lapras
 	db $00, $00, $00 ; 132: ditto
 	db $02, $00, $00 ; 133: eevee
 	db $06, $01, $00 ; 134: vaporeon
 	db $02, $00, $00 ; 135: jolteon
 	db $02, $00, $00 ; 136: flareon
-	db $02, $10, $00 ; 137: porygon
-	db $44, $00, $00 ; 138: omanyte
-	db $44, $00, $00 ; 139: omastar
-	db $44, $00, $00 ; 140: kabuto
-	db $54, $00, $00 ; 141: kabutops
+	db $02, $10, $02 ; 137: porygon
+	db $44, $00, $02 ; 138: omanyte
+	db $44, $00, $02 ; 139: omastar
+	db $44, $00, $02 ; 140: kabuto
+	db $54, $00, $02 ; 141: kabutops
 	db $52, $20, $00 ; 142: aerodactyl
-	db $02, $00, $00 ; 143: snorlax
+	db $02, $00, $02 ; 143: snorlax
 	db $11, $00, $00 ; 144: articuno
 	db $11, $00, $00 ; 145: zapdos
 	db $91, $00, $00 ; 146: moltres
@@ -150,48 +150,48 @@ ExtraTMCompatibilityTable:
 	db $10, $00, $00 ; 149: dragonite
 	db $00, $00, $00 ; 150: mewtwo
 	db $ff, $1f, $00 ; 151: mew
-	db $04, $01, $00 ; 152: blastoise_unique
+	db $04, $01, $02 ; 152: blastoise_unique
 	db $08, $00, $00 ; 153: bulbasaur_unique
-	db $00, $00, $00 ; 154: chansey_unique
+	db $00, $00, $02 ; 154: chansey_unique
 	db $02, $00, $00 ; 155: charmander_unique
 	db $00, $00, $00 ; 156: ditto_happy
 	db $62, $00, $00 ; 157: geodude_fighting
 	db $02, $10, $00 ; 158: goldeen_fighting
 	db $08, $00, $00 ; 159: grimer_poison
 	db $00, $00, $00 ; 160: ivysaur_erika
-	db $40, $00, $00 ; 161: kakuna_rock_type
+	db $40, $00, $02 ; 161: kakuna_rock_type
 	db $42, $00, $00 ; 162: marowak_unique
 	db $42, $08, $00 ; 163: nidoking_unique
 	db $02, $18, $00 ; 164: nidoking_unique2
 	db $08, $08, $00 ; 165: nidoranm_unique
-	db $44, $00, $00 ; 166: omanyte_unique
+	db $44, $00, $02 ; 166: omanyte_unique
 	db $40, $00, $00 ; 167: onix_brock
 	db $02, $00, $00 ; 168: raichu_unique
-	db $02, $00, $00 ; 169: squirtle_unique
+	db $02, $00, $02 ; 169: squirtle_unique
 	db $00, $04, $00 ; 170: tangela_erika
 	db $0c, $00, $00 ; 171: tentacool_big
 	db $08, $00, $00 ; 172: venusaur_erika
-	db $0c, $01, $00 ; 173: mareanie
-	db $0c, $01, $00 ; 174: toxapex
+	db $0c, $01, $02 ; 173: mareanie
+	db $0c, $01, $02 ; 174: toxapex
 	db $02, $00, $00 ; 175: miltank
-	db $82, $82, $00 ; 176: sableye
-	db $40, $02, $00 ; 177: baltoy
-	db $40, $02, $00 ; 178: claydol
+	db $82, $82, $02 ; 176: sableye
+	db $40, $02, $02 ; 177: baltoy
+	db $40, $02, $02 ; 178: claydol
 	db $18, $04, $00 ; 179: crobat
 	db $00, $00, $00 ; 180: dittwo
 	db $40, $00, $00 ; 181: larvitar
-	db $40, $00, $00 ; 182: pupitar
+	db $40, $00, $02 ; 182: pupitar
 	db $40, $00, $00 ; 183: tyranitar
 	db $22, $00, $00 ; 184: tyker
 	db $22, $80, $00 ; 185: straigar
 	db $60, $00, $00 ; 186: phanpy
-	db $60, $20, $00 ; 187: donphan
+	db $60, $20, $02 ; 187: donphan
 	db $a2, $00, $00 ; 188: embear
 	db $a2, $00, $00 ; 189: ursear
 	db $a2, $00, $00 ; 190: volkuma
 	db $00, $40, $00 ; 191: hoppip
 	db $00, $40, $00 ; 192: skiploom
-	db $10, $40, $00 ; 193: jumpluff
+	db $10, $40, $02 ; 193: jumpluff
 	db $00, $10, $00 ; 194: mareep
 	db $00, $10, $00 ; 195: flaaffy
 	db $00, $10, $00 ; 196: ampharos

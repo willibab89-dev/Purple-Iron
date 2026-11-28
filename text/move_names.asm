@@ -244,4 +244,5 @@ MoveNames::
 	db "COTTON GUARD@"
 	db "MEAN LOOK@"
 	db "BULLDOZE@"
+	db "PROTECT@"
 MoveNamesEnd:

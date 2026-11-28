@@ -11,6 +11,9 @@ ResidualState:
 	ld hl, wEnemyResidual
 	ret
 ResidualClearAll:
+	xor a
+	ld [wPlayerProtect], a
+	ld [wEnemyProtect], a
 	ld hl, wResidualStates
 	ld b, 13
 	xor a
@@ -20,9 +23,13 @@ ResidualClearAll:
 	jr nz, .clear
 	ret
 ResidualClearPlayer:
+	xor a
+	ld [wPlayerProtect], a
 	ld hl, wPlayerResidual
 	jr ResidualClearSide
 ResidualClearEnemy:
+	xor a
+	ld [wEnemyProtect], a
 	ld hl, wEnemyResidual
 ResidualClearSide:
 	ld b, 5

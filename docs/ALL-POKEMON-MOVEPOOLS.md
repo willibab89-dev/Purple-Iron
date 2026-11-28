@@ -1,12 +1,12 @@
 # Every Pokémon’s movepool — Purple Iron
 
-Game snapshot: `e5bf3c2` · 10 November 2026.
+Game snapshot: `af8cea8` · 10 November 2026.
 
 [Searchable/printable HTML](ALL-POKEMON-MOVEPOOLS.html) · [CSV spreadsheet](ALL-POKEMON-MOVEPOOLS.csv)
 
 All 199 species, including unique variants and additional species. Extracted from the compiled game tables, verified identical between Red and Blue. Names use the in-game move names, including renamed moves such as Twister, Chomp and Shell Smash.
 
-Starting moves are the species’ base moves, not four automatic grants on evolution. Level-up entries are shown exactly as stored, including repeated starting moves and multiple moves at one level. TM01–TM67 and HM01–HM05 list that species’ own compatibility. A Pokémon has only four moves at once.
+Starting moves are the species’ base moves, not four automatic grants on evolution. Level-up entries are shown exactly as stored, including repeated starting moves and multiple moves at one level. TM01–TM68 and HM01–HM05 list that species’ own compatibility. A Pokémon has only four moves at once.
 
 “Retained from earlier stages” lists additional moves absent from the current species’ own starting, level-up and machine lists. Learn these before evolving and keep them. Delaying evolution may be necessary. This is especially relevant to Eevee’s level-40 Charm: its evolutions can retain it, but cannot relearn it directly. Starting moves and eligible level-up moves are handled by the move relearner for the current species; earlier-stage-only moves are not automatically added to that list.
 
@@ -404,7 +404,7 @@ None beyond the lists above.
 | 27 | Skull Bash |
 | 43 | Hydro Pump |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM59 Scald
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM59 Scald; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -430,7 +430,7 @@ None beyond the lists above.
 | 30 | Skull Bash |
 | 48 | Hydro Pump |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM59 Scald
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM59 Scald; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -458,7 +458,7 @@ None beyond the lists above.
 | 45 | Spike Cannon |
 | 54 | Hydro Pump |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM15 Hyper Beam; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM59 Scald
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM15 Hyper Beam; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM59 Scald; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -500,7 +500,7 @@ None beyond the lists above.
 |---:|---|
 | 7 | Harden |
 
-**TM compatibility:** None
+**TM compatibility:** TM68 Protect
 
 **HM compatibility:** None
 
@@ -538,7 +538,9 @@ None beyond the lists above.
 
 **Retained from earlier stages:**
 
-None beyond the lists above.
+| Additional move | Learn before evolving |
+|---|---|
+| Protect | Metapod — TM68 |
 
 <a id="pokemon-013"></a>
 ## 013 · Weedle
@@ -574,7 +576,7 @@ None beyond the lists above.
 |---:|---|
 | 7 | Harden |
 
-**TM compatibility:** TM06 Toxic; TM54 Venoshock
+**TM compatibility:** TM06 Toxic; TM54 Venoshock; TM68 Protect
 
 **HM compatibility:** None
 
@@ -611,7 +613,9 @@ None beyond the lists above.
 
 **Retained from earlier stages:**
 
-None beyond the lists above.
+| Additional move | Learn before evolving |
+|---|---|
+| Protect | Kakuna — TM68 |
 
 <a id="pokemon-016"></a>
 ## 016 · Pidgey
@@ -846,7 +850,7 @@ None beyond the lists above.
 | 47 | Screech |
 | 54 | Coil |
 
-**TM compatibility:** TM06 Toxic; TM08 Body Slam; TM20 Rage; TM21 Mega Drain; TM27 Fissure; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM54 Venoshock; TM61 Leech Life; TM62 Poison Tail; TM66 Mean Look
+**TM compatibility:** TM06 Toxic; TM08 Body Slam; TM20 Rage; TM21 Mega Drain; TM27 Fissure; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM54 Venoshock; TM61 Leech Life; TM62 Poison Tail; TM66 Mean Look; TM68 Protect
 
 **HM compatibility:** HM04 Strength
 
@@ -934,7 +938,7 @@ None beyond the lists above.
 | 34 | Swords Dance |
 | 40 | Earthquake |
 
-**TM compatibility:** TM03 Swords Dance; TM08 Body Slam; TM09 Take Down; TM26 Earthquake; TM27 Fissure; TM28 Dig; TM32 Double Team; TM34 Bide; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM55 Aerial Ace; TM57 Rock Tomb
+**TM compatibility:** TM03 Swords Dance; TM08 Body Slam; TM09 Take Down; TM26 Earthquake; TM27 Fissure; TM28 Dig; TM32 Double Team; TM34 Bide; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM55 Aerial Ace; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** HM01 Cut; HM04 Strength
 
@@ -962,7 +966,7 @@ None beyond the lists above.
 | 38 | Swords Dance |
 | 46 | Earthquake |
 
-**TM compatibility:** TM03 Swords Dance; TM08 Body Slam; TM09 Take Down; TM26 Earthquake; TM27 Fissure; TM28 Dig; TM32 Double Team; TM34 Bide; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM55 Aerial Ace; TM57 Rock Tomb
+**TM compatibility:** TM03 Swords Dance; TM08 Body Slam; TM09 Take Down; TM26 Earthquake; TM27 Fissure; TM28 Dig; TM32 Double Team; TM34 Bide; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM55 Aerial Ace; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** HM01 Cut; HM04 Strength
 
@@ -1492,7 +1496,7 @@ None beyond the lists above.
 | 38 | Curse |
 | 43 | Lunge |
 
-**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM28 Dig; TM33 Reflect; TM40 Skull Bash; TM44 Rest; TM54 Venoshock; TM60 Curse; TM61 Leech Life
+**TM compatibility:** TM03 Swords Dance; TM06 Toxic; TM08 Body Slam; TM28 Dig; TM33 Reflect; TM40 Skull Bash; TM44 Rest; TM54 Venoshock; TM60 Curse; TM61 Leech Life; TM68 Protect
 
 **HM compatibility:** HM01 Cut
 
@@ -2400,7 +2404,7 @@ None beyond the lists above.
 | 44 | Psychic |
 | 51 | Surf |
 
-**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM16 Pay Day; TM18 Counter; TM19 Seismic Toss; TM29 Psychic; TM30 Teleport; TM33 Reflect; TM34 Bide; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM45 Thunder Wave; TM46 Psywave; TM49 Tri Attack; TM53 Brine
+**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM16 Pay Day; TM18 Counter; TM19 Seismic Toss; TM29 Psychic; TM30 Teleport; TM33 Reflect; TM34 Bide; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM45 Thunder Wave; TM46 Psywave; TM49 Tri Attack; TM53 Brine; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength; HM05 Flash
 
@@ -2644,7 +2648,7 @@ None beyond the lists above.
 | 39 | Acid Armor |
 | 53 | Toxic |
 
-**TM compatibility:** TM06 Toxic; TM08 Body Slam; TM21 Mega Drain; TM44 Rest; TM50 Substitute; TM54 Venoshock
+**TM compatibility:** TM06 Toxic; TM08 Body Slam; TM21 Mega Drain; TM44 Rest; TM50 Substitute; TM54 Venoshock; TM68 Protect
 
 **HM compatibility:** None
 
@@ -2670,7 +2674,7 @@ None beyond the lists above.
 | 31 | Aurora Beam |
 | 43 | Ice Beam |
 
-**TM compatibility:** TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM30 Teleport; TM33 Reflect; TM34 Bide; TM36 Selfdestruct; TM39 Swift; TM44 Rest; TM47 Explosion; TM49 Tri Attack; TM53 Brine
+**TM compatibility:** TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM30 Teleport; TM33 Reflect; TM34 Bide; TM36 Selfdestruct; TM39 Swift; TM44 Rest; TM47 Explosion; TM49 Tri Attack; TM53 Brine; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -2698,7 +2702,7 @@ None beyond the lists above.
 | 43 | Ice Beam |
 | 49 | Shell Smash |
 
-**TM compatibility:** TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM30 Teleport; TM33 Reflect; TM34 Bide; TM36 Selfdestruct; TM39 Swift; TM44 Rest; TM47 Explosion; TM49 Tri Attack; TM53 Brine
+**TM compatibility:** TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM30 Teleport; TM33 Reflect; TM34 Bide; TM36 Selfdestruct; TM39 Swift; TM44 Rest; TM47 Explosion; TM49 Tri Attack; TM53 Brine; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -3075,7 +3079,7 @@ None beyond the lists above.
 | 41 | Rage |
 | 48 | Curse |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM28 Dig; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM57 Rock Tomb; TM58 Will-O-Wisp; TM60 Curse
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM28 Dig; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM57 Rock Tomb; TM58 Will-O-Wisp; TM60 Curse; TM68 Protect
 
 **HM compatibility:** HM04 Strength
 
@@ -3127,7 +3131,7 @@ None beyond the lists above.
 | 39 | Bulk Up |
 | 47 | Brick Break |
 
-**TM compatibility:** TM01 Mega Punch; TM08 Body Slam; TM18 Counter; TM19 Seismic Toss; TM35 Metronome; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM52 Facade; TM56 Bulk Up
+**TM compatibility:** TM01 Mega Punch; TM08 Body Slam; TM18 Counter; TM19 Seismic Toss; TM35 Metronome; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM52 Facade; TM56 Bulk Up; TM68 Protect
 
 **HM compatibility:** HM04 Strength
 
@@ -3283,7 +3287,7 @@ None beyond the lists above.
 | 38 | Light Screen |
 | 46 | Egg Bomb |
 
-**TM compatibility:** TM13 Ice Beam; TM14 Blizzard; TM18 Counter; TM19 Seismic Toss; TM24 Thunderbolt; TM25 Thunder; TM29 Psychic; TM30 Teleport; TM31 Mimic; TM33 Reflect; TM35 Metronome; TM37 Egg Bomb; TM38 Fire Blast; TM41 Softboiled; TM44 Rest; TM45 Thunder Wave; TM46 Psywave; TM49 Tri Attack
+**TM compatibility:** TM13 Ice Beam; TM14 Blizzard; TM18 Counter; TM19 Seismic Toss; TM24 Thunderbolt; TM25 Thunder; TM29 Psychic; TM30 Teleport; TM31 Mimic; TM33 Reflect; TM35 Metronome; TM37 Egg Bomb; TM38 Fire Blast; TM41 Softboiled; TM44 Rest; TM45 Thunder Wave; TM46 Psywave; TM49 Tri Attack; TM68 Protect
 
 **HM compatibility:** HM04 Strength; HM05 Flash
 
@@ -3309,7 +3313,7 @@ None beyond the lists above.
 | 41 | Growth |
 | 49 | Vine Crush |
 
-**TM compatibility:** TM08 Body Slam; TM21 Mega Drain; TM22 Solarbeam; TM40 Skull Bash; TM44 Rest
+**TM compatibility:** TM08 Body Slam; TM21 Mega Drain; TM22 Solarbeam; TM40 Skull Bash; TM44 Rest; TM68 Protect
 
 **HM compatibility:** HM01 Cut
 
@@ -3335,7 +3339,7 @@ None beyond the lists above.
 | 41 | Dizzy Punch |
 | 49 | Facade |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM24 Thunderbolt; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM52 Facade; TM64 Head Smash
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM24 Thunderbolt; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM52 Facade; TM64 Head Smash; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -3522,7 +3526,7 @@ None beyond the lists above.
 | 44 | Psych Up |
 | 51 | Psychic |
 
-**TM compatibility:** TM08 Body Slam; TM18 Counter; TM19 Seismic Toss; TM24 Thunderbolt; TM29 Psychic; TM30 Teleport; TM31 Mimic; TM33 Reflect; TM35 Metronome; TM40 Skull Bash; TM44 Rest; TM45 Thunder Wave; TM46 Psywave; TM50 Substitute
+**TM compatibility:** TM08 Body Slam; TM18 Counter; TM19 Seismic Toss; TM24 Thunderbolt; TM29 Psychic; TM30 Teleport; TM31 Mimic; TM33 Reflect; TM35 Metronome; TM40 Skull Bash; TM44 Rest; TM45 Thunder Wave; TM46 Psywave; TM50 Substitute; TM68 Protect
 
 **HM compatibility:** HM05 Flash
 
@@ -3766,7 +3770,7 @@ None beyond the lists above.
 | 45 | Heal Bell |
 | 49 | Hydro Pump |
 
-**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM24 Thunderbolt; TM29 Psychic; TM33 Reflect; TM40 Skull Bash; TM44 Rest; TM53 Brine
+**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM24 Thunderbolt; TM29 Psychic; TM33 Reflect; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -3939,7 +3943,7 @@ None beyond the lists above.
 | 45 | Zap Cannon |
 | 49 | Hyper Beam |
 
-**TM compatibility:** TM13 Ice Beam; TM14 Blizzard; TM15 Hyper Beam; TM24 Thunderbolt; TM25 Thunder; TM29 Psychic; TM30 Teleport; TM31 Mimic; TM33 Reflect; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM45 Thunder Wave; TM49 Tri Attack; TM50 Substitute; TM52 Facade; TM63 Agility
+**TM compatibility:** TM13 Ice Beam; TM14 Blizzard; TM15 Hyper Beam; TM24 Thunderbolt; TM25 Thunder; TM29 Psychic; TM30 Teleport; TM31 Mimic; TM33 Reflect; TM39 Swift; TM40 Skull Bash; TM44 Rest; TM45 Thunder Wave; TM49 Tri Attack; TM50 Substitute; TM52 Facade; TM63 Agility; TM68 Protect
 
 **HM compatibility:** HM05 Flash
 
@@ -3964,7 +3968,7 @@ None beyond the lists above.
 | 33 | Brine |
 | 49 | Hydro Pump |
 
-**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM33 Reflect; TM34 Bide; TM44 Rest; TM53 Brine; TM57 Rock Tomb
+**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM33 Reflect; TM34 Bide; TM44 Rest; TM53 Brine; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -3990,7 +3994,7 @@ None beyond the lists above.
 | 41 | Stone Press |
 | 49 | Hydro Pump |
 
-**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM57 Rock Tomb
+**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -4015,7 +4019,7 @@ None beyond the lists above.
 | 29 | Slash |
 | 33 | Shell Break |
 
-**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM33 Reflect; TM34 Bide; TM44 Rest; TM53 Brine; TM57 Rock Tomb
+**TM compatibility:** TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM33 Reflect; TM34 Bide; TM44 Rest; TM53 Brine; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -4042,7 +4046,7 @@ None beyond the lists above.
 | 49 | X-Scissor |
 | 57 | Stone Edge |
 
-**TM compatibility:** TM03 Swords Dance; TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM55 Aerial Ace; TM57 Rock Tomb
+**TM compatibility:** TM03 Swords Dance; TM08 Body Slam; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM55 Aerial Ace; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -4095,7 +4099,7 @@ None beyond the lists above.
 | 41 | Crunch |
 | 49 | Double-Edge |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM13 Ice Beam; TM16 Pay Day; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM26 Earthquake; TM33 Reflect; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM52 Facade
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM10 Double-Edge; TM13 Ice Beam; TM16 Pay Day; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM26 Earthquake; TM33 Reflect; TM40 Skull Bash; TM44 Rest; TM48 Rock Slide; TM52 Facade; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -4331,7 +4335,7 @@ None beyond the lists above.
 | 45 | Spike Cannon |
 | 54 | Hydro Pump |
 
-**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM15 Hyper Beam; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM59 Scald
+**TM compatibility:** TM01 Mega Punch; TM05 Mega Kick; TM08 Body Slam; TM09 Take Down; TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM14 Blizzard; TM15 Hyper Beam; TM17 Submission; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM34 Bide; TM40 Skull Bash; TM44 Rest; TM53 Brine; TM59 Scald; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -4385,7 +4389,7 @@ None beyond the lists above.
 | 41 | Mist |
 | 49 | Heal Bell |
 
-**TM compatibility:** TM31 Mimic; TM33 Reflect; TM35 Metronome; TM41 Softboiled; TM44 Rest; TM50 Substitute
+**TM compatibility:** TM31 Mimic; TM33 Reflect; TM35 Metronome; TM41 Softboiled; TM44 Rest; TM50 Substitute; TM68 Protect
 
 **HM compatibility:** None
 
@@ -4564,7 +4568,7 @@ None beyond the lists above.
 | 33 | Rock Tomb |
 | 41 | Stone Press |
 
-**TM compatibility:** TM20 Rage; TM21 Mega Drain; TM33 Reflect; TM34 Bide; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM57 Rock Tomb
+**TM compatibility:** TM20 Rage; TM21 Mega Drain; TM33 Reflect; TM34 Bide; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** None
 
@@ -4697,7 +4701,7 @@ None beyond the lists above.
 | 41 | Brine |
 | 49 | Amnesia |
 
-**TM compatibility:** TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM33 Reflect; TM34 Bide; TM44 Rest; TM50 Substitute; TM53 Brine; TM57 Rock Tomb
+**TM compatibility:** TM11 Bubblebeam; TM12 Water Gun; TM13 Ice Beam; TM33 Reflect; TM34 Bide; TM44 Rest; TM50 Substitute; TM53 Brine; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -4777,7 +4781,7 @@ None beyond the lists above.
 | 47 | Waterfall |
 | 55 | Shell Smash |
 
-**TM compatibility:** TM01 Mega Punch; TM08 Body Slam; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM44 Rest; TM50 Substitute; TM52 Facade
+**TM compatibility:** TM01 Mega Punch; TM08 Body Slam; TM18 Counter; TM19 Seismic Toss; TM33 Reflect; TM44 Rest; TM50 Substitute; TM52 Facade; TM68 Protect
 
 **HM compatibility:** HM03 Surf; HM04 Strength
 
@@ -4883,7 +4887,7 @@ None beyond the lists above.
 | 36 | Scald |
 | 46 | Brine |
 
-**TM compatibility:** TM06 Toxic; TM11 Bubblebeam; TM12 Water Gun; TM44 Rest; TM50 Substitute; TM53 Brine; TM54 Venoshock; TM59 Scald
+**TM compatibility:** TM06 Toxic; TM11 Bubblebeam; TM12 Water Gun; TM44 Rest; TM50 Substitute; TM53 Brine; TM54 Venoshock; TM59 Scald; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -4911,7 +4915,7 @@ None beyond the lists above.
 | 46 | Brine |
 | 53 | Haze |
 
-**TM compatibility:** TM06 Toxic; TM11 Bubblebeam; TM12 Water Gun; TM44 Rest; TM50 Substitute; TM53 Brine; TM54 Venoshock; TM59 Scald
+**TM compatibility:** TM06 Toxic; TM11 Bubblebeam; TM12 Water Gun; TM44 Rest; TM50 Substitute; TM53 Brine; TM54 Venoshock; TM59 Scald; TM68 Protect
 
 **HM compatibility:** HM03 Surf
 
@@ -4963,7 +4967,7 @@ None beyond the lists above.
 | 40 | Recover |
 | 48 | Punishment |
 
-**TM compatibility:** TM28 Dig; TM31 Mimic; TM32 Double Team; TM39 Swift; TM44 Rest; TM50 Substitute; TM52 Facade; TM58 Will-O-Wisp; TM60 Curse; TM66 Mean Look
+**TM compatibility:** TM28 Dig; TM31 Mimic; TM32 Double Team; TM39 Swift; TM44 Rest; TM50 Substitute; TM52 Facade; TM58 Will-O-Wisp; TM60 Curse; TM66 Mean Look; TM68 Protect
 
 **HM compatibility:** HM04 Strength
 
@@ -4989,7 +4993,7 @@ None beyond the lists above.
 | 33 | Reflect |
 | 45 | Wailing Cry |
 
-**TM compatibility:** TM29 Psychic; TM30 Teleport; TM32 Double Team; TM33 Reflect; TM44 Rest; TM50 Substitute; TM57 Rock Tomb; TM60 Curse
+**TM compatibility:** TM29 Psychic; TM30 Teleport; TM32 Double Team; TM33 Reflect; TM44 Rest; TM50 Substitute; TM57 Rock Tomb; TM60 Curse; TM68 Protect
 
 **HM compatibility:** None
 
@@ -5017,7 +5021,7 @@ None beyond the lists above.
 | 45 | Wailing Cry |
 | 53 | Light Screen |
 
-**TM compatibility:** TM29 Psychic; TM30 Teleport; TM32 Double Team; TM33 Reflect; TM44 Rest; TM50 Substitute; TM57 Rock Tomb; TM60 Curse
+**TM compatibility:** TM29 Psychic; TM30 Teleport; TM32 Double Team; TM33 Reflect; TM44 Rest; TM50 Substitute; TM57 Rock Tomb; TM60 Curse; TM68 Protect
 
 **HM compatibility:** None
 
@@ -5123,7 +5127,7 @@ None beyond the lists above.
 | 40 | Rock Slide |
 | 48 | Earthquake |
 
-**TM compatibility:** TM10 Double-Edge; TM26 Earthquake; TM28 Dig; TM32 Double Team; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM57 Rock Tomb
+**TM compatibility:** TM10 Double-Edge; TM26 Earthquake; TM28 Dig; TM32 Double Team; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM57 Rock Tomb; TM68 Protect
 
 **HM compatibility:** None
 
@@ -5157,7 +5161,9 @@ None beyond the lists above.
 
 **Retained from earlier stages:**
 
-None beyond the lists above.
+| Additional move | Learn before evolving |
+|---|---|
+| Protect | Pupitar — TM68 |
 
 <a id="pokemon-184"></a>
 ## 184 · Tyker
@@ -5262,7 +5268,7 @@ None beyond the lists above.
 | 47 | Earthquake |
 | 54 | Head Smash |
 
-**TM compatibility:** TM08 Body Slam; TM10 Double-Edge; TM18 Counter; TM20 Rage; TM26 Earthquake; TM28 Dig; TM34 Bide; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM56 Bulk Up; TM57 Rock Tomb; TM64 Head Smash
+**TM compatibility:** TM08 Body Slam; TM10 Double-Edge; TM18 Counter; TM20 Rage; TM26 Earthquake; TM28 Dig; TM34 Bide; TM44 Rest; TM48 Rock Slide; TM50 Substitute; TM56 Bulk Up; TM57 Rock Tomb; TM64 Head Smash; TM68 Protect
 
 **HM compatibility:** None
 
@@ -5433,7 +5439,7 @@ None beyond the lists above.
 | 34 | Cotton Guard |
 | 39 | Giga Drain |
 
-**TM compatibility:** TM04 Whirlwind; TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM32 Double Team; TM33 Reflect; TM50 Substitute; TM55 Aerial Ace; TM65 Magical Leaf
+**TM compatibility:** TM04 Whirlwind; TM06 Toxic; TM21 Mega Drain; TM22 Solarbeam; TM32 Double Team; TM33 Reflect; TM50 Substitute; TM55 Aerial Ace; TM65 Magical Leaf; TM68 Protect
 
 **HM compatibility:** None
 

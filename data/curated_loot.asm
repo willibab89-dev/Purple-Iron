@@ -194,6 +194,8 @@ CuratedLootPools:
 	dw CuratedPool_TM_66
 	db TM_67
 	dw CuratedPool_TM_67
+	db TM_68
+	dw CuratedPool_TM_68
 	db 0
 CuratedPool_POTION:
 	db 8, POTION, POTION, POTION, ANTIDOTE, PARLYZ_HEAL, AWAKENING, BURN_HEAL, POKE_BALL
@@ -382,6 +384,8 @@ CuratedPool_TM_64:
 CuratedPool_TM_65:
 	db 2, TM_21, TM_65
 CuratedPool_TM_66:
-	db 1, TM_66
+	db 2, TM_66, TM_68
 CuratedPool_TM_67:
 	db 2, TM_13, TM_67
+CuratedPool_TM_68:
+	db 2, TM_66, TM_68

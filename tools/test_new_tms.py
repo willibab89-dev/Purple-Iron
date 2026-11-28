@@ -40,7 +40,8 @@ def validate(version):
     for item,price in {11:200,12:200,18:600,19:200,59:600,60:750,61:1000}.items():
         oldprices[item]=price
     assert data('ItemPrices', (97 + len(PLAN['new_tms'])) * 3) == b''.join(bcd(n) for n in oldprices + [d['price'] for d in PLAN['new_tms']])
-    masks = b''.join(e['mask'].to_bytes(2, 'little') + bytes([int(e['name']=='fangrir')]) for e in PLAN['entries'])
+    protect_names=['squirtle', 'wartortle', 'blastoise', 'blastoise_unique', 'squirtle_unique', 'metapod', 'kakuna', 'kakuna_rock_type', 'sandshrew', 'sandslash', 'arbok', 'parasect', 'muk', 'tangela', 'shellder', 'cloyster', 'slowbro', 'porygon', 'omanyte', 'omastar', 'omanyte_unique', 'kabuto', 'kabutops', 'pupitar', 'mrmime', 'chansey', 'chansey_unique', 'kangaskhan', 'marowak', 'lapras', 'snorlax', 'sableye', 'baltoy', 'claydol', 'hitmonchan', 'mareanie', 'toxapex', 'donphan', 'jumpluff']
+    masks = b''.join(e['mask'].to_bytes(2, 'little') + bytes([int(e['name']=='fangrir') | (2 if e['name'] in protect_names else 0)]) for e in PLAN['entries'])
     assert data('ExtraTMCompatibilityTable', 3 * len(PLAN['entries'])) == masks
     byname = {e['name']: set(e['tms']) for e in PLAN['entries']}
     assert byname['mew'] == set(range(51, 64))
@@ -108,7 +109,7 @@ def validate(version):
         old = [x.strip() for x in stock.split(',')]
         new = [f'TM_{d["number"]}' for d in PLAN['new_tms'] if d['shop'] == label]
         if label == 'CeladonMart2Clerk2Text': new += ['TM_64', 'TM_65', 'TM_67']
-        if label == 'PewterCashierText': new += ['TM_66']
+        if label == 'PewterCashierText': new += ['TM_66', 'TM_68']
         if label == 'CeladonMart3ClerkText': new += ['ABILITY_CAPSULE', 'NATURE_CAPSULE', 'FIRST_AID']
         raw = data(label, 2 + len(old) + len(new) + 1)
         assert raw[0] == 254 and raw[1] == len(old) + len(new) <= 14, label
@@ -262,7 +263,7 @@ def validate(version):
             selection['species'] = order.index(151) + 1
         # The later TMs use item IDs after the three supply items. Exercise
         # actual teaching and consumption rather than just their bit masks.
-        for item, move, dex in ((114, 'HEAD_SMASH', 95), (115, 'MAGICAL_LEAF', 1), (116, 'MEAN_LOOK', 24), (117, 'ICE_PUNCH', 198)):
+        for item, move, dex in ((114, 'HEAD_SMASH', 95), (115, 'MAGICAL_LEAF', 1), (116, 'MEAN_LOOK', 24), (117, 'ICE_PUNCH', 198), (118, 'PROTECT', 7)):
             index = order.index(dex) + 1
             put('wNumBagItems', 1)
             game.memory[addr('wBagItems'):addr('wBagItems') + 3] = [item, 1, 255]

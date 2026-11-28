@@ -117,3 +117,4 @@ ItemPrices:;joenote - added prices for amber/fossils/moon stone/pp_up/exp all/ma
 	money 7000 ; TM_65
 	money 8000 ; TM_66
 	money 8000 ; TM_67
+	money 10000 ; TM_68

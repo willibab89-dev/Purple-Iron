@@ -218,6 +218,8 @@ UtilityBreakScreens:
 
 UtilityStatusEffect:
 	call UtilityLoadMove
+	cp PROTECT
+	jp z, ProtectUse
 	cp MEAN_LOOK
 	jp z, UtilityMeanLook
 	cp HEAL_BELL
@@ -859,3 +861,129 @@ UtilityHealBellText:
 	text "The soothing bell"
 	line "cured the party!"
 	prompt
+
+; Protect is +4. When both select it, the ordinary priority comparison
+; remains responsible for ability modifiers and speed ties.
+ProtectPriority:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld a, [wPlayerSelectedMove]
+ cp PROTECT
+ jr nz, .enemy
+ ld a, [wEnemySelectedMove]
+ cp PROTECT
+ ret z
+ ld a, 1
+ jr .save
+.enemy
+ ld a, [wEnemySelectedMove]
+ cp PROTECT
+ ret nz
+ ld a, 2
+.save
+ ld [wAbilityCheckResult], a
+ ret
+
+ProtectActorState:
+ ld hl, wPlayerProtect
+ ld a, [H_WHOSETURN]
+ and a
+ ret z
+ inc hl
+ ret
+
+; An executed different move, even one that misses, resets the chain.
+ProtectObserveMove:
+ call CustomActorMove
+ ld a, [hl]
+ cp PROTECT
+ ret z
+ call ProtectActorState
+ xor a
+ ld [hl], a
+ ret
+
+; Lower seven bits count attempts, high bit means protected this round.
+ProtectUse:
+ call ProtectActorState
+ ld a, [hl]
+ and $7f
+ cp 5
+ jr c, .increment
+ ld a, 5
+.increment
+ ld c, a
+ cp 5
+ jr nc, .store
+ inc a
+.store
+ ld [hl], a
+ ld a, c
+ and a
+ jr z, .success
+ cp 5
+ jp nc, CustomFailed
+ ld b, 0
+ ld hl, ProtectChances
+ add hl, bc
+ ld a, [hl]
+ ld [wCustomChance], a
+.roll
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ cp 200
+ jr nc, .roll
+ ld b, a
+ ld a, [wCustomChance]
+ cp b
+ jp z, CustomFailed
+ jp c, CustomFailed
+.success
+ call ProtectActorState
+ set 7, [hl]
+ callab PlayCurrentMoveAnimation
+ ld hl, ProtectText
+ jp PrintText
+ProtectChances:
+ db 200, 160, 120, 80, 40
+ProtectText:
+ text "Protected itself!"
+ prompt
+
+; Called from the normal hit check before accuracy and always-hit handling.
+; Self-targeted moves are not stopped by the other side's Protect.
+ProtectCheckTarget:
+ xor a
+ ld [wAbilityCheckResult], a
+ ld hl, wEnemyProtect
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .check
+ ld hl, wPlayerProtect
+.check
+ bit 7, [hl]
+ ret z
+ call CustomActorMove
+ ld a, [hl]
+ cp BIDE
+ jr z, .blocked
+ ld b, a
+ inc de
+ ld a, [de]
+ and a
+ jr nz, .blocked
+ ld a, b
+ ld hl, ProtectTargetStatusMoves
+ ld de, 1
+ call IsInArray
+ ret nc
+.blocked
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+ProtectTargetStatusMoves:
+ db WHIRLWIND, TAIL_WHIP, LEER, GROWL, ROAR, SING, SUPERSONIC, DISABLE
+ db LEECH_SEED, POISONPOWDER, STUN_SPORE, SLEEP_POWDER, THUNDER_WAVE, TOXIC
+ db HYPNOSIS, SCREECH, SMOKESCREEN, CONFUSE_RAY, KINESIS, GLARE, POISON_GAS
+ db LOVELY_KISS, SPORE, WILL_O_WISP, FLASH_FREEZE, CURSE, CHARM, COTTON_SPORE
+ db MEAN_LOOK, MIMIC, MIRROR_MOVE, TRANSFORM, PSYCH_UP, HAZE, $ff

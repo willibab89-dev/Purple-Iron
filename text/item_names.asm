@@ -117,3 +117,4 @@ ItemNames:
 	db "TM65 MAGLEF@"
 	db "TM66 MEANLK@"
 	db "TM67 ICEPNCH@"
+	db "TM68 PROTECT@"

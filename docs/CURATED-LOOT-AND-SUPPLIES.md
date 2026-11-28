@@ -112,8 +112,9 @@ TM replacements retain type, damaging/status role and comparable power (within 2
 | TM_63 (AGILITY) | TM_63 (AGILITY) |
 | TM_64 (HEAD_SMASH) | TM_08 (BODY_SLAM), TM_10 (DOUBLE_EDGE), TM_37 (EGG_BOMB), TM_49 (TRI_ATTACK), TM_64 (HEAD_SMASH) |
 | TM_65 (MAGICAL_LEAF) | TM_21 (MEGA_DRAIN), TM_65 (MAGICAL_LEAF) |
-| TM_66 (MEAN_LOOK) | TM_66 (MEAN_LOOK) |
+| TM_66 (MEAN_LOOK) | TM_66 (MEAN_LOOK), TM_68 (PROTECT) |
 | TM_67 (ICE_PUNCH) | TM_13 (ICE_BEAM), TM_67 (ICE_PUNCH) |
+| TM_68 (PROTECT) | TM_66 (MEAN_LOOK), TM_68 (PROTECT) |
 
 ## Visible pickup sites
 

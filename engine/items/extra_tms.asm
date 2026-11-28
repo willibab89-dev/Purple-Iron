@@ -6,7 +6,7 @@ DecodeMachineItem:
 	ld a, [wcf91]
 	cp TM_64
 	jr c, .firstBlock
-	cp TM_67 + 1
+	cp TM_68 + 1
 	jr nc, .legacy
 	sub TM_64
 	add 69
@@ -105,7 +105,7 @@ ExtraTMCompatibility:
 ExtraTMMoves:
 	db ROOST,FACADE,BRINE,VENOSHOCK,AERIAL_ACE
 	db BULK_UP,ROCK_TOMB,WILL_O_WISP,SCALD,CURSE
-	db LEECH_LIFE,POISON_TAIL,AGILITY,HEAD_SMASH,MAGICAL_LEAF,MEAN_LOOK,ICE_PUNCH
+	db LEECH_LIFE,POISON_TAIL,AGILITY,HEAD_SMASH,MAGICAL_LEAF,MEAN_LOOK,ICE_PUNCH,PROTECT
 INCLUDE "data/extra_tm_compatibility.asm"
 
 INCLUDE "text/tmhm_names.asm"

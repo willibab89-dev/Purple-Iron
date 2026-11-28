@@ -388,8 +388,13 @@ MainInBattleLoop:
 	ld hl, wPatientActed
 	set 1, [hl]
 .noLinkBattle
+	abilitycall ProtectPriority
+	ld a, [wAbilityCheckResult]
+	and a
+	jr nz, .havePriority
 	abilitycall AbilityPriority
 	ld a, [wAbilityCheckResult]
+.havePriority
 	cp 1
 	jp z, .playerMovesFirst
 	cp 2
@@ -3213,6 +3218,7 @@ ExecutePlayerMoveBody:
 	jp z, ExecutePlayerMoveDone
 
 CheckIfPlayerNeedsToChargeUp:
+	abilitycall ProtectObserveMove
 	ld a, [wPlayerMoveEffect]
 	cp CHARGE_EFFECT
 	jp z, JumpMoveEffect
@@ -5244,6 +5250,10 @@ INCLUDE "data/type_effects.asm"
 
 ; some tests that need to pass for a move to hit
 MoveHitTest:
+	abilitycall ProtectCheckTarget
+	ld a, [wAbilityCheckResult]
+	and a
+	jp nz, .moveMissed
 	abilitycall AbilityPreparedCheck
 	ld a, [wAbilityCheckResult]
 	and a
@@ -5526,6 +5536,7 @@ ExecuteEnemyMoveBody:
 	call GetCurrentMove
 
 CheckIfEnemyNeedsToChargeUp:
+	abilitycall ProtectObserveMove
 	ld a, [wEnemyMoveEffect]
 	cp CHARGE_EFFECT
 	jp z, JumpMoveEffect

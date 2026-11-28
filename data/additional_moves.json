@@ -273,5 +273,16 @@
     "accuracy": 100,
     "pp": 15,
     "animation": "EARTHQUAKE"
+  },
+  {
+    "id": 245,
+    "symbol": "PROTECT",
+    "name": "PROTECT",
+    "effect": "UTILITY_STATUS_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "BARRIER"
   }
 ]

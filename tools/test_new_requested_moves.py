@@ -93,11 +93,33 @@ def validate(version):
             actor,target,ap,tp=init('LAST_STING',turn)
             execute(turn)
             assert readword(ap+'HP')==0 and readword(tp+'HP')<200,(turn,'last sting',readword(ap+'HP'),readword(tp+'HP'))
+        for turn in (0,1):
+            mine='wEnemyProtect' if turn else 'wPlayerProtect'
+            foe='wPlayerProtect' if turn else 'wEnemyProtect'
+            for attempts,threshold in ((0,200),(1,160),(2,120),(3,80),(4,40),(5,0)):
+                for roll in (0,39,40,79,80,119,120,159,160,199):
+                    init('PROTECT',turn);put(mine,attempts);rng(roll);call('JumpMoveEffect')
+                    actual=get(mine);expected=min(5,attempts+1)
+                    assert (actual&127)==expected and bool(actual&128)==(roll<threshold),(turn,attempts,roll,actual)
+            init('PROTECT',turn);put(mine,0);rng(0);execute(turn)
+            assert get(mine)&128,(turn,'Protect activated')
+            if turn==0:assert get('wBattleMonPP')==19 and get('wPartyMon1PP')==19,(turn,'Protect PP')
+            actor,target,ap,tp=init('TACKLE',1-turn);rng(0);execute(1-turn)
+            assert readword(tp+'HP')==200 and get('wMoveMissed'),(turn,'Protect blocks damage',readword(tp+'HP'))
+            actor,target,ap,tp=init('THUNDER_WAVE',1-turn);rng(0);execute(1-turn)
+            assert get(tp+'Status')==0,(turn,'Protect blocks status')
+            put('wPlayerSelectedMove',MOVES['PROTECT'] if turn==0 else MOVES['TACKLE'])
+            put('wEnemySelectedMove',MOVES['PROTECT'] if turn else MOVES['TACKLE'])
+            call('ProtectPriority');assert get('wAbilityCheckResult')==turn+1,(turn,'priority')
+            init('TACKLE',turn);put(mine,5);call('ProtectObserveMove');assert get(mine)==0,(turn,'different move resets')
+            init('FLY',turn);put(mine,5);rng(0);execute(turn);assert get(mine)==0,(turn,'charging move resets')
+            put(mine,0x83);call('SequenceNewRound');assert get(mine)==3,(turn,'round expiration')
+            call('ResidualClearEnemy' if turn else 'ResidualClearPlayer');assert get(mine)==0,(turn,'switch reset')
         # The item IDs are separate from the earlier contiguous TM block.
-        for item,internal,move in ((114,69,'HEAD_SMASH'),(115,70,'MAGICAL_LEAF'),(116,71,'MEAN_LOOK'),(117,72,'ICE_PUNCH')):
+        for item,internal,move in ((114,69,'HEAD_SMASH'),(115,70,'MAGICAL_LEAF'),(116,71,'MEAN_LOOK'),(117,72,'ICE_PUNCH'),(118,73,'PROTECT')):
             put('wcf91',item);call('DecodeMachineItem');assert get('wd11e')==internal
             call('TMToMove');assert get('wd11e')==MOVES[move]
-        for mon,move,expected in ((205,'ICE_PUNCH',True),(204,'ICE_PUNCH',False),(206,'MEAN_LOOK',True),(34,'HEAD_SMASH',True),(194,'HEAD_SMASH',True),(193,'HEAD_SMASH',False),(153,'MAGICAL_LEAF',True),(198,'MAGICAL_LEAF',True),(199,'MAGICAL_LEAF',True),(200,'MAGICAL_LEAF',True),(36,'HEAD_SMASH',False)):
+        for mon,move,expected in ((177,'PROTECT',True),(205,'PROTECT',False),(194,'PROTECT',True),(206,'PROTECT',False),(205,'ICE_PUNCH',True),(204,'ICE_PUNCH',False),(206,'MEAN_LOOK',True),(34,'HEAD_SMASH',True),(194,'HEAD_SMASH',True),(193,'HEAD_SMASH',False),(153,'MAGICAL_LEAF',True),(198,'MAGICAL_LEAF',True),(199,'MAGICAL_LEAF',True),(200,'MAGICAL_LEAF',True),(36,'HEAD_SMASH',False)):
             put('wcf91',mon);put('wMoveNum',MOVES[move]);call('CanLearnTM');assert bool(game.register_file.C)==expected,(mon,move)
         print(f'{version}: new move effects, recoil, accuracy, stat caps and TM mappings passed')
     finally:game.stop(save=False)

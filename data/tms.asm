@@ -73,4 +73,5 @@ ExtraTechnicalMachines:
 	db MAGICAL_LEAF
 	db MEAN_LOOK
 	db ICE_PUNCH
+	db PROTECT
 TechnicalMachinesEnd:

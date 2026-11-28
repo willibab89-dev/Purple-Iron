@@ -135,6 +135,7 @@ ItemUsePtrTable:
 	dw ItemUseTMHM ; TM_65
 	dw ItemUseTMHM ; TM_66
 	dw ItemUseTMHM ; TM_67
+	dw ItemUseTMHM ; TM_68
 
 ItemUseCuratedSupply:
 	jpab UseCuratedSupplyItem

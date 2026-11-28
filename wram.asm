@@ -3430,8 +3430,11 @@ wStatAbilityGuard:: ds 1
 wCopycatStat:: ds 1
 SECTION "Pressure scratch", WRAM0[$df5b]
 wPressureEnemyTracked:: ds 1
-SECTION "Stack", WRAM0[$df5c]
-	ds $a3
+SECTION "Protect scratch", WRAM0[$df5c]
+wPlayerProtect:: ds 1
+wEnemyProtect:: ds 1
+SECTION "Stack", WRAM0[$df5e]
+	ds $a1
 wStack:: ; dfff
 
 

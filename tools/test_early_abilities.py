@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf5c:0xdf78]=[0xa5]*28
+        game.memory[0xdf5e:0xdf78]=[0xa5]*26
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf5c:0xdf78])==bytes([0xa5]*28),('stack guard',n)
+                assert bytes(game.memory[0xdf5e:0xdf78])==bytes([0xa5]*26),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -1614,7 +1614,7 @@ def validate(version):
             actor='w'+('Enemy' if turn else 'Player')
             for attack,want in [('THUNDERSHOCK',1),('THUNDER_WAVE',1),('THUNDERCLAP',2),('TACKLE',0),('QUICK_ATTACK',1),('GROWL',0)]:
                 init(turn);move(turn,attack);aid(turn,'LIGHTNING_SPEED');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==want,(turn,attack,game.register_file.A)
-            for invalid in (0,245,255):
+            for invalid in (0,246,255):
                 init(turn);aid(turn,'LIGHTNING_SPEED');put(actor+'SelectedMove',invalid);put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,invalid)
             init(turn);move(turn,'THUNDER_WAVE');aid(turn,'LIGHTNING_SPEED');aid(1-turn,'NEUTRALIZING_GAS');put('wAbilitySide',turn);call('AbilityPriorityOne');assert game.register_file.A==0,(turn,'suppressed')
             init(turn);move(turn,'THUNDERCLAP');move(1-turn,'QUICK_ATTACK');aid(turn,'LIGHTNING_SPEED');call('AbilityPriority');assert get('wAbilityCheckResult')==(2 if turn else 1),(turn,'stacking order')
@@ -2298,7 +2298,7 @@ def validate(version):
             init();move(0,'AMBUSH');move(1,'QUICK_ATTACK');word('wEnemyMonHP',hp)
             if quick:aid(0,'QUICK_REFLEXES')
             call('AbilityPriority');assert get('wAbilityCheckResult')==want,('Ambush priority',hp,quick)
-        for invalid in (0,245,255):
+        for invalid in (0,246,255):
             call('AbilityMoveFlags',A=invalid);assert game.register_file.A==0
         # All implemented and reserved descriptions render without changing IDs.
         game.memory[0xff40]=0
