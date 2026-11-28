@@ -9,8 +9,11 @@ TryUniqueWildEncounter:
 	jr nz, .select
 	inc c ; surfing
 .select
+	call ChoosePostgameUniqueEncounter
+	jr c, .chosen
 	call ChooseUniqueEncounter
 	ret nc
+.chosen
 	ld a, b
 	ld [wCurEnemyLVL], a
 	ld a, c
@@ -112,7 +115,7 @@ FindUniqueWildLocations:
 .scan
 	ld a, [hli]
 	cp $ff
-	jr z, .notFound
+	jp z, FindPostgameUniqueLocation
 	cp c
 	ld b, [hl]
 	inc hl
@@ -138,3 +141,88 @@ FindUniqueWildLocations:
 	ret
 
 INCLUDE "data/unique_encounters.asm"
+
+; After the first Hall of Fame, one rare themed encounter may replace a
+; regular land/surf encounter. A failed roll retains the ordinary pool path.
+ChoosePostgameUniqueEncounter:
+ push bc
+ push de
+ push hl
+ CheckEvent EVENT_908
+ jr z, .unchanged
+ ld a, [wCurMap]
+ ld b, a
+ ld hl, PostgameUniqueEncounters
+.scan
+ ld a, [hli]
+ cp $ff
+ jr z, .unchanged
+ ld d, a
+ ld a, [hli]
+ ld e, a
+ ld a, d
+ cp b
+ jr nz, .skip
+ ld a, e
+ cp c
+ jr nz, .skip
+ call UniqueEncounterRoll100
+ cp 3 ; three percent of encounters in the specified habitat
+ jr nc, .unchanged
+ ld b, [hl]
+ inc hl
+ ld c, [hl]
+ pop hl
+ pop de
+ pop af
+ scf
+ ret
+.skip
+ inc hl
+ inc hl
+ jr .scan
+.unchanged
+ pop hl
+ pop de
+ pop bc
+ and a
+ ret
+
+; Reveal these locations in the Pokédex after the same postgame gate.
+FindPostgameUniqueLocation:
+ CheckEvent EVENT_908
+ jr z, .notFound
+ ld a, [wd11e]
+ ld c, a
+ ld hl, PostgameUniqueEncounters
+.scan
+ ld a, [hli]
+ cp $ff
+ jr z, .notFound
+ ld b, a
+ inc hl ; habitat
+ inc hl ; level
+ ld a, [hli]
+ cp c
+ jr nz, .scan
+ ld a, b
+ ld [wBuffer], a
+ ld a, $ff
+ ld [wBuffer + 1], a
+ scf
+ ret
+.notFound
+ and a
+ ret
+
+; map, habitat (0 land / 1 surf), level, species
+PostgameUniqueEncounters:
+ db ROUTE_20, 1, 55, UNIQUE_BLASTOISE_UNIQUE
+ db MANSION_3, 0, 50, UNIQUE_GRIMER_POISON
+ db ROUTE_12, 0, 50, UNIQUE_IVYSAUR_ERIKA
+ db ROUTE_22, 0, 55, UNIQUE_NIDOKING_UNIQUE
+ db ROCK_TUNNEL_1, 0, 50, UNIQUE_ONIX_BROCK
+ db POWER_PLANT, 0, 55, UNIQUE_RAICHU_UNIQUE
+ db ROUTE_15, 0, 50, UNIQUE_TANGELA_ERIKA
+ db ROUTE_13, 0, 55, UNIQUE_VENUSAUR_ERIKA
+ db $ff

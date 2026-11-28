@@ -90,6 +90,7 @@ jobs:
           python3 tools/test_support_distribution.py
           python3 tools/test_mew_gate.py
           python3 tools/test_route_encounters.py
+          python3 tools/test_postgame_encounters.py
           python3 tools/test_badge_boosts.py
           python3 tools/test_type_chart.py
           python3 tools/test_abilities.py
