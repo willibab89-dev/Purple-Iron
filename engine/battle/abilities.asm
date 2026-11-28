@@ -225,6 +225,18 @@ AbilityGet:
  ld c, 0
 .unsuppressed
  pop hl
+ push hl
+ ld a, [wStatAbilityGuard]
+ bit 7, a
+ jr z, .noMoldCheck
+ push bc
+ ld d, b
+ ld e, c
+ callab AbilityMoldBreakerSuppress
+ pop bc
+ ld c, e
+.noMoldCheck
+ pop hl
  ld a, c
 .done
  cp ABILITY_EXTENDED
@@ -251,6 +263,7 @@ AbilityGet:
  pop de
  pop bc
  ret
+
 
 AbilityActor:
 	ld a, [H_WHOSETURN]

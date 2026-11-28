@@ -4,7 +4,7 @@ SECTION "Expanded ability descriptions", ROMX, BANK[$39]
 AbilityDrawExtraDescription:
  ld a, [wAbilityResolvedExtended]
  sub AB_CONSERVATIVE - ABILITY_EXTENDED
- cp 66
+ cp 67
  jr nc, .none
  ld c, a
  ld b, 0
@@ -39,7 +39,7 @@ AbilityExtraTextPointers:
 	dw AbilityText374, AbilityText375, AbilityText376, AbilityText377
 	dw AbilityText378, AbilityText379, AbilityText380, AbilityText381
 	dw AbilityText382, AbilityText383, AbilityText384, AbilityText385
-	dw AbilityText386, AbilityText387
+	dw AbilityText386, AbilityText387, AbilityText388
 AbilityExtraNone: db "NO ABILITY@"
 AbilityText322: db "CONSERVATIVE",$4e,"Moves: 25% chance",$4e,"to save PP.@"
 AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
@@ -113,3 +113,111 @@ AbilityText384: db "HUGE POWER",$4e,"Doubles Attack",$4e,"for physical moves.@"
 AbilityText385: db "SYNCHRONIZE",$4e,"Burn, poison or para",$4e,"also affects foe.@"
 AbilityText386: db "SHADOW TOUCH",$4e,"Normal moves become",$4e,"Ghost type.@"
 AbilityText387: db "PRESSURE",$4e,"Foe uses extra PP",$4e,"targeting this mon.@"
+
+AbilityText388: db "MOLD BREAKER",$4e,"Moves bypass foe",$4e,"defensive abilities.@"
+
+; Only suppress defenses while the Mold Breaker holder executes its move.
+; Contact and other reactions are deliberately absent from these lists.
+; Input B is queried side, C is its base ability; C becomes zero if bypassed.
+AbilityMoldBreakerSuppress:
+ ld b, d
+ ld c, e
+ ld a, [wStatAbilityGuard]
+ bit 7, a
+ ret z
+ ld a, [H_WHOSETURN]
+ cp b
+ ret z
+ ld hl, wActiveAbilities
+ and a
+ jr z, .actorAbility
+ inc hl
+.actorAbility
+ ld a, [hl]
+ cp ABILITY_EXTENDED
+ ret nz
+ ld hl, wActiveAbilityExtended
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .actorExtended
+ inc hl
+.actorExtended
+ ld a, [hl]
+ cp AB_MOLD_BREAKER - ABILITY_EXTENDED
+ ret nz
+ ld a, c
+ cp ABILITY_EXTENDED
+ jr z, .extended
+ ld d, c
+ ld hl, MoldBreakerNormalDefenses
+ jr .scan
+.extended
+ ld hl, wActiveAbilityExtended
+ ld a, b
+ and a
+ jr z, .targetExtended
+ inc hl
+.targetExtended
+ ld d, [hl]
+ ld hl, MoldBreakerExtendedDefenses
+.scan
+ ld a, [hli]
+ and a
+ ret z
+ cp d
+ jr nz, .scan
+ ld e, 0
+ ret
+
+MoldBreakerNormalDefenses:
+ db AB_VINE_GUARD, AB_WATER_VEIL, AB_SHELL_ARMOR, AB_SHIELD_DUST, AB_HARD_SHELL, AB_BATTLE_ARMOR
+ db AB_WONDER_SKIN, AB_SAND_ARMOR, AB_KEEN_EYE, AB_THICK_HIDE, AB_IRON_WILL
+ db AB_RUBBER_SKIN, AB_THICK_FAT, AB_STENCH, AB_SUBTERRANEAN, AB_DAMP, AB_CLOUD_NINE
+ db AB_MIND_READER, AB_STEADFAST, AB_ELEGANT_MANE, AB_MENTAL_SHIELD
+ db AB_MAGIC_BOUNCE, AB_CLEAR_BODY, AB_JELLY_BODY, AB_LEVITATE, AB_IMMUNITY
+ db AB_STURDY, AB_OBLIVIOUS, AB_UNAWARE, AB_MAGNETIC_FIELD, AB_UNYIELDING, AB_BLUBBER, AB_SOFT_BODY
+ db AB_DEEPSEA_PEARL
+ db AB_ONIX_STURDY, AB_EARTH_EATER, AB_HYPER_CUTTER, AB_THICK_TRUNK
+ db AB_THICK_SKULL, AB_RESILIENCE, AB_LIMBER, AB_GUARD_UP, AB_ARMORED
+ db AB_SOLID_ROCK, AB_LUCKY, 0
+MoldBreakerExtendedDefenses:
+ db AB_LIGHTNING_ROD - ABILITY_EXTENDED, AB_COSMIC_CORE - ABILITY_EXTENDED
+ db AB_MIRROR_ARMOR - ABILITY_EXTENDED, AB_MAGMA_ARMOR - ABILITY_EXTENDED
+ db AB_UNSTOPPABLE - ABILITY_EXTENDED, AB_DETERMINATION - ABILITY_EXTENDED
+ db AB_ANCIENT_SHELL - ABILITY_EXTENDED, AB_FLEXIBLE - ABILITY_EXTENDED
+ db AB_LIQUID_BODY - ABILITY_EXTENDED, AB_WATER_ABSORB - ABILITY_EXTENDED
+ db AB_VOLT_ABSORB - ABILITY_EXTENDED, AB_MAGMA_COAT - ABILITY_EXTENDED
+ db AB_FLUFFY - ABILITY_EXTENDED, AB_ANTIVIRUS - ABILITY_EXTENDED
+ db AB_MYSTIC_SCALES - ABILITY_EXTENDED, AB_MULTISCALE - ABILITY_EXTENDED
+ db AB_INNER_FOCUS - ABILITY_EXTENDED, AB_DOMINANCE - ABILITY_EXTENDED
+ db AB_CLAY_ARMOR - ABILITY_EXTENDED, AB_INDOMITABLE - ABILITY_EXTENDED
+ db AB_DISCIPLINE - ABILITY_EXTENDED, AB_WOOL_COAT - ABILITY_EXTENDED
+ db AB_AMPHAROS_WOOL - ABILITY_EXTENDED, AB_PREPARED - ABILITY_EXTENDED, 0
+
+
+AbilityStrongmanCheck:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityActorResult
+ ld a, [wAbilityCheckResult]
+ push af
+ xor a
+ ld [wAbilityCheckResult], a
+ pop af
+ cp ABILITY_EXTENDED
+ ret nz
+ ld a, [wAbilityResolvedExtended]
+ cp AB_STRONGMAN - ABILITY_EXTENDED
+ ret nz
+ ld hl, wPlayerMoveType
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .check
+ ld hl, wEnemyMoveType
+.check
+ ld a, [hl]
+ cp FIRE
+ ret nc
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret

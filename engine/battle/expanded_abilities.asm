@@ -7979,19 +7979,6 @@ AbilityEqualizerAIFinal:
  ld [wTypeEffectiveness], a
  ret
 
-AbilityStrongmanCheck:
- xor a
- ld [wAbilityCheckResult], a
- ld c, AB_STRONGMAN - ABILITY_EXTENDED
- call AbilityExtendedActorIs
- ret nc
- call AbilityActorMoveType
- cp FIRE
- ret nc
- ld a, 1
- ld [wAbilityCheckResult], a
- ret
-
 ; Reflect stage reductions via the same protected, capped stat-change path.
 AbilityMirrorArmorCustom:
  jpab AbilityMirrorArmorCustomBanked

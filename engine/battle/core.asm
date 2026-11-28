@@ -3163,8 +3163,16 @@ ExecutePlayerMove:
 	xor a
 	ld [H_WHOSETURN], a
 	abilitycall AbilityBeforeAction
+	push hl
+	ld hl, wStatAbilityGuard
+	set 7, [hl]
+	pop hl
 	call ExecutePlayerMoveBody
 	abilitycall AbilityAfterAction
+	push hl
+	ld hl, wStatAbilityGuard
+	res 7, [hl]
+	pop hl
 	push af
 	push bc
 	push de
@@ -5464,8 +5472,16 @@ ExecuteEnemyMove:
 	ld a, 1
 	ld [H_WHOSETURN], a
 	abilitycall AbilityBeforeAction
+	push hl
+	ld hl, wStatAbilityGuard
+	set 7, [hl]
+	pop hl
 	call ExecuteEnemyMoveBody
 	abilitycall AbilityAfterAction
+	push hl
+	ld hl, wStatAbilityGuard
+	res 7, [hl]
+	pop hl
 	push af
 	push bc
 	push de

@@ -250,7 +250,7 @@ def validate(version):
                'MILTANK':['THICK_FAT','SAP_SIPPER','ROLLOUT','SCRAPPY','SERENE_GRACE'],
                'UMBREON':['AFTERMATH','INFILTRATOR','PRESSURE','SYNCHRONIZE','SHADOW_TOUCH'],
                'GARMIC':['BLUFF','RUN_AWAY','SNOW_VEIL','PREPARED','HUGE_POWER'],
-               'FANGRIR':['WOLF_TERRIFYING','BIRD_RELENTLESS','REFRIGERATE','PREPARED',None],
+               'FANGRIR':['WOLF_TERRIFYING','BIRD_RELENTLESS','REFRIGERATE','PREPARED','MOLD_BREAKER'],
                'MAREEP':['CONTACT_STATIC','WOOL_COAT','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
                'FLAAFFY':['CONTACT_STATIC','WOOL_COAT','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
                'AMPHAROS':['CONTACT_STATIC','AMPHAROS_WOOL','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
@@ -1083,6 +1083,16 @@ def validate(version):
                 ap,tp=init(turn);move(turn,attack);aid(turn,actor_ability);aid(1-turn,'PREPARED');rng(0);call('MoveHitTest');assert bool(get('wMoveMissed'))==bool(want),(turn,attack,actor_ability,'prepared',get('wMoveMissed'))
             for attack,want in [('TACKLE',200),('EMBER',100),('SHOCK_FANG',200),('STONE_PRESS',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'HUGE_POWER');word(ap+'Attack',100);word(ap+'Special',100);call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack');assert game.register_file.B==want,(turn,attack,'huge power',game.register_file.B)
+        for turn in (0,1):
+            for foe in ('HARD_SHELL','IRON_WILL','LEVITATE','IMMUNITY','MULTISCALE','DISCIPLINE','PREPARED','WATER_ABSORB'):
+                init(turn);aid(turn,'MOLD_BREAKER');aid(1-turn,foe);put('wStatAbilityGuard',128)
+                call('AbilityGet',A=1-turn);assert game.register_file.A==0 and get('wAbilityResolvedExtended')==0,(turn,foe,'Mold Breaker target')
+                call('AbilityGet',A=turn);assert game.register_file.A==255 and get('wAbilityResolvedExtended')==ab['MOLD_BREAKER']-255,(turn,foe,'Mold Breaker actor')
+                put('wStatAbilityGuard',0);call('AbilityGet',A=1-turn);assert game.register_file.A==(255 if ab[foe]>=256 else ab[foe]),(turn,foe,'Mold Breaker inactive')
+            for foe in ('FLAME_BODY','STATIC','PRESSURE','NEUTRALIZING_GAS'):
+                init(turn);aid(turn,'MOLD_BREAKER');aid(1-turn,foe);put('wStatAbilityGuard',128)
+                call('AbilityGet',A=1-turn);assert game.register_file.A==(255 if ab[foe]>=256 else ab[foe]),(turn,foe,'Mold Breaker preserves ability')
+            put('wStatAbilityGuard',0)
         for turn in (0,1):
             for status,want in [(1,0),(3,0),(8,8),(16,16),(32,0),(64,64)]:
                 ap,tp=init(turn);aid(1-turn,'SYNCHRONIZE');put(tp+'Status',status);put('wAbilityOldStatus',0);call('AbilitySporeScatter')
@@ -2109,6 +2119,10 @@ def validate(version):
             game.memory[0xff40]=0;call('AbilityDrawDescription',A=255 if slot!=4 else ab['OVERCHARGE'])
             expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name)
             assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
+        metadata('wPartyMon1','FANGRIR',5,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'))
+        game.memory[0xff40]=0;call('AbilityDrawDescription',A=255)
+        name='MOLD BREAKER';expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name)
+        assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected
         for slot,name in [(1,'AFTERMATH'),(2,'INFILTRATOR'),(3,'PRESSURE'),(4,'SYNCHRONIZE'),(5,'SHADOW TOUCH')]:
             metadata('wPartyMon1','UMBREON',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'))
             game.memory[0xff40]=0
@@ -2364,6 +2378,17 @@ def validate(version):
                 word('wCounterDamage',counter_damage);put('wCounterRecipient',turn)
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
+        for turn in (0,1):
+            ap,tp=execute('TACKLE',turn,target='MULTISCALE',random_value=100); reduced=160-readword(tp+'HP')
+            ap,tp=execute('TACKLE',turn,actor='MOLD_BREAKER',target='MULTISCALE',random_value=100); assert 160-readword(tp+'HP')>reduced,(turn,'Mold Breaker multiscale')
+            ap,tp=execute('THUNDER_WAVE',turn,target='LIMBER',random_value=100); assert get(tp+'Status')==0,(turn,'limber baseline')
+            ap,tp=execute('THUNDER_WAVE',turn,actor='MOLD_BREAKER',target='LIMBER',random_value=100); assert get(tp+'Status')==64,(turn,'Mold Breaker limber')
+            ap,tp=execute('WATER_GUN',turn,actor='MOLD_BREAKER',target='WATER_ABSORB',random_value=100); assert readword(tp+'HP')<160,(turn,'Mold Breaker water absorb')
+            ap,tp=execute('BULLDOZE',turn,actor='MOLD_BREAKER',target='LEVITATE',target_types=('ELECTRIC','ELECTRIC'),random_value=100); assert readword(tp+'HP')<160,(turn,'Mold Breaker levitate')
+            ap,tp=execute('GROWL',turn,actor='MOLD_BREAKER',target='CLEAR_BODY',random_value=100); assert get('w'+('Player' if turn else 'Enemy')+'MonAttackMod')==6,(turn,'Mold Breaker clear body')
+            ap,tp=execute('QUICK_ATTACK',turn,actor='MOLD_BREAKER',target='PREPARED',random_value=100); assert readword(tp+'HP')<160,(turn,'Mold Breaker prepared')
+            ap,tp=execute('TACKLE',turn,actor='MOLD_BREAKER',target='FLAME_BODY',random_value=0); assert get(ap+'Status')==16,(turn,'Mold Breaker preserves flame body')
+            assert not (get('wStatAbilityGuard') & 128),(turn,'Mold Breaker action guard cleared')
         for turn in (0,1):
             put('wPressureEnemyTracked',0)
             ap,tp=execute('TACKLE',turn,target='PRESSURE',pp=20,random_value=100)
