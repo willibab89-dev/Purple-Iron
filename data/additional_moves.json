@@ -284,5 +284,16 @@
     "accuracy": 100,
     "pp": 10,
     "animation": "BARRIER"
+  },
+  {
+    "id": 246,
+    "symbol": "FORTIFY",
+    "name": "FORTIFY",
+    "effect": "COMPOUND_STATUS_EFFECT",
+    "power": 0,
+    "type": "NORMAL",
+    "accuracy": 100,
+    "pp": 10,
+    "animation": "HARDEN"
   }
 ]

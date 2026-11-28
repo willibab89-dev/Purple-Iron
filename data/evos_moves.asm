@@ -2530,6 +2530,7 @@ BaltoyEvosMoves:
 	db 25, PSYBEAM
 	db 29, MUD_WAVE
 	db 33, REFLECT
+	db 41, FORTIFY
 	db 45, WAILING_CRY
 	db 0
 
@@ -2543,6 +2544,7 @@ ClaydolEvosMoves:
 	db 37, STONE_PRESS
 	db 41, MUD_WAVE
 	db 45, WAILING_CRY
+	db 46, FORTIFY
 	db 53, LIGHT_SCREEN
 	db 0
 
@@ -2722,6 +2724,7 @@ ReviewedKakunaRockTypeEvosMoves:
 	db 9, ROCK_THROW
 	db 17, LEECH_LIFE
 	db 25, COCOON
+	db 30, FORTIFY
 	db 33, ROCK_TOMB
 	db 41, STONE_PRESS
 	db 0

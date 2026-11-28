@@ -247,6 +247,7 @@ CustomStatusEffect:
 	ret
 
 CustomStatusTable:
+	db FORTIFY, 1, 2, 2, -1
 	db SHELL_SMASH, 0, 2, 2, 2
 	db QUIVER_DANCE, 3, 1, 2, 1
 	db STOCKPILE, 1, 1, 3, 1

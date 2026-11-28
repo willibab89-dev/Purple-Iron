@@ -245,4 +245,5 @@ MoveNames::
 	db "MEAN LOOK@"
 	db "BULLDOZE@"
 	db "PROTECT@"
+	db "FORTIFY@"
 MoveNamesEnd:

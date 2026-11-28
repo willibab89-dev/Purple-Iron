@@ -144,6 +144,10 @@ SpecialTrainerMoves:
 	db 0
 
 	db AGATHA,$1
+	db 2,1,STONE_PRESS
+	db 2,2,MUD_WAVE
+	db 2,3,WAILING_CRY
+	db 2,4,LIGHT_SCREEN
 	db 4,1,HYPNOSIS
 	db 4,2,DREAM_EATER
 	db 4,3,SUBSTITUTE

@@ -401,6 +401,10 @@
         "REFLECT"
       ],
       [
+        41,
+        "FORTIFY"
+      ],
+      [
         45,
         "WAILING_CRY"
       ]
@@ -485,6 +489,10 @@
       [
         45,
         "WAILING_CRY"
+      ],
+      [
+        46,
+        "FORTIFY"
       ],
       [
         53,

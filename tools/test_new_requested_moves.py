@@ -94,6 +94,18 @@ def validate(version):
             execute(turn)
             assert readword(ap+'HP')==0 and readword(tp+'HP')<200,(turn,'last sting',readword(ap+'HP'),readword(tp+'HP'))
         for turn in (0,1):
+            actor='Enemy' if turn else 'Player'
+            for defense in (1,7,12,13):
+                for speed in (1,7,13):
+                    init('FORTIFY',turn);put('wActiveAbilities',0);game.memory[addr('wActiveAbilities')+1]=0
+                    put('w'+actor+'MonDefenseMod',defense);put('w'+actor+'MonSpeedMod',speed)
+                    call('JumpMoveEffect')
+                    assert get('w'+actor+'MonDefenseMod')==min(13,defense+2),(turn,defense,speed,'Fortify defense')
+                    assert get('w'+actor+'MonSpeedMod')==max(1,speed-1),(turn,defense,speed,'Fortify speed')
+            init('FORTIFY',turn);put('wActiveAbilities',0);game.memory[addr('wActiveAbilities')+1]=0;execute(turn)
+            assert get('w'+actor+'MonDefenseMod')==9 and get('w'+actor+'MonSpeedMod')==6,(turn,'live Fortify')
+            if turn==0:assert get('wBattleMonPP')==19 and get('wPartyMon1PP')==19,(turn,'Fortify PP')
+        for turn in (0,1):
             mine='wEnemyProtect' if turn else 'wPlayerProtect'
             foe='wPlayerProtect' if turn else 'wEnemyProtect'
             for attempts,threshold in ((0,200),(1,160),(2,120),(3,80),(4,40),(5,0)):
@@ -115,6 +127,15 @@ def validate(version):
             init('FLY',turn);put(mine,5);rng(0);execute(turn);assert get(mine)==0,(turn,'charging move resets')
             put(mine,0x83);call('SequenceNewRound');assert get(mine)==3,(turn,'round expiration')
             call('ResidualClearEnemy' if turn else 'ResidualClearPlayer');assert get(mine)==0,(turn,'switch reset')
+        # Newly created Pokémon receive Fortify at the planned level, with PP.
+        for species,level in ((68,30),(140,41),(146,46)):
+            for current in (level-1,level):
+                put('wPartyCount',0);put('wMonDataLocation',0x80);put('wIsInBattle',0)
+                put('wCurEnemyLVL',current);put('wcf91',species);call('AddPartyMon')
+                moves=list(game.memory[addr('wPartyMon1Moves'):addr('wPartyMon1Moves')+4])
+                assert (MOVES['FORTIFY'] in moves)==(current==level),(species,current,moves)
+                if current==level:
+                    assert game.memory[addr('wPartyMon1PP')+moves.index(MOVES['FORTIFY'])]==10,(species,'Fortify generated PP')
         # The item IDs are separate from the earlier contiguous TM block.
         for item,internal,move in ((114,69,'HEAD_SMASH'),(115,70,'MAGICAL_LEAF'),(116,71,'MEAN_LOOK'),(117,72,'ICE_PUNCH'),(118,73,'PROTECT')):
             put('wcf91',item);call('DecodeMachineItem');assert get('wd11e')==internal

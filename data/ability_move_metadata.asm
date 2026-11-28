@@ -245,3 +245,4 @@ AbilityMoveMetadata:
 	db 64 ; MEAN_LOOK
 	db 73 ; BULLDOZE
 	db 64 ; PROTECT
+	db 64 ; FORTIFY

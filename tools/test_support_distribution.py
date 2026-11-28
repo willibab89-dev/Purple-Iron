@@ -72,7 +72,7 @@ def validate(version):
                    (96,22,'MUD_WAVE'),(97,22,'MUD_WAVE'),(102,25,'MEGA_DRAIN'),(103,25,'MEGA_DRAIN'),
                    (104,30,'TAKE_DOWN'),(105,30,'TAKE_DOWN'),(122,18,'DOUBLESLAP'),(126,21,'WILL_O_WISP'),
                    (127,17,'LUNGE'),(127,41,'X_SCISSOR'),(127,57,'BULK_UP'),(127,65,'GUILLOTINE'),
-                   (140,29,'SLASH'),(141,29,'SLASH')]
+                   (140,29,'SLASH'),(141,29,'SLASH'),(161,30,'FORTIFY'),(177,41,'FORTIFY'),(178,46,'FORTIFY')]
         mb,ma=syms['Moves']
         for dex,level,move in additions:
             mon(dex,level);call('LearnMoveFromLevelUp')

@@ -272,6 +272,7 @@ MoveAnimationMap:
 	db LEER ; MEAN_LOOK
 	db EARTHQUAKE ; BULLDOZE
 	db BARRIER ; PROTECT
+	db HARDEN ; FORTIFY
 MoveAnimationMapEnd:
 
 ; The legacy name routine treated every high ID as a TM/HM item. Check the

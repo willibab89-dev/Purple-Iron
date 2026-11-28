@@ -1,6 +1,6 @@
 # Every Pokémon’s movepool — Purple Iron
 
-Game snapshot: `af8cea8` · 10 November 2026.
+Game snapshot: `901d180` · 10 November 2026.
 
 [Searchable/printable HTML](ALL-POKEMON-MOVEPOOLS.html) · [CSV spreadsheet](ALL-POKEMON-MOVEPOOLS.csv)
 
@@ -4565,6 +4565,7 @@ None beyond the lists above.
 | 9 | Rock Throw |
 | 17 | Leech Life |
 | 25 | Cocoon |
+| 30 | Fortify |
 | 33 | Rock Tomb |
 | 41 | Stone Press |
 
@@ -4991,6 +4992,7 @@ None beyond the lists above.
 | 25 | Psybeam |
 | 29 | Mud Wave |
 | 33 | Reflect |
+| 41 | Fortify |
 | 45 | Wailing Cry |
 
 **TM compatibility:** TM29 Psychic; TM30 Teleport; TM32 Double Team; TM33 Reflect; TM44 Rest; TM50 Substitute; TM57 Rock Tomb; TM60 Curse; TM68 Protect
@@ -5019,6 +5021,7 @@ None beyond the lists above.
 | 37 | Stone Press |
 | 41 | Mud Wave |
 | 45 | Wailing Cry |
+| 46 | Fortify |
 | 53 | Light Screen |
 
 **TM compatibility:** TM29 Psychic; TM30 Teleport; TM32 Double Team; TM33 Reflect; TM44 Rest; TM50 Substitute; TM57 Rock Tomb; TM60 Curse; TM68 Protect
