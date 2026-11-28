@@ -3031,6 +3031,13 @@ SelectEnemyMove:
 	ld a, $ff
 	jr .done
 .canSelectMove
+ callab AbilityPressureSelectEnemy
+ ld a, [wAbilityCheckResult]
+ and a
+ jr z, .normalSelection
+ ld a, [wCustomMove]
+ jp .done
+.normalSelection
 	ld hl, wEnemyMonMoves+1 ; 2nd enemy move
 	ld a, [hld]
 	and a
@@ -6329,6 +6336,7 @@ LoadEnemyMonData:
 	ld hl, wEnemyMonMoves
 	ld de, wEnemyMonPP - 1
 	predef LoadMovePPs
+	abilitycall AbilityPressureRestoreEnemyPP
 	ld hl, wMonHBaseStats
 	ld de, wEnemyMonBaseStats
 	ld b, NUM_STATS

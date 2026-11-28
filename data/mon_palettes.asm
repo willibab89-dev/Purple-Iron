@@ -199,3 +199,4 @@ MonsterPalettes:
 	db PAL_YELLOWMON ; ampharos
 	db PAL_BLUEMON ; garmic
 	db PAL_BLUEMON ; fangrir
+	db PAL_PURPLEMON ; UMBREON

@@ -204,3 +204,4 @@ CustomBackStreams:
 	dbw BANK(AmpharosPicBack), AmpharosPicBack
 	dbw BANK(GarmicPicBack), GarmicPicBack
 	dbw BANK(FangrirPicBack), FangrirPicBack
+	dbw BANK(UmbreonPicBack), UmbreonPicBack

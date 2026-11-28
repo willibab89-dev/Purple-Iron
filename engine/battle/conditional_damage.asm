@@ -2305,6 +2305,27 @@ AbilitySleepAndScatter:
  ret
 
 ; Reflect a newly inflicted major status to the opposing battler.
+; Preserve all existing type conversion logic, then handle Umbreon's moves.
+AbilityConvertAllTypes:
+ abilitycall AbilityRefrigerateConvert
+ call AbilityShadowTouchConvert
+ abilitycall AbilityCachePP
+ jp AbilityPressureEnemyAttempt
+
+AbilityShadowTouchConvert:
+ callab AbilityActor
+ ld a, [wAbilityResolvedExtended]
+ cp AB_SHADOW_TOUCH - ABILITY_EXTENDED
+ ret nz
+ call ConditionalActorMove
+ inc de ; DE points from power to type
+ ld a, [de]
+ cp NORMAL
+ ret nz
+ ld a, GHOST
+ ld [de], a
+ ret
+
 AbilitySporeScatter:
  ld a, [wAbilityOldStatus]
  and a
@@ -2312,7 +2333,19 @@ AbilitySporeScatter:
  callab AbilityTargetResult
  ld a, [wAbilityResolvedExtended]
  cp AB_SPORE_SCATTER - ABILITY_EXTENDED
+ jr z, .eligible
+ cp AB_SYNCHRONIZE - ABILITY_EXTENDED
  ret nz
+ ld hl, wEnemyMonStatus
+ ld a, [H_WHOSETURN]
+ and a
+ jr z, .syncStatus
+ ld hl, wBattleMonStatus
+.syncStatus
+ ld a, [hl]
+ and (1 << PSN) | (1 << BRN) | (1 << PAR)
+ ret z
+.eligible
  ld hl, wEnemyMonStatus
  ld a, [H_WHOSETURN]
  and a
@@ -2626,6 +2659,9 @@ AbilityExtendedPoolIds:
  db 137, 5, AB_HUGE_POWER - ABILITY_EXTENDED
  db 138, 1, AB_WOLF_TERRIFYING - ABILITY_EXTENDED
  db 138, 4, AB_PREPARED - ABILITY_EXTENDED
+ db 139, 3, AB_PRESSURE - ABILITY_EXTENDED
+ db 139, 4, AB_SYNCHRONIZE - ABILITY_EXTENDED
+ db 139, 5, AB_SHADOW_TOUCH - ABILITY_EXTENDED
  db 0
 
 AbilitySpikyFurMessageBanked:
@@ -3167,6 +3203,7 @@ AbilitySpeciesPools:
 	db AMPHAROS, 136
 	db GARMIC, 137
 	db FANGRIR, 138
+	db UMBREON, 139
 	db 0
 
 ; The first pair is processed together once both battlers are present.
@@ -3529,6 +3566,241 @@ AbilityAntivirusSecondaryRoll:
 .check
  jp AbilityAntivirusTarget
 
+; Set wAbilityCheckResult when the opponent has Pressure and this move targets it.
+AbilityPressureTargeted:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityTarget
+ ld a, [wAbilityResolvedExtended]
+ cp AB_PRESSURE - ABILITY_EXTENDED
+ ret nz
+ call ConditionalActorMove
+ ld a, [hl]
+ cp STRUGGLE
+ ret z
+ cp BIDE
+ jr z, .yes
+ ld b, a
+ ld a, [de]
+ and a
+ jr nz, .yes
+ ld a, b
+ ld hl, AbilityPressureStatusMoves
+ ld de, 1
+ call IsInArray
+ ret nc
+.yes
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+AbilityPressureStatusMoves:
+ db WHIRLWIND, TAIL_WHIP, LEER, GROWL, ROAR, SING, SUPERSONIC, DISABLE
+ db LEECH_SEED, POISONPOWDER, STUN_SPORE, SLEEP_POWDER, THUNDER_WAVE, TOXIC
+ db HYPNOSIS, SCREECH, SMOKESCREEN, CONFUSE_RAY, KINESIS, GLARE, POISON_GAS
+ db LOVELY_KISS, SPORE, WILL_O_WISP, FLASH_FREEZE, CURSE, CHARM, COTTON_SPORE
+ db MEAN_LOOK, MIMIC, MIRROR_MOVE, TRANSFORM, PSYCH_UP, HAZE, $ff
+
+; Pressure makes the otherwise unlimited enemy PP finite while it is active.
+; Tracked trainer PP is retained across switches without changing save data.
+; Preserve ordinary trainer move scoring, then exclude exhausted moves while
+; Pressure is active. If all preferred moves are empty, consider the rest.
+AbilityPressureSelectEnemy:
+ xor a
+ ld [wAbilityCheckResult], a
+ callab AbilityPlayerResult
+ ld a, [wAbilityResolvedExtended]
+ cp AB_PRESSURE - ABILITY_EXTENDED
+ jr z, .pressure
+ call AbilityPressureEnemyBit
+ ld a, [wPressureEnemyTracked]
+ and c
+ jr nz, .pressure
+ xor a
+ ld [wAbilityCheckResult], a
+ ret
+.pressure
+ ld a, [wIsInBattle]
+ cp 2
+ jr nz, .original
+ callab AIEnemyTrainerChooseMoves
+ jr .copy
+.original
+ ld hl, wEnemyMonMoves
+.copy
+ ld de, wBuffer
+ ld b, NUM_MOVES
+.copyLoop
+ ld a, [hli]
+ ld [de], a
+ inc de
+ dec b
+ jr nz, .copyLoop
+ xor a
+ ld [wCustomChanged], a
+.filter
+ ld hl, wBuffer
+ ld de, wEnemyMonPP
+ ld b, NUM_MOVES
+.filterLoop
+ ld a, [de]
+ and $3f
+ jr nz, .keep
+ ld [hl], 0
+.keep
+ inc hl
+ inc de
+ dec b
+ jr nz, .filterLoop
+ ld a, [wEnemyDisabledMove]
+ swap a
+ and $f
+ jr z, .checkAny
+ dec a
+ cp NUM_MOVES
+ jr nc, .checkAny
+ ld c, a
+ ld b, 0
+ ld hl, wBuffer
+ add hl, bc
+ ld [hl], 0
+.checkAny
+ ld hl, wBuffer
+ ld a, [hli]
+ or [hl]
+ inc hl
+ or [hl]
+ inc hl
+ or [hl]
+ jr nz, .choose
+ ld a, [wCustomChanged]
+ and a
+ jr nz, .struggle
+ inc a
+ ld [wCustomChanged], a
+ ld hl, wEnemyMonMoves
+ ld de, wBuffer
+ ld bc, NUM_MOVES
+ call CopyData
+ jr .filter
+.choose
+ callab CustomRandomInBattleBank
+ ld a, [wCustomRandomValue]
+ and 3
+ ld c, a
+ ld b, 0
+ ld hl, wBuffer
+ add hl, bc
+ ld a, [hl]
+ and a
+ jr z, .choose
+ ld a, c
+ ld [wEnemyMoveListIndex], a
+ ld a, [hl]
+ jr .store
+.struggle
+ ld a, STRUGGLE
+.store
+ ld [wCustomMove], a
+ ld a, 1
+ ld [wAbilityCheckResult], a
+ ret
+
+AbilityPressureEnemyAttempt:
+ ld a, [H_WHOSETURN]
+ and a
+ ret z
+ ld a, [wLinkState]
+ cp LINK_STATE_BATTLING
+ ret z
+ callab AbilityPlayerResult
+ ld a, [wAbilityResolvedExtended]
+ cp AB_PRESSURE - ABILITY_EXTENDED
+ jr z, .finitePP
+ call AbilityPressureEnemyBit
+ ld a, [wPressureEnemyTracked]
+ and c
+ ret z
+.finitePP
+ ld a, [wEnemyMoveNum]
+ cp STRUGGLE
+ ret z
+ ld a, [wEnemyBattleStatus1]
+ and (1 << STORING_ENERGY) | (1 << THRASHING_ABOUT) | (1 << ATTACKING_MULTIPLE_TIMES)
+ ret nz
+ ld a, [wEnemyBattleStatus2]
+ bit USING_RAGE, a
+ ret nz
+ ld a, [wEnemyMoveListIndex]
+ and 3
+ ld c, a
+ ld b, 0
+ ld hl, wEnemyMonPP
+ add hl, bc
+ ld a, [hl]
+ and $3f
+ ret z
+ dec [hl]
+ push hl
+ call AbilityPressureTargeted
+ pop hl
+ ld a, [wAbilityCheckResult]
+ and a
+ jr z, .persist
+ ld a, [hl]
+ and $3f
+ jr z, .persist
+ dec [hl]
+.persist
+ ld a, [wEnemyBattleStatus3]
+ bit TRANSFORMED, a
+ ret nz
+ call AbilityPressureEnemyBit
+ ld a, [wPressureEnemyTracked]
+ or c
+ ld [wPressureEnemyTracked], a
+ ld a, [wIsInBattle]
+ cp 2
+ ret nz
+ ld a, [wEnemyMonPartyPos]
+ ld hl, wEnemyMon1PP
+ ld bc, wEnemyMon2 - wEnemyMon1
+ call AddNTimes
+ ld d, h
+ ld e, l
+ ld hl, wEnemyMonPP
+ ld bc, NUM_MOVES
+ call CopyData
+ ret
+
+AbilityPressureEnemyBit:
+ ld a, [wEnemyMonPartyPos]
+ and 7
+ ld b, a
+ ld c, 1
+.loop
+ ld a, b
+ and a
+ ret z
+ sla c
+ dec b
+ jr .loop
+
+AbilityPressureRestoreEnemyPP:
+ ld a, [wIsInBattle]
+ cp 2
+ ret nz
+ call AbilityPressureEnemyBit
+ ld a, [wPressureEnemyTracked]
+ and c
+ ret z
+ ld a, [wEnemyMonPartyPos]
+ ld hl, wEnemyMon1PP
+ ld bc, wEnemyMon2 - wEnemyMon1
+ call AddNTimes
+ ld de, wEnemyMonPP
+ ld bc, NUM_MOVES
+ jp CopyData
+
 DecrementPPBanked:
 ; after using a move, decrement pp in battle and (if not transformed?) in party
 	ld a, [de]
@@ -3572,7 +3844,17 @@ DecrementPPBanked:
 	add hl ,bc           ; calculate the address in memory of the PP we need to decrement
 	                     ; based on the move chosen.
 	dec [hl]             ; Decrement PP
-	ret
+ push hl
+ call AbilityPressureTargeted
+ pop hl
+ ld a, [wAbilityCheckResult]
+ and a
+ ret z
+ ld a, [hl]
+ and $3f
+ ret z
+ dec [hl] ; Pressure consumes one extra PP, without borrowing from PP-Up bits.
+ ret
 
 AbilityDustOnlyBanked:
  call AbilityAntivirusTarget
@@ -5338,3 +5620,4 @@ AbilityPoolIds:
 	db ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED, AB_OVERCHARGE, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_RUN_AWAY, AB_SNOW_VEIL, ABILITY_EXTENDED, ABILITY_EXTENDED
 	db ABILITY_EXTENDED, AB_BIRD_RELENTLESS, AB_REFRIGERATE, ABILITY_EXTENDED, 0 ; Mold Breaker pending
+	db AB_AFTERMATH, AB_INFILTRATOR, ABILITY_EXTENDED, ABILITY_EXTENDED, ABILITY_EXTENDED

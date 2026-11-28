@@ -1,6 +1,6 @@
 # Design document: implementation status
 
-> **Update:** This is an earlier snapshot. The current build has 198 species, including Garmic and Fangrir. Umbreon remains to be added. Fangrir’s fifth ability slot is currently inactive: Mold Breaker has not been implemented, so a Fangrir with that slot has no ability. Fangrir learns Ice Punch at level 34, but an Ice Punch TM has not been added. Protect also remains outstanding. The historical counts and lists below have not been fully refreshed.
+> **Update:** This is an earlier snapshot. The current build has 199 species, including Garmic, Fangrir and Umbreon. Eevee evolves into Umbreon using a Moon Stone. Fangrir’s fifth ability slot is inactive because Mold Breaker is not yet implemented. Umbreon’s Pressure is implemented, including enemy PP tracking. Fangrir learns Ice Punch at level 34, but an Ice Punch TM has not been added. Protect also remains outstanding. The historical counts and lists below have not been fully refreshed.
 
 Compared the user-provided `Pasted text.txt` (SHA-256 `ffe58718e00c5239eebe74f1c6323eadf23422bb6977129ad550d127c85a8bb6`) against `unique-species` at commit `f7048e8`. This is a status review, not a change to game behavior. Strikethrough in the source was not used as proof that an item is complete. Earlier redesign notes can reflect decisions made after an older design draft; a difference is flagged for a decision, not treated as an instruction to revert it.
 

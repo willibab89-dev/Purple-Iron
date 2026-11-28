@@ -197,4 +197,5 @@ ExtraTMCompatibilityTable:
 	db $00, $10 ; 196: ampharos
 	db $00, $00 ; 197: garmic
 	db $00, $00 ; 198: fangrir
+	db $02, $80 ; 199: umbreon
 ExtraTMCompatibilityTableEnd:

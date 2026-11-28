@@ -204,3 +204,10 @@ _FangrirDexEntry::
  text "Its howl frightens"
  next "powerful foes."
  dex
+
+UmbreonPicFront:: INCBIN "pic/new_species/umbreon.pic"
+UmbreonPicBack:: INCBIN "pic/new_species/umbreon_b.pic"
+_UmbreonDexEntry::
+ text "It watches quietly"
+ next "in the moonlight."
+ dex

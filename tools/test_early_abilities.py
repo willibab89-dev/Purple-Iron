@@ -22,7 +22,7 @@ def validate(version):
         b,a=syms[n];game.memory[0x2000]=game.memory[0xffb8]=b or 1
         game.memory[0,0x100:0x108]=[0xf3,0xcd,a&255,a>>8,0xc3,4,1,0]
         game.memory[0xffff]=game.memory[0xff0f]=0
-        game.memory[0xdf5b:0xdf7b]=[0xa5]*32
+        game.memory[0xdf5c:0xdf78]=[0xa5]*28
         game.register_file.SP=0xdffe;game.register_file.PC=0x100
         for k,v in regs.items():
             if k in ('BC','DE'):
@@ -31,7 +31,7 @@ def validate(version):
         for _ in range(150):
             game.tick(1,False)
             if game.register_file.PC in (0x104,0x105,0x106):
-                assert bytes(game.memory[0xdf5b:0xdf7b])==bytes([0xa5]*32),('stack guard',n)
+                assert bytes(game.memory[0xdf5c:0xdf78])==bytes([0xa5]*28),('stack guard',n)
                 return
         raise AssertionError((version,n,hex(game.register_file.PC),hex(game.register_file.SP)))
     state={'values':[0],'index':0}
@@ -248,6 +248,7 @@ def validate(version):
                'MEW':['ANCESTOR']*5,
                'MAREANIE':['REGENERATOR','MERCILESS','CORROSIVE_VENOM','SNIPER','BARBED_SHELL'],
                'MILTANK':['THICK_FAT','SAP_SIPPER','ROLLOUT','SCRAPPY','SERENE_GRACE'],
+               'UMBREON':['AFTERMATH','INFILTRATOR','PRESSURE','SYNCHRONIZE','SHADOW_TOUCH'],
                'GARMIC':['BLUFF','RUN_AWAY','SNOW_VEIL','PREPARED','HUGE_POWER'],
                'FANGRIR':['WOLF_TERRIFYING','BIRD_RELENTLESS','REFRIGERATE','PREPARED',None],
                'MAREEP':['CONTACT_STATIC','WOOL_COAT','SHED_WOOL','OVERCHARGE','CHARGE_UP'],
@@ -1082,6 +1083,44 @@ def validate(version):
                 ap,tp=init(turn);move(turn,attack);aid(turn,actor_ability);aid(1-turn,'PREPARED');rng(0);call('MoveHitTest');assert bool(get('wMoveMissed'))==bool(want),(turn,attack,actor_ability,'prepared',get('wMoveMissed'))
             for attack,want in [('TACKLE',200),('EMBER',100),('SHOCK_FANG',200),('STONE_PRESS',100)]:
                 ap,tp=init(turn);move(turn,attack);aid(turn,'HUGE_POWER');word(ap+'Attack',100);word(ap+'Special',100);call('GetDamageVarsForEnemyAttack' if turn else 'GetDamageVarsForPlayerAttack');assert game.register_file.B==want,(turn,attack,'huge power',game.register_file.B)
+        for turn in (0,1):
+            for status,want in [(1,0),(3,0),(8,8),(16,16),(32,0),(64,64)]:
+                ap,tp=init(turn);aid(1-turn,'SYNCHRONIZE');put(tp+'Status',status);put('wAbilityOldStatus',0);call('AbilitySporeScatter')
+                assert get(ap+'Status')==want,(turn,status,'synchronize',get(ap+'Status'))
+            for attack,want in [('TACKLE','GHOST'),('GROWL','GHOST'),('EMBER','FIRE'),('QUICK_ATTACK','GHOST')]:
+                ap,tp=init(turn);move(turn,attack);aid(turn,'SHADOW_TOUCH');call('AbilityAttempt')
+                assert get('w'+('Enemy' if turn else 'Player')+'MoveType')==TYPES[want],(turn,attack,'shadow touch')
+        for turn in (0,1):
+            for attack,initial,want in [('TACKLE',20,18),('TACKLE',2,0),('TACKLE',1,0),('TACKLE',0xc2,0xc0),('RECOVER',20,19),('THUNDER_WAVE',20,18)]:
+                ap,tp=init(turn);move(turn,attack);aid(1-turn,'PRESSURE');put('wPressureEnemyTracked',0)
+                if turn:
+                    put('wEnemyMoveListIndex',0);put('wEnemyMonPP',initial);put('wEnemyMon1PP',initial);call('AbilityBeforeAction');call('AbilityAttempt')
+                    assert get('wEnemyMonPP')==want,(turn,attack,initial,'pressure PP',get('wEnemyMonPP'))
+                    assert get('wEnemyMon1PP')==want
+                else:
+                    put('wPlayerMoveListIndex',0);put('wBattleMonPP',initial);put('wPartyMon1PP',initial);call('AbilityBeforeAction');call('AbilityAttempt');call('DecrementPP',DE=addr('wPlayerSelectedMove'))
+                    assert get('wBattleMonPP')==want and get('wPartyMon1PP')==want,(turn,attack,initial,'pressure PP',get('wBattleMonPP'),get('wPartyMon1PP'))
+            ap,tp=init(turn);move(turn,'TACKLE');put('wEnemyMonPP',20);call('AbilityBeforeAction');call('AbilityAttempt')
+            if turn:assert get('wEnemyMonPP')==20,(turn,'ordinary enemy PP unchanged')
+        # An enemy avoids exhausted moves, falls back from AI preferences and
+        # eventually uses Struggle. PP persists across a trainer switch-in.
+        init(1);aid(0,'PRESSURE');put('wIsInBattle',1);put('wEnemyDisabledMove',0)
+        game.memory[addr('wEnemyMonMoves'):addr('wEnemyMonMoves')+4]=[MOVES['TACKLE'],MOVES['GROWL'],0,0]
+        game.memory[addr('wEnemyMonPP'):addr('wEnemyMonPP')+4]=[0,3,0,0]
+        rng(0,1);call('AbilityPressureSelectEnemy');assert get('wCustomMove')==MOVES['GROWL'] and get('wEnemyMoveListIndex')==1
+        game.memory[addr('wEnemyMonPP'):addr('wEnemyMonPP')+4]=[0,0,0,0]
+        call('AbilityPressureSelectEnemy');assert get('wCustomMove')==MOVES['STRUGGLE']
+        for battle_kind in (1,2):
+            init(1);aid(0,'PRESSURE');put('wIsInBattle',battle_kind);put('wTrainerClass',1);put('wPressureEnemyTracked',0);put('wEnemyDisabledMove',0)
+            game.memory[addr('wEnemyMonMoves'):addr('wEnemyMonMoves')+4]=[MOVES['TACKLE'],MOVES['GROWL'],0,0]
+            game.memory[addr('wEnemyMonPP'):addr('wEnemyMonPP')+4]=[0,3,0,0]
+            rng(1);call('SelectEnemyMove');assert get('wEnemySelectedMove')==MOVES['GROWL'],(battle_kind,'live pressure selection',get('wEnemySelectedMove'))
+            game.memory[addr('wEnemyMonPP'):addr('wEnemyMonPP')+4]=[0,0,0,0]
+            call('SelectEnemyMove');assert get('wEnemySelectedMove')==MOVES['STRUGGLE'],(battle_kind,'live pressure struggle')
+        init(1);aid(0,'PRESSURE');move(1,'TACKLE');put('wEnemyMoveListIndex',0);put('wEnemyMonPP',9);put('wEnemyMon1PP',9);put('wPressureEnemyTracked',0);call('AbilityBeforeAction');call('AbilityAttempt')
+        assert get('wEnemyMon1PP')==7 and get('wPressureEnemyTracked')==1
+        put('wEnemyMonPP',99);call('AbilityPressureRestoreEnemyPP');assert get('wEnemyMonPP')==7
+        aid(0,None);move(1,'TACKLE');call('AbilityBeforeAction');call('AbilityAttempt');assert get('wEnemyMonPP')==6 and get('wEnemyMon1PP')==6,('tracked enemy PP after Pressure leaves')
         # Ponyta family: reactive burn, opposing stat changes, speed and hit reactions.
         for turn in (0,1):
             for attack,roll,sub,actor_ability,actor_fire,want in [('TACKLE',0,0,None,False,16),('TACKLE',39,0,None,False,16),('TACKLE',40,0,None,False,0),('EARTHQUAKE',0,0,None,False,16),('FLAMETHROWER',0,0,None,False,0),('TACKLE',0,1,None,False,0),('TACKLE',0,0,'WATER_VEIL',False,0),('TACKLE',0,0,None,True,0)]:
@@ -2070,6 +2109,13 @@ def validate(version):
             game.memory[0xff40]=0;call('AbilityDrawDescription',A=255 if slot!=4 else ab['OVERCHARGE'])
             expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name)
             assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
+        for slot,name in [(1,'AFTERMATH'),(2,'INFILTRATOR'),(3,'PRESSURE'),(4,'SYNCHRONIZE'),(5,'SHADOW TOUCH')]:
+            metadata('wPartyMon1','UMBREON',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'))
+            game.memory[0xff40]=0
+            ability_id=ab['AFTERMATH'] if slot==1 else ab['INFILTRATOR'] if slot==2 else 255
+            call('AbilityDrawDescription',A=ability_id)
+            expected=bytes(0x7f if c==' ' else 0x80+ord(c)-ord('A') for c in name)
+            assert bytes(game.memory[addr('wTileMap')+4*20+2:addr('wTileMap')+4*20+2+len(name)])==expected,(slot,name)
         for slot,name in [(3,'SPORE SCATTER'),(5,'LIGHTWEIGHT')]:
             metadata('wPartyMon1','HOPPIP',slot,17);call('AbilityEnsureMon',HL=addr('wPartyMon1'));assert game.register_file.A==255
             game.memory[0xff40]=0;call('AbilityDrawDescription',A=255)
@@ -2319,6 +2365,12 @@ def validate(version):
             call('ExecuteEnemyMove' if turn else 'ExecutePlayerMove')
             return ap,tp
         for turn in (0,1):
+            put('wPressureEnemyTracked',0)
+            ap,tp=execute('TACKLE',turn,target='PRESSURE',pp=20,random_value=100)
+            active='wEnemyMonPP' if turn else 'wBattleMonPP'
+            party='wEnemyMon1PP' if turn else 'wPartyMon1PP'
+            assert get(active)==18 and get(party)==18,(turn,'live Pressure PP',get(active),get(party))
+        for turn in (0,1):
             for attack,status in [('POISONPOWDER',8),('STUN_SPORE',64),('WILL_O_WISP',16)]:
                 ap,tp=execute(attack,turn,target='SPORE_SCATTER',random_value=0)
                 assert get(tp+'Status')==status and get(ap+'Status')==status,(turn,attack,'live spore scatter',get(tp+'Status'),get(ap+'Status'))
@@ -2328,6 +2380,16 @@ def validate(version):
             assert get(tp+'Status')==8 and get(ap+'Status')==0,(turn,'spore scatter poison immunity')
             ap,tp=execute('POISONPOWDER',turn,actor='DISCIPLINE',target='SPORE_SCATTER',random_value=0)
             assert get(tp+'Status')==8 and get(ap+'Status')==0,(turn,'spore scatter status immunity')
+        for turn in (0,1):
+            for attack,status in [('POISONPOWDER',8),('THUNDER_WAVE',64),('WILL_O_WISP',16)]:
+                ap,tp=execute(attack,turn,target='SYNCHRONIZE',random_value=0)
+                assert get(ap+'Status')==status and get(tp+'Status')==status,(turn,attack,'live synchronize',get(ap+'Status'),get(tp+'Status'))
+            ap,tp=execute('FLASH_FREEZE',turn,target='SYNCHRONIZE',random_value=0)
+            assert get(ap+'Status')==0 and get(tp+'Status')==32,(turn,'synchronize excludes freeze')
+            ap,tp=execute('TACKLE',turn,actor='SYNCHRONIZE',target='FLAME_BODY',random_value=0)
+            assert get(ap+'Status')==16 and get(tp+'Status')==16,(turn,'synchronize reactive burn')
+            ap,tp=execute('QUICK_ATTACK',turn,actor='SHADOW_TOUCH',target_types=('GHOST','GHOST'),random_value=0)
+            assert readword(tp+'HP')<160,(turn,'live shadow touch ghost hit')
         for turn in (0,1):
             ap,tp=execute('WATER_GUN',turn,target_types=('ROCK','GROUND'),random_value=100);normal=160-readword(tp+'HP')
             ap,tp=execute('WATER_GUN',turn,target='INDOMITABLE',target_types=('ROCK','GROUND'),random_value=100);assert 160-readword(tp+'HP')==max(1,normal//2),(turn,'live indomitable',normal,readword(tp+'HP'))

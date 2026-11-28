@@ -1746,5 +1746,64 @@
         "BLIZZARD"
       ]
     ]
+  },
+  {
+    "name": "umbreon",
+    "symbol": "UMBREON",
+    "index": 206,
+    "dex": 199,
+    "stats": [
+      110,
+      65,
+      130,
+      65,
+      60
+    ],
+    "types": [
+      "GHOST",
+      "GHOST"
+    ],
+    "catch": 45,
+    "xp": 184,
+    "start": [
+      "QUICK_ATTACK",
+      "SAND_ATTACK",
+      "TACKLE",
+      "NIGHT_SHADE"
+    ],
+    "learn": [
+      [
+        27,
+        "BITE"
+      ],
+      [
+        31,
+        "MEAN_LOOK"
+      ],
+      [
+        37,
+        "CURSE"
+      ],
+      [
+        40,
+        "CONFUSE_RAY"
+      ],
+      [
+        42,
+        "PUNISHMENT"
+      ],
+      [
+        44,
+        "MOONLIGHT"
+      ],
+      [
+        49,
+        "CRUNCH"
+      ],
+      [
+        54,
+        "AGILITY"
+      ]
+    ]
   }
 ]

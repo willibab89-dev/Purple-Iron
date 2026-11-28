@@ -38,8 +38,8 @@ def validate(version):
         assert hashlib.sha256((ROOT/entry['source']).read_bytes()).hexdigest()==entry['sha256']
         assert Image.open(ROOT/entry['png']).size==(56,56)
     assert len(rom)==1024*1024
-    headers=data('BaseStats',198*28);order=data('PokedexOrder',205)
-    assert sorted(n for n in order if n)==list(range(1,199))
+    headers=data('BaseStats',199*28);order=data('PokedexOrder',206)
+    assert sorted(n for n in order if n)==list(range(1,200))
     assert (183+7)//8==23
     assert addr('wPokedexSeen')-addr('wPokedexOwned')==25
     for i,old in enumerate(PLAN['previous_headers']):
@@ -170,6 +170,8 @@ def validate(version):
             while game.memory[b,pos]:
                 actual.append([game.memory[b,pos],game.memory[b,pos+1]]);pos+=2
             assert actual==[[level,MOVES[move]] for level,move in d['learn']],name
+        # All four Eevee stone records remain in the evolution table.
+        assert data('EeveeEvosMoves',17)==bytes([2,32,1,103,2,33,1,104,2,34,1,105,2,10,1,206,0])
         # Evolution record is a real level-38 evolution to Toxapex.
         assert data('MareanieEvosMoves',4)==bytes([1,38,134,0])
         expected={'MAREANIE':5,'MILTANK':2,'SABLEYE':2,'BALTOY':2,'LARVITAR':2,'DITTWO':1}
@@ -178,7 +180,7 @@ def validate(version):
             for name,rate in expected.items():
                 if name in counts:assert counts[name]==rate,(mapname,kind,name)
             if 'UNIQUE_OMANYTE_UNIQUE' in counts:assert counts['UNIQUE_OMANYTE_UNIQUE']==1
-        print(f'{version}: 198 back-loader paths/pixel comparisons; twenty-six species/party/gender/evolution/save flags; old stats and encounter shares passed')
+        print(f'{version}: 199 back-loader paths/pixel comparisons; twenty-seven species/party/gender/evolution/save flags; old stats and encounter shares passed')
     finally:game.stop(save=False)
 
 

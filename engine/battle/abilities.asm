@@ -89,6 +89,7 @@ AbilityEnsureExpRecipient:
 
 AbilityResetBattle:
 	xor a
+	ld [wPressureEnemyTracked], a
 	ld [wActiveAbilityExtended], a
 	ld [wActiveAbilityExtended + 1], a
 	ld [wAbilityResolvedExtended], a

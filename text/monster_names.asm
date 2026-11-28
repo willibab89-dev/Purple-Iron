@@ -204,3 +204,4 @@ MonsterNames:
 	db "AMPHAROS@@"
 	db "GARMIC@@@@"
 	db "FANGRIR@@@"
+	db "UMBREON@@@"

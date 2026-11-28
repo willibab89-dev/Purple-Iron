@@ -204,3 +204,4 @@ PokedexOrder:
 	db DEX_AMPHAROS
 	db DEX_GARMIC
 	db DEX_FANGRIR
+	db DEX_UMBREON

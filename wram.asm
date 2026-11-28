@@ -3428,8 +3428,10 @@ wParentalFirstDamage:: ds 2
 wCopycatDelta:: ds 1
 wStatAbilityGuard:: ds 1
 wCopycatStat:: ds 1
-SECTION "Stack", WRAM0[$df5b]
-	ds $a4
+SECTION "Pressure scratch", WRAM0[$df5b]
+wPressureEnemyTracked:: ds 1
+SECTION "Stack", WRAM0[$df5c]
+	ds $a3
 wStack:: ; dfff
 
 

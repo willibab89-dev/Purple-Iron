@@ -37,8 +37,8 @@ def validate(version):
         start = (bank * 0x4000 + address - 0x4000 if bank else address) + offset
         return rom[start:start + size]
 
-    dex_order = data("PokedexOrder", 205)
-    assert sorted(n for n in dex_order if n) == list(range(1, 199))
+    dex_order = data("PokedexOrder", 206)
+    assert sorted(n for n in dex_order if n) == list(range(1, 200))
     assert len(rom) == 1024 * 1024
     assert (sum(rom) - rom[0x14e] - rom[0x14f]) & 65535 == int.from_bytes(rom[0x14e:0x150], "big")
     header_sum = 0
@@ -283,7 +283,7 @@ def validate(version):
             assert raw[-1] == 255 and set(raw[:-1]) == expected_maps
     finally:
         game.stop(save=False)
-    print(f"{version}: 198 dex/header round-trips, 42 sprite decodes, 21 party additions, expanded save/load; all 100 rolls in {len(habitat_pools)} encounter pools and AREA maps passed")
+    print(f"{version}: 199 dex/header round-trips, 42 sprite decodes, 21 party additions, expanded save/load; all 100 rolls in {len(habitat_pools)} encounter pools and AREA maps passed")
 
 
 if __name__ == "__main__":

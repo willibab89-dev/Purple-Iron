@@ -1,0 +1,26 @@
+db DEX_UMBREON
+db 110
+db 65
+db 130
+db 65
+db 60
+db GHOST
+db GHOST
+db 45
+db 184
+INCBIN "pic/new_species/umbreon.pic",0,1
+dw UmbreonPicFront
+dw UmbreonPicBack
+db QUICK_ATTACK
+db SAND_ATTACK
+db TACKLE
+db NIGHT_SHADE
+db 0
+ tmlearn 6,8
+ tmlearn 9,10
+ tmlearn 18,20
+ tmlearn 31,32
+ tmlearn 34,39
+ tmlearn 0
+ tmlearn 50
+db 0

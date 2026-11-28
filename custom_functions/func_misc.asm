@@ -234,6 +234,8 @@ DetermineMonGender:
 	jr z, .genderlessNew
 	cp DITTWO
 	jr z, .genderlessNew
+	cp UMBREON
+	jr z, .newHalf
 	cp GARMIC
 	jr z, .newHalf
 	cp FANGRIR

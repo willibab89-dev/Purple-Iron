@@ -44,7 +44,7 @@ LoadSAV0:
 	ld c, a
 	ld a, [sMainDataCheckSum] ; SAV's checksum
 	cp c
-	jp z, .checkSumsMatched
+	jr z, .checkSumsMatched
 
 ; If the computed checksum didn't match the saved on, try again.
 	ld hl, sPlayerName
@@ -371,8 +371,7 @@ ChangeBox::
 	call SetMapTextPointer
 	ld a, SFX_SAVE
 	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
-	ret
+	jp WaitForSoundToFinish
 
 WhenYouChangeBoxText:
 	TX_FAR _WhenYouChangeBoxText

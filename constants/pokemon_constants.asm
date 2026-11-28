@@ -205,3 +205,4 @@ const_value = 1
 	const AMPHAROS
 	const GARMIC
 	const FANGRIR
+	const UMBREON

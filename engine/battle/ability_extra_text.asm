@@ -4,7 +4,7 @@ SECTION "Expanded ability descriptions", ROMX, BANK[$39]
 AbilityDrawExtraDescription:
  ld a, [wAbilityResolvedExtended]
  sub AB_CONSERVATIVE - ABILITY_EXTENDED
- cp 63
+ cp 66
  jr nc, .none
  ld c, a
  ld b, 0
@@ -38,7 +38,8 @@ AbilityExtraTextPointers:
 	dw AbilityText370, AbilityText371, AbilityText372, AbilityText373
 	dw AbilityText374, AbilityText375, AbilityText376, AbilityText377
 	dw AbilityText378, AbilityText379, AbilityText380, AbilityText381
-	dw AbilityText382, AbilityText383, AbilityText384
+	dw AbilityText382, AbilityText383, AbilityText384, AbilityText385
+	dw AbilityText386, AbilityText387
 AbilityExtraNone: db "NO ABILITY@"
 AbilityText322: db "CONSERVATIVE",$4e,"Moves: 25% chance",$4e,"to save PP.@"
 AbilityText323: db "TRACE",$4e,"Copies foe ability",$4e,"until switch out.@"
@@ -108,3 +109,7 @@ AbilityText381: db "BLUFF",$4e,"Entry: 50% chance",$4e,"foe Attack -1.@"
 AbilityText382: db "TERRIFYING",$4e,"Entry: foe Attack",$4e,"-1.@"
 AbilityText383: db "PREPARED",$4e,"Blocks opposing",$4e,"priority moves.@"
 AbilityText384: db "HUGE POWER",$4e,"Doubles Attack",$4e,"for physical moves.@"
+
+AbilityText385: db "SYNCHRONIZE",$4e,"Burn, poison or para",$4e,"also affects foe.@"
+AbilityText386: db "SHADOW TOUCH",$4e,"Normal moves become",$4e,"Ghost type.@"
+AbilityText387: db "PRESSURE",$4e,"Foe uses extra PP",$4e,"targeting this mon.@"

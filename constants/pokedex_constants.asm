@@ -201,7 +201,8 @@ const_value = 1
 	const DEX_AMPHAROS
 	const DEX_GARMIC
 	const DEX_FANGRIR
+	const DEX_UMBREON
 
 ; Space for the next 16 species plus one spare dex entry.
 POKEDEX_CAPACITY EQU 200
-NUM_POKEMON    EQU 198
+NUM_POKEMON    EQU 199

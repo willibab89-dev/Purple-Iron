@@ -1480,8 +1480,7 @@ AbilityCachePP:
 
 ; Called only after the Pokémon can actually execute its move.
 AbilityAttempt:
-	call AbilityRefrigerateConvert
-	call AbilityCachePP
+	callab AbilityConvertAllTypes
 	ld hl, wAbilityHit
 	set 3, [hl] ; a move was actually executed this action
 	callab AbilityFocusedAttemptBanked

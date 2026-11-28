@@ -207,6 +207,7 @@ EvosMovesPointerTable:
 	dw AmpharosEvosMoves
 	dw GarmicEvosMoves
 	dw FangrirEvosMoves
+	dw UmbreonEvosMoves
 
 RhydonEvosMoves:
 ; Evolutions
@@ -1435,6 +1436,7 @@ EeveeEvosMoves:
 	db EV_ITEM, FIRE_STONE, 1, FLAREON
 	db EV_ITEM, THUNDER_STONE, 1, JOLTEON
 	db EV_ITEM, WATER_STONE, 1, VAPOREON
+	db EV_ITEM, MOON_STONE, 1, UMBREON
 	db 0
 ; Learnset
 	db 8, SAND_ATTACK
@@ -3047,4 +3049,16 @@ FangrirEvosMoves:
  db 44, GLARE
  db 51, THRASH
  db 57, BLIZZARD
+ db 0
+
+UmbreonEvosMoves:
+ db 0
+ db 27, BITE
+ db 31, MEAN_LOOK
+ db 37, CURSE
+ db 40, CONFUSE_RAY
+ db 42, PUNISHMENT
+ db 44, MOONLIGHT
+ db 49, CRUNCH
+ db 54, AGILITY
  db 0
